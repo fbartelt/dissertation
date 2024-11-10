@@ -1,0 +1,204 @@
+% !TeX root = main.tex
+\chapter{Thoeretical Background}\label{ch:background}
+In this chapter, we present the theoretical background of the thesis. We start by presenting the mathematical tools used in the thesis, such as the state-space representation and the Lyapunov stability theory. Then, we present the control strategies used in the thesis, such as the PID controller and the MPC. Finally, we present the optimization problem used in the thesis, which is the Quadratic Programming (QP) problem. \citep{Rezende2022}
+
+\section{Vector Field in Euclidean Space}\label{sec:adriano-review}
+For clarity, we revisit the vector field strategy presented in \citet{Rezende2022}. Since our work extends this previous approach, this review will help establish direct connections between both works and highlight the core aspects of our contributions. The primary goal of the authors in \citet{Rezende2022} is to develop an artificial $n$-dimensional vector field that guides system trajectories toward a predefined curve and ensures circulation around it. A key element of this formulation is the definition of a distance function with essential properties. As their work focuses solely on Euclidean space, they adopt the Euclidean distance for the vector field computation, which is derived using a parametric representation of the curve.
+
+We summarize the main steps for constructing this vector field, emphasizing the most critical properties. Although the original paper addresses time-varying curves, we limit our discussion to the static portion of the methodology. The authors consider a system modeled as the following single integrator 
+\begin{align}
+    \dot{\mathbf{h}} = \boldsymbol{\xi}, \label{eq:adriano-single-integrator}
+\end{align}
+where $\mathbf{h}\in\mathbb{R}^m$ represents the system state, and $\boldsymbol{\xi}\in\mathbb{R}^m$ denotes the system input. The objective is to compute a vector field $\Psi:\mathbb{R}^m\to\mathbb{R}^m$ such that, if the system input is equal to the vector field, the system trajectories converge to and follow the target curve $\mathcal{C}$, for which a parametrization is given by $\mathbf{h}_d(s)$. Despite relying on a parametric representation of the curve, it is important to note that the resulting computations are independent of the specific parametrization chosen.
+
+The authors define their distance function $D$ as the Euclidean distance between the system's current state and the nearest point on the curve, i.e., 
+\begin{align}
+    D(\mathbf{h}) \triangleq \min_{s}\widehat{D}(\mathbf{h}, \mathbf{h}_d(s))=\min_{s}\|\mathbf{h}- \mathbf{h}_d(s)\|. \label{eq:adriano-EC-distance}   
+\end{align}
+In this context, we denote $s^*$ as the optimal parameter such that $\mathbf{h}_d(s^*(\mathbf{h}))$ is the closest point on the curve to the current state.
+\begin{figure}
+    \centering
+    \def\svgwidth{.8\linewidth}
+    \import{figures/}{plotly_vf2.pdf_tex}
+    \caption{Example showing the vector field and the components for a point $\mathbf{h}\in G$ and curve $\mathcal{C}$.}
+    \label{fig:vector-field-adriano}
+\end{figure}
+
+Next, the authors introduce two components of their vector field: the \emph{normal} component $\boldsymbol{\xi}_{N}$, responsible for convergence, and the \emph{tangent} component $\boldsymbol{\xi}_{T}$, which ensures circulation. The resulting expression for the vector field is 
+\begin{align}
+    \Psi(\mathbf{h}) = k_N(\mathbf{h})\boldsymbol{\xi}_{N}(\mathbf{h}) + k_T(\mathbf{h})\boldsymbol{\xi}_{T}(\mathbf{h}), \label{eq:adriano-vector-field-expression}    
+\end{align}
+where $k_N$ and $k_T$ are gains, dependent on the system state, that balance the predominance of the normal and tangent components. This vector field strategy is illustrated in \autoref{fig:vector-field-adriano}. The normal component, $\boldsymbol{\xi}_{N}$, is naturally taken as the negative gradient of the distance function, due to the use of Euclidean distance:
+\begin{align}
+    \boldsymbol{\xi}_{N} = -\nabla D.
+\end{align}
+
+There is a key aspect of the normal component that is crucial for the convergence proof using Lyapunov stability theory: the fact that the time derivative of the distance function can be expressed as $\dot{D}=-\boldsymbol{\xi}_{N}^{\top}{\boldsymbol{\xi}}$. We emphasize the significance of this feature, as it will play an important role in our extension. In our approach, the normal component is similarly constructed by identifying the term that arises when differentiating the distance function.
+
+Next, we address the tangent component. This component is solely related to the target curve and is defined as the tangent vector at the nearest point on the curve, i.e.,
+\begin{align}
+    \boldsymbol{\xi}_{T}(\mathbf{h}) = \frac{d}{ds}\mathbf{h}_d(s)|_{s=s^*(\mathbf{h})}.
+\end{align}
+A noteworthy property of both components is that they are orthogonal to each other, which is essential in the proof of convergence for this algorithm.
+
+In the Lyapunov stability proof, the final result shows that the time derivative of $D$ is negative semidefinite. The proof is then completed using two other essential properties: the fact that the distance function has no local minima outside the curve, and the fact that the ``generalized gradient'' of this function never vanishes. With these features, the authors demonstrate that if the system trajectories follow the vector field, the system will converge to and circulate around a predefined curve. A summary of these key features is as follows:
+\begin{feature}
+    \item The time derivative of the distance function is the opposite of the dot product between the so called \emph{normal} component and the system control input; \label{feat:adriano-time-derivative-lyapunov-normal-comp}
+    \item The \emph{normal} and \emph{tangent} components are orthogonal to each other; \label{feat:adriano-orthogonality}
+    \item The distance function has no local minima outside the target curve. Furthermore, whenever the distance function is differentiable, its gradient never vanishes. \label{feat:adriano-no-local-minima}
+\end{feature}
+In our generalization, we will incorporate and build upon these features.
+
+\section{Lie groups and Lie algebras}
+In this section, we recall several properties of Lie groups and Lie algebras that will be essential for developing our extension. First, a Lie group $G$ is a smooth manifold equipped with a group structure. The Lie algebra $\mathfrak{g}$ associated with $G$ has two equivalent definitions, either of which we will use as appropriate. One definition describes the Lie algebra as the tangent space at the group identity $G_e$ \citep[p. 16]{Gallier2020}. Alternatively, a Lie algebra can be viewed as the space of all smooth vector fields on the Lie group, under the Lie bracket operation on vector fields \citep[p. 190]{Lee2012}. As said previously, we will consider connected matrix Lie groups, and henceforth we will denote by $n$ the dimension of any (square) matrix in a given group, and the dimension of the group by $m$, which is the same as the dimension of the associated Lie algebra.
+
+\begin{lemma}\label{lemma:lie-group-flow}
+    (Adapted from \citet[p. 570]{Gallier2020}) Given a Lie group $G$, if $V$ be a right-invariant (resp. left-invariant) vector field, $\theta:\mathbb{R}\times G$ its global flow, and $\gamma_\mathbf{X}=\theta(t, \mathbf{X})$ the associated maximal integral curve with initial condition $\mathbf{X}\in G$, then
+    \begin{align*}
+        \gamma_\mathbf{X}(t) = \theta(t, \mathbf{X}) &=  \theta(t, G_e)\mathbf{X}\\
+        \bigl(\text{resp. }\theta(t, \mathbf{X}) &=  \mathbf{X}\theta(t, G_e)\bigr)
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    Let $\gamma(t) = R_{\mathbf{X}}\theta(t, G_e)$, then $\gamma(0) = \mathbf{X}$. Applying the chain rule:
+    \begin{align}
+        \dot{\gamma}(t) = d(R_{\mathbf{X}})_{\theta(t, G_e)}\Bigl(V\bigl(\theta(t, G_e)\bigr)\Bigr) = V\Bigl(R_{\mathbf{X}}\bigl(\theta(t, G_e)\bigr)\Bigr) = V(\gamma(t)).
+    \end{align}
+    Since maximal integral curves are unique, it follows that $\gamma(t) = \theta(t, \mathbf{X})$, thus $\theta(t, \mathbf{X}) = \theta(t, G_e)\mathbf{X}$. The proof for the left-invariant case is analogous.
+\end{proof}
+
+Next, we present a fact that will be important for the forthcoming analysis. 
+\begin{lemma} \label{lemma:derivative-lie-element-H-parallelizable} Let $\mathbf{G}:\mathbb{R}\to G$ be a differentiable function. Then, there exists a function $\mathbf{A}:\mathbb{R} \to \mathfrak{g}$ such that 
+\begin{align}
+    \frac{d}{d\sigma} \mathbf{G}(\sigma) = \mathbf{A}(\sigma) \mathbf{G}(\sigma). \label{eq:derivative-lie-element-H-parallelizable}
+\end{align}
+
+\end{lemma}
+\begin{proof}
+    Let $\mathbf{G}(\sigma)$ be the maximal integral curve associated with a global flow $\theta(\sigma, \mathbf{G}_0)$ of a right-invariant vector field $V$ on a Lie group $G$. By \cref{lemma:lie-group-flow}, we can write
+    \begin{align}
+        \frac{d}{d\sigma} \mathbf{G}(\sigma) = d(R_{\mathbf{G}(\sigma)})_{\theta(\sigma, G_e)} \Bigl(V\bigl(\theta(\sigma, G_e)\bigr)\Bigr). \label{eq:proof-derivative-lie-element-H-parallelizable-part1}
+    \end{align}
+    
+    Since the vector space of right-invariant vector fields, denoted by $\mathfrak{g}^R$, is isomorphic (more precisely, anti-isomorphic) to the Lie algebra $\mathfrak{g}$ \citep[p. 569]{Gallier2020}, this implies that every basis for $\mathfrak{g}^R$ is a right-invariant global frame for $G$ (and consequently every Lie group is parallelizable), which in turn allows us to write $V\bigl(\theta(\sigma, G_e)\bigr) = \mathbf{A}(\sigma)$ for some $\mathbf{A}(\sigma)$ in $\mathfrak{g}$.
+
+    Now, since in our case $R_\mathbf{X}$ is the restriction to $\text{GL}(n, \mathbb{R})$ of the linear map $\mathbf{Y}\mapsto \mathbf{Y}\mathbf{X}$, its differential can be expressed as $dR_\mathbf{X}(W) = W\mathbf{X}$ \citep[p. 194]{Lee2012}. Thus, we can write \eqref{eq:proof-derivative-lie-element-H-parallelizable-part1} as
+    \begin{align}
+        \frac{d}{d\sigma} \mathbf{G}(\sigma) = d(R_{\mathbf{G}(\sigma)})_{\theta(\sigma, G_e)} \bigl(\mathbf{A}(\sigma)\bigr) = \mathbf{A}(\sigma)\mathbf{G}(\sigma).
+    \end{align}
+    % It is a known fact that Lie groups are parallelizable using right-invariant vector fields as a basis \citep{GRIGORIAN2024804}. That means that any vector on the tangent space on any point $\mathbf{G} \in G$ can be written as $\mathbf{AG}$ in which $\mathbf{A}$ is an element of the Lie algebra $\mathfrak{g}$ (possibly different for each $\mathbf{G}$). This implies the desired result.
+\end{proof}
+
+ On the other hand, since the Lie algebra is a vector space, we can define a basis $\{\mathbf{E}_k\}\in\mathfrak{g}, k\in[1,m]$. Given a basis, for any $\mathbf{A} \in\mathfrak{g}$, there exists scalars $\{\zeta_k\},\, k\in[1,m]$, such that $\mathbf{A} = \sum_{k=1}^{m} \zeta_k\mathbf{E}_k$. Furthermore, for each choice of basis for the Lie algebra, it becomes possible to define uniquely a respective linear operator $\SL:\mathbb{R}^{m}\to\mathfrak{g}$ as follows:
+\begin{definition}[S map]\label{def:SL-left-isomorphism-act-on-xi}
+    Let $\mathbf{E}_1,\dots,\mathbf{E}_m$ be a basis for an $m$-dimensional Lie algebra $\mathfrak{g}$, and $\boldsymbol{\zeta}$ an $m$-dimensional vector. Then, there exists a unique isomorphism $\SL:\mathbb{R}^{m}\to\mathfrak{g}$ defined as
+    \begin{equation}
+        \SL[\boldsymbol{\zeta}] \triangleq \sum_{k=1}^m\zeta_k\mathbf{E}_k.    
+    \end{equation}
+    
+\end{definition}
+Note that $\SL$ is indeed a \emph{linear operator}. Some common examples of isomorphisms are as following.
+\begin{example}
+    In the case of the special orthogonal Lie group $\text{SO}(3)$, with a Lie algebra $\mathfrak{so}(3)$, a common basis is given by the of matrices
+    \begin{align*}
+        \mathbf{E}_1 = \begin{bmatrix} 0 & 0 & 0 \\ 0 & 0 & -1 \\ 0 & 1 & 0 \end{bmatrix}, \quad \mathbf{E}_2 = \begin{bmatrix} 0 & 0 & 1 \\ 0 & 0 & 0 \\ -1 & 0 & 0 \end{bmatrix}, \quad \mathbf{E}_3 = \begin{bmatrix} 0 & -1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}.
+    \end{align*}
+    Then, for $\boldsymbol{\zeta} = [\zeta_1, \zeta_2, \zeta_3]^\top$, the isomorphism $\SL$ is a skew-symmetric matrix given by
+    \begin{align*}
+        \SL[\boldsymbol{\zeta}] = \zeta_1 \mathbf{E}_1 + \zeta_2 \mathbf{E}_2 + \zeta_3 \mathbf{E}_3
+        = \begin{bmatrix} 0 & -\zeta_3 & \zeta_2 \\ \zeta_3 & 0 & -\zeta_1 \\ -\zeta_2 & \zeta_1 & 0 \end{bmatrix}.
+    \end{align*}
+\end{example}
+\begin{example}
+    The full Lorentz group $\text{O}(3, 1)$, the special Lorentz group $\text{SO}(3, 1)$, and the proper orthochronous Lorentz group $\text{SO}_0(3, 1)$ share the same Lie algebra $\mathfrak{so}(3, 1)$, for which an isomosphism for a vector $\boldsymbol{\zeta} = [\zeta_1, \zeta_2, \zeta_3, \zeta_4, \zeta_5, \zeta_6]^\top$ is described as follows:
+    \begin{align}
+        \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
+            0 & \zeta_1 & \zeta_2 & \zeta_4 \\
+            -\zeta_1 & 0 & \zeta_3 & \zeta_5 \\
+            -\zeta_2 & -\zeta_3 & 0 & \zeta_6 \\
+            \zeta_4 & \zeta_5 & \zeta_6 & 0
+        \end{bmatrix}
+    \end{align}
+    Note that, more generally, $\mathfrak{so}(n, 1) = \left\{\begin{bmatrix} \mathbf{A} & \mathbf{a}\\
+              \mathbf{a}^T & 0 \end{bmatrix} \in \mathbb{R}^{(n+1) \times (n+1)};\; \mathbf{a}\in\mathbb{R}^n, \mathbf{A}^T=-\mathbf{A}\right\}$
+\end{example}
+\begin{example}
+    The symplectic Lie algebra $\mathfrak{sp}(2n, \mathbb{R})$ is defined as
+    \begin{align}
+        \begin{split}
+            \mathfrak{sp}(2n, \mathbb{R}) &= \left\{ \mathbf{X} \in \mathbb{R}^{2n\times 2n} : \mathbf{X}^T\mathbf{J}_{n} + \mathbf{J}_{n}\mathbf{X} = 0 \right\} \\&= \left\{ \begin{bmatrix} \mathbf{A} & \mathbf{B} \\ \mathbf{C} & -\mathbf{A}^T \end{bmatrix};\; \mathbf{B} = \mathbf{B}^\top,\, \mathbf{C} = \mathbf{C}^\top\right\},\\
+            \text{where }\mathbf{J}_{n} &= \begin{bmatrix} \mathbf{0} & \mathbf{I}_n \\ -\mathbf{I}_n & \mathbf{0} \end{bmatrix}.            
+        \end{split}
+    \end{align}
+    Clearly, the dimension of $\mathfrak{sp}(2n, \mathbb{R})$ is $n(2n + 1)$. Thus,
+    for a vector $\boldsymbol{\zeta} = [\zeta_1, \dots, \zeta_{2n^2+n}]^\top$, an isomorphism $\SL$ is given by
+    \begin{align}
+        \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
+            \zeta_1 & \dots & \zeta_n & \zeta_{n^2 + 1} & \dots & \zeta_{n^2 + n} \\
+            \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+            \zeta_{n^2 - n + 1} & \dots & \zeta_{n^2} & \zeta_{n^2 + n} & \dots & \zeta_{\frac{3n^2+n}{2}}\\
+            \zeta_{\frac{3n^2+n}{2} + 1} & \dots & \zeta_{\frac{3n^2+3n}{2}} & -\zeta_1 & \dots & -\zeta_{n^2 - n + 1}\\
+            \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+            \zeta_{\frac{3n^2+3n}{2}} & \dots & \zeta_{2n^2 + n}& -\zeta_n & \dots & -\zeta_{n^2} 
+        \end{bmatrix},
+    \end{align}
+\end{example}
+
+Considering \autoref{lemma:derivative-lie-element-H-parallelizable} and \autoref{def:SL-left-isomorphism-act-on-xi} we can conclude the following important fact.
+
+\begin{lemma} \label{lemma:very-important-fact}
+    Given a differentiable function $\mathbf{\mathbf{G}}:\mathbb{R}\to G$, there exists a function $\boldsymbol{\zeta}:\mathbb{R}\to\mathbb{R}^m$, such that
+    \begin{align}
+    \label{eq:importantresult}
+    \frac{d}{d\sigma} \mathbf{\mathbf{G}}(\sigma)=\SL\bigl(\boldsymbol{\zeta}(\sigma)\bigr)\mathbf{\mathbf{G}}(\sigma). 
+\end{align}
+
+\end{lemma}
+\begin{proof} This is a direct consequence of \cref{lemma:derivative-lie-element-H-parallelizable} and \cref{def:SL-left-isomorphism-act-on-xi}. 
+\end{proof}
+
+Since $\SL$ is an isomorphism, the \emph{inverse map} that maps an element of the Lie algebra to a vector can be defined as well:
+\begin{definition}[Inverse S map]\label{def:inverse-isomorphism-SLinv}
+    Let $\mathfrak{g}$ be an $m$-dimensional Lie algebra. The \emph{inverse map} is defined as $\invSL:\mathfrak{g}\to\mathbb{R}^m$, such that $\invSL[\SL[\boldsymbol{\zeta}]] = \boldsymbol{\zeta}$. 
+\end{definition}
+
+Now, according to \cref{lemma:very-important-fact}, for each differentiable function $\mathbf{G}: \mathbb{R} \to G$ there exists a respective function $\boldsymbol{\zeta} \in \mathbb{R}^m$ according to equation \eqref{eq:importantresult}. Thus, we will define the following operator that extracts this $\boldsymbol{\zeta}(\sigma)$ from $\mathbf{G}(\sigma)$:
+\begin{definition} [$\Xi$ operator] \label{def:Xioperator} Let $G$ be an $m$-dimensional Lie group. Given a choice of S map $\SL: \mathbb{R}^m \to \mathfrak{g}$, the respective $\Xi$ operator maps a differentiable function $\mathbf{G}: \mathbb{R} \to G$ into a function $\Xi[\mathbf{G}]: \mathbb{R} \to \mathbb{R}^m$ as $\Xi[\mathbf{G}](\sigma) = \SL^{-1}\bigl(\frac{d\mathbf{G}}{d\sigma}(\sigma)\mathbf{G}(\sigma)^{-1}\bigr)$. 
+\end{definition}
+
+In our development, it will be necessary to take derivatives along the manifold $G$. This is related to the concept of \emph{Lie derivatives}. For this purpose, the following definition will be useful.
+\begin{definition} [\text{L} operator] \label{def:Loperator} Let $G$ be an $m$-dimensional Lie group. Given a choice of $S$ map and a differentiable function $f: G \to \mathbb{R}$, we define the \text{L} operator such that the function $\text{L}[f] : G \to \mathbb{R}^{1 \times m}$ satisfies:
+\begin{equation}
+\label{eq:Leq}
+    \lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon} \Biggl( f\Bigl(\exp\bigl(\SL[\boldsymbol{\zeta}]\epsilon\bigr)\mathbf{G}\Bigr) - f\bigl(\mathbf{G}\bigr) \Biggr) = \text{L}[f](\mathbf{G}) \boldsymbol{\zeta}
+\end{equation}
+for all $\boldsymbol{\zeta} \in \mathbb{R}^m$. Explicitly, the $j^{th}$ entry of the row vector $\text{L}[f](\mathbf{G})$ can be constructed as the left-hand side of \eqref{eq:Leq} when $\boldsymbol{\zeta} = \mathbf{e}_j$. In addition, if $f: G \times G \to \mathbb{R}$ is a function of two variables, $f(\mathbf{V},\mathbf{W})$, we define the \emph{partial} L operators $L_{\mathbf{V}}$ and $L_{\mathbf{W}}$ analogously as in \eqref{eq:Leq} but making the variation only in the first or in the second variable, respectively. 
+\end{definition}
+
+The following version of the chain rule using the \text{L} operator can be established.
+
+\begin{lemma}\label{lemma:chainrule}
+    Let $G$ be an $m$-dimensional Lie group. Let $\mathbf{G} : \mathbb{R} \to G$ and $f: G \to \mathbb{R}$ be differentiable functions. Then:
+    \begin{equation}
+       \frac{d}{d\sigma} f\bigl(\mathbf{G}(\sigma)\bigr) = \text{L}[f]\bigl(\mathbf{G}(\sigma)\bigr)\Xi[\mathbf{G}](\sigma).
+    \end{equation}
+\end{lemma}
+\begin{proof}
+    Let $\boldsymbol{\zeta}(\sigma) = \Xi[\mathbf{G}](\sigma)$, according to \cref{lemma:very-important-fact} and \cref{def:Xioperator}, we can write that for a small $\epsilon$, $\mathbf{G}(\sigma+\epsilon) \approx \exp(\SL[\boldsymbol{\zeta}(\sigma)]\epsilon)\mathbf{G}(\sigma)$. 
+    Applying the definition of the traditional derivative:
+    \begin{eqnarray}
+      &&\frac{d}{d\sigma} f\bigl(\mathbf{G}(\sigma)\bigr) = \lim_{\epsilon \rightarrow 0} \frac{f\bigl(\mathbf{G}(\sigma+\epsilon)\bigr){-}f\bigl(\mathbf{G}(\sigma)\bigr)}{\epsilon}  =\nonumber \\
+      && \lim_{\epsilon \rightarrow 0} \frac{f\bigl(\exp(\SL[\boldsymbol{\zeta}(\sigma)]\epsilon)\mathbf{G}(\sigma)\bigr){-}f\bigl(\mathbf{G}(\sigma)\bigr)}{\epsilon} = \text{L}[f](\mathbf{G}) \boldsymbol{\zeta}(\sigma)\nonumber 
+    \end{eqnarray}
+    in which the defining property of $\text{L}[f]$ in equation \eqref{eq:Leq} was applied. This concludes the proof.
+\end{proof}
+
+As a corollary of \cref{lemma:chainrule}:
+
+\begin{corollary} \label{corol:corol1} If we have a function $f: G \times G \to \mathbb{R}$ instead of a function of a single variable, and two differentiable $\mathbf{V}, \mathbf{W} : \mathbb{R} \to G$, then:
+\begin{equation}
+   \frac{d}{d \sigma} f(\mathbf{V},\mathbf{W}) {=} \text{L}_{\mathbf{V}}[f] \Xi[\mathbf{V}] {+} \text{L}_{\mathbf{W}}[f] \Xi[\mathbf{W}].
+\end{equation}
+in which the dependency on $\mathbf{V}, \mathbf{W}$ was omitted on the right-hand side. 
+\end{corollary}
+

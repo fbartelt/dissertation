@@ -1,0 +1,275 @@
+% !TeX root = main.tex
+\chapter{Vector Fields in Matrix Lie Groups}\label{ch:vector_field}
+Given \cref{lemma:very-important-fact}, we will \emph{assume} that our control system is given by
+\begin{align}
+    \dot{\mathbf{H}}(t)=\SL\bigl(\boldsymbol{\xi}(t)\bigr)\mathbf{H}(t),
+    \label{eq:derivative-H-SL-considered-system}
+\end{align}
+in which $\mathbf{H}$ $\in G$ is the state variable and $\boldsymbol{\xi} \in \mathbb{R}^m$ is the control input. For a practical example, let $G=\text{SE}(3)$ (thus $n=4$, $m=6$), with $\mathbf{H}$ representing the pose of an omnidirectional UAV in a fixed frame. By properly selecting the basis $\mathbf{E}_k$, $\boldsymbol{\xi}$ corresponds to a twist in the world frame, representing the UAV's linear and angular velocities. This control system setup assumes arbitrary control over the UAV's 6-DoF twist, a reasonable model for an omnidirectional UAV. Analogously, we henceforth refer to $\boldsymbol{\xi}$ as the \emph{generalized twist}. 
+
+Similar to the single integrator system model in \citet{Rezende2022}, the model in \eqref{eq:derivative-H-SL-considered-system} assumes maximal control freedom within the constraints of the Lie group. This means each component of $\boldsymbol{\xi}$ can be independently controlled, enabling arbitrary motion of an element $\mathbf{H}\in G$ while ensuring that $\mathbf{H}$ remains within the group. Additionally, both systems exhibit first-order dynamics.
+
+\begin{remark}
+The results presented in this paper also apply to systems of the form $\dot{\mathbf{H}} = \mathbf{H} \mathcal{S}'(\boldsymbol{\xi}')$, where $\mathcal{S}'$ is an appropriate linear operator mapping $\mathbb{R}^m$ to $\mathfrak{g}$. For instance, considering the UAV example, this system could model a UAV controlled via the twist in the \emph{body frame} rather than the \emph{fixed frame}. This adaptation can be achieved by rewriting \eqref{eq:derivative-H-SL-considered-system} as $\dot{\mathbf{H}} = \mathbf{H}(\mathbf{H}^{-1} \SL[\boldsymbol{\xi}] \mathbf{H})$. It is well known in the context of Lie groups (see \citet[p. 153]{Lee2012}) that for any $\mathbf{A} \in \mathfrak{g}$ and $\mathbf{H} \in G$, the term $\mathbf{H}^{-1} \mathbf{A} \mathbf{H}$ also belongs to $\mathfrak{g}$. Therefore, there exists a unique $\boldsymbol{\xi}' \in \mathfrak{g}$ such that $\mathcal{S}'(\boldsymbol{\xi}') = \mathbf{H}^{-1} \SL[\boldsymbol{\xi}] \mathbf{H}$, since $\mathcal{S}'$ is a bijection. This correspondence enables the calculation of a controller for the modified system based on the controller designed for the original system.
+\end{remark}
+
+Following the same steps as in \cref{sec:adriano-review}, we propose a vector field strategy that ensures both convergence to and circulation around a curve $\mathcal{C}$ defined in a Lie group $G$, adopting the system in \eqref{eq:derivative-H-SL-considered-system}. We assume that this curve is differentiable and without self-intersections. Thus, we aim to synthesize a state feedback control law $\boldsymbol{\xi}=\Psi\left(\mathbf{H}\right)$ to achieve this. Let $\mathbf{H}_d:[0,1] \to G$ be a differentiable parametrization for the target curve $\mathcal{C}$. The proposed vector field is then expressed as:
+\begin{align}
+    \Psi\left(\mathbf{H}\right) \triangleq k_N(\mathbf{H})\boldsymbol{\xi}_N(\mathbf{H}) + k_T(\mathbf{H})\boldsymbol{\xi}_T(\mathbf{H}), \label{eq:vector-field-proposition}
+\end{align}
+where the \emph{normal} component $\boldsymbol{\xi}_N$ ensures convergence, and the \emph{tangent} component $\boldsymbol{\xi}_T$ governs circulation. These components will be formally defined later. In this case, $k_N: G \to \mathbb{R}$ and $k_T: G \to \mathbb{R}$ are continuous functions in which $k_T(\mathbf{H})$ is positive and $k_N(\mathbf{H})=0$ when $\mathbf{H} \in \mathcal{C}$ and $k_N(\mathbf{H}) > 0$ otherwise. 
+\begin{remark}
+    The proposed results generalize the vector field approach from \citet{Rezende2022}, as outlined in \cref{sec:adriano-review}. Throughout this section, we will specify the choices required to reduce the proposed approach to that of \citet{Rezende2022}. To align with their results, the group $G$ in our framework should be taken as the \emph{$m$-dimensional translation group}, denoted by $\text{T}(m)$. This group is a matrix Lie subgroup of $\text{SE}(m)$ in which the rotation part of the $n$-dimensional homogeneous transformation matrix (with $n=m+1$) is the identity matrix. Notably, \citet{Rezende2022}  does not use the Lie group formalism, instead working with vectors -- a feasible approach because each element of $\text{T}(m)$ corresponds uniquely to a vector in $\mathbb{R}^m$. To facilitate the connection between both works, we will also adopt this vector representation, using the isomorphism $\mathcal{T}: \text{T}(m) \to \mathbb{R}^m$, where $\mathcal{T}(\mathbf{H})$ is obtained by extracting the first $m$ elements of the last column of $\mathbf{H}$. Henceforth, we take as a basis of the Lie algebra of $\text{T}(m)$ the matrices $\mathbf{E}_k$, $k \in [1,m]$, where $\mathbf{E}_k$ has all entries $0$ except for the $k^{th}$ entry of the last column, which is $1$. With this choice, the system \eqref{eq:derivative-H-SL-considered-system} reduces to the simple integrator model used in \citet{Rezende2022}, as $\frac{d}{dt} \mathcal{T}(\mathbf{H}) = \boldsymbol{\xi}$.  
+\end{remark}
+
+For the vector field computation, we need to measure the distance between an element and a curve within the Lie group. Thus, we first define a distance function $\widehat{D}$ between arbitrary elements $\mathbf{V}$ and $\mathbf{W}$ in the group, as follows.
+\begin{definition}[EE-distance function]\label{def:distance-D-hat-arbitrary-elements}
+    Let $G$ be a Lie group. We call $\widehat{D}:G\times G\to \mathbb{R}_+$ an \emph{Element-to-Element} \emph{(EE-)distance function}, a function that measures the distance between elements $\mathbf{V}, \mathbf{W}\in G$ with the following properties: 
+    \begin{property}
+        \item (Positive Definiteness) $\widehat{D}(\mathbf{V}, \mathbf{W}) \ge 0$ and $\widehat{D}(\mathbf{V}, \mathbf{W})$ $= 0 \iff \mathbf{V}=\mathbf{W}$;\label{prop:Dhat-positive-definite}
+        \item (Differentiability) $\widehat{D}$ is at least once differentiable in both arguments almost everywhere \label{prop:Dhat-differentiability}, that is, the limit in \eqref{eq:Leq} should exist. In addition, there should exist $D_{\text{min},\mathcal{C}}>0$ such that the derivative exists when $0 < \widehat{D} < D_{\text{min},\mathcal{C}}$. Finally, where the derivative does not exist, every directional limit should exist (although they do not need to be equal) and be bounded.
+    \end{property}
+\end{definition}
+
+\begin{example}\label{ex:adriano-distance-function}
+    To obtain the results in \citet{Rezende2022}, $\widehat{D}$ should be taken as the Euclidean distance between the respective position vectors $\widehat{D}(\mathbf{V}, \mathbf{W}) = \|\mathcal{T}(\mathbf{V}) - \mathcal{T}(\mathbf{W})\|$. 
+\end{example}
+
+By allowing the function to be non-differentiable in certain cases, we can incorporate important distance functions, such as the Euclidean distance $\widehat{D}(\mathbf{V},\mathbf{W}) = \|\mathcal{T}(\mathbf{V}) - \mathcal{T}(\mathbf{W})\|$ when $G=\text{T}(m)$. This  is not differentiable at $\mathbf{V}=\mathbf{W}$, but all directional limits of the derivatives exist and are bounded. Furthermore, although it is not differentiable when $\widehat{D}=0$, it is differentiable everywhere else, so $D_{\text{min},\mathcal{C}} = \infty$ can be taken. Overall, the (possible) non-differentiability when $\mathbf{V}=\mathbf{W}$  for a generic $\widehat{D}$ will not be an issue since it will be canceled in the final controller, as will be clear soon.
+
+Now, a distance between an element $\mathbf{H}$ to the curve $\mathcal{C}$ is defined as the minimum distance, as measured by $\widehat{D}$, between $\mathbf{H}$ and any $\mathbf{Y}$ in the curve. 
+\begin{definition}[EC-Distance Function]\label{def:distance-D-element-curve}
+    Given an EE-distance function as in \cref{def:distance-D-hat-arbitrary-elements}, an \emph{Element-to-Curve (EC-)}distance function $D: G\to\mathbb{R}_+$ measures the distance between an element $\mathbf{H}$ and a curve $\mathcal{C}$ parameterized by $\mathbf{H}_d(s)$. It is defined as:
+    \begin{align}
+        D(\mathbf{H}) \triangleq \min_{\mathbf{Y}\in\mathcal{C}}\widehat{D}(\mathbf{H}, \mathbf{Y}) =
+        \min_{s\in[0,1]} \widehat{D}\bigl(\mathbf{H}, \mathbf{H}_d(s)\bigr).\label{eq:optimization-problem-distance-definition-point-curve}
+    \end{align}
+    Furthermore, let $\mathcal{P}_1\subset G$ be the set of $\mathbf{H}$ such that the optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve} does not have a unique solution. In addition, we define $s^*: G \to [0,1]$ so, when $\mathbf{H}\notin \mathcal{P}_1$, $s^*(\mathbf{H})$ is the unique minimizer on $s$ for the given $\mathbf{H}$. %When $\mathbf{H}\in \mathcal{P}_1$, we define $s^*(\mathbf{H})$ in a pre-established deterministic manner as one of the possible minimizers $s$.
+    We also define $\mathcal{P}_2$ as the set of $\mathbf{H} \not \in (\mathcal{P}_1 \cup \mathcal{C})$ such that $\mathbf{V} = \mathbf{H}$, $\mathbf{W} = \mathbf{H}_d\bigl(s^*(\mathbf{H})\bigr)$ is a non-differentiability point of $\widehat{D}(\mathbf{V},\mathbf{W})$. Finally, we define $\mathcal{P} \triangleq \mathcal{P}_1 \cup \mathcal{P}_2$.
+    
+\end{definition}
+Note that, from the definition of $\mathcal{P}$, $\mathcal{C} \cap \mathcal{P} = \emptyset$. Furthermore, the fact that $D_{\text{min},\mathcal{C}}>0$ in \cref{def:distance-D-hat-arbitrary-elements} means that there is a non-zero separation distance between them. For the sake of notational simplicity, we will often omit the dependency of $s^*$ on $\mathbf{H}$ and write simply $s^*$ instead of $s^*(\mathbf{H})$.
+
+Before we define the vector field components, we will state a lemma that will be extensively used to prove many other lemmas and propositions throughout this paper. For that, it will be useful to define $\boldsymbol{\xi}_d$, the necessary \emph{generalized twist} $\boldsymbol{\xi}$ in \eqref{eq:derivative-H-SL-considered-system} to follow the desired curve at a given $\mathbf{H}=\mathbf{H}_d(s)$.
+\begin{definition}[Curve twist] \label{def:XId-twist-Hd-for-tangent}
+    Let $\boldsymbol{\xi}_d(s) \triangleq \Xi[\mathbf{H}_d](s)$ (see \cref{def:Xioperator}). Furthermore, we call the parametrization $\mathbf{H}_d(s)$ \emph{proper} if $\boldsymbol{\xi}_d(s) \neq \mathbf{0}$ for all $s \in [0,1]$.
+    
+\end{definition}
+Having a proper parametrization is a purely geometric feature of the curve $\mathcal{C}$. The non-self-intersection property of the curve $\mathcal{C}$ implies that $\mathbf{H}_d: [0,1] \to \mathcal{C}$ is bijective and thus any non-proper parametrization can be transformed into a proper one through reparametrization (e.g., arc length parametrization). With this definition, we can proceed with the following useful lemma.
+\begin{lemma}\label{lemma:optimization-problem-part-hdi-vanishers}
+    When $\mathbf{H} \notin \mathcal{C} \cup \mathcal{P}$ , the first order optimality condition of \eqref{eq:optimization-problem-distance-definition-point-curve} implies that 
+    \begin{equation}
+    \text{L}_{\mathbf{W}}[\widehat{D}]\bigl(\mathbf{H},\mathbf{H}_d(s^*)\bigr)\boldsymbol{\xi}_d(s^*) = 0.
+    \end{equation}
+\end{lemma}
+\begin{proof}
+    Let $\mathbf{H}\in G$, $\mathbf{H} \notin \mathcal{C} \cup \mathcal{P}$ be an arbitrary element, $\mathbf{H}_d(s)\in G$ the parametrization of a curve, and $D$ an EC-distance defined as in \cref{def:distance-D-element-curve}. Since $D$ is the minimum value of an EE-distance function $\widehat{D}$ (see \cref{def:distance-D-hat-arbitrary-elements}), by the first order optimality condition of \eqref{eq:optimization-problem-distance-definition-point-curve} we know that the optimal parameter $s^*$ will render $\frac{d}{ds}\widehat{D}(\mathbf{H}, \mathbf{H}_d(s))|_{s=s^*}=0$. Taking the derivative at $s=s^*$, using \cref{corol:corol1}, \cref{def:XId-twist-Hd-for-tangent} and setting it to zero, we obtain the desired result. Furthermore, since $\mathbf{H} \not\in \mathcal{C} \cup \mathcal{P}$, the function $\widehat{D}$ is guaranteed to be differentiable.  
+\end{proof}
+\section{Normal component}
+Following the same steps as in \cref{sec:adriano-review}, after defining our EC-distance function, we state our vector field components. To define our \emph{normal} component, we build upon \cref{feat:adriano-time-derivative-lyapunov-normal-comp} (in page \pageref{feat:adriano-time-derivative-lyapunov-normal-comp}). By differentiating $D$, we denote the opposite of the term that multiplies the generalized twist $\boldsymbol{\xi}$ as the normal component. We begin with the following lemma.
+\begin{lemma}\label{lemma:time-derivative-of-distance-function}
+    When $\mathbf{H}(t) \not \in \mathcal{C} \cup \mathcal{P}$, the time derivative of an EC-distance $D(\mathbf{H}(t))$, under the dynamics in \eqref{eq:derivative-H-SL-considered-system}, is given by 
+    \begin{align}
+        \frac{d}{dt}{D} = \text{L}[D](\mathbf{H})\boldsymbol{\xi} =  \text{L}_{\mathbf{V}}[\widehat{D}]\bigl(\mathbf{H},\mathbf{H}_d(s^*)\bigr)\boldsymbol{\xi}. \label{eq:final-equation-for-normal-component}
+    \end{align}
+\end{lemma}
+\begin{proof}
+The first part of the equation comes from the chain rule in \cref{lemma:chainrule} and \eqref{eq:derivative-H-SL-considered-system}. For the second equality, use the fact that $D(\mathbf{H}) = \widehat{D}\bigl(\mathbf{H},\mathbf{H}_d(s^*(\mathbf{H}))\bigr)$ and differentiate applying the chain rule using \cref{corol:corol1}:
+    \begin{align}
+    \dot{D} = \text{L}_{\mathbf{V}}[\widehat{D}]\boldsymbol{\xi} + \bigg(\text{L}_{\mathbf{W}}[\widehat{D}] \boldsymbol{\xi}_d\bigg) \frac{ds^*}{dt} \label{eq:part-of-proof-use-optimallity-cond}
+\end{align}
+in which the dependencies of $\text{L}_{\mathbf{V}}$ and $\text{L}_{\mathbf{W}}$ on $\mathbf{H}$ and $\mathbf{H}_d(s^*)$ were omitted. By \cref{lemma:optimization-problem-part-hdi-vanishers}, the term within parenthesis in \eqref{eq:part-of-proof-use-optimallity-cond} vanishes and we obtain the desired result. Note that \eqref{eq:final-equation-for-normal-component} shows that the derivative exists and is continuous whenever the remaining term is continuous; that is, when $\text{L}_{\mathbf{V}}[\widehat{D}](\mathbf{H},\mathbf{H}_d(s^*))$ is continuous, i.e., when $\mathbf{H} \not \in \mathcal{C} \cup \mathcal{P}$. 
+\end{proof}
+
+Now, \eqref{eq:final-equation-for-normal-component} in \cref{lemma:time-derivative-of-distance-function} allows us to define the normal component. 
+\begin{definition} [Normal component] \label{def:normal-vector}
+    When $\mathbf{H} \not \in \mathcal{C} \cup \mathcal{P}$, the \emph{normal} component of the vector field $\boldsymbol{\xi}_N: G\to\mathbb{R}^m$ is defined as the negative transpose of the term that multiplies $\boldsymbol{\xi}$ in \eqref{eq:final-equation-for-normal-component}, i.e., $\boldsymbol{\xi}_N(\mathbf{H}) \triangleq -\text{L}_{\mathbf{V}}[\widehat{D}]\Bigl(\mathbf{H}, \mathbf{H}_d(s^*)\Bigr)^{\top}$.
+    
+    
+\end{definition}
+When $\mathbf{H} \in \mathcal{C} \cup \mathcal{P}$, $\boldsymbol{\xi}_N(\mathbf{H})$ is left undefined. As we will see in \cref{subs:conv-result}, this lack of definition at $\mathcal{C}$ is not an issue, as it will not be necessary to define it in that context. 
+
+Finally, note that the previous definition allows us to express, as in \cref{feat:adriano-time-derivative-lyapunov-normal-comp}, that $\dot{D} = -\boldsymbol{\xi}_N(\mathbf{H})^{\top}\boldsymbol{\xi}$, provided that $\mathbf{H} \not \in \mathcal{C} \cup \mathcal{P}$. In \citet{Rezende2022}, it was possible to write $\dot{D} = \nabla D^{\top} \boldsymbol{\xi}$, where the gradient is taken with respect to the state, as the system state in that case lies in $\mathbb{R}^m$, which lacks nonlinear manifold constraints. However, our case is more general since the state $\mathbf{H}$ lies on an $m$-dimensional (non-linear, in general) manifold embedded in a space with higher dimension $n^2$. Thus, by comparing $\dot{D} = \nabla D^{\top} \boldsymbol{\xi}$ with $\dot{D} = -\boldsymbol{\xi}_N(\mathbf{H})^{\top}\boldsymbol{\xi}$, we can see that $-\boldsymbol{\xi}_N(\mathbf{H})$ serves as the ``gradient of the distance function'' in this constrained setting.
+
+\begin{example}\label{example:xi_N_rezende}
+    Applying \cref{def:normal-vector}, the normal component in \citet{Rezende2022} will be given by $\boldsymbol{\xi}_{N}(\mathbf{H})= \Bigl(\mathcal{T}\bigl(\mathbf{H}_d(s^*)\bigr) - \mathcal{T}(\mathbf{H})\Bigr)/\|\mathcal{T}\bigl(\mathbf{H}_d(s^*)\bigr) - \mathcal{T}(\mathbf{H})\|$, i.e., the normalized vector that points from the current point to the nearest point on the curve.
+\end{example}
+\section{Tangent component}
+As in \cref{sec:adriano-review}, the \emph{tangent} component of our vector field is associated solely with the curve. It can be easily defined using \cref{def:XId-twist-Hd-for-tangent}.
+\begin{definition} [Tangent component]\label{def:tangent-vector}
+     For $\mathbf{H} \not \in \mathcal{P}$, the \emph{tangent} component of the vector field, $\boldsymbol{\xi}_T:G\to\mathbb{R}^m$ is defined as $\boldsymbol{\xi}_T(\mathbf{H})\triangleq\boldsymbol{\xi}_d(s^*(\mathbf{H}))$. 
+\end{definition}
+
+\begin{example}
+    In \citet{Rezende2022}, the tangent component is precisely the tangent vector of the curve at the nearest point, so $\boldsymbol{\xi}_{T}=\left.\frac{d}{ds}\mathcal{T}(\mathbf{H}_d(s))\right|_{s=s^*}$. However, this is not necessarily true in our more general case. Here, the tangent component represents the generalized twist required at the nearest point $\mathbf{H}_d(s^*)$ on the curve for the system, under the dynamics of \eqref{eq:derivative-H-SL-considered-system}, to move along the curve.
+    
+\end{example}
+\section{Orthogonality of components}
+According to \cref{feat:adriano-orthogonality}, it is necessary that the normal and tangent components of the vector field be orthogonal to each other. This fact is related only to the EC-distance function $D$, consequently to the EE-distance function $\widehat{D}$, and can be achieved through a property of \emph{left-invariance}. We will first define a \emph{left-invariant} distance function and then provide a proposition for the orthogonality condition.
+\begin{definition}[Left-invariant distance]\label{def:distance-left-invariant}
+    An EE-distance function (\cref{def:distance-D-hat-arbitrary-elements}) $\widehat{D}:G\times G\to\mathbb{R}_+$ is said to be  \emph{left-invariant} if it also satisfies $\widehat{D}(\mathbf{A}\mathbf{V}, \mathbf{A}\mathbf{W}) = \widehat{D}(\mathbf{V}, \mathbf{W})$ for all $\mathbf{A}, \mathbf{V}, \mathbf{W}\in G$ .
+\end{definition}
+Given this definition, we can state the following:
+\begin{proposition}\label{propos:left-invariant-metric-induces-orthogonal}
+    Let $\mathbf{H} \not \in \mathcal{C} \cup \mathcal{P}$. If $\widehat{D}$ is a left-invariant distance function (\cref{def:distance-left-invariant}), then the vector field components (\cref{def:normal-vector,def:tangent-vector}) will be orthogonal to each other, i.e., $\boldsymbol{\xi}_N(\mathbf{H})^{\top}\boldsymbol{\xi}_T(\mathbf{H})=0$.
+\end{proposition}
+\begin{proof}
+    Since $\widehat{D}$ is left-invariant, then $\widehat{D}(\mathbf{A}\mathbf{B}, \mathbf{A}\mathbf{C})=\widehat{D}(\mathbf{B}, \mathbf{C})\;\forall\;\mathbf{A}, \mathbf{B}, \mathbf{C}\in G$. Since this holds for any value, take $\mathbf{B}=\mathbf{H}$, $\mathbf{C}=\mathbf{H}_d(s^*)$, and $\mathbf{A}=\exp\left(\tau\SL[\boldsymbol{\xi}_T]\right)$. Now, due to the left-invariance,
+    \begin{align}
+    % \begin{split}
+        \widehat{D}\Bigl(\exp\bigl(\tau\SL[\boldsymbol{\xi}_T]\bigr)\mathbf{H},\, \exp\bigl(\tau\SL[\boldsymbol{\xi}_T]\bigr)\mathbf{H}_d(s^*)\Bigr)
+        =\widehat{D}\bigl(\mathbf{H}, \mathbf{H}_d(s^*)\bigr) \;\forall\;\mathbf{H}\in G,\,\tau\in\mathbb{R}.
+    % \end{split}
+    \end{align}
+    Differentiating both sides of this equation with respect to $\tau$, using \cref{corol:corol1}, and evaluating at $\tau=0$ gives
+    \begin{equation}
+        \text{L}_{\mathbf{V}}[\widehat{D}]\boldsymbol{\xi}_T {+}\text{L}_{\mathbf{W}}[\widehat{D}]\boldsymbol{\xi}_T= 0, 
+    \end{equation}
+    in which the dependencies of $\text{L}_{\mathbf{V}}[\widehat{D}], \text{L}_{\mathbf{W}}[\widehat{D}]$ on $\mathbf{H}$ and $\mathbf{H}_d(s^*)$ were omitted. Noting that, by \cref{def:tangent-vector}, $\boldsymbol{\xi}_T = \boldsymbol{\xi}_d(s^*)$, and invoking \cref{lemma:optimization-problem-part-hdi-vanishers}, implies that $\text{L}_{\mathbf{W}}[\widehat{D}]\boldsymbol{\xi}_T = 0$.
+    Finally, using \cref{def:normal-vector}, we prove the orthogonality property: $\text{L}_{\mathbf{V}}[\widehat{D}]\boldsymbol{\xi}_T = -\boldsymbol{\xi}_N^{\top}\boldsymbol{\xi}_T=0$ 
+\end{proof}
+\vspace{-10pt}
+\begin{example}
+    In \citet{Rezende2022}, the  EE-distance function $\widehat{D}(\mathbf{V}, \mathbf{W}) = \|\mathcal{T}(\mathbf{V}) - \mathcal{T}(\mathbf{W})\|$ (\cref{ex:adriano-distance-function}) is left-invariant. Note that $\mathcal{T}(\mathbf{A}\mathbf{B}) = \mathcal{T}(\mathbf{A}) + \mathcal{T}(\mathbf{B})\;\forall\;\mathbf{A},\mathbf{B}\in\text{T}(m)$. Let $\mathbf{A}, \mathbf{B}, \mathbf{C} \in \text{T}(m)$, consequently, $\widehat{D}(\mathbf{A}\mathbf{B}, \mathbf{A}\mathbf{C}) = \|\mathcal{T}(\mathbf{A}\mathbf{B}) - \mathcal{T}(\mathbf{A}\mathbf{C})\| = \|\mathcal{T}(\mathbf{A}) + \mathcal{T}(\mathbf{B}) - \mathcal{T}(\mathbf{A}) - \mathcal{T}(\mathbf{C})\| = \widehat{D}(\mathbf{B}, \mathbf{C})$.
+\end{example}
+\section{Local minima and gradients in distance function}
+\cref{feat:adriano-no-local-minima} is the only feature remaining to be present in our formulation. It consists of two parts: the absence of local minima outside the curve, and the fact that the gradient, here represented by its general form $-\boldsymbol{\xi}_N(\mathbf{H})$, never vanishes (whenever it exists).
+
+In order for the EC-distance function to lack local minima outside the curve, we introduce the concept of a \emph{chainable} distance function and then prove that the \emph{chainability} property leads to a distance function without local minima outside the curve. This property requires defining a \emph{path} between elements in a Lie group.
+\begin{definition}[Path]\label{def:PHI-path-parameterizer}
+    In a Lie group $G$, a \emph{path} $\Phi:[0, 1] \times G \times G \to G$ connecting an element $\mathbf{V}$ to an element $\mathbf{W}$ satisfies the following properties for all $\mathbf{V}, \mathbf{W}\in G,$ and $\sigma\in[0,1]$:
+    \begin{property}
+        \item $\Phi(\sigma, \mathbf{V}, \mathbf{W})$ is differentiable in $\sigma$;\label{prop:path-continuous}
+        \item $\Phi(0, \mathbf{V}, \mathbf{W}) = \mathbf{V},\,\Phi(1, \mathbf{V},\, \mathbf{W}) = \mathbf{W}$.\label{prop:path-initUfinalV}
+    \end{property}
+\end{definition}
+
+Then:
+\begin{definition}[Chainable distance]\label{def:chainable-distance}
+    A function $\widehat{D}: G \times G \to \mathbb{R}_+$ is called a \emph{chainable} distance if it meets the criteria of an EE-distance function (\cref{def:distance-D-hat-arbitrary-elements}) and satisfies the following property. Specifically, there exists a path $\Phi$ (\cref{def:PHI-path-parameterizer}), such that for any points $\mathbf{V}, \mathbf{W} \in G$ and any $\sigma \in [0,1]$:
+    \begin{align*}
+        \widehat{D}(\mathbf{V}, \mathbf{W}) = \widehat{D}\bigl(\mathbf{V}, \Phi(\sigma, \mathbf{V}, \mathbf{W})\bigr) + \widehat{D}\bigl(\Phi(\sigma, \mathbf{V}, \mathbf{W}), \mathbf{W} \bigr).
+    \end{align*}
+\end{definition}
+
+A chainable distance between two elements can be thought as a chain, such that it can be broken into pieces within the specific path $\Phi$ and render the same result.
+\begin{example} \label{ex:chainability}
+    The EE-distance function $\widehat{D}(\mathbf{V}, \mathbf{W})=\|\mathcal{T}(\mathbf{V}) - \mathcal{T}(\mathbf{W})\|$ from \citet{Rezende2022} (see \cref{ex:adriano-distance-function}) is also chainable. To demonstrate this, we first define an appropriate path in accordance with \cref{def:PHI-path-parameterizer}. We use $\Phi(\sigma, \mathbf{V}, \mathbf{W})$ so $\mathcal{T}(\Phi(\sigma, \mathbf{V}, \mathbf{W}))$ = $(1 - \sigma)\mathcal{T}(\mathbf{V}) + \sigma \mathcal{T}(\mathbf{W})\;\forall\;\mathbf{V},\mathbf{W}\in \text{T}(m)$ (i.e., a linear path).
+
+    Given the defined path, we show that the EE-distance function $\widehat{D}$ is chainable as follows:
+    \begin{align}
+        % \begin{split}
+            \widehat{D}(\mathbf{V}, \Phi_\sigma) &= \|\mathcal{T}(\mathbf{V}) - (1 - \sigma)\mathcal{T}(\mathbf{V}) - \sigma \mathcal{T}(\mathbf{W})\|
+            =\sigma\|\mathcal{T}(\mathbf{V})-\mathcal{T}(\mathbf{W})\|  \label{eq:example-adriano-chainable-DvPhi}
+        % \end{split}
+        \\
+        % \begin{split}
+            \widehat{D}(\Phi_\sigma, \mathbf{W}) &= \|(1 - \sigma)\mathcal{T}(\mathbf{V}) + \sigma \mathcal{T}(\mathbf{W}) - \mathcal{T}(\mathbf{W})\|
+            =(1-\sigma)\|\mathcal{T}(\mathbf{V})-\mathcal{T}(\mathbf{W})\|,
+        % \end{split}
+    \end{align}
+    in which $\Phi_{\sigma} = \Phi(\sigma,\mathbf{V},\mathbf{W})$ and the fact that $0\le \sigma \le 1$ was used. Summing both terms and comparing them, the chainability property is evident. 
+\end{example}
+
+It will now be proved that the chainability property in \cref{def:chainable-distance} implies the absence of local minima outside the curve in the EC-distance function. This fact will become useful when we prove the convergence to the curve.
+\begin{figure}[ht]
+    \centering
+    \def\svgwidth{.8\linewidth}
+    \import{figures/}{liegroup_curve_local_minima.pdf_tex}
+    \caption{Depiction of the proof in \cref{propos:D-NO-local-minima}}
+    \label{fig:distance-without-local-minima}
+\end{figure}
+\begin{proposition}\label{propos:D-NO-local-minima}
+    If $\widehat{D}$ is a chainable distance function (\cref{def:chainable-distance}), then it does not have local minima outside the curve $\mathcal{C}$.
+\end{proposition}
+\begin{proof}
+    The proof proceeds by contradiction and is depicted in \cref{fig:distance-without-local-minima}. Take $D$ as an EC-distance function (\cref{def:distance-D-element-curve}) with $\widehat{D}$ being a chainable EE-distance function. Assume that $\mathbf{B}\notin\mathcal{C}$ is a local minimum of $D$ outside the curve, and let $\mathbf{C} \in G$ be (one of) the nearest point(s) on $\mathcal{C}$ to $\mathbf{B}$, i.e., $\mathbf{C}=\arg\min_{\mathbf{Y}\in\mathcal{C}}\widehat{D}(\mathbf{B}, \mathbf{Y})$.
+
+     Since $\mathbf{B}$ $\not \in \mathcal{C}$ is a local minimum of $D$, there exists a ball $\mathcal{B}_\varepsilon$, with respect to the topology induced by the distance function, of radius $\varepsilon>0$, small enough to not touch the curve, centered at $\mathbf{B}$ such that $D(\mathbf{Y}) \ge D(\mathbf{B})\; \forall\; \mathbf{Y} \in \mathcal{B}_\varepsilon$. Given that a path $\Phi$ between $\mathbf{B}$ and $\mathbf{C}$ is continuous (see \cref{def:PHI-path-parameterizer}), there must exist $\sigma_0 \in (0,1)$ such that a point $\mathbf{A}=\Phi(\sigma_0, \mathbf{B}, \mathbf{C})$ lies in the intersection of the boundary of the ball $\partial\mathcal{B}_\varepsilon$ and the path. According to our assumption, $D(\mathbf{B}) \le D(\mathbf{A})$, where $D(\mathbf{A}) = \min_{\mathbf{Y}\in\mathcal{C}} \widehat{D}(\mathbf{A}, \mathbf{Y})$. Now, since $D(\mathbf{A})$ is the minimum EE-distance between $\mathbf{A}$ and the curve, it must be true that this distance is less than or equal to the EE-distance between $\mathbf{A}$ and $\mathbf{C}$, i.e., $D(\mathbf{A})\le \widehat{D}(\mathbf{A}, \mathbf{C})$. The results until now allows us to obtain the following:
+     \begin{align}
+         D(\mathbf{B}) \le D(\mathbf{A}) \le \widehat{D}(\mathbf{A}, \mathbf{C}). \label{eq:lemma-local-minima-contradiction-eq1}
+     \end{align}
+    In addition, by the chainability property (see \cref{def:chainable-distance}), we also have $D(\mathbf{B}) \ge \widehat{D}(\Phi(\sigma, \mathbf{B}, \mathbf{C}), \mathbf{C})\;\forall\;\sigma\in[0,1]$. Since this holds for any value of $\sigma$, take $\sigma=\sigma_0$, which results in 
+    \begin{align}
+        D(\mathbf{B}) \ge \widehat{D}(\mathbf{A}, \mathbf{C}). \label{eq:lemma-local-minima-contradiction-eq2}
+    \end{align}
+    We now force a contradiction. Since conditions \eqref{eq:lemma-local-minima-contradiction-eq1} and \eqref{eq:lemma-local-minima-contradiction-eq2} must hold simultaneously, it follows that $D(\mathbf{B}) = \widehat{D}(\mathbf{A}, \mathbf{C})$. But, from the chainability property (see \cref{def:chainable-distance}), we know that $D(\mathbf{B}) = \widehat{D}(\mathbf{B}, \mathbf{C}) = \widehat{D}(\mathbf{B}, \mathbf{A}) + \widehat{D}(\mathbf{A}, \mathbf{C})$. This implies that $\widehat{D}(\mathbf{B}, \mathbf{A})=0$, therefore, since $\widehat{D}$ is positive definite, it follows that $\mathbf{B}=\mathbf{A}$, contradicting the existence of such a ball $\mathcal{B}_\varepsilon$. 
+\end{proof}
+
+We now establish that, under certain mild conditions, $-\boldsymbol{\xi}_N(\mathbf{H})$, which plays the role of the gradient of the distance in our case, never vanishes wherever it is defined. This result is evident in \citet{Rezende2022}, as demonstrated in \cref{example:xi_N_rezende}. The necessary ``mild'' condition for establishing this is as follows.
+
+\begin{definition} [Locally linear] \label{def:locallylinear}
+    A chainable EE-distance $\widehat{D}$ is said to be \emph{locally linear} if, for any $\mathbf{A}, \mathbf{B} \in G$, $\mathbf{A} \not = \mathbf{B}$:
+    \begin{equation}
+        \lim_{\sigma \rightarrow 0^+} \frac{1}{\sigma} \widehat{D}\bigl(\mathbf{A},\Phi(\sigma,\mathbf{A},\mathbf{B})\bigr) > 0.
+    \end{equation}
+\end{definition}
+The name arises from the fact that, for any $\mathbf{A} \not= \mathbf{B}$, $\widehat{D}\bigl(\mathbf{A},\Phi(\sigma,\mathbf{A},\mathbf{B})\bigr) \approx o(\sigma)$ (i.e., it is approximately linear in the small ``$o$'' notation).
+
+\begin{example}
+    Let $\widehat{D}$ be the EE-distance as in \cref{ex:adriano-distance-function} and $\Phi$ the path in \cref{ex:chainability}. From \eqref{eq:example-adriano-chainable-DvPhi}, we know that $\widehat{D}(\mathbf{A}, \Phi(\sigma, \mathbf{A}, \mathbf{B})) = \sigma\|\mathcal{T}(\mathbf{A}) - \mathcal{T}(\mathbf{B})\|$, thus $\lim_{\sigma \to 0^+} \frac{1}{\sigma} \widehat{D}\bigl(\mathbf{A},\Phi(\sigma,\mathbf{A},\mathbf{B})\bigr) = \lim_{\sigma \to 0^+} \frac{1}{\sigma}\sigma\|\mathcal{T}(\mathbf{A}) - \mathcal{T}(\mathbf{B})\| = \|\mathcal{T}(\mathbf{A}) - \mathcal{T}(\mathbf{B})\| > 0$ for $\mathbf{A} \not= \mathbf{B}$, and thus $\widehat{D}$ is locally linear.
+    
+\end{example}
+
+\begin{lemma} \label{lemma:no-zero-xiN} If $\widehat{D}$ is chainable (\cref{def:chainable-distance}) and locally linear (\cref{def:locallylinear}), for any $\mathbf{H} \notin \mathcal{C} \cup \mathcal{P}$, $\boldsymbol{\xi}_N(\mathbf{H}) \not= \mathbf{0}$.
+\end{lemma}
+
+\begin{proof}
+    Let $\mathbf{H} \notin \mathcal{C} \cup \mathcal{P}$. Choosing $\mathbf{V} = \mathbf{H}$, $\mathbf{W} = \mathbf{H}_d(s^*) = \mathbf{H}^*$, and using the property of chainable functions:
+    \begin{align}        
+        \begin{split}
+            & D(\mathbf{H}) = \widehat{D}(\mathbf{H},\mathbf{H}^*) =  \\
+            & \widehat{D}\bigl(\mathbf{H},\Phi(\sigma,\mathbf{H},\mathbf{H}^*)\bigr){+} \widehat{D}\bigl(\Phi(\sigma,\mathbf{H},\mathbf{H}^*),\mathbf{H}^*\bigr).        
+        \end{split}
+    \end{align}
+Now, $\widehat{D}\bigl(\Phi(\sigma,\mathbf{H},\mathbf{H}^*),\mathbf{H}^*\bigr) \geq D\bigl(\Phi(\sigma,\mathbf{H},\mathbf{H}^*)\bigr)$. Thus:
+\begin{align}
+    D(\mathbf{H})-D\bigl(\Phi(\sigma,\mathbf{H},\mathbf{H}^*)\bigr) \geq \widehat{D}\bigl(\mathbf{H},\Phi(\sigma,\mathbf{H},\mathbf{H}^*)\bigr).
+\end{align}
+Divide both sides by $\sigma >0$ and take the limit as $\sigma \rightarrow 0^+$. Since $\mathbf{H} \not \in \mathcal{C}$, $\mathbf{H} \not = \mathbf{H}^*$, and, using \cref{def:locallylinear}:
+\begin{align}
+\label{eq:impineq}
+ \lim_{\sigma \rightarrow 0^+} \frac{D(\mathbf{H})-D\bigl(\Phi(\sigma,\mathbf{H},\mathbf{H}^*)\bigr)}{\sigma} > 0.   
+\end{align}
+Let $\boldsymbol{\xi}_\Phi(\sigma,\mathbf{H}) \triangleq \Xi[\Phi](\sigma,\mathbf{H})$. Then, from \cref{lemma:very-important-fact}, it is true that $\Phi(\sigma,\mathbf{H},\mathbf{H}^*) \approx \exp(\SL[\boldsymbol{\xi}_\Phi]\sigma)\mathbf{H}$ for $\sigma \approx 0$. Consequently, the left-hand side of \eqref{eq:impineq} can be written as:
+\begin{equation}
+\label{eq:impineq2}
+  -\lim_{\sigma \rightarrow 0^+} \left( \frac{D\bigl(\exp(\SL[\boldsymbol{\xi}_\Phi]\sigma)\mathbf{H}\bigr) - D(\mathbf{H})}{\sigma} \right).
+\end{equation}
+Using \cref{def:Loperator}, this last limit, whenever it exists, is exactly $-\text{L}[D](\mathbf{H}) \boldsymbol{\xi}_\Phi$. This limit exists when $\mathbf{H} \not \in \mathcal{C} \cup \mathcal{P}$. But, from \eqref{eq:final-equation-for-normal-component} and \cref{def:normal-vector}, it can be seen that this limit is also $\boldsymbol{\xi}_N(\mathbf{H})^\top \boldsymbol{\xi}_\Phi$. Thus, from  \eqref{eq:impineq}, $\boldsymbol{\xi}_N(\mathbf{H})^\top \boldsymbol{\xi}_\Phi > 0$,  which implies that $\boldsymbol{\xi}_N(\mathbf{H}) \not= \mathbf{0}$. 
+\end{proof}
+Intuitively, this lemma means that from any point $\mathbf{H} \notin \mathcal{C} \cup \mathcal{P}$ we can always move in the direction of the closest point $\mathbf{H}^*$ along the path $\Phi$ by applying the twist $\boldsymbol{\xi}_\Phi$ in \eqref{eq:derivative-H-SL-considered-system}. This motion decreases $D$ sufficiently to ensure that the derivative does not vanish, which means that $\boldsymbol{\xi}_N(\mathbf{H})$ cannot be zero, since $\dot{D} = -\boldsymbol{\xi}_N(\mathbf{H})^{\top} \boldsymbol{\xi}$ for any arbitrary twist $\boldsymbol{\xi}$ (\cref{lemma:time-derivative-of-distance-function}).
+\section{Convergence results}
+\label{subs:conv-result}
+With the established definitions, lemmas, and propositions, we can now prove the main result of this text. To do so, we first require the following lemma.
+
+\begin{lemma} \label{lemma:xiNvanishing} If $\widehat{D}$ is an EE-distance function (\cref{def:distance-D-hat-arbitrary-elements}), then $\lim_{\mathbf{H} \rightarrow \mathcal{C}} k_N(\mathbf{H}) \boldsymbol{\xi}_N(\mathbf{H}) = \mathbf{0}$.
+\end{lemma}
+\begin{proof}
+    From \cref{def:normal-vector}, when $\mathbf{H} \rightarrow \mathcal{C}$, the quantity $\text{L}_{\mathbf{V}}[\widehat{D}](\mathbf{V},\mathbf{W})$ is evaluated when $\mathbf{V} = \mathbf{W}$ (i.e., $\mathbf{H} = \mathbf{H}_d(s^*)$). According to \cref{def:distance-D-hat-arbitrary-elements}, this derivative does not necessarily exist, but all directional derivatives should exist and be bounded. Since $k_N(\mathbf{H}) = 0$ when $\mathbf{H} \rightarrow \mathcal{C}$, this concludes the result. 
+\end{proof}
+This lemma shows that the vector field in \eqref{eq:vector-field-proposition} remains well-defined when $\mathbf{H} \in \mathcal{C}$, even though $\boldsymbol{\xi}_N(\mathbf{H})$ is undefined at these points. Now, we present our theorem:
+\begin{theorem}\label{thm:convergence-vector-field}
+    Let $\widehat{D}$ be a \emph{left-invariant} (\cref{def:distance-left-invariant}) , \emph{chainable} (\cref{def:chainable-distance}) and \emph{locally linear} (\cref{def:locallylinear}) EE-distance function, and $\mathbf{H}_d(s)$ a proper (\cref{def:XId-twist-Hd-for-tangent}) parametrization for $\mathcal{C}$. Then, the closed loop autonomous dynamical system in  \eqref{eq:derivative-H-SL-considered-system} with the input given by  \eqref{eq:vector-field-proposition}, is such that 
+    \begin{enumerate}[label=(\roman*)]
+        \item the system's state converges either to $\mathcal{C}$ or $\mathcal{P}$;
+        \item the set $\mathcal{P}$ is ``escapable'': there exists a policy of choosing arbitrarily small $\boldsymbol{\xi}$ every time $\mathbf{H} \in \mathcal{P}$ such that there exists a finite $t'$ in which $\mathbf{H}(t) \not \in \mathcal{P}$ for all $t \geq t'$;
+        \item if the system's state converges to  $\mathcal{C}$, $\mathbf{H}$ circulates the target curve.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    \textbf{Statement (i):} Consider $D$ as in \cref{def:distance-D-element-curve} as a Lyapunov function candidate. According to \cref{lemma:time-derivative-of-distance-function} and \cref{def:normal-vector}, its derivative is given by $\dot{D} = -\boldsymbol{\xi}_N^{\top}\boldsymbol{\xi} $ for any $\mathbf{H} \notin \mathcal{C} \cup \mathcal{P}$. Substituting $\boldsymbol{\xi}=\Psi=k_N\boldsymbol{\xi}_N+k_T\boldsymbol{\xi}_T$ and using \cref{propos:left-invariant-metric-induces-orthogonal}, we obtain 
+\begin{align}
+\label{eq:Ddotnegative}
+    \frac{d}{dt}D(\mathbf{H})= -k_N(\mathbf{H})\|\boldsymbol{\xi}_N(\mathbf{H})\|^2 \;\forall\;\mathbf{H} \notin \mathcal{C} \cup \mathcal{P}
+\end{align}
+Note, however, that \cref{lemma:xiNvanishing} guarantees that $\dot{D}$ will also vanish when $\mathbf{H} \in \mathcal{C}$. This fact, along with \eqref{eq:Ddotnegative} and \cref{lemma:no-zero-xiN}, shows that $\dot{D} < 0$ for all $\mathbf{H} \not \in \mathcal{C} \cup \mathcal{P}$, $\dot{D} = 0$ for $\mathbf{H} \in \mathcal{C}$, and $D$ is non-differentiable when $\mathbf{H} \in \mathcal{P}$. This shows that the system either converges to $\mathcal{C}$ or $\mathcal{P}$.
+
+\textbf{Statement (ii):} \cref{propos:D-NO-local-minima} shows that $D$ will not have any local minima outside $\mathcal{C}$. Thus, for each $\mathbf{H} \in \mathcal{P}$, there exists an arbitrarily small perturbation twist $\boldsymbol{\xi}_P(\mathbf{H})$ \footnote{To be more precise, \cref{propos:D-NO-local-minima} shows that one such twist is one that moves $\mathbf{H}$ in the direction of any of the possible $\mathbf{H}_d(s^*)$ through the path induced by $\Phi$.} such that the perturbed state $\mathbf{H}'$ satisfies $D(\mathbf{H}') < D(\mathbf{H})$. Furthermore, there is a non-zero minimum decrease $\delta$ that can be obtained at all steps. Let $t_k$ be the time at which $\mathbf{H}(t)$ enters $\mathcal{P}$ for the $k^{th}$ time, under the application of the controller and the corresponding perturbation policy. Then, we have $D(\mathbf{H}(t_{k+1})) < D(\mathbf{H}(t_k))$, with a decrease of at least $\delta$ at each step. Let $D_{\text{min}, \mathcal{P}} \triangleq \min_{\mathbf{H} \in \mathcal{P}} D(\mathbf{H})$, which is positive since $\mathcal{C} \cap \mathcal{P} = \emptyset$ and $D_{\text{min},\mathcal{C}}$ in \cref{def:distance-D-hat-arbitrary-elements} is strictly positive. The decreasing sequence $D(t_k)$ must eventually fall below $D_{\text{min}, \mathcal{P}}$ for some finite $k$. From that point onward, since $\dot{D} \leq 0$, $\mathcal{P}$ will not be re-entered.
+
+\textbf{Statement (iii):} Circulation comes from the fact that, once in $\mathcal{C}$, the term $k_N \boldsymbol{\xi}_N$ vanishes (\cref{lemma:xiNvanishing}), while $k_T \boldsymbol{\xi}_T$ -- the necessary twist to track the curve in a given sense (clockwise or counter-clockwise) -- remains non-zero. This non-zero value, due to $k_T$ being positive and that $\mathbf{H}_d$ being a proper parametrization (see \cref{def:XId-twist-Hd-for-tangent}), enforces the circulation of the curve.
+
+\end{proof} 
+Note that the sense of circulation (clockwise or counterclockwise) is determined by the choice of parametrization $\mathbf{H}_d(s)$. For instance, using the reparametrization $\mathbf{H}_{d,\text{new}}(s) = \mathbf{H}_d(1-s)$ results in circulation in the opposite direction.
+
+Result (ii) in \cref{thm:convergence-vector-field} implies that if the system enters the ``problematic set'' $\mathcal{P}$, there always exists an arbitrarily small sequence of maneuvers that enables the system to eventually escape this set in finite time and never return. Furthermore, as a corollary of \cref{thm:convergence-vector-field}, we can interpret that the closed loop system is asymptotically stable to the desired curve if $D(\mathbf{H}(0)) < D_{\text{min}, \mathcal{P}}$. In other words, starting sufficiently close to the target curve ensures that $\mathcal{P}$ is never reached.

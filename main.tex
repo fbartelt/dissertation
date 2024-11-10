@@ -1,0 +1,114 @@
+\documentclass[nonatbib]{macrothesis}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{siunitx}
+\usepackage{import}
+\usepackage{enumitem}
+\usepackage[authoryear,round]{natbib}
+\usepackage{thmtools}
+\usepackage[capitalize,nameinlink]{cleveref}
+\usepackage{adjustbox}
+
+\title{Title of the Thesis}
+\author{Felipe Bartelt de Assis Pessoa}
+\advisorname{Luciano Cunha de Araújo Pimenta}
+\coadvisorname{Vinicius Mariano Gonçalves}
+\departmentname{Department of Electrical Engineering}
+\universityname{Universidade Federal de Minas Gerais}
+\researchgroupname{MACRO Research Group - Mechatronics, Control, and Robotics}
+\programname{Graduate Program in Electrical Engineering}
+\locationname{Belo Horizonte, Brazil}
+
+%%% Preambles %%%
+% Dedication and Acknowledgments
+\dedication{To my family.}
+\acknowledgments{
+    This is an acknowledgments. If you are using another language as main 
+    (not english), then you should use this command as following:
+
+    ``\textbackslash acknowledgments[Acknowledgments in your language]\{Text\}''
+}
+
+% Abstracts (in both languages)
+\abstract{
+    This is the abstract in the first language. If you are using another language as main
+    (not english), then you should use this command as following:
+
+    ``\textbackslash abstract[Abstract in your language]\{Text\}''
+
+    \noindent(We used a typo to illustrate this feature here.)
+}
+\abstractsecond{
+    Esse é um exemplo de abstract. Caso sua segunda língua não seja português,
+    você deve usar o comando da seguinte forma:
+
+    ``\textbackslash abstractsecond[Abstract in second language]\{Text\}''
+}
+
+\newlist{property}{enumerate}{1}
+\newlist{feature}{enumerate}{1}
+\setlist[property]{label=\roman{propertyi}, ref=\thedefinition.\roman{propertyi},noitemsep}
+\setlist[feature]{label=(\alph*), ref=(\alph*),noitemsep}
+
+\declaretheoremstyle[
+  % spaceabove=\topsep, spacebelow=\topsep,
+  % headfont=\normalfont\scshape,
+  % notefont=\mdseries, notebraces={(}{)},
+  % bodyfont=\normalfont,
+  % postheadspace=1em,
+  qed=\qedsymbol
+]{defnstyle}
+
+\declaretheorem[name=Theorem,numberwithin=chapter]{theorem}
+\declaretheorem[name=Proposition,numberwithin=chapter,sibling=theorem]{proposition}
+\declaretheorem[name=Lemma,numberwithin=chapter,sibling=theorem]{lemma}
+\declaretheorem[name=Corollary,numberwithin=chapter,sibling=theorem]{corollary}
+\declaretheorem[name=Example,numberwithin=chapter,sibling=theorem,style=defnstyle]{example}
+\declaretheorem[name=Remark,numberwithin=chapter,sibling=theorem,style=defnstyle]{remark}
+\declaretheorem[name=Definition,numberwithin=chapter,sibling=theorem,style=defnstyle]{definition}
+
+\Crefname{theorem}{Theorem}{Theorems}
+\Crefname{proposition}{Proposition}{Propositions}
+\Crefname{lemma}{Lemma}{Lemmas}
+\Crefname{definition}{Definition}{Definitions}
+\Crefname{corollary}{Corollary}{Corollaries}
+\Crefname{listprop}{Property}{Properties}
+\Crefname{example}{Example}{Examples}
+\Crefname{remark}{Remark}{Remarks}
+\addtotheorempostheadhook[definition]{\crefalias{propertyi}{listprop}}
+\crefname{featurei}{Feature}{Features}
+
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\vecop}{vec}
+
+
+\DeclareRobustCommand{\SL}[1][]{%
+  \!\;\mathcal{S}%
+  \if\relax\detokenize{#1}\relax%
+  \else%
+    \!\left(#1\right)%
+  \fi%
+}
+\DeclareRobustCommand{\invSL}[1][]{%
+  \!\;\mathcal{S}^{-1}%
+  \if\relax\detokenize{#1}\relax%
+  \else%
+    \!\left(#1\right)%
+  \fi%
+}
+
+\input{acronyms_notation.tex}
+
+\begin{document}
+\maketitlepage
+\preamblepage
+\input{introduction.tex}
+\input{background.tex}
+\input{development.tex}
+\input{kinematic.tex}
+\input{collaborative.tex}
+
+\bibliographystyle{plainnat}
+\bibliography{ref}
+
+\end{document}
