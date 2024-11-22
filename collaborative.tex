@@ -173,6 +173,13 @@ The multiplication of two grasp matrices is also straightforward:
     \end{bmatrix} = \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i) + \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_j) - \mathbf{I}
 \end{align}
 
+As previously stated, some system parameters will be unknown. For simpliticity we list the unknowns here:
+\begin{itemize}
+    \item Mass properties $m$ and $\mathbb{I}_\text{cm}$;
+    \item geometry properties $\mathbf{r}_p$ and $\mathbf{r}_i$.
+\end{itemize}
+These are the parameters that must be adapted
+
 \section{Path Planning}
 The manipulated object must follow a curve of poses $\mathcal{C}\subset \mathbb{R}^3\times\text{SO}(3)$, which can be interpreted as a curve in Euclidean space with an orientation frame attached to each of its points, as shown in \cref{fig:curvewithframes}. This objective aligns with our vector field formulation.
 \begin{figure}[ht]
@@ -182,10 +189,10 @@ The manipulated object must follow a curve of poses $\mathcal{C}\subset \mathbb{
     \label{fig:curvewithframes}
 \end{figure}
 
-The task can be achieved determining a control input $\boldsymbol{\xi}$ such that the body follows the curve $\mathcal{C}$ under a kinematic model. Although the system model was developed using the tuple representation of $\mathbb{R}^3\times\text{SO}(3)$, in this section we adopt the independent representation of $\text{ISE}(3)$, as it simplifies the control design. Note that this identification is always possible, since for any $\mathbf{H}\in\text{ISE}(3)$, we can use the following map
+The task can be achieved determining a control input $\boldsymbol{\xi}$ such that the body follows the curve $\mathcal{C}$ under a kinematic model. Although the system model was developed using the tuple representation of $\mathbb{R}^3\times\text{SO}(3)$, in this section we adopt the independent representation of $\text{ISE}(3)$, as it simplifies the control design. Note that this identification is always possible, since for any $\mathbf{H}\in\text{ISE}(3)$, we can identify $\boldsymbol{\chi}=(\mathbf{p}, \mathbf{R})$ using the following map
 \begin{align}
     \begin{split}
-        \mathbf{H} &\mapsto (\mathbf{A}\mathbf{H}\mathbf{A}^\top,\, \mathbf{B}\mathbf{H}\mathbf{c}) \in \mathbb{R}^3\times\text{SO}(3)\\
+        \mathbf{H} &\mapsto (\mathbf{B}\mathbf{H}\mathbf{c},\, \mathbf{A}\mathbf{H}\mathbf{A}^\top) \in \mathbb{R}^3\times\text{SO}(3)\\
         \mathbf{A} &= \begin{bmatrix}
             \mathbf{I}_{3\times 3} & \mathbf{0}_{3\times 4}
         \end{bmatrix}, \quad
@@ -243,11 +250,11 @@ where $\mathbf{R}_v$, $\mathbf{R}_w$, $\mathbf{p}_v$, and $\mathbf{p}_w$ are the
 \begin{align}
     \log(\mathbf{Z}) &= -\sum_{k=1}^\infty \frac{(\mathbf{I} - \mathbf{Z})^k}{k} = -(\mathbf{I} - \mathbf{Z}) - \frac{(\mathbf{I} - \mathbf{Z})^2}{2} - \frac{(\mathbf{I} - \mathbf{Z})^3}{3} - \dots\\
     &= -\begin{bmatrix}
-        \mathbf{Q} - \mathbf{I} & \mathbf{0} & \mathbf{0}\\
+        \mathbf{I} - \mathbf{Q} & \mathbf{0} & \mathbf{0}\\
         \mathbf{0} & \mathbf{0} & \mathbf{u}\\
         \mathbf{0} & \mathbf{0} & 0
     \end{bmatrix} - \frac{1}{2}\begin{bmatrix}
-        (\mathbf{Q} - \mathbf{I})^2 & \mathbf{0} & \mathbf{0}\\
+        (\mathbf{I} - \mathbf{Q})^2 & \mathbf{0} & \mathbf{0}\\
         \mathbf{0} & \mathbf{0} & \mathbf{0}\\
         \mathbf{0} & \mathbf{0} & 0
     \end{bmatrix} - \dots= \begin{bmatrix}

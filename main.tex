@@ -7,6 +7,8 @@
 \usepackage{thmtools}
 \usepackage[capitalize,nameinlink]{cleveref}
 \usepackage{adjustbox}
+\usepackage{subcaption}
+\usepackage[toc,titletoc]{appendix}
 
 \title{Title of the Thesis}
 \author{Felipe Bartelt de Assis Pessoa}
@@ -107,7 +109,11 @@
 \input{development.tex}
 \input{kinematic.tex}
 \input{collaborative.tex}
+\input{results.tex}
+\begin{appendices}
+\input{appendix_dhat.tex}
 
+\end{appendices}
 \bibliographystyle{plainnat}
 \bibliography{ref}
 
