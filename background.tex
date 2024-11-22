@@ -1,6 +1,6 @@
 % !TeX root = main.tex
 \chapter{Thoeretical Background}\label{ch:background}
-In this chapter, we present the theoretical background of the thesis. We start by presenting the mathematical tools used in the thesis, such as the state-space representation and the Lyapunov stability theory. Then, we present the control strategies used in the thesis, such as the PID controller and the MPC. Finally, we present the optimization problem used in the thesis, which is the Quadratic Programming (QP) problem. \citep{Rezende2022}
+In this chapter we revisit the vector field strategy in the euclidean space based on a curve parametrization \citep{Rezende2022}, as it will prove valuable in drawing connections between both works. We also present some fundamental concepts of Lie groups and Lie algebras, which will be essential for the development of our extension.
 
 \section{Vector Field in Euclidean Space}\label{sec:adriano-review}
 For clarity, we revisit the vector field strategy presented in \citet{Rezende2022}. Since our work extends this previous approach, this review will help establish direct connections between both works and highlight the core aspects of our contributions. The primary goal of the authors in \citet{Rezende2022} is to develop an artificial $n$-dimensional vector field that guides system trajectories toward a predefined curve and ensures circulation around it. A key element of this formulation is the definition of a distance function with essential properties. As their work focuses solely on Euclidean space, they adopt the Euclidean distance for the vector field computation, which is derived using a parametric representation of the curve.
@@ -50,6 +50,97 @@ In the Lyapunov stability proof, the final result shows that the time derivative
 In our generalization, we will incorporate and build upon these features.
 
 \section{Lie groups and Lie algebras}
+In this section, we introduce \emph{Lie groups} and \emph{Lie algebras}, which are smooth manifolds that are also groups. Besides providing examples of both, we also introduce concepts that will prove valuable in our work. We begin with the general definition of a Lie group.
+\subsection{Lie groups}
+\begin{definition}[Lie group]
+    A \emph{Lie group} is a smooth manifold $G$ satisfying the following properties:
+    \begin{property}
+        \item $G$ is a group (with identity element denoted $G_e$)
+        \item $G$ is a topological group. Furthermore, the group operation $\circ: G\times G\to G$ and the inverse map $\cdot^{-1}: G\to G$ are smooth.
+    \end{property}
+\end{definition}
+Given a Lie group $G$, we can define two additional operations: the left translation $L_{\mathbf{X}}: G\to G$ and the right translation $R_{\mathbf{X}}: G\to G$ for any $\mathbf{X}\in G$. These operations are defined as $L_{\mathbf{X}}(\mathbf{Y}) = \mathbf{X}\circ\mathbf{Y}$ and $R_{\mathbf{X}}(\mathbf{Y}) = \mathbf{Y}\circ\mathbf{X}$, respectively. Since the group operation and the inverse map are smooth, the left and right translations are diffeomorphisms.
+
+\subsubsection{Examples of Lie groups}
+\begin{example}\label{ex:general-linear-group-special-linear-group}
+    The \emph{general linear group} $\text{GL}(n, \mathbb{R})$ is a Lie group consisting of all invertible $n\times n$ matrices with real entries. The group operation is matrix multiplication, and the identity element is the identity matrix $\mathbf{I}_n$. The inverse map is the matrix inverse. The \emph{special linear group} $\text{SL}(n, \mathbb{R})$ is a subgroup of $\text{GL}(n, \mathbb{R})$ consisting of all matrices with determinant equal to 1.
+\end{example}
+\begin{example}\label{ex:orthogonal-group-special-orthogonal-group}
+    The \emph{orthogonal group} $\text{O}(n)$ is the Lie group of distance-preserving transformation and comprises rotations and reflections. It consists of all $n\times n$ orthogonal matrices:
+    \begin{align}
+        \text{O}(n) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} | \mathbf{X}^T\mathbf{X} = \mathbf{I}_n\right\}.
+    \end{align}
+
+    Its subgroup $\text{SO}(n)$, the \emph{special orthogonal group}, consists of all orthogonal matrices with determinant equal to 1. This group represents rotations and as such are formed by the set of rotation matrices:
+    \begin{align}
+        \text{SO}(n) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} | \mathbf{X}^T\mathbf{X} = \mathbf{I}_n,\, \det(\mathbf{X}) = 1\right\}.
+    \end{align}
+\end{example}
+\begin{example}\label{ex:euclidean-group-special-euclidean-group}
+    The \emph{Euclidean group} $\text{E}(n)$ is a Lie group of isometries in Euclidean space. This group is formed by the semidirect product $\mathbb{R}^n \rtimes \text{O}(n)$ and is defined as
+    \begin{align}
+        \text{E}(n) = \left\{\begin{bmatrix}
+            \mathbf{R} & \mathbf{p} \\ \mathbf{0} & 1
+        \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} | \mathbf{R}\in\text{O}(n),\, \mathbf{p}\in\mathbb{R}^n\right\}.
+    \end{align}
+
+    Its subgroup $\text{SE}(n)$, the \emph{special Euclidean group}, consists of all matrices in the Euclidean group with determinant equal to 1, formed by the semidirect product $\mathbb{R}^n\rtimes \text{SO}(n)$. This group represents rigid transformations and is formed by the set of homogeneous transformation matrices:
+    \begin{align}
+        \text{SE}(n) = \left\{\begin{bmatrix}
+            \mathbf{R} & \mathbf{p} \\ \mathbf{0} & 1
+        \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} | \mathbf{R}\in\text{SO}(n),\, \mathbf{p}\in\mathbb{R}^n\right\}.
+    \end{align}
+\end{example}
+\begin{example}\label{ex:translation-group}
+    The group $(\mathbb{R}^n,+)$, also denoted $\mathbb{R}^n$, is also a Lie group, where the group operation is the vector addition, the identity element is the zero vector, and the inverse map is the negation of the vector. We will usually represent this group through an inclusion map $\mathbb{R}^n \hookrightarrow \text{SE}(n)$ and denote the group under this inclusion the \emph{translation group} $\text{T}(n)$, defined as
+    \begin{align}
+        \text{T}(n) = \left\{\begin{bmatrix}
+            \mathbf{I}_n & \mathbf{p} \\ \mathbf{0} & 1
+        \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} | \mathbf{p}\in\mathbb{R}^n\right\}.
+    \end{align}
+\end{example}
+\begin{example}\label{ex:independent-translation-rotation-ISE}
+    Although not present in the literature, we introduce the group of independent translations and rotations (\emph{Independent Special Euclidean group}) $\text{ISE}(n)\cong\mathbb{R}^n\times\text{SO}(n)$, defined as
+    \begin{align}
+        \begin{split}
+            \text{ISE}(n) &= \left\{\begin{bmatrix}
+            \mathbf{R} & \mathbf{0}\\
+            \mathbf{0} & \mathbf{P}\\
+            \end{bmatrix}\in\mathbb{R}^{(2n+1)\times(2n+1)}\,|\, \mathbf{R}\in\text{SO}(n),\,\mathbf{P}\in\text{T}(n)\right\}\\
+            &= \left\{\begin{bmatrix}
+            \mathbf{R} & \mathbf{0} & \mathbf{0}\\
+            \mathbf{0} & \mathbf{I} & \mathbf{p}\\
+            \mathbf{0} & \mathbf{0} & 1
+            \end{bmatrix}\in\mathbb{R}^{(2n+1)\times(2n+1)}\,|\, \mathbf{R}\in\text{SO}(n),\,\mathbf{p}\in\mathbb{R}^n\right\}.
+        \end{split} \label{eq:ISE-group}
+    \end{align}
+    Although they are isomorphic, we will use the representation $\mathbb{R}^n\times \text{SO}(n)$ to denote tuples of translations and rotations $(\mathbf{p},\mathbf{R})$, and the representation $\text{ISE}(n)$ to denote elements represented as the matrices in \eqref{eq:ISE-group}. Note that we can use both representations interchangeably, since we can easily extract the position and orientation from the matrix representation by means of matrix multiplication.
+\end{example}
+
+% ADD Examples for indefinite orthogonal (with lorentz), heisenberg?, and symplectic groups
+\begin{example}\label{ex:non-matrix-lie-group}
+    An example of a Lie group that is not a matrix Lie group is given in \citet[p. 25]{Hall2015} and reproduced here:
+
+    The group $G = \mathbb{R} \times \mathbb{R} \times \mathbb{S}^1 = \left\{(x, y, \theta) | x \in \mathbb{R}, y \in \mathbb{R}, \theta \in \mathbb{S}^1\subset\mathbb{C}\right\}$, equipped with the group operation
+    \begin{align}
+        (x_1, y_1, \theta_1)\circ (x_2, y_2, \theta_2) = (x_1 + x_2, y_1 + y_2, e^{ix_1y_2}\theta_1\theta_2),
+    \end{align}
+    is a Lie group without a matrix representation. The identity element is $(0, 0, 1)$, and the inverse map is $(x, y, \theta)^{-1} = (-x, -y, e^{ixy}\theta^{-1})$.
+\end{example} 
+
+% Its Lie algebra $\mathfrak{ise}(n)\cong\mathbb{R}^n\oplus\mathfrak{so}(n)$ and has the following representation:
+%     \begin{align}
+%         \mathfrak{ise}(n) &= \left\{\begin{bmatrix}
+%             \mathbf{S} & \mathbf{0}\\
+%             \mathbf{0} & \mathbf{U}
+%         \end{bmatrix} \in \mathbb{R}^{(2n+1)\times(2n+1)}\,;\, \mathbf{S}\in\mathfrak{so}(n),\,\mathbf{U}\in\mathfrak{t}(n)\right\}\\
+%         &= \left\{\begin{bmatrix}
+%             \mathbf{S} & \mathbf{0} & \mathbf{0}\\
+%             \mathbf{0} & \mathbf{0} & \mathbf{u}\\
+%             \mathbf{0} & \mathbf{0} & 0
+%         \end{bmatrix} \in \mathbb{R}^{(2n+1)\times(2n+1)}\,;\, \mathbf{S}\in\mathfrak{so}(n),\,\mathbf{u}\in\mathbb{R}^n\right\}.
+%     \end{align}
+
 In this section, we recall several properties of Lie groups and Lie algebras that will be essential for developing our extension. First, a Lie group $G$ is a smooth manifold equipped with a group structure. The Lie algebra $\mathfrak{g}$ associated with $G$ has two equivalent definitions, either of which we will use as appropriate. One definition describes the Lie algebra as the tangent space at the group identity $G_e$ \citep[p. 16]{Gallier2020}. Alternatively, a Lie algebra can be viewed as the space of all smooth vector fields on the Lie group, under the Lie bracket operation on vector fields \citep[p. 190]{Lee2012}. As said previously, we will consider connected matrix Lie groups, and henceforth we will denote by $n$ the dimension of any (square) matrix in a given group, and the dimension of the group by $m$, which is the same as the dimension of the associated Lie algebra.
 
 \begin{lemma}\label{lemma:lie-group-flow}
