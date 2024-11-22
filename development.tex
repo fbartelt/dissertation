@@ -128,7 +128,6 @@ Given this definition, we can state the following:
     in which the dependencies of $\text{L}_{\mathbf{V}}[\widehat{D}], \text{L}_{\mathbf{W}}[\widehat{D}]$ on $\mathbf{H}$ and $\mathbf{H}_d(s^*)$ were omitted. Noting that, by \cref{def:tangent-vector}, $\boldsymbol{\xi}_T = \boldsymbol{\xi}_d(s^*)$, and invoking \cref{lemma:optimization-problem-part-hdi-vanishers}, implies that $\text{L}_{\mathbf{W}}[\widehat{D}]\boldsymbol{\xi}_T = 0$.
     Finally, using \cref{def:normal-vector}, we prove the orthogonality property: $\text{L}_{\mathbf{V}}[\widehat{D}]\boldsymbol{\xi}_T = -\boldsymbol{\xi}_N^{\top}\boldsymbol{\xi}_T=0$ 
 \end{proof}
-\vspace{-10pt}
 \begin{example}
     In \citet{Rezende2022}, the  EE-distance function $\widehat{D}(\mathbf{V}, \mathbf{W}) = \|\mathcal{T}(\mathbf{V}) - \mathcal{T}(\mathbf{W})\|$ (\cref{ex:adriano-distance-function}) is left-invariant. Note that $\mathcal{T}(\mathbf{A}\mathbf{B}) = \mathcal{T}(\mathbf{A}) + \mathcal{T}(\mathbf{B})\;\forall\;\mathbf{A},\mathbf{B}\in\text{T}(m)$. Let $\mathbf{A}, \mathbf{B}, \mathbf{C} \in \text{T}(m)$, consequently, $\widehat{D}(\mathbf{A}\mathbf{B}, \mathbf{A}\mathbf{C}) = \|\mathcal{T}(\mathbf{A}\mathbf{B}) - \mathcal{T}(\mathbf{A}\mathbf{C})\| = \|\mathcal{T}(\mathbf{A}) + \mathcal{T}(\mathbf{B}) - \mathcal{T}(\mathbf{A}) - \mathcal{T}(\mathbf{C})\| = \widehat{D}(\mathbf{B}, \mathbf{C})$.
 \end{example}
