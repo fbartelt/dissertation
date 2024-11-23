@@ -67,7 +67,7 @@
 % \RequirePackage[Lenny]{fncychap}
 \RequirePackage{lmodern}
 \RequirePackage[lmodern]{quotchap}
-\RequirePackage{algorithmic}
+% \RequirePackage{algorithmic}
 \RequirePackage[nottoc]{tocbibind}
 \RequirePackage{import}
 \RequirePackage{caption}

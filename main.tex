@@ -9,6 +9,9 @@
 \usepackage{adjustbox}
 \usepackage{subcaption}
 \usepackage[toc,titletoc]{appendix}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\numberwithin{algorithm}{chapter}
 
 \title{Title of the Thesis}
 \author{Felipe Bartelt de Assis Pessoa}
@@ -111,6 +114,9 @@
 \input{collaborative.tex}
 \input{results.tex}
 \begin{appendices}
+\crefalias{chapter}{appendix}
+\crefalias{section}{appendix}
+\crefalias{subsection}{appendix}
 \input{appendix_dhat.tex}
 
 \end{appendices}

@@ -92,7 +92,7 @@ In order to invoke \cref{thm:convergence-vector-field}, function $\widehat{D}$ i
     as long as $\mathbf{V} \not= \mathbf{W}$.
 \end{proof}
 
-\section{Explicit Construction of the EE-Distance Function in SE(3)}
+\section{Explicit Construction of the EE-Distance Function in SE(3)}\label{sec:explicit-construction-SE3}
 As mentioned, the group \text{SE}(3) is exponential, allowing us to utilize the construction from \cref{subs:explconst}. However, instead of computing $\widehat{D}(\mathbf{V},\mathbf{W}) = \|\log(\mathbf{V}^{-1}\mathbf{W})\|_F$ through a generic algorithm to compute the matrix logarithm followed by applying the matrix norm, the structure of the group $\text{SE}(3)$ allows a more efficient and simpler approach. The algorithm for computing $\widehat{D}(\mathbf{V},\mathbf{W})$ is as follows:
 
 Let $\mathbf{R}_v$, $\mathbf{R}_w$, $\mathbf{p}_v$, and $\mathbf{p}_w$ denote the rotation matrices and positions of $\mathbf{V}$ and $\mathbf{W}$, respectively. Let $\mathbf{V}^{-1}\mathbf{W} = \mathbf{Z}$, and express it as 
@@ -136,85 +136,48 @@ With this, we can express the EE-distance as
 \end{align}
 where $\|\bar{\mathbf{u}}\|^2 = \mathbf{u}^T\bar{\mathbf{X}}\mathbf{u}$ and $\bar{\mathbf{X}}=\mathbf{X}^\top\mathbf{X}$.
 
-The term $\|\log\mathbf{Q}\|_F^2$ can be obtained by the following steps:
+The term $\|\log\mathbf{Q}\|_F^2$ can be obtained by the following steps, using the properties derive in \cref{subsec:rotation-matrix-properties}:
 \begin{enumerate}
-    \item Compute $u \triangleq \frac{1}{2}\bigl(\text{Tr}(\mathbf{Q})-1\bigr)$ and $v \triangleq \frac{1}{2\sqrt{2}}\|\mathbf{Q}{-}\mathbf{Q}^{\top}\|_F$. As shown in \cref{sec:addthis}, $u = \cos(\theta)$ and $v=\sin(\theta)$, in which $\theta \in [0, \pi]$ is the rotation angle related to $\mathbf{Q}$;
+    \item Compute $u \triangleq \frac{1}{2}\bigl(\tr(\mathbf{Q})-1\bigr)$ and $v \triangleq \frac{1}{2\sqrt{2}}\|\mathbf{Q}{-}\mathbf{Q}^{\top}\|_F$, where $u = \cos(\theta)$ and $v=\sin(\theta)$, in which $\theta \in [0, \pi]$ is the rotation angle related to $\mathbf{Q}$;
     \item Compute $\theta = \text{atan2}(v,u)$;
     \item Then, $\|\log\mathbf{Q}\|_F^2 = 2\theta^2$.
 \end{enumerate}
 
-It is also possible to derive a simple expression for $\|\bar{\mathbf{u}}\|^2$. First, we express $\bar{\mathbf{X}}$ as a function $\bar{\mathbf{X}}=\Phi(\mathbf{Q})$:
-\begin{align}
-    \bar{\mathbf{X}} &= \mathbf{X}^T\mathbf{X} = (\log\mathbf{Q})^\top\bigl((\mathbf{I} - \mathbf{Q})^{-1}\bigr)^\top(\mathbf{I} - \mathbf{Q})^{-1}\log\mathbf{Q}\\
-    &= -\log\mathbf{Q}(\mathbf{I} - \mathbf{Q}^\top)^{-1}(\mathbf{I} - \mathbf{Q})^{-1}\log\mathbf{Q}\\
-    &=-\log\mathbf{Q}\bigl((\mathbf{I} - \mathbf{Q})(\mathbf{I} - \mathbf{Q}^\top)\bigr)^{-1}\log\mathbf{Q}\\
-    &=-\log\mathbf{Q}(2\mathbf{I}-(\mathbf{Q}+\mathbf{Q}^\top))^{-1}\log\mathbf{Q}\\
-    &= \Phi(\mathbf{Q}),
-\end{align}
-where we used the fact\footnote{The fact that $(\log\mathbf{Q})^\top = \log(\mathbf{Q}^\top) = -\log\mathbf{Q}$ can be easily seen through the power series of the matrix logarithm or from the fact that the logarithm of a rotation matrix is a skew-symmetric matrix.} that $(\log\mathbf{Q})^\top=-\log\mathbf{Q}$. Now, using Cayley-Hamilton theorem \citep[p. 63]{Chen2009}:
-\begin{align}
-    \Phi(\mathbf{Q}) = \beta_0\mathbf{Q}^{-1} + \beta_1\mathbf{I} + \beta_2\mathbf{Q},
-\end{align}
-for which the coefficients $\beta_i$ can be found by means of the eigenvalues of $\mathbf{Q}$. Since the eigenvalues $\lambda_i$ of $\mathbf{Q}$ are $\{1, e^{i\theta}, e^{-i\theta}\},\theta\in[0,\pi]$, we must solve the following equaiton, which relate both expressions of $\Phi(\lambda)$, for each $\lambda_i$:
-\begin{align}
-    \beta_0\lambda^{-1} + \beta_1 + \beta_2\lambda = -\log\lambda_i(2-(\lambda+\lambda^{-1}))^{-1}\log\lambda.
-\end{align}
-Thus, for each eigenvalue, we have:
-\begin{align}
-    % \begin{cases}
-        \beta_0 + \beta_1 + \beta_2 &= \frac{-\log(1)^2}{2 - (1+1)}=1,\quad\text{ for }\lambda = 1 \label{eq:cayley-lambda1}\\
-        \beta_0 e^{-i\theta} + \beta_1 + \beta_2 e^{i\theta} &= \frac{\theta^2}{2 - (e^{i\theta}+ e^{-i\theta})},\quad\text{ for }\lambda = e^{i\theta} \label{eq:cayley-lambdaeitheta}\\ 
-        \beta_0 e^{i\theta} + \beta_1 + \beta_2 e^{-i\theta} &= \frac{\theta^2}{2 - (e^{-i\theta}+ e^{i\theta})},\quad\text{ for }\lambda = e^{i\theta}. \label{eq:cayley-lambdaMINUSeitheta}
-    % \end{cases}
-\end{align}
-Subtracting \eqref{eq:cayley-lambdaMINUSeitheta} from \eqref{eq:cayley-lambdaeitheta} and multiplying by $\frac{1}{2i}$ results in
-\begin{align}
-    \frac{1}{2i}\beta_2(e^{i\theta}-e^{-i\theta}) +\frac{1}{2i}\beta_0(e^{-i\theta}-e^{i\theta}) &= \biggl(\frac{\theta^2}{2 - (e^{i\theta}+ e^{-i\theta})} - \frac{\theta^2}{2 - (e^{-i\theta}+ e^{i\theta})}\biggr)\frac{1}{2i}\\
-    \beta_2\sin\theta -\beta_0\sin\theta &= 0\\
-    \implies \beta_0&=\beta_2 \label{eq:cayley-beta0}
-\end{align}
-Now, summing \eqref{eq:cayley-lambdaeitheta} and \eqref{eq:cayley-lambdaMINUSeitheta}, multiplying by $\frac{1}{2}$, and using $\beta_0=\beta_2$, results in:
-\begin{align}
-    \beta_1+\frac{1}{2}\beta_2(e^{i\theta}+e^{-i\theta}) +\frac{1}{2}\beta_0(e^{-i\theta}+e^{i\theta}) &= \biggl(\frac{\theta^2}{2 - (e^{i\theta}+ e^{-i\theta})} + \frac{\theta^2}{2 - (e^{-i\theta}+ e^{i\theta})}\biggr)\frac{1}{2}\\
-    \beta_1+2\beta_0\cos\theta  &= \frac{\theta^2}{2 - 2\cos\theta}\\
-    \implies \beta_1&=\frac{\theta^2}{2 - 2\cos\theta} - 2\beta_0\cos\theta. \label{eq:cayley-beta1}
-\end{align}
-Finally, apllying \eqref{eq:cayley-beta0} and \eqref{eq:cayley-beta1} into \eqref{eq:cayley-lambda1}, results in
-\begin{align}
-    1 &= \frac{\theta^2}{2 - 2\cos\theta} - 2\beta_0\cos\theta + 2\beta_0 \\
-    \implies \beta_0 &= \frac{2-2\cos\theta-\theta^2}{4(1 - \cos\theta)^2}. 
-\end{align}
-Thus, we can express
+It is also possible to derive a simple expression for $\|\bar{\mathbf{u}}\|^2$. First, we express $\bar{\mathbf{X}}$ as a function $\Phi(\mathbf{Q})$ using the Cayley-Hamilton theorem \citep[p. 63]{Chen2009}. The derivation of this function is presented in \cref{app:translation-component-SE3} and the resulting expression is:
 \begin{align}
     \Phi(\mathbf{Q}) = \bar{\mathbf{X}} = (1-2\beta_0)\mathbf{I} + \beta_0\bigl(\mathbf{Q} + \mathbf{Q}^\top\bigr), \label{eq:explicit-X-bar-eedist}
 \end{align}
-and the computation of the EE-distance reduces to
+where $\beta_0=\frac{2-2\cos\theta-\theta^2}{4(1 - \cos\theta)^2}$. Thus $\|\bar{\mathbf{u}}\|^2$ can be easily obtained from the already computed angle $\theta$ and the translation vector $\mathbf{u}$. The EE-distance function reduces to
 \begin{align}
     \widehat{D}(\mathbf{V}, \mathbf{W}) = \sqrt{2\theta^2 + \mathbf{u}^T\bar{\mathbf{X}}\mathbf{u}},
 \end{align}
-where $\bar{\mathbf{X}}$ is explicitly computed by \eqref{eq:explicit-X-bar-eedist}.
+where $\bar{\mathbf{X}}$ is explicitly computed by \eqref{eq:explicit-X-bar-eedist}. More succinctly, the algorithm for computing $\widehat{D}(\mathbf{V}, \mathbf{W})$ is as follows:
+\begin{algorithm}
+    \caption{Computation of $\widehat{D}(\mathbf{V}, \mathbf{W})$}
+    \begin{algorithmic}[1]\label{alg:dhat-se3}
+        \Statex \textbf{Input:} Matrices $\mathbf{V}, \mathbf{W}$
+        \Statex \textbf{Output:} Distance $\widehat{D}$
+        % \Statex
+        
+        \State Compute $\mathbf{Z} \gets \mathbf{V}^{-1}\mathbf{W}$
+        \State Extract $\mathbf{Q} \gets \text{rotation part of } \mathbf{Z}$ and $\mathbf{u} \gets \text{translation part of } \mathbf{Z}$
 
-\textbf{INSERIR PSEUDOCODIGO PARA O CALCULO DE DHAT}
+        \State $u \gets \frac{1}{2} (\tr(\mathbf{Q}) - 1)$
+        \State $v \gets \frac{1}{2\sqrt{2}} \|\mathbf{Q} - \mathbf{Q}^\top\|_F$
+        \State $\theta \gets \text{atan2}(v, u)$
 
+        \State $\beta_0 \gets \frac{2 - 2u - \theta^2}{4(1 - u)^2}$
+        \State $\bar{\mathbf{X}} \gets \mathbf{I}(1 - 2\beta_0) + (\mathbf{Q} + \mathbf{Q}^\top)\beta_0$
 
+        \State $\widehat{D} \gets \sqrt{2\theta^2 + \mathbf{u}^\top \bar{\mathbf{X}} \mathbf{u}}$
+    \end{algorithmic}
+\end{algorithm}
 
-\begin{itemize}
-    \item Extract the rotation part $\mathbf{Q} \in \text{SO}(3)$ and the translation part $\mathbf{t} \in \mathbb{R}^3$ out of $\mathbf{V}^{-1}\mathbf{W}$.
+It can be shown that the result of $\|\log(\mathbf{V}^{-1}\mathbf{W})\|_F$ is independent of the choice of $\log(\mathbf{V}^{-1}\mathbf{W})$ in the edge cases where $\mathbf{V}^{-1}\mathbf{W}$ has negative eigenvalues (see the discussion in \cref{subs:explconst}). This is evident in the fact that \cref{alg:dhat-se3} does not include any components that require a choice to be made.
 
-    \item Compute $u \triangleq \frac{1}{2}\bigl(\text{Tr}(\mathbf{Q})-1\bigr)$ and $v \triangleq \frac{1}{2\sqrt{2}}\|\mathbf{Q}{-}\mathbf{Q}^{\top}\|_F$. One can see that $u = \cos(\theta)$ and $v=\sin(\theta)$, in which $\theta \in [0, \pi]$ is the rotation angle related to $\mathbf{Q}$. Compute $\theta = \text{atan2}(v,u)$.
+Note that $\beta_0$ is well-defined for all $\theta \in (0,\pi]$. When $\theta=0$, we just need to take the limit to obtain $\beta_0=-1/12$ (see \cref{app:discontinuity-beta-EEdist}). To identify the points of non-differentiability of $\widehat{D}$, it suffices to analyze the derivatives with the respect to the variables $\mathbf{Q}$ and $\mathbf{u}$. The analysis reveals that the only sources of non-differentiability occur when (type i) $\mathbf{Q}=\mathbf{Q}^\top$, $\mathbf{Q} \not= \mathbf{I}$ (i.e., at rotations of $\pi$ radians) or when (type ii) $\widehat{D}=0$. However, in both cases, the directional derivatives exist. Furthermore, $D_{\text{min},\mathcal{C}}$, as defined in \cref{def:distance-D-hat-arbitrary-elements}, can be taken as $\widehat{D}$ when $\theta = \pi$  and $\mathbf{u} = \mathbf{0}$, which gives $D_{\text{min},\mathcal{C}} = \sqrt{2}\pi$. Thus, when $\widehat{D} < D_{\text{min},\mathcal{C}}$, it necessarily follows that $\theta < \pi$, avoiding the non-differentiable points of type i. Additionally, when $\widehat{D} > 0$, the non-differentiable points of type ii are also avoided. Therefore, the condition $0 < \widehat{D} < \sqrt{2}\pi$ guarantees that $\widehat{D}$ is differentiable, as required in \cref{def:distance-D-hat-arbitrary-elements}.
 
-    \item Compute $\alpha \triangleq \frac{2-2u-\theta^2}{4(1-u)^2}$. Compute
-    $\mathbf{M} \triangleq  \mathbf{I}(1-2\alpha) +  (\mathbf{Q}+\mathbf{Q}^{\top})\alpha$.
-
-    \item Finally, $\widehat{D}= \sqrt{2\theta^2 + \mathbf{t}^\top \mathbf{M}\mathbf{t}}$.
-
-\end{itemize}
-
-It can be shown that the result of $\|\log(\mathbf{V}^{-1}\mathbf{W})\|_F$ is independent of the choice of $\log(\mathbf{V}^{-1}\mathbf{W})$ in the edge cases where $\mathbf{V}^{-1}\mathbf{W}$ has negative eigenvalues (see the discussion in \cref{subs:explconst}). This is evident in the fact that the algorithm does not include any components that require a choice to be made.
-
-Note that $\alpha$ is well-defined for all $\theta \in (0,\pi]$. When $\theta=0$, we just need to take the limit to obtain $\alpha=-1/12$. To identify the points of non-differentiability of $\widehat{D}$, it suffices to analyze the derivatives with the respect to the variables $\mathbf{Q}$ and $\mathbf{t}$. The analysis reveals that the only sources of non-differentiability occur when (type i) $\mathbf{Q}=\mathbf{Q}^\top$, $\mathbf{Q} \not= \mathbf{I}$ (i.e., at rotations of $\pi$ radians) or when (type ii) $\widehat{D}=0$. However, in both cases, the directional derivatives exist. Furthermore, $D_{\text{min},\mathcal{C}}$, as defined in \cref{def:distance-D-hat-arbitrary-elements}, can be taken as $\widehat{D}$ when $\theta = \pi$  and $\mathbf{t} = \mathbf{0}$, which gives $D_{\text{min},\mathcal{C}} = \sqrt{2}\pi$. Thus, when $\widehat{D} < D_{\text{min},\mathcal{C}}$, it necessarily follows that $\theta < \pi$, avoiding the non-differentiable points of type i. Additionally, when $\widehat{D} > 0$, the non-differentiable points of type ii are also avoided. Therefore, the condition $0 < \widehat{D} < \sqrt{2}\pi$ guarantees that $\widehat{D}$ is differentiable, as required in \cref{def:distance-D-hat-arbitrary-elements}.
-
-To compute the terms of the vector field, we need to compute the derivative $\text{L}_{\mathbf{V}}[\widehat{D}](\mathbf{H},\mathbf{H}_d(s^*))$. While this can be done analytically, we believe it is simpler to implement a numerical approach by evaluating the left-hand side of \eqref{eq:Leq} for $\boldsymbol{\zeta} = \mathbf{e}_i$ with a small $\epsilon$.
+To compute the terms of the vector field, we need to compute the derivative $\text{L}_{\mathbf{V}}[\widehat{D}](\mathbf{H}, \mathbf{H}_d(s^*))$. While this can be done analytically, we believe it is simpler to implement a numerical approach by evaluating the left-hand side of \eqref{eq:Leq} for $\boldsymbol{\zeta} = \mathbf{e}_i$ with a small $\epsilon$.
 
 % \begin{comment}
 \section{Analytic Derivative}
