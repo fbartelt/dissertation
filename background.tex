@@ -55,11 +55,40 @@ In this section, we introduce \emph{Lie groups} and \emph{Lie algebras}, which a
 \begin{definition}[Lie group]
     A \emph{Lie group} is a smooth manifold $G$ satisfying the following properties:
     \begin{property}
-        \item $G$ is a group (with identity element denoted $G_e$)
-        \item $G$ is a topological group. Furthermore, the group operation $\circ: G\times G\to G$ and the inverse map $\cdot^{-1}: G\to G$ are smooth.
+        \item $G$ is a group (with identity element denoted $\iota$)
+        \item $G$ is a topological group (the group operation and the inverse map are continuous). Furthermore, the group operation $\circ: G\times G\to G$ and the inverse map $\cdot^{-1}: G\to G$ are smooth.
     \end{property}
 \end{definition}
-Given a Lie group $G$, we can define two additional operations: the left translation $L_{\mathbf{X}}: G\to G$ and the right translation $R_{\mathbf{X}}: G\to G$ for any $\mathbf{X}\in G$. These operations are defined as $L_{\mathbf{X}}(\mathbf{Y}) = \mathbf{X}\circ\mathbf{Y}$ and $R_{\mathbf{X}}(\mathbf{Y}) = \mathbf{Y}\circ\mathbf{X}$, respectively. Since the group operation and the inverse map are smooth, the left and right translations are diffeomorphisms.
+\begin{definition}
+    If $G$ and $H$ are Lie groups, a \emph{homomorphism} $\phi: G\to H$ is a smooth map (between manifolds $G$ and $H$) that is also a group homomorphism, that is, if $\circ$ and $\star$ are the group operations in $G$ and $H$, respectively, then $\phi(\mathbf{X}\circ\mathbf{Y}) = \phi(\mathbf{X})\star\phi(\mathbf{Y})$ for all $\mathbf{X},\mathbf{Y}\in G$. If this map is also a diffeomorphism (the inverse map $\phi^{-1}$ is also a homomorphism), then $\phi$ is an \emph{isomorphism}. In this case, we say that $G$ and $H$ are \emph{isomorphic} and denote this by $G\cong H$.
+\end{definition}
+
+Given a Lie group $G$, we can define two operations: the left translation $L_{\mathbf{X}}: G\to G$ and the right translation $R_{\mathbf{X}}: G\to G$ for any $\mathbf{X}\in G$. These operations are defined as $L_{\mathbf{X}}(\mathbf{Y}) = \mathbf{X}\circ\mathbf{Y}$ and $R_{\mathbf{X}}(\mathbf{Y}) = \mathbf{Y}\circ\mathbf{X}$, respectively. Since the group operation and the inverse map are smooth, the left and right translations are diffeomorphisms.
+
+\subsubsection{Matrix Lie Groups}
+In general lines, Lie groups that can be represented by matrices are called \emph{matrix Lie groups}. These groups are defined by a set of matrices that satisfy the group properties. The group operation is matrix multiplication, the identity element is the identity matrix, and the inverse map is the matrix inverse. For a more precise definition, we need to define the \emph{general linear group} and the concept of \emph{convergence} of a sequence of matrices.
+\begin{definition}
+    The \emph{general linear group} over the real numbers, denoted $\text{GL}(n, \mathbb{R})$, is the set of all invertible $n\times n$ matrices with real entries. The general linaer group over the complex numbers, denoted $\text{GL}(n, \mathbb{C})$, is the group of all invertible $n\times n$ matrices with complex entries.
+\end{definition}
+\begin{definition}
+    Let $\mathbf{X}_k$ be a sequence of complex matrices in $\mathbb{C}^{n\times n}$. We say that $\mathbf{X}_k$ \emph{converges} to a matrix $\mathbf{Y}$ if each entry of $\mathbf{X}_k$ converges to the corresponding entry of $\mathbf{Y}$ as $k\to\infty$. This means that for each $i,j\in[1,n]$, the sequence $\{\mathbf{X}_k\}_{ij}$ converges to $\mathbf{Y}_{ij}$.
+\end{definition}
+With both definitions, we can now define a matrix Lie group formally.
+\begin{definition}
+    A \emph{matrix Lie group} is a subgroup $G$ of $\text{GL}(n, \mathbb{C})$ with the property that if $\mathbf{X}_k$ is a sequence of matrices in $G$, and $\mathbf{X}_k$ converges to some matrix $\mathbf{Y}$, then either $\mathbf{Y}$ is in $G$ or $\mathbf{Y}$ is not invertible. This property is equivalent to sayint that $G$ is a \emph{closed subgroup} of $\text{GL}(n, \mathbb{C})$.
+\end{definition}
+
+Although present in the context of any Lie group, we can define two interesting properties more easily for matrix Lie groups. The knowledge of \emph{compactness} and \emph{connectedness} can reduce complexity in the study of these groups.
+\begin{definition}
+    A matrix Lie group $G\subset\text{GL}(n,\mathbb{C})$ is said to be \emph{compact} if and only if:
+    \begin{property}
+        \item whenever a sequence $\mathbf{X}_k$ is in $G$ and $\mathbf{X}_k$ converges to $\mathbf{Y}$, then $\mathbf{Y}$ is in $G$;
+        \item there exists a constant $C>0$ such that for all $\mathbf{X}\in G$, $\|\{\mathbf{X}\}_{ij}\|\leq C$ for all $i,j\in[1,n]$.
+    \end{property}
+\end{definition}
+\begin{definition}
+    A matrix Lie group $G$ is termed \emph{connected} if for all $\mathbf{X},\mathbf{Y}\in G$, there exists a continuous path $\mathbf{P}(\sigma)\in G$, $a\le\sigma\le b$ such that $\mathbf{P}(a) = \mathbf{X}$ and $\mathbf{P}(b) = \mathbf{Y}$. The \emph{identity component} of $G$, denoted $G_\iota$, is the set $\mathbf{X}\in G$ for which there exists a continuous path $\mathbf{P}(\sigma)\in G$, $a\le\sigma\le b$ such that $\mathbf{P}(a) = \iota=\mathbf{I}$ and $\mathbf{P}(b) = \mathbf{X}$.
+\end{definition}
 
 \subsubsection{Examples of Lie groups}
 \begin{example}\label{ex:general-linear-group-special-linear-group}
