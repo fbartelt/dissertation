@@ -217,8 +217,7 @@ The name arises from the fact that, for any $\mathbf{A} \not= \mathbf{B}$, $\wid
     Let $\mathbf{H} \notin \mathcal{C} \cup \mathcal{P}$. Choosing $\mathbf{V} = \mathbf{H}$, $\mathbf{W} = \mathbf{H}_d(s^*) = \mathbf{H}^*$, and using the property of chainable functions:
     \begin{align}        
         \begin{split}
-            & D(\mathbf{H}) = \widehat{D}(\mathbf{H},\mathbf{H}^*) =  \\
-            & \widehat{D}\bigl(\mathbf{H},\Phi(\sigma,\mathbf{H},\mathbf{H}^*)\bigr){+} \widehat{D}\bigl(\Phi(\sigma,\mathbf{H},\mathbf{H}^*),\mathbf{H}^*\bigr).        
+            & D(\mathbf{H}) = \widehat{D}(\mathbf{H},\mathbf{H}^*) = \widehat{D}\bigl(\mathbf{H},\Phi(\sigma,\mathbf{H},\mathbf{H}^*)\bigr){+} \widehat{D}\bigl(\Phi(\sigma,\mathbf{H},\mathbf{H}^*),\mathbf{H}^*\bigr).        
         \end{split}
     \end{align}
 Now, $\widehat{D}\bigl(\Phi(\sigma,\mathbf{H},\mathbf{H}^*),\mathbf{H}^*\bigr) \geq D\bigl(\Phi(\sigma,\mathbf{H},\mathbf{H}^*)\bigr)$. Thus:
@@ -242,7 +241,10 @@ Intuitively, this lemma means that from any point $\mathbf{H} \notin \mathcal{C}
 \label{subs:conv-result}
 With the established definitions, lemmas, and propositions, we can now prove the main result of this text. To do so, we first require the following lemma.
 
-\begin{lemma} \label{lemma:xiNvanishing} If $\widehat{D}$ is an EE-distance function (\cref{def:distance-D-hat-arbitrary-elements}), then $\lim_{\mathbf{H} \rightarrow \mathcal{C}} k_N(\mathbf{H}) \boldsymbol{\xi}_N(\mathbf{H}) = \mathbf{0}$.
+\begin{lemma} \label{lemma:xiNvanishing} If $\widehat{D}$ is an EE-distance function (\cref{def:distance-D-hat-arbitrary-elements}), then 
+    \begin{align}
+        \lim_{\mathbf{H} \rightarrow \mathcal{C}} k_N(\mathbf{H}) \boldsymbol{\xi}_N(\mathbf{H}) = \mathbf{0}.
+    \end{align}
 \end{lemma}
 \begin{proof}
     From \cref{def:normal-vector}, when $\mathbf{H} \rightarrow \mathcal{C}$, the quantity $\text{L}_{\mathbf{V}}[\widehat{D}](\mathbf{V},\mathbf{W})$ is evaluated when $\mathbf{V} = \mathbf{W}$ (i.e., $\mathbf{H} = \mathbf{H}_d(s^*)$). According to \cref{def:distance-D-hat-arbitrary-elements}, this derivative does not necessarily exist, but all directional derivatives should exist and be bounded. Since $k_N(\mathbf{H}) = 0$ when $\mathbf{H} \rightarrow \mathcal{C}$, this concludes the result. 

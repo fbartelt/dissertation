@@ -272,7 +272,23 @@ Now, applying the frobenius norm, we have
     \end{bmatrix}\right)^\frac{1}{2} \\
     &= \sqrt{\|\log\mathbf{Q}\|_F^2 + \|\mathbf{u}\|^2} = \sqrt{2\theta^2 + \|\mathbf{u}\|^2},
 \end{align}
-where $\theta$ is obtained using the same procedure as in \cref{sec:addthis}.
+where $\theta$ is the rotation angle as in \cref{app:rodrigues-formula}. Thus, in this case the algorithm to compute the EE-distance is a simplified version of \cref{alg:dhat-se3}:
+\begin{algorithm}
+    \caption{Computation of $\widehat{D}(\mathbf{V}, \mathbf{W})$ in $\text{ISE}(3)$}
+    \begin{algorithmic}[1]\label{alg:dhat-ise3}
+        \Statex \textbf{Input:} Matrices $\mathbf{V}, \mathbf{W}$
+        \Statex \textbf{Output:} Distance $\widehat{D}$
+        % \Statex
+        
+        \State Compute $\mathbf{Z} \gets \mathbf{V}^{-1}\mathbf{W}$
+        \State Extract $\mathbf{Q} \gets \text{rotation part of } \mathbf{Z}$ and $\mathbf{u} \gets \text{translation part of } \mathbf{Z}$
+
+        \State $u \gets \frac{1}{2} (\tr(\mathbf{Q}) - 1)$
+        \State $v \gets \frac{1}{2\sqrt{2}} \|\mathbf{Q} - \mathbf{Q}^\top\|_F$
+        \State $\theta \gets \text{atan2}(v, u)$
+        \State $\widehat{D} \gets \sqrt{2\theta^2 + \mathbf{u}^\top\mathbf{u}}$
+    \end{algorithmic}
+\end{algorithm}
 
 % To begin, we define an error function $\widehat{D}\equiv\widehat{D}(\mathbf{p}, \mathbf{R}, \mathbf{p}_d, \mathbf{R}_d)$ that measures the discrepancy between a pose $(\mathbf{p}, \mathbf{R})$ and a desired pose $(\mathbf{p}_d, \mathbf{R}_d)$. The error function is expressed as follows
 % \begin{equation}

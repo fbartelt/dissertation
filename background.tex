@@ -59,11 +59,21 @@ In this section, we introduce \emph{Lie groups} and \emph{Lie algebras}, which a
         \item $G$ is a topological group (the group operation and the inverse map are continuous). Furthermore, the group operation $\circ: G\times G\to G$ and the inverse map $\cdot^{-1}: G\to G$ are smooth.
     \end{property}
 \end{definition}
+
+The mapping between Lie groups is a fundamental concept and will play an important role in our extension, specifically for drawing connections between our extension and the vector field strategy in Euclidean space. Usually these mappings have additional properties and are defined as follows:
 \begin{definition}
     If $G$ and $H$ are Lie groups, a \emph{homomorphism} $\phi: G\to H$ is a smooth map (between manifolds $G$ and $H$) that is also a group homomorphism, that is, if $\circ$ and $\star$ are the group operations in $G$ and $H$, respectively, then $\phi(\mathbf{X}\circ\mathbf{Y}) = \phi(\mathbf{X})\star\phi(\mathbf{Y})$ for all $\mathbf{X},\mathbf{Y}\in G$. If this map is also a diffeomorphism (the inverse map $\phi^{-1}$ is also a homomorphism), then $\phi$ is an \emph{isomorphism}. In this case, we say that $G$ and $H$ are \emph{isomorphic} and denote this by $G\cong H$.
 \end{definition}
 
-Given a Lie group $G$, we can define two operations: the left translation $L_{\mathbf{X}}: G\to G$ and the right translation $R_{\mathbf{X}}: G\to G$ for any $\mathbf{X}\in G$. These operations are defined as $L_{\mathbf{X}}(\mathbf{Y}) = \mathbf{X}\circ\mathbf{Y}$ and $R_{\mathbf{X}}(\mathbf{Y}) = \mathbf{Y}\circ\mathbf{X}$, respectively. Since the group operation and the inverse map are smooth, the left and right translations are diffeomorphisms.
+There are two important isomorphisms in Lie groups that are important for the concept of Lie algebras. These are the translation isomorphisms, which are defined as follows:
+\begin{definition}
+    Given a Lie group $G$, we define two operations: the left translation $L_{\mathbf{X}}: G\to G$ and the right translation $R_{\mathbf{X}}: G\to G$ for any $\mathbf{X}\in G$. These operations are defined as 
+    \begin{align}
+        L_{\mathbf{X}}(\mathbf{Y}) &= \mathbf{X}\circ\mathbf{Y}\\
+        R_{\mathbf{X}}(\mathbf{Y}) &= \mathbf{Y}\circ\mathbf{X},
+    \end{align}
+    respectively. Since the group operation and the inverse map are smooth, the left and right translations are diffeomorphisms, and thus isomorphisms.
+\end{definition}
 
 \subsubsection{Matrix Lie Groups}
 In general lines, Lie groups that can be represented by matrices are called \emph{matrix Lie groups}. These groups are defined by a set of matrices that satisfy the group properties. The group operation is matrix multiplication, the identity element is the identity matrix, and the inverse map is the matrix inverse. For a more precise definition, we need to define the \emph{general linear group} and the concept of \emph{convergence} of a sequence of matrices.
@@ -87,12 +97,12 @@ Although present in the context of any Lie group, we can define two interesting 
     \end{property}
 \end{definition}
 \begin{definition}
-    A matrix Lie group $G$ is termed \emph{connected} if for all $\mathbf{X},\mathbf{Y}\in G$, there exists a continuous path $\mathbf{P}(\sigma)\in G$, $a\le\sigma\le b$ such that $\mathbf{P}(a) = \mathbf{X}$ and $\mathbf{P}(b) = \mathbf{Y}$. The \emph{identity component} of $G$, denoted $G_\iota$, is the set $\mathbf{X}\in G$ for which there exists a continuous path $\mathbf{P}(\sigma)\in G$, $a\le\sigma\le b$ such that $\mathbf{P}(a) = \iota=\mathbf{I}$ and $\mathbf{P}(b) = \mathbf{X}$.
+    A matrix Lie group $G$ is termed \emph{connected} if for all $\mathbf{X},\mathbf{Y}\in G$, there exists a continuous path $\mathbf{G}(\sigma)\in G$, $a\le\sigma\le b$ such that $\mathbf{G}(a) = \mathbf{X}$ and $\mathbf{G}(b) = \mathbf{Y}$. The \emph{identity component} of $G$, denoted $G_\iota$, is the set $\mathbf{X}\in G$ for which there exists a continuous path $\mathbf{G}(\sigma)\in G$, $a\le\sigma\le b$ such that $\mathbf{G}(a) = \iota=\mathbf{I}$ and $\mathbf{G}(b) = \mathbf{X}$.
 \end{definition}
 
 \subsubsection{Examples of Lie groups}
 \begin{example}\label{ex:general-linear-group-special-linear-group}
-    The \emph{general linear group} $\text{GL}(n, \mathbb{R})$ is a Lie group consisting of all invertible $n\times n$ matrices with real entries. The group operation is matrix multiplication, and the identity element is the identity matrix $\mathbf{I}_n$. The inverse map is the matrix inverse. The \emph{special linear group} $\text{SL}(n, \mathbb{R})$ is a subgroup of $\text{GL}(n, \mathbb{R})$ consisting of all matrices with determinant equal to 1.
+    The \emph{special linear group} $\text{SL}(n, \mathbb{R})$ (resp. $\text{SL}(n, \mathbb{C})$) is a subgroup of $\text{GL}(n, \mathbb{R})$ (resp. $\text{GL}(n, \mathbb{C})$) consisting of invertible matrices with determinant equal to 1.
 \end{example}
 \begin{example}\label{ex:orthogonal-group-special-orthogonal-group}
     The \emph{orthogonal group} $\text{O}(n)$ is the Lie group of distance-preserving transformation and comprises rotations and reflections. It consists of all $n\times n$ orthogonal matrices:
@@ -125,7 +135,7 @@ Although present in the context of any Lie group, we can define two interesting 
     \begin{align}
         \text{T}(n) = \left\{\begin{bmatrix}
             \mathbf{I}_n & \mathbf{p} \\ \mathbf{0} & 1
-        \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} | \mathbf{p}\in\mathbb{R}^n\right\}.
+        \end{bmatrix} \in \text{SE}(n) | \mathbf{p}\in\mathbb{R}^n\right\}.
     \end{align}
 \end{example}
 \begin{example}\label{ex:independent-translation-rotation-ISE}
@@ -145,7 +155,45 @@ Although present in the context of any Lie group, we can define two interesting 
     \end{align}
     Although they are isomorphic, we will use the representation $\mathbb{R}^n\times \text{SO}(n)$ to denote tuples of translations and rotations $(\mathbf{p},\mathbf{R})$, and the representation $\text{ISE}(n)$ to denote elements represented as the matrices in \eqref{eq:ISE-group}. Note that we can use both representations interchangeably, since we can easily extract the position and orientation from the matrix representation by means of matrix multiplication.
 \end{example}
-
+\begin{example}\label{ex:symplectic-group}
+    The \emph{real symplectic group} $\text{Sp}(2n)$ is the group of all $2n\times 2n$ real matrices that preserve a non-degenerate skew-symmetric bilinear form $\omega$. This group plays an important role in classical mechanics, specially in the study of Hamiltonian systems. The group is defined as
+    \begin{align}
+        \text{Sp}(2n) &= \left\{\mathbf{X}\in\mathbb{R}^{2n\times 2n} | \mathbf{X}^\top\boldsymbol{\Omega}\mathbf{X} = \boldsymbol{\Omega}\right\}\\
+        &= \left\{\mathbf{X}\in\mathbb{R}^{2n\times 2n} | -\boldsymbol{\Omega}\mathbf{X}^\top\boldsymbol{\Omega} = \mathbf{X}^{-1}\right\},
+    \end{align}
+    where 
+    \begin{align}
+        \boldsymbol{\Omega} = \begin{bmatrix}
+            \mathbf{0} & \mathbf{I}_n\\
+            -\mathbf{I}_n & \mathbf{0}
+        \end{bmatrix}.
+    \end{align}
+    The skew-symmetric bilinear form can be characterized by $\omega(x,y)=\langle x, \boldsymbol{\Omega}y\rangle\,\forall\,x,y\in\mathbb{R}^{2n}$. We can also define the \emph{complex symplectic group} $\text{Sp}(2n, \mathbb{C})$ as the group of all $n\times n$ complex matrices that preserve the same non-degenerate skew-symmetric bilinear form, thus the group definition is the same, but with matrices with complex entries.
+\end{example}
+\begin{example}
+    The \emph{indefinite orthogonal group} (or generalized orthogonal group) $\text{O}(p,q)$ is the group of all $n\times n$ real matrices
+    \begin{align}
+        \text{O}(p,q) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} | \mathbf{X}^\top\mathbf{I}_{p,q}\mathbf{X} = \mathbf{I}_{p,q}\right\},
+    \end{align}
+    where
+    \begin{align}
+        \mathbf{I}_{p,q} = \begin{bmatrix}
+            \mathbf{I}_p & \mathbf{0}\\
+            \mathbf{0} & -\mathbf{I}_q
+        \end{bmatrix}.
+    \end{align}
+    Similarly, we can define the \emph{indefinite special orthogonal group} $\text{SO}(p,q)$ as the group
+    \begin{align}
+        \text{SO}(p, q) = \left\{\mathbf{X}\in\text{O}(p, q) | \det\mathbf{X}=1\right\}.
+    \end{align}
+    The group $\text{O}(1,3)$ is of particular interest in the study of special relativity, and is denoted the \emph{Lorentz group}. This group preserves the Lorentz metric
+    \begin{align}
+        (t,x,y,z) \mapsto t^2 - x^2 - y^2 - z^2.
+    \end{align}
+    The Lorentz group is also represented as $\text{O}(3,1)$, which would preserve the metric $x^2 + y^2 + z^2 - t^2$.
+    If we restrict this group to transformations that preserve orientation, we obtain the \emph{proper Lorentz group} $\text{SO}(1,3)$. Furthermore, the subgrtoup of all Lorentz transformations that preserve orientation and the time direction is called the  \emph{proper orthochronous Lorentz group} $\text{SO}^+(1,3)$, this is the identity component $G_\iota$ of $\text{SO}(1,3)$.
+    
+\end{example}
 % ADD Examples for indefinite orthogonal (with lorentz), heisenberg?, and symplectic groups
 \begin{example}\label{ex:non-matrix-lie-group}
     An example of a Lie group that is not a matrix Lie group is given in \citet[p. 25]{Hall2015} and reproduced here:
@@ -154,9 +202,35 @@ Although present in the context of any Lie group, we can define two interesting 
     \begin{align}
         (x_1, y_1, \theta_1)\circ (x_2, y_2, \theta_2) = (x_1 + x_2, y_1 + y_2, e^{ix_1y_2}\theta_1\theta_2),
     \end{align}
-    is a Lie group without a matrix representation. The identity element is $(0, 0, 1)$, and the inverse map is $(x, y, \theta)^{-1} = (-x, -y, e^{ixy}\theta^{-1})$.
+    is a Lie group without a matrix representation. The identity element is $\iota=(0, 0, 1)$, and the inverse map is $(x, y, \theta)^{-1} = (-x, -y, e^{ixy}\theta^{-1})$.
 \end{example} 
 
+\subsection{Lie algebras}
+\begin{definition}
+    A \emph{real Lie algebra} is a real vector space $\mathfrak{g}$, endowed with a map $[\cdot, \cdot]:\mathfrak{g}\times\mathfrak{g}\to\mathfrak{g}$, called the \emph{Lie bracket} on $\mathfrak{g}$, that satisfies the following properties for all $\mathbf{A},\mathbf{B},\mathbf{C}\in\mathfrak{g}$:
+    \begin{property}
+        \item \emph{Bilinearity}: For all $a,b\in\mathbb{R}$,
+        \begin{align*}
+            [a\mathbf{A}+b\mathbf{B}, \mathbf{C}] &= a[\mathbf{A}, \mathbf{C}] + b[\mathbf{B}, \mathbf{C}], \\
+             [\mathbf{C}, a\mathbf{A}+b\mathbf{B}] &= a[\mathbf{C}, \mathbf{A}] + b[\mathbf{C}, \mathbf{B}];
+        \end{align*}
+        \item \emph{skew-symmetry}: 
+        \begin{align*}
+            [\mathbf{A}, \mathbf{B}] = -[\mathbf{B}, \mathbf{A}];
+        \end{align*} \label{prop:lie-algebra-skew-symmetry}
+        \item \emph{Jacobi identity}:
+        \begin{align*}
+            [\mathbf{A}, [\mathbf{B}, \mathbf{C}]] + [\mathbf{B}, [\mathbf{C}, \mathbf{A}]] + [\mathbf{C}, [\mathbf{A}, \mathbf{B}]] = 0.
+        \end{align*}
+    \end{property}
+\end{definition}
+Note that \cref{prop:lie-algebra-skew-symmetry} implies that $[\mathbf{A}, \mathbf{A}]=0\,\forall\,\mathbf{A}\in\mathfrak{g}$. 
+
+The Lie algebra $\mathfrak{g}$ can be regarded as the tangent space at the identity $T_\iota G$
+
+\begin{definition}
+    If $\mathfrak{g}$ and $\mathfrak{h}$ are Lie algebras with Lie brackets $[\cdot, \cdot]_\mathfrak{g}$ and $[\cdot, \cdot]_\mathfrak{h}$, respectively, a linear map $\mathcal{H}:\mathfrak{g}\to\mathfrak{h}$ is denoted a \emph{homomorphism} if it preserves the Lie bracket, that is, $\mathcal{H}([\mathbf{A}, \mathbf{B}]_\mathfrak{g}) = [\mathcal{H}(\mathbf{A}), \mathcal{H}(\mathbf{B})]_\mathfrak{h}$. Furthermore, if $\mathcal{H}$ is a bijection, then $\mathcal{H}^{-1}$ is also a homomorphism, and $\mathcal{H}$ is an \emph{isomorphism}. In this case, we say that $\mathfrak{g}$ and $\mathfrak{h}$ are \emph{isomorphic} and denote this by $\mathfrak{g}\cong\mathfrak{h}$.
+\end{definition}
 % Its Lie algebra $\mathfrak{ise}(n)\cong\mathbb{R}^n\oplus\mathfrak{so}(n)$ and has the following representation:
 %     \begin{align}
 %         \mathfrak{ise}(n) &= \left\{\begin{bmatrix}
@@ -169,6 +243,14 @@ Although present in the context of any Lie group, we can define two interesting 
 %             \mathbf{0} & \mathbf{0} & 0
 %         \end{bmatrix} \in \mathbb{R}^{(2n+1)\times(2n+1)}\,;\, \mathbf{S}\in\mathfrak{so}(n),\,\mathbf{u}\in\mathbb{R}^n\right\}.
 %     \end{align}
+
+\begin{theorem}[Von Neumann and Cartan, 1927]
+    Let $G\subset\text{GL}(n, \mathbb{R})$ be a matrix Lie group. The set $\mathfrak{g}$ defined as
+    \begin{align}
+        \mathfrak{g} = \left\{\mathbf{A}\in\mathbb{R}^{n\times n} | \exp(\sigma\mathbf{A})\in G\,\forall\,\sigma\in\mathbb{R}\right\}
+    \end{align}
+    is a vector space equal to the tangent space $T_\iota G$ at the identity $\iota$. Furthermore, $\mathfrak{g}$ is closed under the Lie bracket $[\mathbf{A}, \mathbf{B}] = \mathbf{A}\mathbf{B} - \mathbf{B}\mathbf{A}\,\forall\,\mathbf{A},\mathbf{B}\in\mathbb{R}^{n\times n}$
+\end{theorem}
 
 In this section, we recall several properties of Lie groups and Lie algebras that will be essential for developing our extension. First, a Lie group $G$ is a smooth manifold equipped with a group structure. The Lie algebra $\mathfrak{g}$ associated with $G$ has two equivalent definitions, either of which we will use as appropriate. One definition describes the Lie algebra as the tangent space at the group identity $G_e$ \citep[p. 16]{Gallier2020}. Alternatively, a Lie algebra can be viewed as the space of all smooth vector fields on the Lie group, under the Lie bracket operation on vector fields \citep[p. 190]{Lee2012}. As said previously, we will consider connected matrix Lie groups, and henceforth we will denote by $n$ the dimension of any (square) matrix in a given group, and the dimension of the group by $m$, which is the same as the dimension of the associated Lie algebra.
 
@@ -240,17 +322,16 @@ Note that $\SL$ is indeed a \emph{linear operator}. Some common examples of isom
         \end{bmatrix}
     \end{align}
     Note that, more generally, $\mathfrak{so}(n, 1) = \left\{\begin{bmatrix} \mathbf{A} & \mathbf{a}\\
-              \mathbf{a}^T & 0 \end{bmatrix} \in \mathbb{R}^{(n+1) \times (n+1)};\; \mathbf{a}\in\mathbb{R}^n, \mathbf{A}^T=-\mathbf{A}\right\}$
+              \mathbf{a}^T & 0 \end{bmatrix} \in \mathbb{R}^{(n+1) \times (n+1)}| \mathbf{a}\in\mathbb{R}^n, \mathbf{A}^T=-\mathbf{A}\right\}$
 \end{example}
 \begin{example}
     The symplectic Lie algebra $\mathfrak{sp}(2n, \mathbb{R})$ is defined as
     \begin{align}
         \begin{split}
-            \mathfrak{sp}(2n, \mathbb{R}) &= \left\{ \mathbf{X} \in \mathbb{R}^{2n\times 2n} : \mathbf{X}^T\mathbf{J}_{n} + \mathbf{J}_{n}\mathbf{X} = 0 \right\} \\&= \left\{ \begin{bmatrix} \mathbf{A} & \mathbf{B} \\ \mathbf{C} & -\mathbf{A}^T \end{bmatrix};\; \mathbf{B} = \mathbf{B}^\top,\, \mathbf{C} = \mathbf{C}^\top\right\},\\
-            \text{where }\mathbf{J}_{n} &= \begin{bmatrix} \mathbf{0} & \mathbf{I}_n \\ -\mathbf{I}_n & \mathbf{0} \end{bmatrix}.            
+            \mathfrak{sp}(2n, \mathbb{R}) &= \left\{ \mathbf{A} \in \mathbb{R}^{2n\times 2n} | \mathbf{A}^T\boldsymbol{\Omega} + \boldsymbol{\Omega}\mathbf{A} = 0 \right\} \\&= \left\{ \begin{bmatrix} \mathbf{B} & \mathbf{C} \\ \mathbf{D} & -\mathbf{B}^T \end{bmatrix}\in \mathbb{R}^{2n\times 2n}| \mathbf{C} = \mathbf{C}^\top,\, \mathbf{D} = \mathbf{D}^\top\right\},            
         \end{split}
     \end{align}
-    Clearly, the dimension of $\mathfrak{sp}(2n, \mathbb{R})$ is $n(2n + 1)$. Thus,
+    where $\boldsymbol{\Omega}$ the same as defined in \autoref{ex:symplectic-group}. Clearly, the dimension of $\mathfrak{sp}(2n, \mathbb{R})$ is $n(2n + 1)$. Thus,
     for a vector $\boldsymbol{\zeta} = [\zeta_1, \dots, \zeta_{2n^2+n}]^\top$, an isomorphism $\SL$ is given by
     \begin{align}
         \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
