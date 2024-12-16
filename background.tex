@@ -252,6 +252,7 @@ The Lie algebra $\mathfrak{g}$ can be regarded as the tangent space at the ident
     is a vector space equal to the tangent space $T_\iota G$ at the identity $\iota$. Furthermore, $\mathfrak{g}$ is closed under the Lie bracket $[\mathbf{A}, \mathbf{B}] = \mathbf{A}\mathbf{B} - \mathbf{B}\mathbf{A}\,\forall\,\mathbf{A},\mathbf{B}\in\mathbb{R}^{n\times n}$
 \end{theorem}
 
+\subsubsection{Start of Automatica portion}
 In this section, we recall several properties of Lie groups and Lie algebras that will be essential for developing our extension. First, a Lie group $G$ is a smooth manifold equipped with a group structure. The Lie algebra $\mathfrak{g}$ associated with $G$ has two equivalent definitions, either of which we will use as appropriate. One definition describes the Lie algebra as the tangent space at the group identity $G_e$ \citep[p. 16]{Gallier2020}. Alternatively, a Lie algebra can be viewed as the space of all smooth vector fields on the Lie group, under the Lie bracket operation on vector fields \citep[p. 190]{Lee2012}. As said previously, we will consider connected matrix Lie groups, and henceforth we will denote by $n$ the dimension of any (square) matrix in a given group, and the dimension of the group by $m$, which is the same as the dimension of the associated Lie algebra.
 
 \begin{lemma}\label{lemma:lie-group-flow}
@@ -387,10 +388,13 @@ The following version of the chain rule using the \text{L} operator can be estab
 \begin{proof}
     Let $\boldsymbol{\zeta}(\sigma) = \Xi[\mathbf{G}](\sigma)$, according to \cref{lemma:very-important-fact} and \cref{def:Xioperator}, we can write that for a small $\epsilon$, $\mathbf{G}(\sigma+\epsilon) \approx \exp(\SL[\boldsymbol{\zeta}(\sigma)]\epsilon)\mathbf{G}(\sigma)$. 
     Applying the definition of the traditional derivative:
-    \begin{eqnarray}
-      &&\frac{d}{d\sigma} f\bigl(\mathbf{G}(\sigma)\bigr) = \lim_{\epsilon \rightarrow 0} \frac{f\bigl(\mathbf{G}(\sigma+\epsilon)\bigr){-}f\bigl(\mathbf{G}(\sigma)\bigr)}{\epsilon}  =\nonumber \\
-      && \lim_{\epsilon \rightarrow 0} \frac{f\bigl(\exp(\SL[\boldsymbol{\zeta}(\sigma)]\epsilon)\mathbf{G}(\sigma)\bigr){-}f\bigl(\mathbf{G}(\sigma)\bigr)}{\epsilon} = \text{L}[f](\mathbf{G}) \boldsymbol{\zeta}(\sigma)\nonumber 
-    \end{eqnarray}
+    \begin{align}
+        \begin{split}
+            \frac{d}{d\sigma} f\bigl(\mathbf{G}(\sigma)\bigr) &= \lim_{\epsilon \rightarrow 0} \frac{f\bigl(\mathbf{G}(\sigma+\epsilon)\bigr){-}f\bigl(\mathbf{G}(\sigma)\bigr)}{\epsilon}\\
+            &  =
+            \lim_{\epsilon \rightarrow 0} \frac{f\bigl(\exp(\SL[\boldsymbol{\zeta}(\sigma)]\epsilon)\mathbf{G}(\sigma)\bigr){-}f\bigl(\mathbf{G}(\sigma)\bigr)}{\epsilon} = \text{L}[f](\mathbf{G}) \boldsymbol{\zeta}(\sigma)      
+        \end{split}
+    \end{align}
     in which the defining property of $\text{L}[f]$ in equation \eqref{eq:Leq} was applied. This concludes the proof.
 \end{proof}
 
@@ -403,3 +407,110 @@ As a corollary of \cref{lemma:chainrule}:
 in which the dependency on $\mathbf{V}, \mathbf{W}$ was omitted on the right-hand side. 
 \end{corollary}
 
+\section{Adaptive Control}
+Adaptive control emerges in 1950 as a response to the design of aircraft autopilots. Aircrafts operate on a wide range of speeds and altitudes, and thus its parameters suffers great variations. This inspired the main idea of adaptive control, on-line estimation of parameters based on measured system signals \citep{Slotine1991}. This need is also present for other systems: robot manipulators may need to carry objects of unknown mass; chemical processes may have unmodeled dynamics; the fuel consumption of a vehicle might pose a challenge for common controllers. In this section, we will briefly present the main concepts of adaptive control, basing our discussion on the books \citet{Slotine1991}, \citet{Krstic1995} and \citet{Ioannou2012}.
+
+An adaptive controller is formed by the combination of a control law, designed for a nominal model, and an adaptation law, which is responsible for estimating the unkown parameters of the plant. The way the parameters estimator is designed divides the adaptive control into two main categories: \emph{direct} and \emph{indirect} adaptive control. In indirect adaptive control, the plant parameters are estimated on-line and are used to calculate the controller parameters. In the direct approach, the plant model is parameterized in terms of the controller parameters, and these are the parameters that get estimated on-line.
+
+More specifically, in indirect approach, the plant model $P(\theta)$ is parameterized with respect to some unkown parameter vector $\theta$. For example, using the Euler-Lagrange for dynamic systems, the plant would be represented by a regressor matrix $\mathbf{Y}$ and a parameter vector $\theta$, that contains the unknowns. The adaptation law performs an on-line estimation of the parameters $\widehat{\theta}(t)$, and one obtains a estimated plant $\widehat{P}(\widehat{\theta})$. This plant treated as the true model, and is used in the design of the controller: the controller parameters $\theta_c(t)$ are obtained by solving some equation dependent on the estimated plant. A block diagram of this approach is shown in \cref{fig:indirect-adaptive-control}.
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+        block/.style={draw, rectangle, minimum height=1.2cm, minimum width=2.4cm, align=center},
+        arrow/.style={->, >=stealth, thick},
+        label/.style={font=\small}
+    ]
+    
+    % Nodes
+    \node[block] (controller) {Controller \\ $C(\theta_c(t))$};
+    \node[block, right=2cm of controller] (plant) {Plant \\ $P(\theta)$};
+    \node[block, below=1cm of plant] (estimation) {Estimation of $\theta$};
+    \node[block, below=1.5cm of estimation] (calculation) {Calculations \\ $\theta_c(t) = F(\widehat{P}(\widehat{\theta}(t)))$};
+    
+    % Arrows between blocks
+    \draw[arrow] (controller) -- node[above, label] {$u$} (plant);
+    \draw[arrow] (plant) -- (estimation);
+    % \draw[arrow] (plant) |- node[right, label] {$r$} (estimation);
+    \draw[arrow] (estimation) -- node[right, label] {$\widehat{\theta}(t)$} (calculation);
+    \draw[arrow] (calculation) -| node[left, label] {$\theta_c(t)$} (controller);
+    
+    % Input and Output Arrows
+    \node[left=1.5cm of controller] (input) {Input $r$};
+    \draw[arrow] (input) -- (controller.west);
+    
+    \node[right=0.75cm of estimation] (rr) {$r$};
+    \draw[arrow] (rr) -- (estimation.east);
+
+    % \node[right=0.9cm of controller] (csign) {};
+    \draw[arrow] ($(controller.east)+(1,0)$) |- (estimation.west);
+    
+    \node[right=1.5cm of plant] (output) {$y$};
+    \draw[arrow] (plant.east) -- (output);
+    
+    % Feedback loop
+    \draw[arrow] ($(plant.east)+(0.75,0)$) |- ++(0,1.5) -| (controller.north);
+    \draw[arrow] ($(plant.east)+(0.75,0)$) |- node[left, label] {} ($(estimation.east)+(0, 0.25)$);
+    
+    \end{tikzpicture}
+    \caption{Block diagram of an indirect adaptive control system.}
+    \label{fig:indirect-adaptive-control}
+\end{figure}
+
+In direct adaptive control, the plant model $P(\theta)$ is parameterized in terms of the unkown controller parameter vector $\theta_c$, such that this parametrization with the true controller parameters $P_c(\theta_c)$ renders the same results as the true plant. This parametrization is used to estimate the values of the controller parameters $\widehat{\theta}_c(t)$, which are used to calculate the control signal. A block diagram of this approach is shown in \cref{fig:direct-adaptive-control}.
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+        block/.style={draw, rectangle, minimum height=1.2cm, minimum width=2.4cm, align=center},
+        arrow/.style={->, >=stealth, thick},
+        label/.style={font=\small}
+    ]
+    
+    % Nodes
+    \node[block] (controller) {Controller \\ $C(\widehat{\theta}_c)$};
+    \node[block, right=2cm of controller] (plant) {Plant \\ $P(\theta)\to P_c(\theta_c)$};
+    \node[block, below=1cm of plant] (estimation) {Estimation of $\theta_c$};
+    
+    % Arrows between blocks
+    \draw[arrow] (controller) -- node[above, label] {$u$} (plant);
+    \draw[arrow] (plant) -- (estimation);
+    \draw[arrow] (estimation.south) |- ++(0, -0.5) -| node[left, label] {$\widehat{\theta}_c$} (controller);
+    
+    % Input and Output Arrows
+    \node[left=1.5cm of controller] (input) {Input $r$};
+    \draw[arrow] (input) -- (controller.west);
+    
+    \node[right=0.75cm of estimation] (rr) {$r$};
+    \draw[arrow] (rr) -- (estimation.east);
+
+    % \node[right=0.9cm of controller] (csign) {};
+    \draw[arrow] ($(controller.east)+(1,0)$) |- (estimation.west);
+    
+    \node[right=1.5cm of plant] (output) {$y$};
+    \draw[arrow] (plant.east) -- (output);
+    
+    % Feedback loop
+    \draw[arrow] ($(plant.east)+(0.75,0)$) |- ++(0,1.5) -| (controller.north);
+    \draw[arrow] ($(plant.east)+(0.75,0)$) |- node[left, label] {} ($(estimation.east)+(0, 0.25)$);
+    
+    \end{tikzpicture}
+    \caption{Block diagram of a direct adaptive control system.}
+    \label{fig:direct-adaptive-control}
+\end{figure}
+
+A common usage of the indirect approach is in Model Reference Adaptive Control (MRAC), in which the plant is compared to a reference model, and the controller is designed to make the plant behave like the reference model. This reference model is designed such that it describes the desired relationship between the input and output of the plant. The controller is then designed to change the dynamics of the plant to match the reference model. This is the approach that will be used in this text.
+
+One common problem with adaptive control is the \emph{parameter drift}. This occurs when the input signal is not persistently exciting, that is, the input signal does not contain enough information to estimate the parameters. This can lead to the parameters drifting away from the true values, and the control system becoming unstable, even though it might initially seem stable for some interval. This is a common problem in practice, and several methods have been proposed to mitigate this issue.
+
+The most common and simple technique is the \emph{dead-zone} or \emph{deadband}. This technique consists of setting a threshold for the parameter adaptation, such that if the tracking error is below this threshold, the adaptation dynamics are set to $0$. For example, if the adaptation law is described by $\dot{\widehat{\boldsymbol{\theta}}} = -\gamma\mathbf{Y}\mathbf{e}$, then the dead-zone implies
+\begin{align*}
+    \dot{\widehat{\boldsymbol{\theta}}} = \begin{cases}
+        -\gamma\mathbf{Y}\mathbf{e} &\|\mathbf{e}\| > \epsilon,\\
+        \mathbf{0} & \|\mathbf{e}\| \le \epsilon,
+    \end{cases}
+\end{align*}
+where $\epsilon$ is the size of the dead-zone, or deadband.
+
+Many common other techniques reside under the same branch of \emph{leakage} modification, which is based on Lyapunov analysis. These techniques have the same format $\dot{\widehat{\boldsymbol{\theta}}} = -\gamma\mathbf{Y}\mathbf{e} - \gamma w\widehat{\boldsymbol{\theta}}$, where $w(t)$ is the \emph{leakage term}. The most common leakage term is the \emph{$\sigma$-modification}, that consists of setting a positive small constant $\sigma$ as the leakage term. If one combines the dead-zone with the $\sigma$-modification, the result is the \emph{switching $\sigma$} technique, where $w(t)=\sigma$, with $\sigma=\sigma_0$ if $\|\widehat{\boldsymbol{\theta}}\|\ge M$, or $\sigma=\mathbf{0}$ otherwise. The \emph{$\epsilon$-modification} consists of using the norm of the tracking error in the leakage term: $w(t) = \nu_0\|\mathbf{e}\|$.
+
+There are many other techniques to improve robustness, as covered in \citet[ch. 8]{Ioannou2012}, such as \emph{parameter projection}, which constrains the parameter estimates within predefined bounds; \emph{normalization}, which mitigates large parameter variation. With these techniques, and a choice of adaptation law, we can design an adaptive controller that is suitable for application.
