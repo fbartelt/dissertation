@@ -15,7 +15,8 @@ using namespace Eigen;
 // Global variables
 std::vector<MatrixXd> nearest_points;
 std::vector<VectorXd> xiT_hist, xiN_hist;
-double GAIN_N1 = 1.0, GAIN_N2 = 30.0, GAIN_T1 = 0.1, GAIN_T2 = 15.0;
+VectorXd xiT_aux = VectorXd::Zero(3); // TODO: CHANGED -- THIS WILL BE USED FOR TESTING PURPOSES -- DELTEABLE
+double GAIN_N1 = 1.0, GAIN_N2 = 30.0, GAIN_T1 = 0.2, GAIN_T2 = 30.0;
 double epsilon = 1e-3, ds = 1e-3;
 
 Eigen::Matrix3d skew(const Eigen::Vector3d& q) {
@@ -154,10 +155,37 @@ Eigen::MatrixXd ise3_inv(const Eigen::MatrixXd& H) {
 
   // Construct the block-diagonal inverse
   MatrixXd R_tranpose = R.transpose().eval();
-  H_inv.block(0, 0, 3, 3) = R_tranpose;  // Transpose of rotation matrix
+  H_inv.block(0, 0, 3, 3) = R.inverse();  // Transpose of rotation matrix
   H_inv.block(3, 3, 4, 4) = p_tilde;        // Inverted translation component
 
   return H_inv;
+}
+
+Matrix3d exp_so3(const MatrixXd& X, double precision = 1e-5){
+  // Gets the elements of the skew symmetric matrix
+  Matrix3d Q = Matrix3d::Identity();
+  double wx = X(2, 1);
+  double wy = X(0, 2);
+  double wz = X(1, 0);
+  double theta = std::sqrt(wx * wx + wy * wy + wz * wz);
+  if (theta < precision) {
+    return Q;
+  }
+  else {
+    Q = Matrix3d::Identity() + (std::sin(theta) / theta) * X + ((1 - std::cos(theta)) / (theta * theta)) * X * X;
+    return Q;
+  }
+}
+
+MatrixXd exp_ise3(const MatrixXd& X, double precision = 1e-5){
+  // Extract the 'rotation' and 'translation' portion of the matrix
+  Matrix3d A = X.block(0, 0, 3, 3); // skew-symmetric matrix;
+  Vector3d v = X.block(3, 6, 3, 1); // linear velocity
+  MatrixXd H = MatrixXd::Identity(7, 7);
+  Matrix3d R = exp_so3(A, precision);
+  H.block(0, 0, 3, 3) = R;
+  H.block(3, 6, 3, 1) = v;
+  return H;
 }
 
 MatrixXd hd(double s, double c1, double h0) {
@@ -303,7 +331,7 @@ double kt(double distance){
   return GAIN_T1 * (1.0 - std::tanh(GAIN_T2 * distance));
 }
 
-VectorXd twist_d(const VectorXd& p, const MatrixXd& R, const std::vector<MatrixXd>& curve, bool store_points) {
+VectorXd twist_d(const VectorXd& p, const MatrixXd& R, const std::vector<MatrixXd>& curve, bool store_points, const std::vector<MatrixXd>& curve_derivative = std::vector<MatrixXd>()) {
   //Computes ECdistance between the curve and the current pose
   auto [distance, ind_min] = ECdistance(curve, p, R);
   MatrixXd Hd_star = curve[ind_min];
@@ -313,26 +341,34 @@ VectorXd twist_d(const VectorXd& p, const MatrixXd& R, const std::vector<MatrixX
   VectorXd L_ = VectorXd::Zero(6);
   MatrixXd I = MatrixXd::Identity(6, 6);
   for (int i = 0; i < 6; ++i) {
-    MatrixXd deltaV = (S(I.col(i)) * epsilon).exp() * H;
+    // MatrixXd deltaV = (S(I.col(i)) * epsilon).exp() * H;
+    MatrixXd deltaV = exp_ise3(S(I.col(i)) * epsilon) * H;
     L_(i) = (EEdistance(deltaV, Hd_star) - distance) / epsilon;
   }
   VectorXd xi_N = -L_; // L_ is already computed as column vector
 
   // Compute tangent component
-  MatrixXd Hd_next;
-  if (ind_min == curve.size() - 1) {
-    Hd_next = curve[0];
+  MatrixXd dHds = VectorXd::Zero(6);
+  if (curve_derivative.size() == 0) {
+    MatrixXd Hd_next;
+    if (ind_min == curve.size() - 1) {
+      Hd_next = curve[0];
+    }
+    else {
+      Hd_next = curve[ind_min + 1];
+    }
+    dHds = (Hd_next - Hd_star) / ds;
   }
   else {
-    Hd_next = curve[ind_min + 1];
+    dHds = curve_derivative[ind_min];
   }
-  MatrixXd dHds = (Hd_next - Hd_star) / ds;
   VectorXd xi_T = S_inv(dHds * ise3_inv(Hd_star));
 
   // Compute the twist
   xi_N = kn(distance) * xi_N;
   xi_T = kt(distance) * xi_T;
   VectorXd psi = xi_N + xi_T;
+  xiT_aux = xi_T; // TODO: CHANGED -- THIS WILL BE USED FOR TESTING PURPOSES -- DELTEABLE
 
   if (store_points) {
     // Store the points
@@ -384,23 +420,26 @@ class AdaptiveController {
                const std::vector<Vector3d>& r_hat, 
                const std::vector<MatrixXd>& curve, double t,
                const float dt = 0.001, VectorXd psi = VectorXd(),
-               bool store_tau = false) {
+               bool store_tau = false,
+               const std::vector<MatrixXd>& curve_derivative = std::vector<MatrixXd>()) {
     Vector3d dx = dq.block<3, 1>(0, 0);
     Vector3d w = dq.block<3, 1>(3, 0);
 
     double norm_vel = psi.norm();
 
     if (psi.size() == 0) {
-      psi = twist_d(x_d, R_d, curve, false); // TODO: CHANGED -- x, R -> x_d, R_d
+      psi = twist_d(x_d, R_d, curve, false, curve_derivative); // TODO: CHANGED -- x, R -> x_d, R_d
     }
 
     // Reference signals
     Vector3d w_r = psi.segment<3>(3);
     Vector3d v_r = psi.segment<3>(0);
     VectorXd psi_next =
-        twist_d(x + v_r * dt, (Matrix3d(skew(w_r) * dt).exp() * R), curve, false); // TODO: CHANGED -- x, R -> x_d, R_d; dx, w -> v_r, w_r
+        // twist_d(x + v_r * dt, (Matrix3d(skew(w_r) * dt).exp() * R), curve, false, curve_derivative); // TODO: CHANGED -- x, R -> x_d, R_d; dx, w -> v_r, w_r
+        twist_d(x + v_r * dt, (exp_so3(Matrix3d(skew(w_r) * dt)) * R), curve, false, curve_derivative); // TODO: CHANGED EXP MAP
     VectorXd psi_back =
-        twist_d(x - v_r * dt, (Matrix3d(skew(-w_r) * dt).exp() * R), curve, false); // TODO: CHANGED 
+        // twist_d(x - v_r * dt, (Matrix3d(skew(-w_r) * dt).exp() * R), curve, false, curve_derivative); // TODO: CHANGED 
+        twist_d(x - v_r * dt, (exp_so3(Matrix3d(skew(-w_r) * dt)) * R), curve, false, curve_derivative); // TODO: CHANGED EXP MAP
     VectorXd psi_dot = (psi_next - psi_back) / (2 * dt * norm_vel); // TODO: CHANGED psi -> psi_back, dt -> 2dt
     aprox_hist.push_back(psi_dot);
     // Vector3d dx_t = dx - psi_dot.segment<3>(0);
@@ -588,9 +627,9 @@ int main() {
 
   // Precompute the curve
   double c1 = 0.7, h0 = 0.4; // 0.7, 0.4
-  int n_points = 5000;
+  int n_points = 30000;
   std::vector<MatrixXd> curve = precompute_curve(hd, n_points, c1, h0);
-  // std::vector<MatrixXd> curve_derivative = precompute_curve(hd_dot, n_points, c1, h0);
+  std::vector<MatrixXd> curve_derivative = precompute_curve(hd_dot, n_points, c1, h0);
 
   // Initial conditions
   // TOOD: CHANGE HERE
@@ -620,14 +659,14 @@ int main() {
 
   // Iterate system
   double T = 20;
-  double dt = 5e-4; // 1e-3 or 10e-4 is good
+  double dt = 10e-4; // 1e-3 or 10e-4 is good
   int imax = T / dt;
   double deadband = 0.01 / 10; // TODO: CHANGED -- 0.01 * 5 (WORKS)
 
   for (int i = 0; i < imax; ++i) {
     printProgressBar(i, imax);
     // Compute the twist
-    VectorXd psi = twist_d(x, R, curve, true); // TODO: CHANGED -- x, R -> x_d, R_d
+    VectorXd psi = twist_d(x, R, curve, true, curve_derivative); // TODO: CHANGED -- x, R -> x_d, R_d
 
     // Compute the next pose
     s = dq - psi;
@@ -656,14 +695,16 @@ int main() {
     }
 
     // Second Step of Heuns Method
-    MatrixXd H_ref_int = (dt * S(psi)).exp() * H_real; // TODO: CHANGED --- H_ref -> H_real
-    MatrixXd H_real_int = (dt * S(dq)).exp() * H_real;
+    // MatrixXd H_ref_int = (dt * S(psi)).exp() * H_real; // TODO: CHANGED --- H_ref -> H_real
+    // MatrixXd H_real_int = (dt * S(dq)).exp() * H_real;
+    MatrixXd H_ref_int = exp_ise3(dt * S(psi)) * H_real; // TODO: CHANGED --- H_ref -> H_real
+    MatrixXd H_real_int = exp_ise3(dt * S(dq)) * H_real;
     Matrix3d R_d_int = H_ref_int.block(0, 0, 3, 3);
     Vector3d x_d_int = H_ref_int.block(3, 6, 3, 1);
     Matrix3d R_int = H_real_int.block(0, 0, 3, 3);
     Vector3d x_int = H_real_int.block(3, 6, 3, 1);
     VectorXd dq_int = dq + ddq * dt;
-    VectorXd psi_int = twist_d(x_int, R_int, curve, false);
+    VectorXd psi_int = twist_d(x_int, R_int, curve, false, curve_derivative);
 
     auto [ddq_int, da_int, dr_int] = controller.adaptive_dyn(x_int, x_d_int, R_int, R_d_int, dq_int, a_int, r_int, curve, (i + 1) * dt, dt, psi_int, false);
     for (int j=0; j < N; ++j) {
@@ -678,8 +719,11 @@ int main() {
     }
 
     // Update pose 
-    H_ref = (0.5 * dt * S(psi + psi_int)).exp() * H_real; // TODO: CHANGED --- H_ref -> H_real
-    H_real = (0.5 * dt * S(dq + dq_int)).exp() * H_real;
+    // H_ref = (0.5 * dt * S(psi + psi_int)).exp() * H_real; // TODO: CHANGED --- H_ref -> H_real
+    H_ref = exp_ise3(0.5 * dt * S(psi + psi_int)) * H_real; // TODO: CHANGED EXP MAP
+    // H_real = (0.5 * dt * S(dq + dq_int)).exp() * H_real;
+    // H_real = (0.5 * dt * S(dq + dq_int + xiT_aux)).exp() * H_real; // TODO: CHANGED -- ADDED TANGENT COMP MANUALLY -- TESTINT PURPOSES -- DELETE
+    H_real = exp_ise3(0.5 * dt * S(dq + dq_int)) * H_real; // TODO: CHANGED EXP MAP
     dq += 0.5 * dt * (ddq + ddq_int);
 
 
