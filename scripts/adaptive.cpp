@@ -15,7 +15,7 @@ using namespace Eigen;
 // Global variables
 std::vector<MatrixXd> nearest_points;
 std::vector<VectorXd> xiT_hist, xiN_hist;
-double GAIN_N1 = 1.0, GAIN_N2 = 30.0, GAIN_T1 = 0.1*0, GAIN_T2 = 15.0;
+double GAIN_N1 = 1.0, GAIN_N2 = 30.0, GAIN_T1 = 0.1, GAIN_T2 = 15.0;
 double epsilon = 1e-3, ds = 1e-3;
 
 Eigen::Matrix3d skew(const Eigen::Vector3d& q) {
@@ -567,14 +567,14 @@ int main() {
   }
 
   // Kd
-  float k = 10e-1; // old 1e-1, 1 works for normal only
+  float k = 12e-1; // old 1e-1, 1 works for normal only
   MatrixXd Kd = MatrixXd::Identity(6, 6);
   Kd.diagonal().head(3).setConstant(k * (5e3 / N)); //5e4, 5e3 works for normal only
-  Kd.diagonal().tail(3).setConstant(k * (5e3 / N));
+  Kd.diagonal().tail(3).setConstant(k * (25e3 / N)); // 50e3 kinda works (orientation error oscillates around 0.5 but velocity is near 0)
 
   // P_o
   VectorXd abs_a_i = a_i.cwiseAbs() + 1e-2 * VectorXd::Ones(a_i.size());
-  MatrixXd P_o = 1e1 * abs_a_i.cwiseInverse().asDiagonal().inverse(); //3e1
+  MatrixXd P_o = 3e1 * abs_a_i.cwiseInverse().asDiagonal().inverse(); //3e1
 
   // P_r
   MatrixXd P_r = 3e3 * Matrix3d::Identity(); // 3e3
@@ -620,7 +620,7 @@ int main() {
 
   // Iterate system
   double T = 20;
-  double dt = 1e-3;
+  double dt = 5e-4; // 1e-3 or 10e-4 is good
   int imax = T / dt;
   double deadband = 0.01 / 10; // TODO: CHANGED -- 0.01 * 5 (WORKS)
 
