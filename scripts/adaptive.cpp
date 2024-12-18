@@ -15,8 +15,10 @@ using namespace Eigen;
 // Global variables
 std::vector<MatrixXd> nearest_points;
 std::vector<VectorXd> xiT_hist, xiN_hist;
+std::vector<double> distances, distances_approx;
+std::vector<int> min_indices;
 VectorXd xiT_aux = VectorXd::Zero(3); // TODO: CHANGED -- THIS WILL BE USED FOR TESTING PURPOSES -- DELTEABLE
-double GAIN_N1 = 1.0, GAIN_N2 = 30.0, GAIN_T1 = 0.2, GAIN_T2 = 30.0;
+double GAIN_N1 = 1.0, GAIN_N2 = 1.0, GAIN_T1 = 0.2, GAIN_T2 = 1.0;
 double epsilon = 1e-3, ds = 1e-3;
 
 Eigen::Matrix3d skew(const Eigen::Vector3d& q) {
@@ -177,6 +179,24 @@ Matrix3d exp_so3(const MatrixXd& X, double precision = 1e-5){
   }
 }
 
+MatrixXd log_ise3(const MatrixXd& Z){
+  // Computes the logarithm of a rotation matrix as a real skew-symmetric matrix
+  Matrix3d R = Z.block(0, 0, 3, 3);
+  MatrixXd log_R = MatrixXd::Zero(3, 3);
+  double costheta = (R.trace() - 1) / 2;
+  MatrixX3d R_transpose = R.transpose().eval();
+  double sintheta = 1/(2 * std::sqrt(2)) * (R - R_transpose).norm();
+  double theta = std::atan2(sintheta, costheta);
+  if (theta > 1e-5) {
+    Matrix3d R_transpose = R.transpose().eval();
+    log_R = (theta / (2 * std::sin(theta))) * (R - R_transpose);
+  }
+  MatrixXd Z_log = MatrixXd::Zero(7, 7);
+  Z_log.block(0, 0, 3, 3) = log_R;
+  Z_log.block(3, 6, 3, 1) = Z.block(3, 6, 3, 1);
+  return Z_log;
+}
+
 MatrixXd exp_ise3(const MatrixXd& X, double precision = 1e-5){
   // Extract the 'rotation' and 'translation' portion of the matrix
   Matrix3d A = X.block(0, 0, 3, 3); // skew-symmetric matrix;
@@ -198,9 +218,9 @@ MatrixXd hd(double s, double c1, double h0) {
 
     // Compute p
     Vector3d p;
-    p << c1 * (sin_theta + 2 * std::sin(2 * theta)),
-         c1 * (cos_theta - 2 * std::cos(2 * theta)),
-         h0 + c1 * (-std::sin(3 * theta));
+    p << c1 * (sin_theta + 2 * std::sin(2 * theta) * 0),
+         c1 * (cos_theta - 2 * std::cos(2 * theta) * 0),
+         h0 + c1 * (-std::sin(3 * theta)) * 0;
 
     // Compute rotation matrices
     Matrix3d Rz, Rx, R;
@@ -233,17 +253,24 @@ MatrixXd hd_dot(double s, double c1, double h0) {
     // Identity matrix for hds
     MatrixXd hds = MatrixXd::Zero(7, 7);
     Vector3d p_dot;
-    p_dot << c1 * (cos_theta + 4*cos(2*theta)),
-             c1 * (-sin_theta + 4*sin(2*theta)),
-             c1 * (-3*cos(3*theta));
+    p_dot << c1 * (cos_theta + 4*cos(2*theta) * 0),
+             c1 * (-sin_theta + 4*sin(2*theta) * 0),
+             c1 * (-3*cos(3*theta) * 0);
 
     Matrix3d R_dot;
     R_dot << -sin_theta, 2*sin_theta*s2t - cos_theta*c2t, 2*sin_theta*c2t + s2t*cos_theta,
              cos_theta,  -2*sin_theta*c2t -2*s2t*cos_theta, sin_theta*s2t - 2*c2t*cos_theta,
              0,          2*c2t,                        -2*s2t;
 
-    hds = to_ise3(p_dot, R_dot);
+    hds.block(0, 0, 3, 3) = R_dot;
+    hds.block(3, 6, 3, 1) = p_dot;
     return hds;
+}
+
+MatrixXd hd_log(double s, double c1, double h0) {
+    MatrixXd H = hd(s, c1, h0);
+    MatrixXd H_log = log_ise3(H);
+    return H_log;
 }
 
 std::vector<MatrixXd> precompute_curve(
@@ -264,31 +291,6 @@ std::vector<MatrixXd> precompute_curve(
     }
 
     return precomputed;
-}
-
-double EEdistance(const MatrixXd& V, const MatrixXd& W) {
-  MatrixXd Z = ise3_inv(V) * W;
-  Matrix3d Q = Z.block(0, 0, 3, 3);
-  Vector3d u = Z.block(3, 6, 3, 1);
-  double costheta = (Q.trace() - 1) / 2;
-  MatrixX3d Q_transpose = Q.transpose().eval();
-  double sintheta = 1/(2 * std::sqrt(2)) * (Q - Q_transpose).norm();
-  double theta = std::atan2(sintheta, costheta);
-  return std::sqrt(2 * theta * theta + pow(u.norm(), 2));
-}
-
-std::tuple<double, int> ECdistance(const std::vector<MatrixXd>& curve, const Vector3d& p, const Matrix3d& R) {
-  double distance = 1e6;
-  int ind_min = 0;
-  for (int i = 0; i < curve.size(); ++i) {
-    MatrixXd Hds = curve[i];
-    double d = EEdistance(to_ise3(p, R), Hds);
-    if (d < distance) {
-      distance = d;
-      ind_min = i;
-    }
-  }
-  return {distance, ind_min};
 }
 
 MatrixXd S(const Eigen::VectorXd& xi) {
@@ -331,40 +333,132 @@ double kt(double distance){
   return GAIN_T1 * (1.0 - std::tanh(GAIN_T2 * distance));
 }
 
-VectorXd twist_d(const VectorXd& p, const MatrixXd& R, const std::vector<MatrixXd>& curve, bool store_points, const std::vector<MatrixXd>& curve_derivative = std::vector<MatrixXd>()) {
-  //Computes ECdistance between the curve and the current pose
-  auto [distance, ind_min] = ECdistance(curve, p, R);
-  MatrixXd Hd_star = curve[ind_min];
-  MatrixXd H = to_ise3(p, R);
+double EEdistance(const MatrixXd& V, const MatrixXd& W) {
+  MatrixXd Z = ise3_inv(V) * W;
+  Matrix3d Q = Z.block(0, 0, 3, 3);
+  Vector3d u = Z.block(3, 6, 3, 1);
+  double costheta = (Q.trace() - 1) / 2;
+  MatrixX3d Q_transpose = Q.transpose().eval();
+  double sintheta = 1/(2 * std::sqrt(2)) * (Q - Q_transpose).norm();
+  double theta = std::atan2(sintheta, costheta);
+  // std::cout << "Theta: " << theta << ". norm u" << u.norm() << std::endl;
 
+  return std::sqrt(2 * theta * theta + pow(u.norm(), 2));
+  // return (2 * theta * theta + pow(u.norm(), 2));
+}
+
+std::tuple<std::vector<double>, double, double, int> distance_weight(const std::vector<MatrixXd>& curve, const Vector3d& p, const Matrix3d& R, double h = 1e-3) {
+  std::vector<double> weights;
+  std::vector<double> distances;
+  double d_0 = 1e6;
+  int ind_min = 0;
+  for (int i = 0; i < curve.size(); ++i) {
+    MatrixXd Hds = curve[i];
+    double d = EEdistance(to_ise3(p, R), Hds);
+    distances.push_back(d);
+    if (d < d_0) {
+      d_0 = d;
+      ind_min = i;
+    }
+  }
+  double weight_sum = 0;
+  for (int i = 0; i < curve.size(); ++i) {
+    MatrixXd Hds = curve[i];
+    double d = distances[i];
+    double weight = std::exp((d_0 - d) / h);
+    // std::cout << "Distance: " << d << std::endl;
+    // std::cout << "Weight: " << weight << std::endl;
+    weights.push_back(weight);
+    weight_sum += weight;
+  }
+  // Prints max and min distances and weights
+  // std::cout << "Max distance: " << *std::max_element(distances.begin(), distances.end()) << std::endl;
+  // std::cout << "Min distance: " << *std::min_element(distances.begin(), distances.end()) << std::endl;
+  // std::cout << "Max weight: " << *std::max_element(weights.begin(), weights.end()) << std::endl;
+  // std::cout << "Min weight: " << *std::min_element(weights.begin(), weights.end()) << std::endl;
+
+  return {weights, d_0, weight_sum, ind_min};
+}
+
+std::tuple<double, int> ECdistance(const double weight_sum, const double d_0, int n_points, double h = 1e-3) {
+  double distance = d_0 - h * std::log(weight_sum / n_points);
+  std::cout << "d_0: " << d_0 << std::endl;
+  return {distance, 0};
+}
+
+VectorXd twist_d(Vector3d p, Matrix3d R, std::vector<MatrixXd> curve, std::vector<MatrixXd> curve_derivative, std::vector<MatrixXd> curve_log, double h = 1e-3, bool store_points = false) {
+  //Computes ECdistance between the curve and the current pose
+  auto [weights, d_0, weight_sum, min_index] = distance_weight(curve, p, R, h);
+  // std::cout << "DEBUG 1" << std::endl;
+  MatrixXd Hd_star = MatrixXd::Zero(7, 7);
+  for (int i = 0; i < curve_log.size(); ++i) {
+    MatrixXd Hdk = curve_log[i];
+    // std::cout << "dimension Hdk: " << Hdk.rows() << "x" << Hdk.cols() << std::endl;
+    Hd_star += weights[i] * Hdk;
+  }
+  Hd_star = exp_ise3(Hd_star / weight_sum);
+  // std::cout << "Hdstar diff:" << EEdistance(Hd_star, curve[min_index]) << std::endl;
+  // Hd_star = curve[min_index];
+  // std::cout << "DEBUG 1.5" << std::endl;
+  auto [distance, ind_min] = ECdistance(weight_sum, d_0, curve.size(), h);
+  // std::cout << "Distance: " << distance << std::endl;
+  // MatrixXd Hd_star = curve[ind_min];
+  // std::cout << "DEBUG 2" << std::endl;
+
+  VectorXd xi_T = VectorXd::Zero(6);
+  for (int i = 0; i < curve.size(); ++i) {
+    MatrixXd dHds = curve_derivative[i];
+    VectorXd xi = S_inv(dHds * ise3_inv(curve[i]));
+    xi_T += weights[i] * xi;
+  }
+  // std::cout << "dHds()\n" << curve_derivative[min_index] << std::endl;
+  // std::cout << "ise3_inv\n" << ise3_inv(curve[min_index]) << std::endl;
+  xi_T = xi_T / weight_sum;
+  // xi_T = S_inv(curve_derivative[min_index] * ise3_inv(Hd_star));
+
+  // std::cout << "DEBUG 3" << std::endl;
+  MatrixXd H = to_ise3(p, R);
+  // std::cout << "EE-distance: " << EEdistance(H, Hd_star) << std::endl;
   // Compute normal component using L operator
   VectorXd L_ = VectorXd::Zero(6);
   MatrixXd I = MatrixXd::Identity(6, 6);
+  // std::cout << "H\n" << H << std::endl;
+  double dist_ap = EEdistance(H, Hd_star);
   for (int i = 0; i < 6; ++i) {
     // MatrixXd deltaV = (S(I.col(i)) * epsilon).exp() * H;
     MatrixXd deltaV = exp_ise3(S(I.col(i)) * epsilon) * H;
-    L_(i) = (EEdistance(deltaV, Hd_star) - distance) / epsilon;
+    // std::cout << "epsilon" << epsilon << std::endl;
+    // std::cout << "S(ei)\n" << exp_ise3(S(I.col(i))) << std::endl;
+    // std::cout << "deltaV\n" << deltaV << std::endl;
+    L_(i) = (EEdistance(deltaV, Hd_star) - dist_ap) / epsilon;
+    
   }
   VectorXd xi_N = -L_; // L_ is already computed as column vector
-
+  // std::cout << "Check orthogonality: " << xi_N.dot(xi_T) << std::endl;
+  // std::cout << "p: " << p.transpose().eval() << std::endl;
+  // std::cout << "p_near" << Hd_star.block(3, 6, 3, 1).transpose().eval() << std::endl;
+  // std::cout << "xi_N: " << xi_N.transpose().eval() << std::endl;
+  // std::cout << "xi_T: " << xi_T.transpose().eval() << std::endl;
   // Compute tangent component
-  MatrixXd dHds = VectorXd::Zero(6);
-  if (curve_derivative.size() == 0) {
-    MatrixXd Hd_next;
-    if (ind_min == curve.size() - 1) {
-      Hd_next = curve[0];
-    }
-    else {
-      Hd_next = curve[ind_min + 1];
-    }
-    dHds = (Hd_next - Hd_star) / ds;
-  }
-  else {
-    dHds = curve_derivative[ind_min];
-  }
-  VectorXd xi_T = S_inv(dHds * ise3_inv(Hd_star));
+  // MatrixXd dHds = VectorXd::Zero(6);
+  // if (curve_derivative.size() == 0) {
+  //   MatrixXd Hd_next;
+  //   if (ind_min == curve.size() - 1) {
+  //     Hd_next = curve[0];
+  //   }
+  //   else {
+  //     Hd_next = curve[ind_min + 1];
+  //   }
+  //   dHds = (Hd_next - Hd_star) / ds;
+  // }
+  // else {
+  //   dHds = curve_derivative[ind_min];
+  // }
+  // VectorXd xi_T = S_inv(dHds * ise3_inv(Hd_star));
 
   // Compute the twist
+  double offset = 0.25;
+  distance = distance - offset;
   xi_N = kn(distance) * xi_N;
   xi_T = kt(distance) * xi_T;
   VectorXd psi = xi_N + xi_T;
@@ -373,8 +467,11 @@ VectorXd twist_d(const VectorXd& p, const MatrixXd& R, const std::vector<MatrixX
   if (store_points) {
     // Store the points
     nearest_points.push_back(Hd_star);
+    distances.push_back(d_0);
+    distances_approx.push_back(distance + offset);
     xiT_hist.push_back(xi_T);
     xiN_hist.push_back(xi_N);
+    std::cout << "min_index: " << min_index << std::endl;
     std::cout << "Distance: " << distance << std::endl;
     std::cout << "xi_N norm: " << xi_N.norm() << std::endl;
     std::cout << "xi_T norm: " << xi_T.norm() << std::endl;
@@ -419,16 +516,19 @@ class AdaptiveController {
                const std::vector<VectorXd>& a_hat,
                const std::vector<Vector3d>& r_hat, 
                const std::vector<MatrixXd>& curve, double t,
+               const std::vector<MatrixXd>& curve_derivative,
+               const std::vector<MatrixXd>& curve_log,
                const float dt = 0.001, VectorXd psi = VectorXd(),
                bool store_tau = false,
-               const std::vector<MatrixXd>& curve_derivative = std::vector<MatrixXd>()) {
+               const double h = 1e-3) {
     Vector3d dx = dq.block<3, 1>(0, 0);
     Vector3d w = dq.block<3, 1>(3, 0);
 
     double norm_vel = psi.norm();
 
     if (psi.size() == 0) {
-      psi = twist_d(x_d, R_d, curve, false, curve_derivative); // TODO: CHANGED -- x, R -> x_d, R_d
+      psi = twist_d(x, R, curve, curve_derivative, curve_log, h, false); // TODO: CHANGED -- x, R -> x_d, R_d
+      // psi = twist_d(x_d, R_d, curve, false, curve_derivative); // TODO: CHANGED -- x, R -> x_d, R_d
     }
 
     // Reference signals
@@ -436,10 +536,12 @@ class AdaptiveController {
     Vector3d v_r = psi.segment<3>(0);
     VectorXd psi_next =
         // twist_d(x + v_r * dt, (Matrix3d(skew(w_r) * dt).exp() * R), curve, false, curve_derivative); // TODO: CHANGED -- x, R -> x_d, R_d; dx, w -> v_r, w_r
-        twist_d(x + v_r * dt, (exp_so3(Matrix3d(skew(w_r) * dt)) * R), curve, false, curve_derivative); // TODO: CHANGED EXP MAP
+        // twist_d(x + v_r * dt, (exp_so3(Matrix3d(skew(w_r) * dt)) * R), curve, false, curve_derivative); // TODO: CHANGED EXP MAP
+        twist_d(x + v_r * dt, (exp_so3(Matrix3d(skew(w_r) * dt)) * R), curve, curve_derivative, curve_log, h, false); // TODO: CHANGED EXP MAP
     VectorXd psi_back =
         // twist_d(x - v_r * dt, (Matrix3d(skew(-w_r) * dt).exp() * R), curve, false, curve_derivative); // TODO: CHANGED 
-        twist_d(x - v_r * dt, (exp_so3(Matrix3d(skew(-w_r) * dt)) * R), curve, false, curve_derivative); // TODO: CHANGED EXP MAP
+        // twist_d(x - v_r * dt, (exp_so3(Matrix3d(skew(-w_r) * dt)) * R), curve, false, curve_derivative); // TODO: CHANGED EXP MAP
+        twist_d(x - v_r * dt, (exp_so3(Matrix3d(skew(-w_r) * dt)) * R), curve, curve_derivative, curve_log, h, false); // TODO: CHANGED EXP MAP
     VectorXd psi_dot = (psi_next - psi_back) / (2 * dt * norm_vel); // TODO: CHANGED psi -> psi_back, dt -> 2dt
     aprox_hist.push_back(psi_dot);
     // Vector3d dx_t = dx - psi_dot.segment<3>(0);
@@ -551,7 +653,63 @@ class AdaptiveController {
   }
 };
 
-int main() {
+int main(){
+  // Kinematic controller
+  // Constants
+  double c1 = 0.7, h0 = 0.4; // 0.7, 0.4
+  int n_points = 2000;
+  std::vector<MatrixXd> curve = precompute_curve(hd, n_points, c1, h0);
+  std::vector<MatrixXd> curve_derivative = precompute_curve(hd_dot, n_points, c1, h0);
+  std::vector<MatrixXd> curve_log = precompute_curve(hd_log, n_points, c1, h0);
+
+  // Sanity check
+  // double min_dist = 0;
+  // for (int i = 0; i < curve.size(); ++i) {
+  //   MatrixXd H = curve[i];
+  //   MatrixXd H_log = curve_log[i];
+  //   MatrixXd H_exp = exp_ise3(H_log);
+  //   double dist = EEdistance(H, H_exp);
+  //   if (dist > min_dist){
+  //     min_dist = dist;
+  //   }
+  // }
+  // std::cout << "Distance: " << min_dist << std::endl;
+  // VectorXd test = VectorXd::Zero(6);
+  // test << 1, 2, 3, 4, 5, 6;
+  // std::cout << "a" << S(test) << "inv: " << S_inv(S(test)) << std::endl;
+  // std::cout << "exp:\n " << exp_ise3(S(test)) << "log:\n " << log_ise3(exp_ise3(S(test))) << std::endl;
+  // std::cout << "explog\n" << exp_ise3(S(test)).log().exp() << "ss\n:" << exp_ise3(log_ise3(exp_ise3(S(test)))) << std::endl;
+  // // std::cout << "exp:\n " << S(test).exp() << "log1:\n " << exp_ise3(S(test)).log() << "log2:\n " << S(test).exp().log() << std::endl;
+
+  // Initial conditions
+  Vector3d x;
+  x << -0.1, 0, 0.2;
+  Matrix3d R = Matrix3d::Identity();
+  VectorXd dq = VectorXd::Zero(6);
+  VectorXd psi = VectorXd::Zero(6);
+  MatrixXd H = to_ise3(x, R);
+
+  std::cout << "H\n" << curve[100] << std::endl;
+  std::cout << "H * H_inv\n" << curve[100] * ise3_inv(curve[100]) << std::endl;
+  std::vector<MatrixXd> H_hist;
+
+  double dt = 1e-3;
+  double T = 10.0;
+  double hs = 0.05;
+  int imax = T / dt;
+  // Wait any input as a pause
+  std::cout << "Press any key to start the simulation" << std::endl;
+  std::cin.get();
+  for (int i = 0; i < imax; ++i) {
+    psi = twist_d(x, R, curve, curve_derivative, curve_log, hs, true);
+    H = exp_ise3(S(psi) * dt) * H;
+    x = H.block(3, 6, 3, 1);
+    R = H.block(0, 0, 3, 3);
+  }
+
+}
+
+int OLD_main() {
   // Constants
   double rho = 8050.0;  // Density of steel in kg/m^3
   double r = 0.25;      // Radius of the cylinder in meters
@@ -608,7 +766,7 @@ int main() {
   // Kd
   float k = 12e-1; // old 1e-1, 1 works for normal only
   MatrixXd Kd = MatrixXd::Identity(6, 6);
-  Kd.diagonal().head(3).setConstant(k * (5e3 / N)); //5e4, 5e3 works for normal only
+  Kd.diagonal().head(3).setConstant(k * (10e3 / N)); //5e4, 5e3 works for normal only
   Kd.diagonal().tail(3).setConstant(k * (25e3 / N)); // 50e3 kinda works (orientation error oscillates around 0.5 but velocity is near 0)
 
   // P_o
@@ -627,9 +785,10 @@ int main() {
 
   // Precompute the curve
   double c1 = 0.7, h0 = 0.4; // 0.7, 0.4
-  int n_points = 30000;
+  int n_points = 50000;
   std::vector<MatrixXd> curve = precompute_curve(hd, n_points, c1, h0);
   std::vector<MatrixXd> curve_derivative = precompute_curve(hd_dot, n_points, c1, h0);
+  std::vector<MatrixXd> curve_log = precompute_curve(hd_log, n_points, c1, h0);
 
   // Initial conditions
   // TOOD: CHANGE HERE
@@ -659,21 +818,23 @@ int main() {
 
   // Iterate system
   double T = 20;
-  double dt = 10e-4; // 1e-3 or 10e-4 is good
+  double dt = 5e-4; // 1e-3 or 10e-4 is good
   int imax = T / dt;
   double deadband = 0.01 / 10; // TODO: CHANGED -- 0.01 * 5 (WORKS)
+  double hs = 0.05;
 
   for (int i = 0; i < imax; ++i) {
     printProgressBar(i, imax);
     // Compute the twist
-    VectorXd psi = twist_d(x, R, curve, true, curve_derivative); // TODO: CHANGED -- x, R -> x_d, R_d
+    // VectorXd psi = twist_d(x, R, curve, true, curve_derivative); // TODO: CHANGED -- x, R -> x_d, R_d
+    VectorXd psi = twist_d(x, R, curve, curve_derivative, curve_log, hs, true); // TODO: CHANGED -- x, R -> x_d, R_d
 
     // Compute the next pose
     s = dq - psi;
     std::cout << "s norm: " << s.norm() << std::endl;
 
     // First step of Heun -- Euler method
-    auto [ddq, da, dr] = controller.adaptive_dyn(x, x_d, R, R_d, dq, a_hat, r_hat, curve, i * dt, dt, psi, true);
+    auto [ddq, da, dr] = controller.adaptive_dyn(x, x_d, R, R_d, dq, a_hat, r_hat, curve, i * dt, curve_derivative, curve_log, dt, psi, true, hs);
 
     std::vector<VectorXd> a_int(N, VectorXd::Zero(10));
     std::vector<Vector3d> r_int(N, Vector3d::Zero());
@@ -704,9 +865,11 @@ int main() {
     Matrix3d R_int = H_real_int.block(0, 0, 3, 3);
     Vector3d x_int = H_real_int.block(3, 6, 3, 1);
     VectorXd dq_int = dq + ddq * dt;
-    VectorXd psi_int = twist_d(x_int, R_int, curve, false, curve_derivative);
+    // VectorXd psi_int = twist_d(x_int, R_int, curve, false, curve_derivative);
+    VectorXd psi_int = twist_d(x_int, R_int, curve, curve_derivative, curve_log, hs, false); // TODO: CHANGED -- x, R -> x_d, R_d
 
-    auto [ddq_int, da_int, dr_int] = controller.adaptive_dyn(x_int, x_d_int, R_int, R_d_int, dq_int, a_int, r_int, curve, (i + 1) * dt, dt, psi_int, false);
+    // auto [ddq_int, da_int, dr_int] = controller.adaptive_dyn(x_int, x_d_int, R_int, R_d_int, dq_int, a_int, r_int, curve, (i + 1) * dt, dt, psi_int, false);
+    auto [ddq_int, da_int, dr_int] = controller.adaptive_dyn(x_int, x_d_int, R_int, R_d_int, dq_int, a_int, r_int, curve, (i + 1) * dt, curve_derivative, curve_log, dt, psi_int, false, hs);
     for (int j=0; j < N; ++j) {
       if (s.norm() > deadband){
         a_hat[j] += 0.5 * (da[j] + da_int[j]) * dt;
