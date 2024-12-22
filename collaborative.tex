@@ -324,7 +324,7 @@ where $\mathbf{Y}_o$ is the regressor matrix given by
 \begin{align}
     \mathbf{Y}_o &= \begin{bmatrix}
         \ddot{\mathbf{p}}_d & -\SL[\dot{\boldsymbol{\omega}}_d]\mathbf{R}-\SL[\boldsymbol{\omega}]\SL[\boldsymbol{\omega}_d]\mathbf{R} & \mathbf{0}\\
-        \mathbf{0} & \SL[\ddot{\mathbf{p}}_d]\mathbf{R} + \SL[\boldsymbol{\omega}]\SL[\dot{\mathbf{p}}_d]\mathbf{R} - \SL[\boldsymbol{\omega}_d]\SL[\dot{\mathbf{p}}]\mathbf{R} & \mathbf{R}\mathcal{J}\bigl(\mathbf{R}\dot{\boldsymbol{\omega}}_d\bigr) + \SL[\boldsymbol{\omega}]\mathbf{R}\mathcal{J}\bigl(\mathbf{R}^\top\mathbf{\omega}_d\bigr)
+        \mathbf{0} & \SL[\ddot{\mathbf{p}}_d]\mathbf{R} + \SL[\boldsymbol{\omega}]\SL[\dot{\mathbf{p}}_d]\mathbf{R} - \SL[\boldsymbol{\omega}_d]\SL[\dot{\mathbf{p}}]\mathbf{R} & \mathbf{R}\mathcal{J}\bigl(\mathbf{R}\dot{\boldsymbol{\omega}}_d\bigr) + \SL[\boldsymbol{\omega}]\mathbf{R}\mathcal{J}\bigl(\mathbf{R}^\top\boldsymbol{\omega}_d\bigr)
     \end{bmatrix},
 \end{align}
 where $\mathcal{J}:\mathbb{R}^3\to\mathbb{R}^{3\times6}$ is the following map

@@ -308,5 +308,5 @@ TSWLatexianTemp*
 __pycache__
 
 # Ignore log files
-.pkl
-.csv
+*.pkl
+*.csv

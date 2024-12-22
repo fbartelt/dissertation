@@ -75,25 +75,86 @@ The optimization problem in \eqref{eq:optimization-problem-distance-definition-p
 We implemented the code in C++. On average, the computation of the vector field took $60\pm5$ milliseconds per iteration on a single core of an Intel i5-10300H @ 4.5GHz CPU, with 8 GB of RAM. On average, $99.5\%$ of this time was spent solving the optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve}. Since the optimization process is highly parallelizable -- allowing for the simultaneous computation of $\widehat{D}(\mathbf{H},\mathbf{H}_d(s))$ across different discretized $s$ -- the computational effort could be significantly reduced by leveraging parallel architectures such as GPUs, SIMD, or multi-threading. The system's trajectory is illustrated in \cref{fig:vfplot-trajectory}, while the values of the distance function $D$ are shown in \cref{fig:position-orientation-errors}. Additionally, \cref{fig:position-orientation-errors} provides a more intuitive representation of the position error (in centimeters) and the orientation error (in degrees). The results confirm that the system successfully converges to the desired curve and circulates around it as expected. Once the system reaches the curve, it remains there without deviation. Although our implementation was carried out in C++, we provide a less efficient sample code in Python for clarity and accessibility, available at \url{https://github.com/fbartelt/SE3-example/blob/main/SE3example.ipynb}.
 
 \section{Collaborative Manipulation}
-We conducted two simulations using UAIBot (\url{https://uaibot.github.io/}) to validate the theoretical results presented in this work. Firstly, we applied the vector field to a first-order integrator, followed by implementing the vector field-based adaptive control strategy. Both tasks focused on the convergence and circulation of a static curve in pose space.
+For the conduction of the adaptive control simulation of \cref{ch:collaborative}, we considered the manipulation of a large cylindrical body by six agents, aiming to converge to and circulate a curve $\mathcal{C}\in\text{ISE}(3)$. The cylindrical body had a radius $r$ of $\qty{0.25}{\meter}$, a height $h$ of $\qty{1}{\meter}$ and a mass $m$ of $\qty{1.28E3}{\kilogram}$. The measurement point $\mathbf{r}_p$ was taken as the position of the first agent $\mathbf{r}_1=[0\ 0\ 1.5]^\top$. The other agents' positions as well as the inertia tensor components are detailed in \cref{tb:parameters}.
+\begin{table}[htb]
+    \centering
+    \begin{threeparttable}
+    \caption{Adaptive simulation parameters}\label{tb:parameters}
+    \begin{tabular}{clcl}
+    Parameter & Value & Parameter & Value\\\hline
+    $r$ & $\qty{0.25}{\meter}$ & $\mathbf{r}_{1}$ & $[0\ 0\ 1.5]^\top\,\unit{\meter}$\\
+    $h$ & $\qty{1}{\meter}$ & $\mathbf{r}_{2}$ & $[0\ 0\ -1.5]^\top\,\unit{\meter}$\\
+    $m$ & $\qty{1.28E3}{\kilogram}$ & 
+    $\mathbf{r}_{3}$ & $[0.5\ 0\ 0]^\top\,\unit{\meter}$\\
+    $\mathbb{I}_{\text{cm}, xx}$ & $\qty{1.56E2}{\kilogram\meter\squared}$ & 
+    $\mathbf{r}_{4}$ & $[-0.5\ 0\ 0]^\top\,\unit{\meter}$\\  
+    $\mathbb{I}_{\text{cm}, yy}$ & $\qty{1.56E2}{\kilogram\meter\squared}$ &
+    $\mathbf{r}_{5}$ & $[0\ 0.5\ 0]^\top\,\unit{\meter}$\\
+    $\mathbb{I}_{\text{cm}, zz}$ & $\qty{4.93E1}{\kilogram\meter\squared}$  & 
+    $\mathbf{r}_{6}$ & $[0\ -0.5 \ 0]^\top\,\unit{\meter}$\\
+    $\mathbf{r}_{p}$ & $[0\ 0\ 1.5]^\top\,\unit{\meter}$ \\\hline
+    \end{tabular}
+    \begin{tablenotes}
+        \footnotesize
+        \item Note: The inertia tensor $\mathbb{I}_\text{cm}$ is a diagonal matrix for which the components $\mathbb{I}_{\text{cm}, xx}, \mathbb{I}_{\text{cm}, yy}$ and $\mathbb{I}_{\text{cm}, zz}$ are the diagonal elements in order.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
 
-In both simulations, we employed the forward Euler method with a time step of $\Delta t = \qty{1E-2}{\second}$. The parametric representation of the curve remained consistent across both simulations, with only minor variations in constants. Specifically, the parametric equation $\mathbf{h}(s)=(\mathbf{p}_d(s),\;\mathbf{R}_d(s))$ was defined as follows:
+The curve constants were set to $c_1 = 0.7$ and $c_2 = 0.4$, and $s$ was discretized into $5000$ evenly spaced samples within the interval $[0, 1]$, thus $\Delta s=1\slash5000$. For function $H$ we set $\kappa=1.4$. . The agents were symmetrically distributed, and the measurement point was located at the position of the first agent. Additionally, the dead zone strategy \citep{ioannou2012robust} was employed for $\|\boldsymbol{\zeta}\| \le 0.01$, in which no adaptation will occur.
+
+\subsection{Curve parametrization}
+In this simulation, we employed a more complex curve in the group $\text{ISE}(3)$, which was defined as
 \begin{align}
-\begin{split}
-    \mathbf{p}_d(s) &= \begin{bmatrix}
-        c_1(\sin(2\pi s) + 2\sin(4\pi s))\\
-        c_1(\cos(2\pi s) - 2\cos(4\pi s))\\
-        c_2 - c_1\sin(6\pi s)
-    \end{bmatrix},\\
-    \mathbf{R}_d(s) &= \mathbf{R}_z(2\pi s)\mathbf{R}_x(4\pi s),
-    \end{split} \label{eq:parametriceq-simulation}
+    \mathbf{H}_d(s) = \begin{bmatrix}
+        \mathbf{R}_d(s) & \mathbf{0} & \mathbf{0}\\
+        \mathbf{0} & \mathbf{I} & \mathbf{p}_d(s)\\
+        \mathbf{0} & \mathbf{0} & 1
+    \end{bmatrix},\label{eq:parametriceq-simulation}
 \end{align}
-where $\mathbf{R}_z(a), \mathbf{R}_x(a)$ represent a rotation of $a$ radians around the $z$-axis and $x$-axis, respectively.
+where
+\begin{align}
+    \mathbf{p}_d(s) &= \begin{bmatrix}
+        0.7(\sin(2\pi s) + 2\sin(4\pi s))\\
+        0.7(\cos(2\pi s) - 2\cos(4\pi s))\\
+        0.4 - 0.7\sin(6\pi s)
+    \end{bmatrix},\\
+    \mathbf{R}_d(s) &= \begin{bmatrix}
+        \cos(2\pi s) & -\sin(2\pi s) & 0\\
+        \sin(2\pi s) & \cos(2\pi s) & 0\\
+        0 & 0 & 1
+    \end{bmatrix}\begin{bmatrix}
+        1 & 0 & 0\\
+        0 & \cos(4\pi s) & -\sin(4\pi s)\\
+        0 & \sin(4\pi s) & \cos(4\pi s)
+    \end{bmatrix}.
+\end{align}
+Instead of using the continuous curve, we discretized it by sampling $s$ into $5000$ evenly spaced points within the interval $[0, 1]$. In order to distinguish both, we henceforth adopt the notations $\mathbf{H}_d[i]$, $\mathbf{p}_d[i]$ and $\mathbf{R}_d[i]$ to refer to the $i$-th sample of the curve, position and orientation, respectively.
 
-For the integration of rotation matrices, we utilized the exponential map \citep{Culbertson2021}:
-\begin{equation}
-    \mathbf{R}(t+\Delta t) \approx e^{\Delta t\SL[\boldsymbol{\omega}(t)]}\mathbf{R}(t). \label{eq:exponentialmap-integration-rotation}
-\end{equation}
+
+In both simulations, we employed the forward Euler method with a time step of $\Delta t = \qty{1E-2}{\second}$. 
+\subsection{Simulation details}
+For the integration of the system, we utilized the Heun's method \citep[p. 330]{fred}, also known as the improved Euler method, which is a two-stage Runge-Kutta method. In our case of Lie groups, this translates to the following update rules:
+\begin{align}
+    \begin{split}
+        \dot{\underline{\boldsymbol{\xi}}}(t+\Delta t) &= f(\underline{\mathbf{H}}(t), \underline{\mathbf{H}}_\text{ref}(t), \underline{\boldsymbol{\xi}}(t), \Psi(\underline{\mathbf{H}}(t)))\\
+        \dot{\boldsymbol{\xi}}(t+\Delta t) &= f(\mathbf{H}(t), \mathbf{H}_\text{ref}(t), \boldsymbol{\xi}(t), \Psi(\mathbf{H}(t)))\\
+        \underline{\boldsymbol{\xi}}(t + \Delta t) &= \boldsymbol{\xi}(t) + \Delta t \dot{\underline{\boldsymbol{\xi}}}(t)\\
+        \boldsymbol{\xi}(t + \Delta t) &= \boldsymbol{\xi}(t) + \frac{\Delta t}{2} \bigl(\dot{\boldsymbol{\xi}}(t) + \dot{\underline{\boldsymbol{\xi}}}(t)\bigr)\\
+        \underline{\mathbf{H}}_\text{ref}(t +\Delta t) &= \exp\biggl(\Delta t\mathcal{S}\Bigl(\Psi\bigl(\mathbf{H}(t)\bigr)\Bigr)\biggr)\mathbf{H}(t)\\
+        \underline{\mathbf{H}}(t +\Delta t) &= \exp\bigl(\Delta t\SL[\boldsymbol{\xi}(t)]\bigr)\mathbf{H}(t)\\
+        \mathbf{H}_\text{ref}(t + \Delta t) &= \exp\biggl(\frac{\Delta t}{2}\mathcal{S}\Bigl(\Psi\bigl(\mathbf{H}(t)\bigr) + \Psi\bigl(\underline{\mathbf{H}}(t)\bigr)\Bigr)\biggr)\mathbf{H}(t)\\
+        \mathbf{H}(t + \Delta t) &= \exp\biggl(\frac{\Delta t}{2}\SL[\boldsymbol{\xi}(t) + \underline{\boldsymbol{\xi}}(t)]\biggr)\mathbf{H}(t + \Delta t)\\
+        \underline{\dot{\widehat{\mathbf{o}}}}_i(t + \Delta t) &= g(\widehat{\mathbf{o}}_i(t))\\
+        \dot{\widehat{\mathbf{o}}}_i(t + \Delta t) &= g(\widehat{\mathbf{o}}_i(t))\\
+        \underline{\dot{\widehat{\mathbf{r}}}}_i(t + \Delta t) &= g(\widehat{\mathbf{r}}_i(t))\\
+        \dot{\widehat{\mathbf{r}}}_i(t + \Delta t) &= g(\widehat{\mathbf{r}}_i(t))\\
+        \widehat{\mathbf{o}}_i(t + \Delta t) &= \widehat{\mathbf{o}}_i(t) + \frac{\Delta t}{2} (\dot{\widehat{\mathbf{o}}}_i(t) + \underline{\widehat{\mathbf{o}}}_i(t))\\
+        \widehat{\mathbf{r}}_i(t + \Delta t) &= \widehat{\mathbf{r}}_i(t) + \frac{\Delta t}{2} (\dot{\widehat{\mathbf{r}}}_i(t) + \underline{\widehat{\mathbf{r}}}_i(t))
+    \end{split}
+\end{align}
+
+
 In practice, our curve parametrization was implemented as a list of tuples, with the $i$-th entry denoted as $\mathbf{h}[i]=(\mathbf{p}_d[i],\, \mathbf{R}_d[i])$. This allowed for an approximation of the tangent vector. Let $i^*$ represent the index of the curve that solves optimization problem \eqref{eq:otmproblemsStar}, then the tangent approximation was defined as
 \begin{align}
     \mathbf{T} &\approx \begin{bmatrix}
@@ -116,30 +177,58 @@ The functions $G$ and $H$ were defined as follows:
 The parameter $\beta$ was set to $1$ for both simulations.
 
 \subsection{Adaptive Dynamic}
-\begin{table}[htb]
-\begin{center}
-\caption{Adaptive simulation parameters}\label{tb:parameters}\vspace{-2mm}
-\begin{tabular}{clcl}
-Parameter & Value & Parameter & Value\\\hline
-$m$ & $\qty{1.28E3}{\kilogram}$ & $\mathbf{r}_{2}$ & $[0,\,0,\,-1.5]\,\unit{\meter}$\\
-$I_\text{cm,xx}$ & $\qty{1.56E2}{\kilogram\meter\squared}$ & $\mathbf{r}_{3}$ & $[0.5,\,0,\,0]\,\unit{\meter}$\\
-$I_\text{cm,yy}$ & $\qty{1.56E2}{\kilogram\meter\squared}$ & $\mathbf{r}_{4}$ & $[-0.5,\,0,\,0]\,\unit{\meter}$\\
-$I_\text{cm,zz}$ & $\qty{4.93E1}{\kilogram\meter\squared}$ & $\mathbf{r}_{5}$ & $[0,\,0.5,\,0]\,\unit{\meter}$\\
-$\mathbf{r}_{p}$ & $[0,\,0,\,1.5]\,\unit{\meter}$ & $\mathbf{r}_{6}$ & $[0,\,-0.5,\,0]\,\unit{\meter}$\\
-$\mathbf{r}_{1}$ & $[0,\,0,\,1.5]\,\unit{\meter}$\\\hline
-\end{tabular}
-\end{center}
-\end{table}
-In this section, we investigate the manipulation of a large cylindrical body by six agents, aiming to converge to and circulate the curve parameterized by Eq. \eqref{eq:parametriceq-simulation}. The curve constants were set to $c_1 = 0.7$ and $c_2 = 0.4$, and $s$ was discretized into $5000$ evenly spaced samples within the interval $[0, 1]$, thus $\Delta s=1\slash5000$. For function $H$ we set $\kappa=1.4$. The cylindrical body had a radius of $\qty{0.25}{\meter}$ and a height of $\qty{1}{\meter}$, with additional parameters detailed in \cref{tb:parameters}. The agents were symmetrically distributed, and the measurement point was located at the position of the first agent. Additionally, the dead zone strategy \citep{ioannou2012robust} was employed for $\|\boldsymbol{\zeta}\| \le 0.01$, in which no adaptation will occur.
+
+In this section, we investigate 
 
 The adaptive parameters were set as $\boldsymbol{\Gamma}_r=\num{3E-4}\cdot\mathbf{I}_{3\times3},\, \boldsymbol{\Gamma}_o=\num{3E-2}\cdot\text{diag}(|\mathbf{o}_i| + \num{1E-2}) $, and $\mathbf{K}_D=1\slash6\cdot\text{diag}(\num{5E3}\cdot\mathbf{I}_{3\times3},\,\num{5E2}\cdot\mathbf{I}_{3\times3})$, where $\text{diag}(\cdot)$ maps a vector into a diagonal matrix or a list of matrices into a block diagonal matrix, and $|\cdot|$ is the element-wise absolute value. The object's initial position was set to $[-0.1,\, 0,\, 0.2]^T$, and the initial orientation was the identity matrix. The initial estimates $\hat{\mathbf{o}}_i$ and $\hat{\mathbf{r}}_i$ were randomly initialized with a normal distribution having zero mean and standard deviations of $1$ and $2$, respectively. The simulation duration was $\qty{20}{\second}$.
-\begin{figure}[htb]
+\begin{figure}[ht!]
     \centering
-    \includegraphics[width=.7\columnwidth]{figures/adaptive_errorNorm.pdf}
-    \vspace{-1mm}
+    % First subfigure
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \def\svgwidth{\linewidth}
+        {\import{figures/}{adaptive_traj1.pdf_tex}}
+        \caption{$t\in[0, 13]s$}
+        \label{fig:adaptive-traj-first}
+    \end{subfigure}
+    \hfill
+    % Second subfigure
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \def\svgwidth{\linewidth}
+        {\import{figures/}{adaptive_traj2.pdf_tex}}
+        \caption{$t\in[13, 26]s$}
+        \label{fig:adaptive-traj-second}
+    \end{subfigure}
+    \hfill
+    % Third subfigure
+    \begin{subfigure}[b]{0.32\textwidth}
+        \centering
+        \def\svgwidth{\linewidth}
+        {\import{figures/}{adaptive_traj3.pdf_tex}}
+        \caption{$t\in[26, 39]s$}
+        \label{fig:adaptive-traj-third}
+    \end{subfigure}
+    \caption{Trajectory of the manipulated cylinder. The solid blue line depicts the system trajectory, while the solid red line indicates the target curve. The dashed light blue line represents the past trajectory. The initial and final positions are marked by purple and orange cylinders, respectively. Pink cylinders denote intermediary positions, with orientation frames shown by RGB axes.}
+    \label{fig:adaptive-trajectory}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \def\svgwidth{\linewidth}
+    {\footnotesize\import{figures/}{adaptive_snorm.pdf_tex}}
     \caption{Norm of error vector $\boldsymbol{\zeta}$ during the adaptive control simulation.}
     \label{fig:sim2-snorm}
 \end{figure}
+The error vector $\boldsymbol{\zeta}$ rapidly decreased to zero, however after $\qty{0.8}{\second}$ it increases slightly, as shown in \cref{fig:sim2-snorm}. This behavior is expected due to the adaptation process. After approximately $\qty{1.2}{\second}$, $\boldsymbol{\zeta}$ converged to $\num{0.01}$, indicating that the agents successfully track the desired velocity, the vector field. The norm of this error exhibits some oscillations for the rest of the simulation, but it remains close to zero. These oscillations can be explained through the dead-zone strategy and the approximations made in the computations.
+\begin{figure}[ht]
+    \centering
+    \def\svgwidth{\linewidth}
+    {\footnotesize\import{figures/}{adaptive_distances.pdf_tex}}
+    \caption{Distance $D$ during adaptive control simulation, along with the position error in centimeters and orientation error in degrees.}
+    \label{fig:sim2-distances}
+\end{figure}
+Observing the behavior of the distance function $D$ in \cref{fig:sim2-distances}, we can see that the object approached the curve asymptotically at around $\qty{1.2}{\second}$, as expected from the behavior of $\boldsymbol{\zeta}$. The final value observed for $D$ is $\num{0.004}$, which translates to a position error of $\qty{0.6}{\centi\meter}$ and an orientation error of $\qty{0.32}{\degree}$. The chattering behavior observed in the position and orientation error is due to the 
 \begin{figure}[htb]
     \centering
     \includegraphics[width=.7\columnwidth]{figures/wrenches.pdf}
@@ -148,4 +237,4 @@ The adaptive parameters were set as $\boldsymbol{\Gamma}_r=\num{3E-4}\cdot\mathb
     \label{fig:sim2-metricvalue}
 \end{figure}
 
-Throughout the adaptation process, the error vector $\boldsymbol{\zeta}$ exhibited oscillations, as depicted in \cref{fig:sim2-snorm}. However, it rapidly converged to zero after approximately $\qty{6.8}{\second}$. Analyzing \cref{fig:sim2-metricvalue}, it is evident that the object approached the curve asymptotically earlier, at around $\qty{4.6}{\second}$, indicating robust performance. Subsequently, after $\qty{6.8}{\second}$, the object closely followed the curve, which is expected when $\|\boldsymbol{\zeta}\|\approx0$, in line with our theoretical foundation.
+exhibited oscillations, as depicted in \cref{fig:sim2-snorm}. However, it rapidly converged to zero after approximately $\qty{6.8}{\second}$. Analyzing \cref{fig:sim2-metricvalue}, it is evident that the object approached the curve asymptotically earlier, at around $\qty{4.6}{\second}$, indicating robust performance. Subsequently, after $\qty{6.8}{\second}$, the object closely followed the curve, which is expected when $\|\boldsymbol{\zeta}\|\approx0$, in line with our theoretical foundation.

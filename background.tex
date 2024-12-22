@@ -50,7 +50,7 @@ In the Lyapunov stability proof, the final result shows that the time derivative
 In our generalization, we will incorporate and build upon these features.
 
 \section{Lie groups and Lie algebras}
-In this section, we introduce \emph{Lie groups} and \emph{Lie algebras}, which are smooth manifolds that are also groups. Besides providing examples of both, we also introduce concepts that will prove valuable in our work. We begin with the general definition of a Lie group.
+In this section, we introduce \emph{Lie groups}, which are smooth manifolds that are also groups, and \emph{Lie algebras}. Besides providing examples of both, we also introduce concepts that will prove valuable in our work. This section integrates concepts and ideas from the following books: \citet{Lee2012,Gallier2020,Hall2015,Duistermaat2012}, with the aim of presenting the concepts in a clearer and more accessible manner. We begin with the general definition of a Lie group.
 \subsection{Lie groups}
 \begin{definition}[Lie group]
     A \emph{Lie group} is a smooth manifold $G$ satisfying the following properties:
@@ -67,10 +67,10 @@ The mapping between Lie groups is a fundamental concept and will play an importa
 
 There are two important isomorphisms in Lie groups that are important for the concept of Lie algebras. These are the translation isomorphisms, which are defined as follows:
 \begin{definition}
-    Given a Lie group $G$, we define two operations: the left translation $L_{\mathbf{X}}: G\to G$ and the right translation $R_{\mathbf{X}}: G\to G$ for any $\mathbf{X}\in G$. These operations are defined as 
+    Given a Lie group $G$, we define two operations: the left translation $\mathcal{L}_{\mathbf{X}}: G\to G$ and the right translation $\mathcal{R}_{\mathbf{X}}: G\to G$ for any $\mathbf{X}\in G$. These operations are defined as 
     \begin{align}
-        L_{\mathbf{X}}(\mathbf{Y}) &= \mathbf{X}\circ\mathbf{Y}\\
-        R_{\mathbf{X}}(\mathbf{Y}) &= \mathbf{Y}\circ\mathbf{X},
+        \mathcal{L}_{\mathbf{X}}(\mathbf{Y}) &= \mathbf{X}\circ\mathbf{Y}\\
+        \mathcal{R}_{\mathbf{X}}(\mathbf{Y}) &= \mathbf{Y}\circ\mathbf{X},
     \end{align}
     respectively. Since the group operation and the inverse map are smooth, the left and right translations are diffeomorphisms, and thus isomorphisms.
 \end{definition}
@@ -101,8 +101,12 @@ Although present in the context of any Lie group, we can define two interesting 
 \end{definition}
 
 \subsubsection{Examples of Lie groups}
+In this section we present some examples of the most common Lie groups, which will also introduce the notation and concepts that will be used in our extension.
 \begin{example}\label{ex:general-linear-group-special-linear-group}
     The \emph{special linear group} $\text{SL}(n, \mathbb{R})$ (resp. $\text{SL}(n, \mathbb{C})$) is a subgroup of $\text{GL}(n, \mathbb{R})$ (resp. $\text{GL}(n, \mathbb{C})$) consisting of invertible matrices with determinant equal to 1.
+\end{example}
+\begin{example}
+    The group formed by the direct product of Lie groups $G = G_1 \times G_2 \times \dots \times G_k$ is a Lie group \citep[p. 152]{Lee2012}. It is also true that the semidirect product of Lie groups $G = G_1\rtimes G_2$ is also a Lie group \citep[p. 168]{Lee2012}.
 \end{example}
 \begin{example}\label{ex:orthogonal-group-special-orthogonal-group}
     The \emph{orthogonal group} $\text{O}(n)$ is the Lie group of distance-preserving transformation and comprises rotations and reflections. It consists of all $n\times n$ orthogonal matrices:
@@ -180,8 +184,10 @@ Although present in the context of any Lie group, we can define two interesting 
         \mathbf{I}_{p,q} = \begin{bmatrix}
             \mathbf{I}_p & \mathbf{0}\\
             \mathbf{0} & -\mathbf{I}_q
-        \end{bmatrix}.
+        \end{bmatrix},
     \end{align}
+    and $n=p+q$.
+
     Similarly, we can define the \emph{indefinite special orthogonal group} $\text{SO}(p,q)$ as the group
     \begin{align}
         \text{SO}(p, q) = \left\{\mathbf{X}\in\text{O}(p, q) | \det\mathbf{X}=1\right\}.
@@ -206,6 +212,23 @@ Although present in the context of any Lie group, we can define two interesting 
 \end{example} 
 
 \subsection{Lie algebras}
+Lie groups are closely associated with a mathematical structure called the \emph{Lie algebra}, which allows us to study their properties using linear algebra. Usually the Lie algebra of a Lie group $G$ is denoted as the set of all smooth \emph{left-invariant} vector fields on $G$, denoted $\text{Lie}(G)$. These are vector fields that remain unchanged when ``shifted'' by the group operations. To define left-invariant vector fields formally, we first need to understand the concept of differentials in the context of Lie groups.
+
+Suppose $\mathcal{H}:G\to H$ is a homomorphism between Lie groups $G$ and $H$. If $V$ is a vector field on $G$, then at every point $\mathbf{X}\in G$, the differential of $\mathcal{H}$ at $\mathbf{X}$, denoted $d(\mathcal{H})_\mathbf{X}$, maps the vector $V(\mathbf{X})$ in the tangent space of $G$ at $\mathbf{X}$ to a vector in the tangent space of $H$ at $\mathcal{H}(\mathbf{X})$, i.e. $d(\mathcal{H})_\mathbf{X}:T_\mathbf{X}G\to T_{\mathcal{H}(\mathbf{X})}H$.
+
+Furthermore, if there exists a vector field $W$ on $H$ such that $d(\mathcal{H})_\mathbf{X}\bigl(V(\mathbf{X})\bigr) = W\bigl(\mathcal{H}(\mathbf{X})\bigr)$ for all $\mathbf{X}\in G$, then $V$ and $W$ are said to be $\mathcal{H}$-related. This concept is important since if $\mathcal{H}$ is a diffeomorphism, a Lie group isomorphism in this context, then there is a unique vector field $W$ on $H$ that is $\mathcal{H}$-related to $V$ \citep[p. 183]{Lee2012}.
+
+Finally, the concept of left-invariant (resp. right-invariant) vector fields on Lie groups can be introduced by means of the differential mappings of these translations:
+\begin{definition}
+    A vector field $V$ on a Lie group $G$ is said to be \emph{left-invariant} (resp. \emph{right-invariant}) if it is invariant under all left (resp. right) translations:
+    \begin{align*}
+        d(\mathcal{L}_\mathbf{X})_\mathbf{Y}(V(\mathbf{Y})) &= V(\mathbf{X}\circ\mathbf{Y}) \,\forall\,\mathbf{X},\mathbf{Y}\in G,\\
+        \text{(resp.) }d(\mathcal{R}_\mathbf{X})_\mathbf{Y}(V(\mathbf{Y})) &= V(\mathbf{Y}\circ\mathbf{X}) \,\forall\,\mathbf{X},\mathbf{Y}\in G.
+    \end{align*}  
+\end{definition}
+Since the translation operations are isomorphisms, it follows that every left-invariant (resp. right-invariant) vector field on a Lie group can be identified with its value at the identity element. In other words, if $V$ is a left-invariant (resp. right-invariant) vector field and $V_\iota\triangleq V(\iota) \in T_\iota G$ is the value of the vector field at the identity element of $G$, then $V$ and $V_\iota$ are $\mathcal{L}_\mathbf{X}$-related (resp. $\mathcal{R}_\mathbf{X}$-related) for all $\mathbf{X}\in G$, which implies that $V(\mathbf{X}) = d(\mathcal{L}_\mathbf{X})_\iota V_\iota$ (resp. $V(\mathbf{X}) = d(\mathcal{R}_\mathbf{X})_\iota V_\iota$).
+
+From the last statement, it is clear that the Lie algebra is a vector space that captures the local behavior of the group around the identity element. For this reason, the Lie algebra of a Lie group $G$ is also defined as the tangent space at the identity element $T_\iota G$, commonly denoted $\mathfrak{g}$. More generally, a Lie algebra is defined as follows:
 \begin{definition}
     A \emph{real Lie algebra} is a real vector space $\mathfrak{g}$, endowed with a map $[\cdot, \cdot]:\mathfrak{g}\times\mathfrak{g}\to\mathfrak{g}$, called the \emph{Lie bracket} on $\mathfrak{g}$, that satisfies the following properties for all $\mathbf{A},\mathbf{B},\mathbf{C}\in\mathfrak{g}$:
     \begin{property}
@@ -226,33 +249,164 @@ Although present in the context of any Lie group, we can define two interesting 
 \end{definition}
 Note that \cref{prop:lie-algebra-skew-symmetry} implies that $[\mathbf{A}, \mathbf{A}]=0\,\forall\,\mathbf{A}\in\mathfrak{g}$. 
 
-The Lie algebra $\mathfrak{g}$ can be regarded as the tangent space at the identity $T_\iota G$
-
+Mappings between Lie algebras also have an important role in the study of Lie groups, specially homomorphisms and isomorphisms. The definition of a homomorphism between Lie algebras is given as follows:
 \begin{definition}
-    If $\mathfrak{g}$ and $\mathfrak{h}$ are Lie algebras with Lie brackets $[\cdot, \cdot]_\mathfrak{g}$ and $[\cdot, \cdot]_\mathfrak{h}$, respectively, a linear map $\mathcal{H}:\mathfrak{g}\to\mathfrak{h}$ is denoted a \emph{homomorphism} if it preserves the Lie bracket, that is, $\mathcal{H}([\mathbf{A}, \mathbf{B}]_\mathfrak{g}) = [\mathcal{H}(\mathbf{A}), \mathcal{H}(\mathbf{B})]_\mathfrak{h}$. Furthermore, if $\mathcal{H}$ is a bijection, then $\mathcal{H}^{-1}$ is also a homomorphism, and $\mathcal{H}$ is an \emph{isomorphism}. In this case, we say that $\mathfrak{g}$ and $\mathfrak{h}$ are \emph{isomorphic} and denote this by $\mathfrak{g}\cong\mathfrak{h}$.
+    If $\mathfrak{g}$ and $\mathfrak{h}$ are Lie algebras with Lie brackets $[\cdot, \cdot]_\mathfrak{g}$ and $[\cdot, \cdot]_\mathfrak{h}$, respectively, a linear map $\mathscr{H}:\mathfrak{g}\to\mathfrak{h}$ is denoted a \emph{homomorphism} if it preserves the Lie bracket, that is, $\mathscr{H}([\mathbf{A}, \mathbf{B}]_\mathfrak{g}) = [\mathscr{H}(\mathbf{A}), \mathscr{H}(\mathbf{B})]_\mathfrak{h}\,\forall\, \mathbf{A},\mathbf{B}\in\mathfrak{g}$. Furthermore, if $\mathscr{H}$ is a bijection, then $\mathscr{H}^{-1}$ is also a homomorphism, and $\mathscr{H}$ is an \emph{isomorphism}. In this case, we say that $\mathfrak{g}$ and $\mathfrak{h}$ are \emph{isomorphic} and denote this by $\mathfrak{g}\cong\mathfrak{h}$.
 \end{definition}
-% Its Lie algebra $\mathfrak{ise}(n)\cong\mathbb{R}^n\oplus\mathfrak{so}(n)$ and has the following representation:
-%     \begin{align}
-%         \mathfrak{ise}(n) &= \left\{\begin{bmatrix}
-%             \mathbf{S} & \mathbf{0}\\
-%             \mathbf{0} & \mathbf{U}
-%         \end{bmatrix} \in \mathbb{R}^{(2n+1)\times(2n+1)}\,;\, \mathbf{S}\in\mathfrak{so}(n),\,\mathbf{U}\in\mathfrak{t}(n)\right\}\\
-%         &= \left\{\begin{bmatrix}
-%             \mathbf{S} & \mathbf{0} & \mathbf{0}\\
-%             \mathbf{0} & \mathbf{0} & \mathbf{u}\\
-%             \mathbf{0} & \mathbf{0} & 0
-%         \end{bmatrix} \in \mathbb{R}^{(2n+1)\times(2n+1)}\,;\, \mathbf{S}\in\mathfrak{so}(n),\,\mathbf{u}\in\mathbb{R}^n\right\}.
-%     \end{align}
+Lie algebra homomorphisms can also be induced by Lie group homomorphisms. If $\mathcal{H}$ is a Lie group homomorphism between Lie groups $G$ and $H$, then the differential of $\mathcal{H}$ at the identity element $d\mathcal{H}_\iota=\mathscr{H}$ is a Lie algebra homomorphism between the Lie algebras $\mathfrak{g}=T_\iota G$ and $\mathfrak{h}=T_\iota H$ \citep[p. 41]{Duistermaat2012}. Furthermore, if $\mathcal{H}$ is a Lie group isomorphism, then $d\mathcal{H}_\iota$ is a Lie algebra isomorphism.
 
+The most important Lie algebra homomorphism is the differential of the translation operations. As previously seem, every left-invariant (resp. right-invariant) vector field can be identified with the tangent space at the identity element, and since the translation operations are isomorphisms, the space of left-invariant (resp. right-invariant) vector fields $\text{Lie}(G)$ is isomorphic to the tangent space at the identity element $\mathfrak{g}$, i.e. $\text{Lie}(G)\cong\mathfrak{g}$. Both definitions of the Lie algebra of a Lie group are equally important and are used interchangeably depending on the context, as one definition might allow for easier comprehension or computtions. The concept of homomorphisms thus tie both definitions together.
+\subsubsection{Examples of Lie algebras}
+In this section we present the corresponding ones for the Lie groups presented in the previous section, as well as some Lie algebras isomorphisms.
+\begin{example}
+    The Lie algebra of the general linear group $\text{GL}(n, \mathbb{R})$ is the set of all $n\times n$ matrices, denoted $\mathfrak{gl}(n, \mathbb{R})$, with its Lie bracket given by the commutator $[\mathbf{A}, \mathbf{B}] = \mathbf{A}\mathbf{B} - \mathbf{B}\mathbf{A}$. Similarly, the Lie algebra of the general linear group $\text{GL}(n, \mathbb{C})$, denoted $\mathfrak{gl}(n, \mathbb{C})$, is the set of all $n\times n$ complex matrices with the same Lie bracket. Furthermore, the Lie algebra of the special linear group $\text{SL}(n, \mathbb{R})$ (resp. $\text{SL}(n, \mathbb{C})$) is the set of all $n\times n$ real (resp. complex) matrices with zero trace, denoted $\mathfrak{sl}(n, \mathbb{R})$ (resp. $\mathfrak{sl}(n, \mathbb{C})$).
+\end{example}
+\begin{example}
+    The lie algebra for the direct product of Lie groups $G=G_1 \times G_2 \times \dots \times G_k$ is the direct sum of the Lie algebras of the groups, i.e. $\mathfrak{g}_1\oplus\mathfrak{g}_2\oplus\dots\oplus\mathfrak{g}_k$.
+\end{example}
+\begin{example}
+    The Lie algebra of the orthogonal group $\text{O}(n)$ is the same as the Lie algebra of the special orthogonal group $\text{SO}(n)$, denoted $\mathfrak{so}(n)$. This Lie algebra is the set of all $n\times n$ skew-symmetric matrices:
+    \begin{align*}
+        \mathfrak{so}(n) = \left\{\mathbf{A}\in\mathbb{R}^{n\times n} | \mathbf{A}^\top = -\mathbf{A}\right\}.
+    \end{align*}
+    In the special case of the special orthogonal Lie group $\text{SO}(3)$, with Lie algebra $\mathfrak{so}(3)$, a common basis is given by the of matrices
+    \begin{align*}
+        \mathbf{E}_1 = \begin{bmatrix} 0 & 0 & 0 \\ 0 & 0 & -1 \\ 0 & 1 & 0 \end{bmatrix}, \quad \mathbf{E}_2 = \begin{bmatrix} 0 & 0 & 1 \\ 0 & 0 & 0 \\ -1 & 0 & 0 \end{bmatrix}, \quad \mathbf{E}_3 = \begin{bmatrix} 0 & -1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}.
+    \end{align*}
+    It is usual to represent elements of $\mathfrak{so}(3)$ through a map $\SL$ that maps a vector $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3]^\top$ into a skew-symmetric matrix:
+    \begin{align*}
+        \SL[\boldsymbol{\zeta}] = \zeta_1 \mathbf{E}_1 + \zeta_2 \mathbf{E}_2 + \zeta_3 \mathbf{E}_3
+        = \begin{bmatrix} 0 & -\zeta_3 & \zeta_2 \\ \zeta_3 & 0 & -\zeta_1 \\ -\zeta_2 & \zeta_1 & 0 \end{bmatrix}.
+    \end{align*}
+    In fact, this map is an isomorphism between the Lie algebra of $\mathbb{R}^3$ and $\mathfrak{so}(3)$. Let the Lie bracket of $\mathbb{R}^3$ be the cross product, $\mathbf{a} = [a_1\ a_2\ a_3]^\top$ and $\mathbf{b} = [b_1\ b_2\ b_3]^\top$, then 
+    \begin{align*}
+        \SL[\mathbf{a}\times \mathbf{b}] &= \begin{bmatrix}
+            0 & a_2b_1-a_1b_2 & a_3b_1-a_1b_3\\
+            a_1b_2 - a_2b_1 & 0 & a_3b_2-a_2b_3\\
+            a_1b_3-a_3b_1 & a_2b_3-a_3b_2 & 0
+        \end{bmatrix},
+    \end{align*}
+    now computing $\SL[\mathbf{a}]\SL[\mathbf{b}]$ and $\SL[\mathbf{b}]\SL[\mathbf{a}]$ gives
+    \begin{align*}
+        \SL[\mathbf{a}]\SL[\mathbf{b}] &=
+        \begin{bmatrix}
+            -a_3b_3 -a_2b_2 & a_2b_1 & a_3b_1\\
+            a_1b_2 & -a_3b_3 - a_1b_1 & a_3b_2\\
+            a_1b_3 & a_2b_3 & -a_2b_2 - a_1b_1
+        \end{bmatrix},\\
+        \SL[\mathbf{b}]\SL[\mathbf{a}] &=
+        \begin{bmatrix}
+            -a_3b_3 -a_2b_2 & a_1b_2 & a_1b_3\\
+            a_2b_1 & -a_3b_3 - a_1b_1 & a_2b_3\\
+            a_3b_1 & a_3b_2 & -a_2b_2 - a_1b_1
+        \end{bmatrix}.
+    \end{align*}
+    Clearly, $\SL[\mathbf{a}\times \mathbf{b}] = [\SL[\mathbf{a}], \SL[\mathbf{b}]] = \SL[\mathbf{a}]\SL[\mathbf{b}] - \SL[\mathbf{b}]\SL[\mathbf{a}]$, which shows that $\SL$ is an isomorphism between $\mathbb{R}^3$ and $\mathfrak{so}(3)$.
+\end{example}
+\begin{example}
+    The Lie algebra of the Euclidean group $\text{E}(n)$ and the special Euclidean group $\text{SE}(n)$ is denoted $\mathfrak{se}(n)$, and is the set 
+    \begin{align*}
+        \mathfrak{se}(n) = \left\{\begin{bmatrix}
+            \mathbf{A} & \mathbf{b} \\ \mathbf{0} & 0
+        \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} | \mathbf{A}\in\mathfrak{so}(n),\, \mathbf{b}\in\mathbb{R}^n\right\}.
+    \end{align*}
+    specially in the case of $\mathfrak{se}(3)$, although some texts refer to elements of the Lie algebra as twists, the most common representation is given by a six-dimensional vector, the twit, $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3\ \zeta_4\ \zeta_5\ \zeta_6]^\top$ and an isomorphism $\SL$ is given by
+    \begin{align*}
+        \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
+            0 & -\zeta_6 & \zeta_5 & \zeta_1 \\
+            \zeta_6 & 0 & -\zeta_4 & \zeta_2 \\
+            -\zeta_5 & \zeta_4 & 0 & \zeta_3 \\
+            0 & 0 & 0 & 0
+        \end{bmatrix},
+    \end{align*}
+    where $[\zeta_1\ \zeta_2\ \zeta_3]^\top$ is the linear velocity $\mathbf{v}$ and $[\zeta_4\ \zeta_5\ \zeta_6]^\top$ is the angular velocity $\boldsymbol{\omega}$.
+\end{example}
+\begin{example}
+    The Lie algebra of $\text{T}(n)$ is a subset of $\mathfrak{se}(n)$, and is given by
+    \begin{align*}
+        \mathfrak{t}(n) = \left\{\begin{bmatrix}
+            \mathbf{0} & \mathbf{a} \\ \mathbf{0} & 0
+        \end{bmatrix} \in \mathfrak{se}(n) | \mathbf{a}\in\mathbb{R}^n\right\}.
+    \end{align*} 
+\end{example}
+\begin{example}
+    The Lie algebra of the independent special Euclidean group $\text{ISE}(n)$ is given by
+    \begin{align*}
+        \mathfrak{ise}(n) &= \left\{\begin{bmatrix}
+            \mathbf{A} & \mathbf{0}\\
+            \mathbf{0} & \mathbf{B}
+        \end{bmatrix} \in \mathbb{R}^{(2n+1)\times(2n+1)}\,;\, \mathbf{A}\in\mathfrak{so}(n),\,\mathbf{B}\in\mathfrak{t}(n)\right\}\\
+        &= \left\{\begin{bmatrix}
+            \mathbf{A} & \mathbf{0} & \mathbf{0}\\
+            \mathbf{0} & \mathbf{0} & \mathbf{b}\\
+            \mathbf{0} & \mathbf{0} & 0
+        \end{bmatrix} \in \mathbb{R}^{(2n+1)\times(2n+1)}\,;\, \mathbf{A}\in\mathfrak{so}(n),\,\mathbf{b}\in\mathbb{R}^n\right\}.
+    \end{align*}
+    This means that $\mathfrak{ise}(n) = \mathfrak{so}(n)\oplus\mathfrak{t}(n)$, as expected from the definition of the Lie algebra of a direct product of Lie groups.
+\end{example}
+\begin{example}
+    The symplectic Lie algebra $\mathfrak{sp}(2n, \mathbb{R})$ is defined as
+    \begin{align*}
+        \begin{split}
+            \mathfrak{sp}(2n, \mathbb{R}) &= \left\{ \mathbf{A} \in \mathbb{R}^{2n\times 2n} | \mathbf{A}^T\boldsymbol{\Omega} + \boldsymbol{\Omega}\mathbf{A} = 0 \right\} \\&= \left\{ \begin{bmatrix} \mathbf{B} & \mathbf{C} \\ \mathbf{D} & -\mathbf{B}^T \end{bmatrix}\in \mathbb{R}^{2n\times 2n}| \mathbf{C} = \mathbf{C}^\top,\, \mathbf{D} = \mathbf{D}^\top\right\},            
+        \end{split}
+    \end{align*}
+    where $\boldsymbol{\Omega}$ the same as defined in \autoref{ex:symplectic-group}. Clearly, the dimension of $\mathfrak{sp}(2n, \mathbb{R})$ is $n(2n + 1)$. Thus,
+    for a vector $\boldsymbol{\zeta} = [\zeta_1\ \dots\ \zeta_{2n^2+n}]^\top$, an isomorphism $\SL$ is given by
+    \begin{align*}
+        \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
+            \zeta_1 & \dots & \zeta_n & \zeta_{n^2 + 1} & \dots & \zeta_{n^2 + n} \\
+            \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+            \zeta_{n^2 - n + 1} & \dots & \zeta_{n^2} & \zeta_{n^2 + n} & \dots & \zeta_{\frac{3n^2+n}{2}}\\
+            \zeta_{\frac{3n^2+n}{2} + 1} & \dots & \zeta_{\frac{3n^2+3n}{2}} & -\zeta_1 & \dots & -\zeta_{n^2 - n + 1}\\
+            \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+            \zeta_{\frac{3n^2+3n}{2}} & \dots & \zeta_{2n^2 + n}& -\zeta_n & \dots & -\zeta_{n^2} 
+        \end{bmatrix},
+    \end{align*}
+\end{example}
+\begin{example}
+    The Lie algebra of the indefinite orthogonal group $\text{O}(p, q)$ and the indefinite special orthogonal group $\text{SO}(p, q)$ are the same and denoted $\mathfrak{so}(p, q)$. This Lie algebra is defined by
+    \begin{align*}
+        \mathfrak{so}(p, q) = \left\{
+            \begin{bmatrix}
+                \mathbf{A} & \mathbf{B}\\
+                \mathbf{B}^\top & \mathbf{C}
+            \end{bmatrix} \in \mathbb{R}^{(p+q)\times(p+q)} | \mathbf{A}^\top = -\mathbf{A},\, \mathbf{C}^\top = -\mathbf{C},\, \mathbf{B} \in \mathbb{R}^{p\times q}
+        \right\},
+    \end{align*}
+
+    As for the most common subgroups: the full Lorentz group $\text{O}(3, 1)$, the special Lorentz group $\text{SO}(3, 1)$, and the proper orthochronous Lorentz group $\text{SO}_0(3, 1)$ share the same Lie algebra $\mathfrak{so}(3, 1)$, for which an isomosphism for a vector $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3\ \zeta_4\ \zeta_5\ \zeta_6]^\top$ is described as follows:
+    \begin{align*}
+        \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
+            0 & \zeta_1 & \zeta_2 & \zeta_4 \\
+            -\zeta_1 & 0 & \zeta_3 & \zeta_5 \\
+            -\zeta_2 & -\zeta_3 & 0 & \zeta_6 \\
+            \zeta_4 & \zeta_5 & \zeta_6 & 0
+        \end{bmatrix}.
+    \end{align*}
+\end{example}
+\subsection{Exponential Map}
+The \emph{exponential map} is a fundamental concept in the study of Lie groups and Lie algebras, as it provides a way to map elements of the Lie algebra to elements of the Lie group. Although it is defined for any Lie group, we will focus on matrix Lie groups, as the definition will be more straightforward and related to our work. The exponential is simply given by the matrix exponential, defined as
+\begin{align}
+    \exp : \mathfrak{g} &\to G,
+\end{align}
+and it is given by the power series
+\begin{align}
+    \exp(\mathbf{A}) = \sum_{k=0}^\infty \frac{\mathbf{A}^k}{k!}.
+\end{align}
+
+The exponential map is also useful for obtaining the Lie algebra of a Lie group, as the following theorem shows.
 \begin{theorem}[Von Neumann and Cartan, 1927]
     Let $G\subset\text{GL}(n, \mathbb{R})$ be a matrix Lie group. The set $\mathfrak{g}$ defined as
     \begin{align}
         \mathfrak{g} = \left\{\mathbf{A}\in\mathbb{R}^{n\times n} | \exp(\sigma\mathbf{A})\in G\,\forall\,\sigma\in\mathbb{R}\right\}
     \end{align}
-    is a vector space equal to the tangent space $T_\iota G$ at the identity $\iota$. Furthermore, $\mathfrak{g}$ is closed under the Lie bracket $[\mathbf{A}, \mathbf{B}] = \mathbf{A}\mathbf{B} - \mathbf{B}\mathbf{A}\,\forall\,\mathbf{A},\mathbf{B}\in\mathbb{R}^{n\times n}$
+    is a vector space equal to the tangent space $T_\iota G$ at the identity $\iota$. Furthermore, $\mathfrak{g}$ is closed under the Lie bracket $[\mathbf{A}, \mathbf{B}] = \mathbf{A}\mathbf{B} - \mathbf{B}\mathbf{A}\,\forall\,\mathbf{A},\mathbf{B}\in\mathbb{R}^{n\times n}$.\hfill\qedsymbol
 \end{theorem}
 
-\subsubsection{Start of Automatica portion}
+Although the exponential map maps elements of the Lie algebra to the Lie group, it is not necessarily surjective. All elements $\exp(\mathbf{A})$ lie in the identity component $G_\iota$ of the Lie group, and the image of the exponential map is a neighborhood of the identity element in $G_\iota$ \citep[p. 56]{Hall2015}. Although there are sufficient conditions for the exponential map to be surjective, for example, if the Lie group is connected and compact \citep[p. 316]{Hall2015}, there is no necessary conditions for this property in the literature. Groups that possess this property are denoted \emph{exponential Lie groups} \citep{djokovic1995exponential}, for which examples are the special orthogonal group $\text{SO}(n)$ \citep[p. 28]{Gallier2020}, the special Euclidean  group $\text{SE}(n)$ \citep[p. 42]{Gallier2020}, and the Heisenberg group $\text{H}$ \citep[p. 75]{Hall2015}. Additional non-trivial examples can be found in \citet{djokovic1995exponential}. In contrast, examples of non-exponential Lie groups include the special linear group $\text{SL}(n)$ \citep[p. 28]{Gallier2020}.
+
+\subsection{Start of Automatica portion}
 In this section, we recall several properties of Lie groups and Lie algebras that will be essential for developing our extension. First, a Lie group $G$ is a smooth manifold equipped with a group structure. The Lie algebra $\mathfrak{g}$ associated with $G$ has two equivalent definitions, either of which we will use as appropriate. One definition describes the Lie algebra as the tangent space at the group identity $G_e$ \citep[p. 16]{Gallier2020}. Alternatively, a Lie algebra can be viewed as the space of all smooth vector fields on the Lie group, under the Lie bracket operation on vector fields \citep[p. 190]{Lee2012}. As said previously, we will consider connected matrix Lie groups, and henceforth we will denote by $n$ the dimension of any (square) matrix in a given group, and the dimension of the group by $m$, which is the same as the dimension of the associated Lie algebra.
 
 \begin{lemma}\label{lemma:lie-group-flow}
@@ -301,50 +455,7 @@ Next, we present a fact that will be important for the forthcoming analysis.
     
 \end{definition}
 Note that $\SL$ is indeed a \emph{linear operator}. Some common examples of isomorphisms are as following.
-\begin{example}
-    In the case of the special orthogonal Lie group $\text{SO}(3)$, with a Lie algebra $\mathfrak{so}(3)$, a common basis is given by the of matrices
-    \begin{align*}
-        \mathbf{E}_1 = \begin{bmatrix} 0 & 0 & 0 \\ 0 & 0 & -1 \\ 0 & 1 & 0 \end{bmatrix}, \quad \mathbf{E}_2 = \begin{bmatrix} 0 & 0 & 1 \\ 0 & 0 & 0 \\ -1 & 0 & 0 \end{bmatrix}, \quad \mathbf{E}_3 = \begin{bmatrix} 0 & -1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}.
-    \end{align*}
-    Then, for $\boldsymbol{\zeta} = [\zeta_1, \zeta_2, \zeta_3]^\top$, the isomorphism $\SL$ is a skew-symmetric matrix given by
-    \begin{align*}
-        \SL[\boldsymbol{\zeta}] = \zeta_1 \mathbf{E}_1 + \zeta_2 \mathbf{E}_2 + \zeta_3 \mathbf{E}_3
-        = \begin{bmatrix} 0 & -\zeta_3 & \zeta_2 \\ \zeta_3 & 0 & -\zeta_1 \\ -\zeta_2 & \zeta_1 & 0 \end{bmatrix}.
-    \end{align*}
-\end{example}
-\begin{example}
-    The full Lorentz group $\text{O}(3, 1)$, the special Lorentz group $\text{SO}(3, 1)$, and the proper orthochronous Lorentz group $\text{SO}_0(3, 1)$ share the same Lie algebra $\mathfrak{so}(3, 1)$, for which an isomosphism for a vector $\boldsymbol{\zeta} = [\zeta_1, \zeta_2, \zeta_3, \zeta_4, \zeta_5, \zeta_6]^\top$ is described as follows:
-    \begin{align}
-        \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
-            0 & \zeta_1 & \zeta_2 & \zeta_4 \\
-            -\zeta_1 & 0 & \zeta_3 & \zeta_5 \\
-            -\zeta_2 & -\zeta_3 & 0 & \zeta_6 \\
-            \zeta_4 & \zeta_5 & \zeta_6 & 0
-        \end{bmatrix}
-    \end{align}
-    Note that, more generally, $\mathfrak{so}(n, 1) = \left\{\begin{bmatrix} \mathbf{A} & \mathbf{a}\\
-              \mathbf{a}^T & 0 \end{bmatrix} \in \mathbb{R}^{(n+1) \times (n+1)}| \mathbf{a}\in\mathbb{R}^n, \mathbf{A}^T=-\mathbf{A}\right\}$
-\end{example}
-\begin{example}
-    The symplectic Lie algebra $\mathfrak{sp}(2n, \mathbb{R})$ is defined as
-    \begin{align}
-        \begin{split}
-            \mathfrak{sp}(2n, \mathbb{R}) &= \left\{ \mathbf{A} \in \mathbb{R}^{2n\times 2n} | \mathbf{A}^T\boldsymbol{\Omega} + \boldsymbol{\Omega}\mathbf{A} = 0 \right\} \\&= \left\{ \begin{bmatrix} \mathbf{B} & \mathbf{C} \\ \mathbf{D} & -\mathbf{B}^T \end{bmatrix}\in \mathbb{R}^{2n\times 2n}| \mathbf{C} = \mathbf{C}^\top,\, \mathbf{D} = \mathbf{D}^\top\right\},            
-        \end{split}
-    \end{align}
-    where $\boldsymbol{\Omega}$ the same as defined in \autoref{ex:symplectic-group}. Clearly, the dimension of $\mathfrak{sp}(2n, \mathbb{R})$ is $n(2n + 1)$. Thus,
-    for a vector $\boldsymbol{\zeta} = [\zeta_1, \dots, \zeta_{2n^2+n}]^\top$, an isomorphism $\SL$ is given by
-    \begin{align}
-        \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
-            \zeta_1 & \dots & \zeta_n & \zeta_{n^2 + 1} & \dots & \zeta_{n^2 + n} \\
-            \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
-            \zeta_{n^2 - n + 1} & \dots & \zeta_{n^2} & \zeta_{n^2 + n} & \dots & \zeta_{\frac{3n^2+n}{2}}\\
-            \zeta_{\frac{3n^2+n}{2} + 1} & \dots & \zeta_{\frac{3n^2+3n}{2}} & -\zeta_1 & \dots & -\zeta_{n^2 - n + 1}\\
-            \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
-            \zeta_{\frac{3n^2+3n}{2}} & \dots & \zeta_{2n^2 + n}& -\zeta_n & \dots & -\zeta_{n^2} 
-        \end{bmatrix},
-    \end{align}
-\end{example}
+
 
 Considering \autoref{lemma:derivative-lie-element-H-parallelizable} and \autoref{def:SL-left-isomorphism-act-on-xi} we can conclude the following important fact.
 
