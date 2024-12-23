@@ -149,6 +149,10 @@
             sort=def
         }
     }
+    % \setlength{\glsdescwidth}{0.75\hsize}
+
+    % Allow the symbol column to wrap text
+    % \setlength{\glsentrysymbolwidth}{0.2\hsize} 
     \makenoidxglossaries%
     
 }{%
@@ -308,7 +312,7 @@
         \PackageInfo{macrothesis}{Adding all acronyms and notations whether they are used or not.}% 
         \glsaddall
         \printnoidxglossary[type=acronym,sort=word]
-        \printnoidxglossary[type=notation,style=super]
+        \printnoidxglossary[type=notation,style=long]
     }{%
         % \PackageWarning{macrothesis}{glossaries package not loaded. Acronym and notation management will not be available.}%
         % Acronyms
