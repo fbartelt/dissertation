@@ -720,3 +720,43 @@ fig.update_layout(scene=dict(
 fig.show()
 
 # %%
+""" PLOT WRENCHES"""
+import os
+import pandas as pd
+import numpy as np
+import plotly.graph_objects as go
+import plotly.express as px
+from plotly.subplots import make_subplots
+
+path_ = '/home/fbartelt/Documents/Projetos/dissertation/scripts'
+file_name = 'adaptive_wrenches.csv'
+file_path = os.path.join(path_, file_name)
+
+df = pd.read_csv(file_path, header=None)
+df = df.dropna(axis=1)
+
+force_1 = np.array(df.iloc[:, :3]).reshape(-1, 3)
+torque_1 = np.array(df.iloc[:, 3:6]).reshape(-1, 3)
+force_2 = np.array(df.iloc[:, 6:9]).reshape(-1, 3)
+torque_2 = np.array(df.iloc[:, 9:12]).reshape(-1, 3)
+force_3 = np.array(df.iloc[:, 12:15]).reshape(-1, 3)
+torque_3 = np.array(df.iloc[:, 15:18]).reshape(-1, 3)
+force_4 = np.array(df.iloc[:, 18:21]).reshape(-1, 3)
+torque_4 = np.array(df.iloc[:, 21:24]).reshape(-1, 3)
+force_5 = np.array(df.iloc[:, 24:27]).reshape(-1, 3)
+torque_5 = np.array(df.iloc[:, 27:30]).reshape(-1, 3)
+force_6 = np.array(df.iloc[:, 30:33]).reshape(-1, 3)
+torque_6 = np.array(df.iloc[:, 33:36]).reshape(-1, 3)
+
+forces_norm = np.array([np.linalg.norm(f, axis=1) for f in [force_1, force_2, force_3, force_4, force_5, force_6]]).T
+torques_norm = np.array([np.linalg.norm(t, axis=1) for t in [torque_1, torque_2, torque_3, torque_4, torque_5, torque_6]]).T
+
+for i in range(6):
+    print(i+1)
+    print("Faverage: ", np.mean(forces_norm[:, i]), " pm ", np.std(forces_norm[:, i]))
+    print("Fmin: ", np.min(forces_norm[:, i]))
+    print("Fmax: ", np.max(forces_norm[:, i]))
+    print("Taverage: ", np.mean(torques_norm[:, i]), " pm ", np.std(torques_norm[:, i]))
+    print("Tmin: ", np.min(torques_norm[:, i]))
+    print("Tmax: ", np.max(torques_norm[:, i]))
+# %%

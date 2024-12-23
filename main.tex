@@ -89,6 +89,9 @@
 \DeclareMathOperator{\Log}{Log}
 \DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\vecop}{vec}
+\DeclareMathOperator{\blkdiag}{blkdiag}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\abs}{abs}
 
 
 \DeclareRobustCommand{\SL}[1][]{%
@@ -104,6 +107,12 @@
   \else%
     \!\left(#1\right)%
   \fi%
+}
+
+\sisetup{
+  exponent-product = \cdot,
+  per-mode = symbol, 
+  separate-uncertainty = true
 }
 
 \input{acronyms_notation.tex}

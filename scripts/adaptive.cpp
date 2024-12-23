@@ -47,6 +47,33 @@ void printProgressBar(int current, int imax) {
   std::cout.flush();  // Ensure the output is immediately printed
 }
 
+void saveToCSVWrenches(const std::string& filename, const std::vector<std::vector<VectorXd>>& taui_hist) {
+  // Open file stream
+  std::ofstream file(filename);
+
+  // Check if file is open
+  if (!file.is_open()) {
+    std::cerr << "Error opening file!" << std::endl;
+    return;
+  } 
+
+  // Iterate over the taui_hist vector to write the wrenches in the correct format
+  for (size_t i = 0; i < taui_hist.size(); ++i) {
+    const std::vector<VectorXd>& taui = taui_hist[i];
+    // Iterate each agents' wrench
+    for (int j = 0; j < taui.size(); ++j) {
+      const VectorXd& tau = taui[j];
+      // Write each wrench element to the file
+      for (int k = 0; k < tau.size(); ++k) {
+        file << tau(k) << ",";
+      }
+    }
+    file << std::endl;
+  }
+
+  file.close();
+}
+
 void saveToCSVKinematic(const std::string& filename,
                         const std::vector<MatrixXd>& nearest_points,
                         const std::vector<MatrixXd>& points,
@@ -1101,8 +1128,9 @@ int main() {
     norm_s_hist.push_back(s.norm());
   }
 
-  saveToCSV("cpp_adaptive.csv", NEAREST_POINTS, H_hist, XI_T_HIST, XI_N_HIST,
-            dq_hist, norm_s_hist, DISTANCES, DISTANCES_APPROX);
+  // saveToCSV("cpp_adaptive.csv", NEAREST_POINTS, H_hist, XI_T_HIST, XI_N_HIST,
+  //           dq_hist, norm_s_hist, DISTANCES, DISTANCES_APPROX);
 
+  saveToCSVWrenches("adaptive_wrenches.csv", controller.taui_hist);
   return 0;
 }

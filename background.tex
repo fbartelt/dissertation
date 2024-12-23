@@ -49,7 +49,7 @@ In the Lyapunov stability proof, the final result shows that the time derivative
 \end{feature}
 In our generalization, we will incorporate and build upon these features.
 
-\section{Lie groups and Lie algebras}
+\section{Lie groups and Lie algebras}\label{sec:background-lie-theory}
 In this section, we introduce \emph{Lie groups}, which are smooth manifolds that are also groups, and \emph{Lie algebras}. Besides providing examples of both, we also introduce concepts that will prove valuable in our work. This section integrates concepts and ideas from the following books: \citet{Lee2012,Gallier2020,Hall2015,Duistermaat2012}, with the aim of presenting the concepts in a clearer and more accessible manner. We begin with the general definition of a Lie group.
 \subsection{Lie groups}
 \begin{definition}[Lie group]
@@ -62,7 +62,7 @@ In this section, we introduce \emph{Lie groups}, which are smooth manifolds that
 
 The mapping between Lie groups is a fundamental concept and will play an important role in our extension, specifically for drawing connections between our extension and the vector field strategy in Euclidean space. Usually these mappings have additional properties and are defined as follows:
 \begin{definition}
-    If $G$ and $H$ are Lie groups, a \emph{homomorphism} $\phi: G\to H$ is a smooth map (between manifolds $G$ and $H$) that is also a group homomorphism, that is, if $\circ$ and $\star$ are the group operations in $G$ and $H$, respectively, then $\phi(\mathbf{X}\circ\mathbf{Y}) = \phi(\mathbf{X})\star\phi(\mathbf{Y})$ for all $\mathbf{X},\mathbf{Y}\in G$. If this map is also a diffeomorphism (the inverse map $\phi^{-1}$ is also a homomorphism), then $\phi$ is an \emph{isomorphism}. In this case, we say that $G$ and $H$ are \emph{isomorphic} and denote this by $G\cong H$.
+    If $G$ and $H$ are Lie groups, a \emph{homomorphism} $\mathcal{H}: G\to H$ is a smooth map (between manifolds $G$ and $H$) that is also a group homomorphism, that is, if $\circ$ and $\star$ are the group operations in $G$ and $H$, respectively, then $\mathcal{H}(\mathbf{X}\circ\mathbf{Y}) = \mathcal{H}(\mathbf{X})\star\mathcal{H}(\mathbf{Y})$ for all $\mathbf{X},\mathbf{Y}\in G$. If this map is also a diffeomorphism (the inverse map $\mathcal{H}^{-1}$ is also a homomorphism), then $\mathcal{H}$ is an \emph{isomorphism}. In this case, we say that $G$ and $H$ are \emph{isomorphic} and denote this by $G\cong H$.
 \end{definition}
 
 There are two important isomorphisms in Lie groups that are important for the concept of Lie algebras. These are the translation isomorphisms, which are defined as follows:
@@ -375,7 +375,7 @@ In this section we present the corresponding ones for the Lie groups presented i
         \right\},
     \end{align*}
 
-    As for the most common subgroups: the full Lorentz group $\text{O}(3, 1)$, the special Lorentz group $\text{SO}(3, 1)$, and the proper orthochronous Lorentz group $\text{SO}_0(3, 1)$ share the same Lie algebra $\mathfrak{so}(3, 1)$, for which an isomosphism for a vector $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3\ \zeta_4\ \zeta_5\ \zeta_6]^\top$ is described as follows:
+    As for the most common subgroups: the full Lorentz group $\text{O}(3, 1)$, the special Lorentz group $\text{SO}(3, 1)$, and the proper orthochronous Lorentz group $\text{SO}^+(3, 1)$ share the same Lie algebra $\mathfrak{so}(3, 1)$, for which an isomosphism for a vector $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3\ \zeta_4\ \zeta_5\ \zeta_6]^\top$ is described as follows:
     \begin{align*}
         \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
             0 & \zeta_1 & \zeta_2 & \zeta_4 \\
@@ -475,50 +475,7 @@ Since $\SL$ is an isomorphism, the \emph{inverse map} that maps an element of th
     Let $\mathfrak{g}$ be an $m$-dimensional Lie algebra. The \emph{inverse map} is defined as $\invSL:\mathfrak{g}\to\mathbb{R}^m$, such that $\invSL[\SL[\boldsymbol{\zeta}]] = \boldsymbol{\zeta}$. 
 \end{definition}
 
-Now, according to \cref{lemma:very-important-fact}, for each differentiable function $\mathbf{G}: \mathbb{R} \to G$ there exists a respective function $\boldsymbol{\zeta} \in \mathbb{R}^m$ according to equation \eqref{eq:importantresult}. Thus, we will define the following operator that extracts this $\boldsymbol{\zeta}(\sigma)$ from $\mathbf{G}(\sigma)$:
-\begin{definition} [$\Xi$ operator] \label{def:Xioperator} Let $G$ be an $m$-dimensional Lie group. Given a choice of S map $\SL: \mathbb{R}^m \to \mathfrak{g}$, the respective $\Xi$ operator maps a differentiable function $\mathbf{G}: \mathbb{R} \to G$ into a function $\Xi[\mathbf{G}]: \mathbb{R} \to \mathbb{R}^m$ as $\Xi[\mathbf{G}](\sigma) = \SL^{-1}\bigl(\frac{d\mathbf{G}}{d\sigma}(\sigma)\mathbf{G}(\sigma)^{-1}\bigr)$. 
-\end{definition}
-
-In our development, it will be necessary to take derivatives along the manifold $G$. This is related to the concept of \emph{Lie derivatives}. For this purpose, the following definition will be useful.
-\begin{definition} [\text{L} operator] \label{def:Loperator} Let $G$ be an $m$-dimensional Lie group. Given a choice of $S$ map and a differentiable function $f: G \to \mathbb{R}$, we define the \text{L} operator such that the function $\text{L}[f] : G \to \mathbb{R}^{1 \times m}$ satisfies:
-\begin{equation}
-\label{eq:Leq}
-    \lim_{\epsilon \rightarrow 0} \frac{1}{\epsilon} \Biggl( f\Bigl(\exp\bigl(\SL[\boldsymbol{\zeta}]\epsilon\bigr)\mathbf{G}\Bigr) - f\bigl(\mathbf{G}\bigr) \Biggr) = \text{L}[f](\mathbf{G}) \boldsymbol{\zeta}
-\end{equation}
-for all $\boldsymbol{\zeta} \in \mathbb{R}^m$. Explicitly, the $j^{th}$ entry of the row vector $\text{L}[f](\mathbf{G})$ can be constructed as the left-hand side of \eqref{eq:Leq} when $\boldsymbol{\zeta} = \mathbf{e}_j$. In addition, if $f: G \times G \to \mathbb{R}$ is a function of two variables, $f(\mathbf{V},\mathbf{W})$, we define the \emph{partial} L operators $L_{\mathbf{V}}$ and $L_{\mathbf{W}}$ analogously as in \eqref{eq:Leq} but making the variation only in the first or in the second variable, respectively. 
-\end{definition}
-
-The following version of the chain rule using the \text{L} operator can be established.
-
-\begin{lemma}\label{lemma:chainrule}
-    Let $G$ be an $m$-dimensional Lie group. Let $\mathbf{G} : \mathbb{R} \to G$ and $f: G \to \mathbb{R}$ be differentiable functions. Then:
-    \begin{equation}
-       \frac{d}{d\sigma} f\bigl(\mathbf{G}(\sigma)\bigr) = \text{L}[f]\bigl(\mathbf{G}(\sigma)\bigr)\Xi[\mathbf{G}](\sigma).
-    \end{equation}
-\end{lemma}
-\begin{proof}
-    Let $\boldsymbol{\zeta}(\sigma) = \Xi[\mathbf{G}](\sigma)$, according to \cref{lemma:very-important-fact} and \cref{def:Xioperator}, we can write that for a small $\epsilon$, $\mathbf{G}(\sigma+\epsilon) \approx \exp(\SL[\boldsymbol{\zeta}(\sigma)]\epsilon)\mathbf{G}(\sigma)$. 
-    Applying the definition of the traditional derivative:
-    \begin{align}
-        \begin{split}
-            \frac{d}{d\sigma} f\bigl(\mathbf{G}(\sigma)\bigr) &= \lim_{\epsilon \rightarrow 0} \frac{f\bigl(\mathbf{G}(\sigma+\epsilon)\bigr){-}f\bigl(\mathbf{G}(\sigma)\bigr)}{\epsilon}\\
-            &  =
-            \lim_{\epsilon \rightarrow 0} \frac{f\bigl(\exp(\SL[\boldsymbol{\zeta}(\sigma)]\epsilon)\mathbf{G}(\sigma)\bigr){-}f\bigl(\mathbf{G}(\sigma)\bigr)}{\epsilon} = \text{L}[f](\mathbf{G}) \boldsymbol{\zeta}(\sigma)      
-        \end{split}
-    \end{align}
-    in which the defining property of $\text{L}[f]$ in equation \eqref{eq:Leq} was applied. This concludes the proof.
-\end{proof}
-
-As a corollary of \cref{lemma:chainrule}:
-
-\begin{corollary} \label{corol:corol1} If we have a function $f: G \times G \to \mathbb{R}$ instead of a function of a single variable, and two differentiable $\mathbf{V}, \mathbf{W} : \mathbb{R} \to G$, then:
-\begin{equation}
-   \frac{d}{d \sigma} f(\mathbf{V},\mathbf{W}) {=} \text{L}_{\mathbf{V}}[f] \Xi[\mathbf{V}] {+} \text{L}_{\mathbf{W}}[f] \Xi[\mathbf{W}].
-\end{equation}
-in which the dependency on $\mathbf{V}, \mathbf{W}$ was omitted on the right-hand side. 
-\end{corollary}
-
-\section{Adaptive Control}
+\section{Adaptive Control}\label{sec:background-adaptive-control}
 Adaptive control emerges in 1950 as a response to the design of aircraft autopilots. Aircrafts operate on a wide range of speeds and altitudes, and thus its parameters suffers great variations. This inspired the main idea of adaptive control, on-line estimation of parameters based on measured system signals \citep{Slotine1991}. This need is also present for other systems: robot manipulators may need to carry objects of unknown mass; chemical processes may have unmodeled dynamics; the fuel consumption of a vehicle might pose a challenge for common controllers. In this section, we will briefly present the main concepts of adaptive control, basing our discussion on the books \citet{Slotine1991}, \citet{Krstic1995} and \citet{Ioannou2012}.
 
 An adaptive controller is formed by the combination of a control law, designed for a nominal model, and an adaptation law, which is responsible for estimating the unkown parameters of the plant. The way the parameters estimator is designed divides the adaptive control into two main categories: \emph{direct} and \emph{indirect} adaptive control. In indirect adaptive control, the plant parameters are estimated on-line and are used to calculate the controller parameters. In the direct approach, the plant model is parameterized in terms of the controller parameters, and these are the parameters that get estimated on-line.

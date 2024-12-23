@@ -1,7 +1,7 @@
 % !TeX root = main.tex
 \chapter{Collaborative Manipulation}\label{ch:collaborative}
-The contents of this chapter have been developed before the generalization of the vector field to Lie groups, thus it will lack the parlance of Lie groups. In the beginning, we will show how both works are related and how this chapter's vector field is a particular application of our generalization.
-\section{Modelling and Problem Statement}
+Our objective in this chapter is developing an adaptive control for a collaborative task of manipulating a large object with unkown parameters. As the task involves convergence and circulation of the object along a predefined curve, we use the control strategy developed in \cref{ch:vector_field} as a reference for velocity tracking. Our final control system can be thought as a two-stage controller: the first one is kinematic and outputs the necessary velocity to guarantee curve tracking; the second controller is a dynamic one, responsible for ensuring that the object's velocity is equal to the kinematic controller output. We begin by presenting the system modelling, then we move to the vector field guidance employed in the kinematic controller, and finally, we present the adaptive control strategy.
+\section{Modelling and Problem Statement} \label{sec:dynamic-modelling}
 \begin{figure}[ht]
     \centering
     \def\svgwidth{.8\linewidth}
@@ -173,14 +173,13 @@ The multiplication of two grasp matrices is also straightforward:
     \end{bmatrix} = \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i) + \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_j) - \mathbf{I}
 \end{align}
 
-As previously stated, some system parameters will be unknown. For simpliticity we list the unknowns here:
+As previously stated, some system parameters will be unknown. For simpliticity we list here the parameters that must be adapted:
 \begin{itemize}
     \item Mass properties $m$ and $\mathbb{I}_\text{cm}$;
-    \item geometry properties $\mathbf{r}_p$ and $\mathbf{r}_i$.
+    \item geometric properties $\mathbf{r}_p$ and $\mathbf{r}_i$.
 \end{itemize}
-These are the parameters that must be adapted
 
-\section{Path Planning}
+\section{Path Planning}\label{sec:collaborative-path-planning}
 The manipulated object must follow a curve of poses $\mathcal{C}\subset \mathbb{R}^3\times\text{SO}(3)$, which can be interpreted as a curve in Euclidean space with an orientation frame attached to each of its points, as shown in \cref{fig:curvewithframes}. This objective aligns with our vector field formulation.
 \begin{figure}[ht]
     \centering
@@ -233,7 +232,7 @@ We will assume that the target curve $\mathcal{C}$ is twice diffenrentiable, clo
 \end{align}
 By following this vector field, the system \eqref{eq:first-order-system-cba} will converge to and follow the target curve.
 
-\subsection{Computation of the EE-distance}
+\subsection{Computation of the EE-distance}\label{sec:collaborative-ee-distance-computation}
 It is possible to use an simple algorithm to compute the defined EE-distance \eqref{eq:cba-distance-new}. First, note that for any elements $\mathbf{V}, \mathbf{W}\in\text{ISE}(3)$, we can write
 \begin{align}
     \mathbf{V}^{-1}\mathbf{W} = \mathbf{Z} = \begin{bmatrix}
@@ -313,7 +312,7 @@ If the dynamic controller guarantees that $\boldsymbol{\zeta}=0$, the system fol
 
 Given that the system is overactuated (meaning multiple sets of control inputs $\boldsymbol{\tau}_i$ produce identical object dynamics), each agent can contribute a portion of the control effort. Thus, we define a set of $N$ positive constants $\alpha_i$, ensuring $\sum_{i=1}^N\alpha_i=1$. Furthermore, analogously to the Euler-Lagrange formulation, the reference model can be linerly parametrized. Thus, the reference model can be expressed as 
 \begin{equation}
-    \alpha _i \left(\mathbf {M}(\boldsymbol{\chi})\dot{\Psi} + \mathbf {C}(\boldsymbol{\chi},\dot{\boldsymbol{\chi}})\Psi + \mathbf {g} \right) = \mathbf{Y}_o(\boldsymbol{\chi}, \dot{\boldsymbol{\chi}}, \boldsymbol{\Psi}, \dot{\boldsymbol{\Psi}})\mathbf{o}_i, \label{eq:ref-model-linear-parametrization},
+    \alpha _i \left(\mathbf {M}(\boldsymbol{\chi})\dot{\Psi} + \mathbf {C}(\boldsymbol{\chi},\dot{\boldsymbol{\chi}})\Psi + \mathbf {g} \right) = \mathbf{Y}_o(\boldsymbol{\chi}, \dot{\boldsymbol{\chi}}, \Psi, \dot{\Psi})\mathbf{o}_i, \label{eq:ref-model-linear-parametrization},
 \end{equation}
 % Furthermore, exploiting the linearity in the parameters within the equations of motion \citep{spong2020robot}, we can represent the object's dynamics using a regressor matrix $\mathbf{Y}_o$ and a parameter vector $\mathbf{o}_i$. Here, $\mathbf{o}_i = \alpha_i\mathbf{o}$ denotes a vector of the object's physical parameters, $\mathbf{o}$, such as mass or moments of inertia, scaled by $\alpha_i$:
 % Analogously to the Euler-Lagrange formulation, the reference model can be linerly parametrized as
