@@ -149,7 +149,7 @@ It is also possible to derive a simple expression for $\|\bar{\mathbf{u}}\|^2$. 
 \end{align}
 where $\beta_0=\frac{2-2\cos\theta-\theta^2}{4(1 - \cos\theta)^2}$. Thus $\|\bar{\mathbf{u}}\|^2$ can be easily obtained from the already computed angle $\theta$ and the translation vector $\mathbf{u}$. The EE-distance function reduces to
 \begin{align}
-    \widehat{D}(\mathbf{V}, \mathbf{W}) = \sqrt{2\theta^2 + \mathbf{u}^T\bar{\mathbf{X}}\mathbf{u}},
+    \widehat{D}(\mathbf{V}, \mathbf{W}) = \sqrt{2\theta^2 + \mathbf{u}^T\bar{\mathbf{X}}\mathbf{u}}, \label{eq:explicit-EE-distance-SE3}
 \end{align}
 where $\bar{\mathbf{X}}$ is explicitly computed by \eqref{eq:explicit-X-bar-eedist}. More succinctly, the algorithm for computing $\widehat{D}(\mathbf{V}, \mathbf{W})$ is as follows:
 \begin{algorithm}
@@ -181,11 +181,139 @@ To compute the terms of the vector field, we need to compute the derivative $\te
 
 % \begin{comment}
 \section{Analytic Derivative}
-To compute $\boldsymbol{\xi}_N$ according to \cref{def:normal-vector}, we need to compute $\frac{\partial \widehat{D}}{\partial \mathbf{v}_i}$, $i \in [1,4]$. By the chain rule:
+To compute $\boldsymbol{\xi}_N$ according to \cref{def:normal-vector}, we need to compute $\text{L}_{\mathbf{V}}[\widehat{D}](\mathbf{H}, \mathbf{H}_d(s^*))$. First, note that the EE-distance is symmetric, i.e., $\bigl\|\log(\mathbf{V}^{-1}\mathbf{W})\bigr\|_F = \bigl\|\log\bigl(\mathbf{W}^{-1}\mathbf{V}\bigr)\bigr\|_F$. Let $\mathbf{Z}=\mathbf{H}_d(s^*)^{-1}\mathbf{H}$, then using expression \eqref{eq:explicit-EE-distance-SE3}, the $\text{L}$ operator can be computed as
+\begin{align}
+    \begin{split}
+        \text{L}[\widehat{D}](\mathbf{Z}) &=  \frac{1}{2\sqrt{2\theta^2 + \mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}}} \text{L}\bigl[2\theta^2 + \mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}\bigr](\mathbf{Z}) \\
+        &= \frac{1}{2\sqrt{2\theta^2 + \mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}}} \Bigl(\text{L}\bigl[2\theta^2\bigr](\mathbf{Z}) + \text{L}\bigl[\mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}\bigr](\mathbf{Z})\Bigr), \label{eq:explicit-derivative-SE3-LdhatZ-firststep}
+    \end{split}
+\end{align}
+where $\theta, \mathbf{u}$ and $\bar{\mathbf{X}}$ are all functions of $\mathbf{Z}$. We now analyze the two terms separately. Starting with the first term, we have
+\begin{align}
+    \text{L}\bigl[2\theta^2\bigr](\mathbf{Z}) = 4\theta \text{L}[\theta](\mathbf{Z}).
+\end{align}
+Now, as shown in \cref{sec:explicit-construction-SE3}, $\theta$ is expressed with $\text{atan2}$, however both derivatives of $\text{atan2}$ and $\tan^{-1}$ coincide. Let the operator $\rot(\cdot)$ be an operator that extracts the rotation matrix of a group element, such that $\rot(\mathbf{Z})=\mathbf{Q}\in\text{SO}(3)$. With this, the $\text{L}$ operator of $\theta$ is expressed as
+\begin{align}
+    \text{L}[\theta](\mathbf{Z}) = \frac{1}{\Biggl(\frac{\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F}{\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)}\Biggr)^2+1} \Lop\left[\rule{0em}{9mm}\frac{\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F}{\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)}\right](\mathbf{Z}). \label{eq:explicit-derivative-SE3-LthetaZ}
+\end{align}
+Focusing for now only on the denominator, let $\mathbb{R}^6\ni\boldsymbol{\zeta} = [\mathbf{v}^\top\ \boldsymbol{\omega}^\top]^\top$ with $\mathbf{v}, \boldsymbol{\omega}\in\mathbb{R}^3$. Additionally, let $\widehat{\mathcal{S}}:\mathbb{R}^3\to\mathfrak{so}(3)$ be the canonical isomorphism of $\mathfrak{so}(3)$. Then, clearly
+\begin{align}
+    \rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr) = \exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z}). 
+\end{align}
+Using the implicit definition of $\Lop$ through derivatives, we have
+\begin{align}
+   \begin{split}
+     \Lop\biggl[\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)\biggr](\mathbf{Z})\boldsymbol{\zeta} &= \frac{1}{2}\frac{d}{d\varepsilon}\Biggl(\tr\biggl(\rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\biggr)\Biggr)\Biggr|_{\varepsilon=0}\\
+     = \frac{1}{2}\frac{d}{d\varepsilon}\Biggl(\tr\biggl(\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\biggr)\Biggr)\Biggr|_{\varepsilon=0}
+     &= \frac{1}{2}\tr\Biggl(\frac{d}{d\varepsilon}\biggl(\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\biggr)\biggr|_{\varepsilon=0}\Biggr)\\
+     = \frac{1}{2}\tr\Biggl(\biggl(\widehat{\mathcal{S}}(\boldsymbol{\omega})\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\biggr)\biggr|_{\varepsilon=0}\Biggr)
+     &= \frac{1}{2}\tr\bigl(\widehat{\mathcal{S}}(\boldsymbol{\omega})\rot(\mathbf{Z})\bigr),
+   \end{split}
+\end{align}
+which in turn implies that 
+\begin{align}
+    \Lop\biggl[\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)\biggr](\mathbf{Z}) = \begin{bmatrix}
+        \mathbf{0}& \frac{\tr\bigl(\widehat{\mathcal{S}}(\mathbf{e}_1)\rot(\mathbf{Z})\bigr)}{2} & \frac{\tr\bigl(\widehat{\mathcal{S}}(\mathbf{e}_2)\rot(\mathbf{Z})\bigr)}{2} & \frac{\tr\bigl(\widehat{\mathcal{S}}(\mathbf{e}_3)\rot(\mathbf{Z})\bigr)}{2}
+    \end{bmatrix}.
+\end{align}
+If we denote $\rot(\mathbf{Z})_{ij}$ the element in the $i^{th}$ row and $j^{th}$ column of $\rot(\mathbf{Z})$, then this expression further reduces to
+\begin{align}
+    \Lop\biggl[\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)\biggr](\mathbf{Z}) = \begin{bmatrix}
+        \mathbf{0}& \frac{\rot(\mathbf{Z})_{23}-\rot(\mathbf{Z})_{32}}{2} & \frac{\rot(\mathbf{Z})_{13} - \rot(\mathbf{Z})_{31}}{2} & \frac{\rot(\mathbf{Z})_{12}-\rot(\mathbf{Z})_{21}}{2}
+    \end{bmatrix}.
+\end{align}
 
-\begin{equation}
-    \frac{\partial \widehat{D}}{\partial \mathbf{v}_i} (\mathbf{V},\mathbf{W}) =  \frac{\partial \widehat{E}}{\partial \mathbf{Z}_i}(\mathbf{W}^{-1}\mathbf{V}) \mathbf{W}^{-1}.
-\end{equation}
+Switching our attention back to the numerator of \eqref{eq:explicit-derivative-SE3-LthetaZ}, note that
+\begin{align}
+    &\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F = 
+    \tr\Bigl(\bigl(\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr)^\top\bigl(\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr)\Bigr)^{\frac{1}{2}}\\
+    &= \tr\Bigl(\rot(\mathbf{Z})^\top\rot(\mathbf{Z})-\rot(\mathbf{Z})^\top\rot(\mathbf{Z})^\top + \rot(\mathbf{Z})\rot(\mathbf{Z})^\top - \rot(\mathbf{Z})\rot(\mathbf{Z})\Bigr)^{\frac{1}{2}}\\
+    &= \sqrt{2\tr(\mathbf{I}) - 2\tr\bigl(\rot(\mathbf{Z})\rot(\mathbf{Z})\bigr)} = \sqrt{6 - 2\tr\bigl(\rot(\mathbf{Z})\rot(\mathbf{Z})\bigr)},
+\end{align}
+using properties of the trace. From this, the $\text{L}$ operator of the numerator is given by
+\begin{align}
+    \Lop\biggl[\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F\biggr](\mathbf{Z}) = \frac{-2}{4\sqrt{2}\sqrt{6 - 2\tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\Lop\Bigl[\tr\bigl(\rot(\mathbf{Z})^2\bigr)\Bigr](\mathbf{Z}).
+\end{align}
+Using the already computed $\text{L}$ operator of the trace, this reduces to
+\begin{align}
+    \Lop\biggl[\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F\biggr](\mathbf{Z}) = -\frac{1}{4\sqrt{3 - \tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\begin{bmatrix}
+        \mathbf{0}& \alpha_1 & \alpha_2 & \alpha_3
+    \end{bmatrix},
+\end{align}
+where 
+\begin{align}
+    \begin{split}
+        \alpha_1 =& -\rot(\mathbf{Z})_{12}\rot(\mathbf{Z})_{31} + \rot(\mathbf{Z})_{13}\rot(\mathbf{Z})_{21} + \rot(\mathbf{Z})_{22}\rot(\mathbf{Z})_{23}  \\
+        & - \rot(\mathbf{Z})_{22}\rot(\mathbf{Z})_{32} + \rot(\mathbf{Z})_{23}\rot(\mathbf{Z})_{33} - \rot(\mathbf{Z})_{32}\rot(\mathbf{Z})_{33},\\
+        \alpha_2 =& -\rot(\mathbf{Z})_{11}\rot(\mathbf{Z})_{13} + \rot(\mathbf{Z})_{11}\rot(\mathbf{Z})_{31} - \rot(\mathbf{Z})_{12}\rot(\mathbf{Z})_{23} \\
+        &- \rot(\mathbf{Z})_{13}\rot(\mathbf{Z})_{33} + \rot(\mathbf{Z})_{21}\rot(\mathbf{Z})_{32} + \rot(\mathbf{Z})_{31}\rot(\mathbf{Z})_{33},
+        \\
+        \alpha_3 =& \rot(\mathbf{Z})_{11}\rot(\mathbf{Z})_{12} - \rot(\mathbf{Z})_{11}\rot(\mathbf{Z})_{21} + \rot(\mathbf{Z})_{12}\rot(\mathbf{Z})_{22} \\
+        &+ \rot(\mathbf{Z})_{13}\rot(\mathbf{Z})_{32} - \rot(\mathbf{Z})_{21}\rot(\mathbf{Z})_{22} - \rot(\mathbf{Z})_{23}\rot(\mathbf{Z})_{31}.
+    \end{split}
+\end{align}
+
+Now, note that the quotient rule for derivatives also applies to the $\Lop$ operator. If we use the following equivalences:
+\begin{align}
+    \mathbf{f} &= \begin{bmatrix}
+        \mathbf{0}& \alpha_1 & \alpha_2 & \alpha_3
+    \end{bmatrix},\\
+    \mathbf{g} &= \begin{bmatrix}
+        \mathbf{0}& \frac{\rot(\mathbf{Z})_{23}-\rot(\mathbf{Z})_{32}}{2} & \frac{\rot(\mathbf{Z})_{13} - \rot(\mathbf{Z})_{31}}{2} & \frac{\rot(\mathbf{Z})_{12}-\rot(\mathbf{Z})_{21}}{2}
+    \end{bmatrix},
+\end{align}
+then we can express the $\Lop[\theta]$ as follows
+% \begin{align}
+%     \begin{split}
+%         \Lop\left[\rule{0em}{9mm}\frac{\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F}{\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)}\right]\!\!(\mathbf{Z}) &= \frac{\Lop\biggl[\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F\biggr](\mathbf{Z})\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)
+%         }{\frac{1}{4}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)^2}\\
+%         &- \frac{\Lop\biggl[\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)\biggr](\mathbf{Z})\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F}{\frac{1}{4}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)^2}
+%     \end{split}
+% \end{align}
+\begin{align}
+    \text{L}[\theta](\mathbf{Z}) = \frac{
+        -\frac{\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)}{4\sqrt{3 - \tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\mathbf{f} -
+    \frac{\sqrt{3 - \tr\bigl(\rot(\mathbf{Z})^2\bigr)}}{2}\mathbf{g}}
+    {\frac{3}{4} - \frac{1}{4}\tr\bigl(\rot(\mathbf{Z})^2\bigr)+\frac{1}{4}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)^2} 
+\end{align}
+
+To finally determine $\Lop[\widehat{D}]$, we still need to determine $\Lop\bigl[\mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}\bigr]$. For completeness, we also define the operator $\trans(\cdot)$ that extracts the translation part of an element, such that $\trans(\mathbf{Z})=\mathbf{u}$. The $\Lop$ operator of $\trans(\mathbf{Z})$ is implicitly computed as
+\begin{align}
+    \begin{split}
+        \Lop\bigl[\trans(\mathbf{Z})\bigr](\mathbf{Z}) \boldsymbol{\zeta}&= \frac{d}{d\varepsilon}\biggl(\trans\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\biggr)\biggr|_{\varepsilon=0}\!\!\! = 
+        \trans\biggl(\frac{d}{d\varepsilon}\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\biggr|_{\varepsilon=0}\biggr)\\
+        &= \trans\biggl(\Bigl(\SL[\boldsymbol{\zeta}]\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\biggr|_{\varepsilon=0}\biggr)
+        = \trans\bigl(\SL[\boldsymbol{\zeta}]\mathbf{Z}\bigr)\\
+        &= \widehat{\mathcal{S}}(\boldsymbol{\omega})\trans(\mathbf{Z}) + \mathbf{v},
+    \end{split}
+\end{align}
+adopting again $\boldsymbol{\zeta} = [\mathbf{v}^\top\ \boldsymbol{\omega}^\top]^\top$. Evaluating this expression for each $\boldsymbol{\zeta}=\mathbf{e}_i\in\mathbb{R}^6$ gives the final expression
+\begin{align}
+    \Lop\bigl[\trans(\mathbf{Z})\bigr](\mathbf{Z}) = \begin{bmatrix}
+        \mathbf{e}_1 & \mathbf{e}_2 & \mathbf{e}_3 & \widehat{\mathcal{S}}(\mathbf{e}_1)\trans(\mathbf{Z}) & \widehat{\mathcal{S}}(\mathbf{e}_2)\trans(\mathbf{Z}) & \widehat{\mathcal{S}}(\mathbf{e}_3)\trans(\mathbf{Z})
+    \end{bmatrix},
+\end{align}
+where ${\mathbf{e}_1,\mathbf{e}_2,\mathbf{e}_3}$ are the canonical basis vectors of $\mathbb{R}^3$! Also note that $\Lop\bigl[\trans(\mathbf{Z})\bigr](\mathbf{Z})$ is a $3\times 6$ matrix. 
+
+We are only missing the term $\Lop\bigl[\bar{\mathbf{X}}\bigr]$ to finally be able to compute $\Lop[\widehat{D}]$. We first express $\bar{\mathbf{X}}$ as follows:
+\begin{align}
+    \bar{\mathbf{X}} = \bigl(1-2\beta_0\bigr)\mathbf{I} + \beta_0\bigl(\rot(\mathbf{Z}) + \rot(\mathbf{Z})^\top\bigr).
+\end{align}
+If we provisionally neglect the dependence of $\beta_0$ on $\theta$, then the $\Lop$ operator of $\bar{\mathbf{X}}$ is implicitly expressed as
+\begin{align}
+    \Lop[\bar{\mathbf{X}}](\mathbf{Z})\boldsymbol{\zeta} &= \beta_0\frac{d}{d\varepsilon}\biggl(\rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr) + \rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)^\top\biggr)\biggr|_{\varepsilon=0}\\
+    &= \beta_0\frac{d}{d\varepsilon}\biggl(\exp \bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot\bigl(\mathbf{Z}\bigr) + \Bigl(\exp \bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot\bigl(\mathbf{Z}\bigr)\Bigr)^\top\biggr)\biggr|_{\varepsilon=0}\\
+    &= \beta_0\frac{d}{d\varepsilon}\biggl(\exp \bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot\bigl(\mathbf{Z}\bigr) + \rot\bigl(\mathbf{Z}\bigr)^\top\exp\bigl(-\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\biggr)\biggr|_{\varepsilon=0}\\
+    &= \beta_0\Bigl(\widehat{\mathcal{S}}(\boldsymbol{\omega})\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\widehat{\mathcal{S}}(\boldsymbol{\omega})\Bigr)
+\end{align}
+
+Expressing the $\Lop$ operator of $\bar{\mathbf{X}}$ for each element in the $i^{th}$ row and $j^{th}$ column neglecting the explicit dependence of $\mathbf{Z}$, we have
+\begin{align}
+    \Lop[\rot(\mathbf{Z})_{ij}](\mathbf{Z})\boldsymbol{\zeta} &=  \left.\frac{d}{d\varepsilon}\left(\biggl\{\rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\biggr\}_{ij}\right)\right|_{\varepsilon=0}\\
+    &=  \frac{d}{d\varepsilon}\biggl(\Bigl\{\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\Bigr\}_{ij}\biggr)\biggr|_{\varepsilon=0}\\
+    &=\bigl\{\widehat{\mathcal{S}}(\boldsymbol{\omega})\rot(\mathbf{Z})\bigr\}_{ij}
+\end{align}
+
 
 Thus, it suffices to show how to compute $\frac{\partial \widehat{E}}{\partial \mathbf{Z}_i}$. This can be taken as the $i^{th}$ row of the $4 \times 4$ matrix:
 \begin{equation}

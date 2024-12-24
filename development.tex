@@ -139,9 +139,10 @@ in which the dependencies of $\text{L}_{\mathbf{V}}$ and $\text{L}_{\mathbf{W}}$
 
 Now, \eqref{eq:final-equation-for-normal-component} in \cref{lemma:time-derivative-of-distance-function} allows us to define the normal component. 
 \begin{definition} [Normal component] \label{def:normal-vector}
-    When $\mathbf{H} \not \in \mathcal{C} \cup \mathcal{P}$, the \emph{normal} component of the vector field $\boldsymbol{\xi}_N: G\to\mathbb{R}^m$ is defined as the negative transpose of the term that multiplies $\boldsymbol{\xi}$ in \eqref{eq:final-equation-for-normal-component}, i.e., $\boldsymbol{\xi}_N(\mathbf{H}) \triangleq -\text{L}_{\mathbf{V}}[\widehat{D}]\Bigl(\mathbf{H}, \mathbf{H}_d(s^*)\Bigr)^{\top}$.
-    
-    
+    When $\mathbf{H} \not \in \mathcal{C} \cup \mathcal{P}$, the \emph{normal} component of the vector field $\boldsymbol{\xi}_N: G\to\mathbb{R}^m$ is defined as the negative transpose of the term that multiplies $\boldsymbol{\xi}$ in \eqref{eq:final-equation-for-normal-component}, i.e., 
+    \begin{align}
+        \boldsymbol{\xi}_N(\mathbf{H}) \triangleq -\text{L}_{\mathbf{V}}[\widehat{D}]\Bigl(\mathbf{H}, \mathbf{H}_d(s^*)\Bigr)^{\top}.
+    \end{align}
 \end{definition}
 When $\mathbf{H} \in \mathcal{C} \cup \mathcal{P}$, $\boldsymbol{\xi}_N(\mathbf{H})$ is left undefined. As we will see in \cref{subs:conv-result}, this lack of definition at $\mathcal{C}$ is not an issue, as it will not be necessary to define it in that context. 
 

@@ -284,7 +284,7 @@ The error vector $\boldsymbol{\zeta}$ rapidly decreased to zero, however after $
 \end{figure}
 Observing the behavior of the distance function $D$ in \cref{fig:sim2-distances}, we can see that the object approached the curve asymptotically at around $\qty{1.2}{\second}$, as expected from the behavior of $\boldsymbol{\zeta}$. The final value observed for $D$ is $\num{0.004}$, which translates to a position error of $\qty{0.6}{\centi\meter}$ and an orientation error of $\qty{0.32}{\degree}$.
 
-The average forces and torques applied by each agent are shown in \cref{tb:forces} and \cref{tb:torques}, respectively. The average force and standard deviation were similar to each agent and were approximately $\qty{88 \pm 111}{\newton}$. The maximum and minimum force were also similar and approximately $\qty{7411}{\newton}$ and $\qty{31}{\newton}$, respectively. The torques applied by each agent were more varied, with the highest average observed for agent $5$ at $\qty{392.079 \pm 573.948}{\newton\meter}$ and the lowest for agent $3$ at $\qty{109.546 \pm 138.17}{\newton\meter}$. The maximum torque was $\qty{46835.582}{\newton\meter}$, applied by agent $5$, and the minimum was $\qty{3.731}{\newton\meter}$, applied by agent $2$. These high values are expected, since the cylinder has a large mass and dimensions, and the agents perform a complex manipulation task in minimum time.
+The average forces and torques applied by each agent are shown in \cref{tb:forces} and \cref{tb:torques}, respectively. The average force and standard deviation were similar to each agent and were approximately $\qty{88 \pm 111}{\newton}$. The maximum and minimum force were also similar and approximately $\qty{7411}{\newton}$ and $\qty{31}{\newton}$, respectively. The torques applied by each agent were more varied, with the highest average observed for agent $5$ at $\qty{392.079 \pm 573.948}{\newton\meter}$ and the lowest for agent $3$ at $\qty{109.546 \pm 138.17}{\newton\meter}$. The maximum torque was $\qty{46835.582}{\newton\meter}$, applied by agent $5$, and the minimum was $\qty{3.731}{\newton\meter}$, applied by agent $2$. These high values are expected, since the cylinder has a large mass and dimensions, and the agents perform a complex manipulation task in minimum time. The maximum linear speed experienced by the object was $\qty{1.09}{\meter\per\second}$, and the maximum angular velocity was $\qty{1.04}{\radian\per\second}$, which are quite demanding values.
 \begin{table}[ht]
     \centering
     \caption{Statistics of the forces applied by each agent}\label{tb:forces}
@@ -303,7 +303,7 @@ The average forces and torques applied by each agent are shown in \cref{tb:force
     \centering
     \caption{Statistics of the torques applied by each agent}\label{tb:torques}
     \begin{tabular}{clll}
-    Agent & Average Torque & Min. Torque & Ma.m Torque\\\hline
+    Agent & Average Torque & Min. Torque & Max. Torque\\\hline
     $1$ & $\qty{148.854 \pm 181.826}{\newton\meter}$ & $\qty{54.256}{\newton\meter}$ & $\qty{8737.108}{\newton\meter}$\\
     $2$ & $\qty{114.282 \pm 139.403}{\newton\meter}$ & $\qty{3.731}{\newton\meter}$ & $\qty{4838.576}{\newton\meter}$\\
     $3$ & $\qty{109.546 \pm 138.178}{\newton\meter}$ & $\qty{6.095}{\newton\meter}$ & $\qty{8539.131}{\newton\meter}$\\
