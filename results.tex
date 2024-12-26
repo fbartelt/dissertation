@@ -170,7 +170,7 @@ The update of the system's state was given by
     \end{split}
 \end{align}
 
-As defined in \cref{sec:collaborative-path-planning}, the normal component is discontinuous. In order to avoid chattering and noise propagation due to the nummerical dofferentiations, we employed a smoothing strategy to the distance function $D$. The smoothed distance $\bar{D}$ is defined in terms of the discretized curve as
+As defined in \cref{sec:collaborative-path-planning}, the normal component is discontinuous. In order to avoid chattering and noise propagation due to the nummerical differentiations, we employed a smoothing strategy to the distance function $D$ based on \citet{viniciusmooth}. The smoothed distance $\bar{D}$ is defined in terms of the discretized curve as
 \begin{align}
     \bar{D}(\mathbf{H}) = D(\mathbf{H}) - \delta\log\biggl(\frac{\sum_{i=1}^{P}w_i}{P}\biggr),
 \end{align}
@@ -188,7 +188,7 @@ which implies that the $j^{th}$ entry of the normal component $\boldsymbol{\xi}_
 \end{align}
 with $\varepsilon=0.001$.
 
-As the curve parametrization has an explicit equation \cref{eq:parametriceq-simulation}, the derivative $\frac{d}{ds}\mathbf{H}_d(s)$ was computed analytically. Thus, the derivative of the $i^{th}$ point in the discretized curve is given by $\mathbf{H}_d'[i]$. The smoothed tangent component $\boldsymbol{\xi}_T$ is then expressed as
+As the curve parametrization has an explicit equation \eqref{eq:parametriceq-simulation}, the derivative $\frac{d}{ds}\mathbf{H}_d(s)$ was computed analytically. Thus, the derivative of the $i^{th}$ point in the discretized curve is given by $\mathbf{H}_d'[i]$. The smoothed tangent component $\boldsymbol{\xi}_T$ is then expressed as
 \begin{align}
     \boldsymbol{\xi}_T(\mathbf{H}) = \frac{\sum_{i=1}^{P} w_i\invSL\bigl(\mathbf{H}_d'[i]\mathbf{H}_d[i]^{-1}\bigr)}{\sum_{i=1}^{P} w_i}
 \end{align}

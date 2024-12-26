@@ -1,0 +1,67 @@
+\chapter{Properties of the L operator}\label{app:properties-L-op}
+In this chapter we explore further properties of the $\Lop$ operator defined in \cref{def:Loperator}. We start by showing that the $\Lop$ operator shares all the properties of derivatives. Let $G$ be an $m$-dimensional matrix Lie group and $\mathbf{X}\in G$ be a point in the group. Let $\SL:\mathbb{R}^m\to\mathfrak{g}$ be an isomorphism between $m$-dimensional vectors and the Lie algebra $\mathfrak{g}$ of $G$. Then, for some $f:G\to \mathbb{R}$, the $\Lop$ operator can be expressed as
+\begin{align}
+    \Lop[f](\mathbf{X})\boldsymbol{\zeta} = \frac{d}{d\varepsilon}\biggl(f\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\,\forall\,\boldsymbol{\zeta}\in\mathbb{R}^m. \label{eq:appendix-prop-Lop-definition-L}
+\end{align}
+\section{Linearity}
+The $\Lop$ operator is linear, that is, for any $f,g:G\to \mathbb{R}$ and $a,b\in\mathbb{R}$, we have
+\begin{align}
+    \begin{split}
+        \Lop[a f + b g](\mathbf{X})\boldsymbol{\zeta} &= \frac{d}{d\varepsilon}\biggl(a f\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr) + b g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\\
+        &= \frac{d}{d\varepsilon}\biggl(a f\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0} +  \frac{d}{d\varepsilon}\biggl(b g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\\
+        &= a \Lop[f](\mathbf{X})\boldsymbol{\zeta} + b \Lop[g](\mathbf{X})\boldsymbol{\zeta}\\
+        &= \bigl(a \Lop[f](\mathbf{X}) + b \Lop[g](\mathbf{X})\bigr)\boldsymbol{\zeta},
+    \end{split}
+\end{align}
+which shows that $\Lop[a f + b g] = a \Lop[f] + b \Lop[g]$, and hence the $\Lop$ operator is linear.
+\section{Product and quotient rule}
+The $\Lop$ operator satisfies the product and quotient rule. For any $f,g:G\to \mathbb{R}$, we have
+\begin{align}
+  \begin{split}
+      \Lop[fg](\mathbf{X})\boldsymbol{\zeta} =&
+      \frac{d}{d\varepsilon}\biggl(f\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\\
+      =& \frac{d}{d\varepsilon}\biggl(f\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\Bigr|_{\varepsilon=0}
+      \\ &+ f\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\Bigr|_{\varepsilon=0}\frac{d}{d\varepsilon}\biggl(g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}
+      \\
+      =& \frac{d}{d\varepsilon}\biggl(f\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}g(\mathbf{X})
+      + f(\mathbf{X})\biggl(g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\\
+      =& \Lop[f](\mathbf{X})\boldsymbol{\zeta}g(\mathbf{X}) + f(\mathbf{X})\Lop[g](\mathbf{X})\boldsymbol{\zeta}\\
+        =& \bigl(\Lop[f](\mathbf{X})g(\mathbf{X}) + f(\mathbf{X})\Lop[g](\mathbf{X})\bigr)\boldsymbol{\zeta},
+  \end{split}
+\end{align}
+since $f$ and $g$ are scalar functions. This shows that $\Lop[fg] = \Lop[f]g + f\Lop[g]$. Now, to show the quotient rule, it suffices to show that $\Lop[1/g] = -\Lop[g]/g^2$. We have
+\begin{align}
+    \begin{split}
+        \Lop\biggl[\frac{1}{g}\biggr](\mathbf{X})\boldsymbol{\zeta} =& \left.\frac{d}{d\varepsilon}\left(\frac{1}{g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)}\right)\right|_{\varepsilon=0}\\
+        =& -\frac{{\displaystyle\frac{d}{d\varepsilon}}\biggl(g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}}{\biggl(g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}}\\
+        =& -\frac{\Lop[g]}{g(\mathbf{X})^2}\boldsymbol{\zeta},
+    \end{split}
+\end{align}
+which implies
+\begin{align}
+    \Lop\biggl[\frac{f}{g}\biggr] = \Lop[f]\frac{1}{g} - f\frac{\Lop[g]}{g^2} = \frac{\Lop[f]g - f\Lop[g]}{g^2},
+\end{align}
+and hence the $\Lop$ operator satisfies the quotient rule.
+\section{Chain rule}
+A chain rule is already shown in \cref{lemma:chainrule}, however this is related only to expressions in the format $\frac{d}{d\sigma}f\bigl(\mathbf{X}(\sigma)\bigr)$. In this section we show a chain rule directly related to the $\Lop$ operator for left-invariant functions. Let $\mathbf{X},\mathbf{Y}\in G$, and $f : G \times G \to \mathbb{R}$ be a left-invariant function. If we define $\mathbf{Z} = \mathbf{Y}^{-1}\mathbf{X}$, then $f$ can be written as $f(\mathbf{X},\mathbf{Y}) = g(\mathbf{Z})$ for some $g:G\to\mathbb{R}$. Our objective is to find the $\Lop$ operator of $g$ with respect to $\mathbf{X}$. First, let us make a variation on $\mathbf{X}$ using the right-hand side of \eqref{eq:appendix-prop-Lop-definition-L} for $g$:
+\begin{align}
+    \frac{d}{d\varepsilon}\biggl(g\Bigl(\mathbf{Y}^{-1}\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0} &= \frac{d}{d\varepsilon}\biggl(g\Bigl(\mathbf{Y}^{-1}\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Y}\mathbf{Y}^{-1}\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\\
+    &= \frac{d}{d\varepsilon}\biggl(g\Bigl(\exp\bigl(\varepsilon\mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}\bigr)\mathbf{Y}^{-1}\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0} \\
+    &= \frac{d}{d\varepsilon}\biggl(g\Bigl(\exp\bigl(\varepsilon\mathcal{S}'(\boldsymbol{\zeta})\bigr)\mathbf{Y}^{-1}\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0},
+\end{align}
+where $\mathcal{S}'(\boldsymbol{\zeta}) = \mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$. However, since $\mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$ is in $\mathfrak{g}$, then there exists some vector $\boldsymbol{\zeta}'$ such that $\SL[\boldsymbol{\zeta}'] = \mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$, which further implies that $\boldsymbol{\zeta}'$ is a function of $\boldsymbol{\zeta}$, i.e., $\boldsymbol{\zeta}' \triangleq \boldsymbol{\zeta}'(\boldsymbol{\zeta})$. Therefore, we can write
+\begin{align}
+    \frac{d}{d\varepsilon}\biggl(g\Bigl(\mathbf{Y}^{-1}\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0} &= \frac{d}{d\varepsilon}\biggl(g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}']\bigr)\mathbf{Y}^{-1}\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\\
+    &= \Lop[g](\mathbf{Z})\boldsymbol{\zeta}'(\boldsymbol{\zeta}) \label{appendix-prop-Lop-chain-rule-LgZ-zeta-prime},
+\end{align}
+by definition. Now, since $f$ is left-invariant, we can write
+\begin{align}
+    \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y})\boldsymbol{\zeta} &= 
+    \Lop_\mathbf{V}[f](\mathbf{Y}^{-1}\mathbf{X}, \mathbf{I})\boldsymbol{\zeta}
+    = \frac{d}{d\varepsilon}\biggl(f\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Y}^{-1}\mathbf{X}, \mathbf{I}\Bigr)\biggr)\biggr|_{\varepsilon=0},
+\end{align}
+which shows that
+\begin{align}
+    \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y})\boldsymbol{\zeta} = \Lop[g](\mathbf{Z})\boldsymbol{\zeta}'(\boldsymbol{\zeta})
+\end{align}
+\subsection{The case for SE(3)}

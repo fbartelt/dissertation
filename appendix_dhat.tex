@@ -205,3 +205,165 @@ which remains indeterminate. Applying L'Hôpital's rule one last time, we find
     \lim_{\theta\to0}\frac{-2\cos\theta}{-8(1 - \cos\theta)\cos\theta +24(\cos\theta)^2-32(\sin\theta)^2} = -\frac{1}{12}.
 \end{align}
 Thus, when $\theta\approx0$, we can use $\beta_0=-\frac{1}{12}$ in \eqref{eq:appendix-explicit-X-bar-eedist}.
+
+\section{Explicit derivative of the EE-Distance in SE(3)}\label{app:explicit-derivative-SE3}
+In this section, our objective is to derive the explicit expression for the derivative of the EE-Distance $\widehat{D}$ in $\text{SE}(3)$ of \cref{sec:explicit-construction-SE3}. This will allow us to compute the normal vector $\boldsymbol{\xi}_N$ in \cref{def:normal-vector} explictly. First, we will introduce two operators that will be used in this derivation. Let $\rot(\cdot)$ be an operator that extracts the rotation matrix of a group element, such that $\rot(\mathbf{Z})=\mathbf{Q}\in\text{SO}(3)$. Additionally, let $\trans(\cdot)$ be an operator that extracts the translation vector of a group element, such that $\trans(\mathbf{Z})=\mathbf{u}\in\mathbb{R}^3$. Thus, the EE-distance is expressed as
+\begin{align}
+    \widehat{D}(\mathbf{V}, \mathbf{W}) \triangleq \widehat{E}(\mathbf{Z}) = \sqrt{2\theta^2 + \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})},
+\end{align}
+where $\theta$ is a function dependent on $\rot(\mathbf{Z})$. We will also need a clear distinction between the canonical isomorphisms for $\mathfrak{se}(3)$ and $\mathfrak{so}(3)$. Let $\widehat{\mathcal{S}}:\mathbb{R}^3\to\mathfrak{so}(3)$ be the canonical isomorphism of $\mathfrak{so}(3)$, and $\SL:\mathbb{R}^6\to\mathfrak{se}(3)$ be the canonical isomorphism of $\mathfrak{se}(3)$. This also requires the notation $\widehat{\mathbf{e}}_i$ for the canonical basis of $\mathbb{R}^3$ and $\mathbf{e}_i$ for the canonical basis of $\mathbb{R}^6$. These distinctions will only be used in this section.
+
+The $\Lop$ operator of the EE-distance with respect to $\mathbf{Z}$ is then expressed as
+% To compute $\boldsymbol{\xi}_N$ according to \cref{def:normal-vector}, we need to compute $\text{L}_{\mathbf{V}}[\widehat{D}](\mathbf{H}, \mathbf{H}_d(s^*))$. First, note that the EE-distance is symmetric, i.e., $\bigl\|\log(\mathbf{V}^{-1}\mathbf{W})\bigr\|_F = \bigl\|\log\bigl(\mathbf{W}^{-1}\mathbf{V}\bigr)\bigr\|_F$. Let $\mathbf{Z}=\mathbf{H}_d(s^*)^{-1}\mathbf{H}$, then using expression \eqref{eq:explicit-EE-distance-SE3}, the $\text{L}$ operator can be computed as
+\begin{align}
+    \begin{split}
+        \text{L}[\widehat{D}](\mathbf{Z}) &=  \frac{1}{2\sqrt{2\theta^2 + \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})}} \text{L}\bigl[2\theta^2 + \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr](\mathbf{Z}) \\
+        &= \frac{1}{2\sqrt{2\theta^2 + \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})}} \Bigl(\text{L}\bigl[2\theta^2\bigr](\mathbf{Z}) + \text{L}\bigl[\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr](\mathbf{Z})\Bigr),\!\!\!\!\! \label{eq:explicit-derivative-SE3-LdhatZ-firststep}
+    \end{split}
+\end{align}
+where $\theta, \mathbf{u}$ and $\bar{\mathbf{X}}$ are all functions of $\mathbf{Z}$. We now analyze the two terms separately. Starting with the first term, we have
+\begin{align}
+    \text{L}\bigl[2\theta^2\bigr](\mathbf{Z}) = 4\theta \text{L}[\theta](\mathbf{Z}).
+\end{align}
+Now, as shown in \cref{sec:explicit-construction-SE3}, $\theta$ is expressed as $\text{atan2}(\sin\theta, \cos\theta)$, however both derivatives of $\text{atan2}$ and $\tan^{-1}$ coincide. The $\text{L}$ operator of $\theta$ is then expressed as
+\begin{align}
+    \text{L}[\theta](\mathbf{Z}) = \frac{1}{\Biggl(\frac{\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F}{\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)}\Biggr)^2+1} \Lop\left[\rule{0em}{9mm}\frac{\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F}{\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)}\right](\mathbf{Z}), \label{eq:explicit-derivative-SE3-LthetaZ}
+\end{align}
+where the expressions for $\sin\theta$ and $\cos\theta$ from \cref{subsec:rotation-matrix-properties} have been used. Focusing for now only on the denominator of \eqref{eq:explicit-derivative-SE3-LthetaZ}, let $\mathbb{R}^6\ni\boldsymbol{\zeta} = [\mathbf{v}^\top\ \boldsymbol{\omega}^\top]^\top$ with $\mathbf{v}, \boldsymbol{\omega}\in\mathbb{R}^3$. Then, clearly
+\begin{align}
+    \rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr) = \exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z}). 
+\end{align}
+Using the implicit definition of $\Lop$ through derivatives, we have
+\begin{align}
+   \begin{split}
+     \Lop\biggl[\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)\biggr](\mathbf{Z})\boldsymbol{\zeta} &= \frac{1}{2}\frac{d}{d\varepsilon}\Biggl(\tr\biggl(\rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\biggr)\Biggr)\Biggr|_{\varepsilon=0}\\
+     = \frac{1}{2}\frac{d}{d\varepsilon}\Biggl(\tr\biggl(\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\biggr)\Biggr)\Biggr|_{\varepsilon=0}
+     &= \frac{1}{2}\tr\Biggl(\frac{d}{d\varepsilon}\biggl(\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\biggr)\biggr|_{\varepsilon=0}\Biggr)\\
+     = \frac{1}{2}\tr\Biggl(\biggl(\widehat{\mathcal{S}}(\boldsymbol{\omega})\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\biggr)\biggr|_{\varepsilon=0}\Biggr)
+     &= \frac{1}{2}\tr\bigl(\widehat{\mathcal{S}}(\boldsymbol{\omega})\rot(\mathbf{Z})\bigr),
+   \end{split}
+\end{align}
+which in turn implies that 
+\begin{align}
+    \Lop\biggl[\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)\biggr](\mathbf{Z}) = \begin{bmatrix}
+        \mathbf{0}& \frac{\tr\bigl(\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_1)\rot(\mathbf{Z})\bigr)}{2} & \frac{\tr\bigl(\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_2)\rot(\mathbf{Z})\bigr)}{2} & \frac{\tr\bigl(\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_3)\rot(\mathbf{Z})\bigr)}{2}
+    \end{bmatrix}.
+\end{align}
+If we denote $\rot(\mathbf{Z})_{ij}$ the element in the $i^{th}$ row and $j^{th}$ column of $\rot(\mathbf{Z})$, then this expression further reduces to
+\begin{align}
+    \Lop\biggl[\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)\biggr](\mathbf{Z}) = \begin{bmatrix}
+        \mathbf{0}& \frac{\rot(\mathbf{Z})_{23}-\rot(\mathbf{Z})_{32}}{2} & \frac{\rot(\mathbf{Z})_{13} - \rot(\mathbf{Z})_{31}}{2} & \frac{\rot(\mathbf{Z})_{12}-\rot(\mathbf{Z})_{21}}{2}
+    \end{bmatrix}.
+\end{align}
+
+Switching our attention back to the numerator of \eqref{eq:explicit-derivative-SE3-LthetaZ}, note that
+\begin{align}
+    &\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F = 
+    \tr\Bigl(\bigl(\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr)^\top\bigl(\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr)\Bigr)^{\frac{1}{2}}\\
+    &= \tr\Bigl(\rot(\mathbf{Z})^\top\rot(\mathbf{Z})-\rot(\mathbf{Z})^\top\rot(\mathbf{Z})^\top + \rot(\mathbf{Z})\rot(\mathbf{Z})^\top - \rot(\mathbf{Z})\rot(\mathbf{Z})\Bigr)^{\frac{1}{2}}\\
+    &= \sqrt{2\tr(\mathbf{I}) - 2\tr\bigl(\rot(\mathbf{Z})\rot(\mathbf{Z})\bigr)} = \sqrt{6 - 2\tr\bigl(\rot(\mathbf{Z})\rot(\mathbf{Z})\bigr)},
+\end{align}
+using properties of the trace. From this, the $\text{L}$ operator of the numerator is given by
+\begin{align}
+    \Lop\biggl[\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F\biggr](\mathbf{Z}) = \frac{-2}{4\sqrt{2}\sqrt{6 - 2\tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\Lop\Bigl[\tr\bigl(\rot(\mathbf{Z})^2\bigr)\Bigr](\mathbf{Z}).
+\end{align}
+Using the already computed $\text{L}$ operator of the trace, this reduces to
+\begin{align}
+    \Lop\biggl[\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F\biggr](\mathbf{Z}) = -\frac{1}{4\sqrt{3 - \tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\begin{bmatrix}
+        \mathbf{0}& \alpha_1 & \alpha_2 & \alpha_3
+    \end{bmatrix},
+\end{align}
+where 
+\begin{align}
+    \begin{split}
+        \alpha_1 =& -\rot(\mathbf{Z})_{12}\rot(\mathbf{Z})_{31} + \rot(\mathbf{Z})_{13}\rot(\mathbf{Z})_{21} + \rot(\mathbf{Z})_{22}\rot(\mathbf{Z})_{23}  \\
+        & - \rot(\mathbf{Z})_{22}\rot(\mathbf{Z})_{32} + \rot(\mathbf{Z})_{23}\rot(\mathbf{Z})_{33} - \rot(\mathbf{Z})_{32}\rot(\mathbf{Z})_{33},\\
+        \alpha_2 =& -\rot(\mathbf{Z})_{11}\rot(\mathbf{Z})_{13} + \rot(\mathbf{Z})_{11}\rot(\mathbf{Z})_{31} - \rot(\mathbf{Z})_{12}\rot(\mathbf{Z})_{23} \\
+        &- \rot(\mathbf{Z})_{13}\rot(\mathbf{Z})_{33} + \rot(\mathbf{Z})_{21}\rot(\mathbf{Z})_{32} + \rot(\mathbf{Z})_{31}\rot(\mathbf{Z})_{33},
+        \\
+        \alpha_3 =& \rot(\mathbf{Z})_{11}\rot(\mathbf{Z})_{12} - \rot(\mathbf{Z})_{11}\rot(\mathbf{Z})_{21} + \rot(\mathbf{Z})_{12}\rot(\mathbf{Z})_{22} \\
+        &+ \rot(\mathbf{Z})_{13}\rot(\mathbf{Z})_{32} - \rot(\mathbf{Z})_{21}\rot(\mathbf{Z})_{22} - \rot(\mathbf{Z})_{23}\rot(\mathbf{Z})_{31}.
+    \end{split}
+\end{align}
+
+Now, note that the quotient rule for derivatives also applies to the $\Lop$ operator. If we use the following equivalences:
+\begin{align}
+    \mathbf{f} &= \begin{bmatrix}
+        \mathbf{0}& \alpha_1 & \alpha_2 & \alpha_3
+    \end{bmatrix},\\
+    \mathbf{g} &= \begin{bmatrix}
+        \mathbf{0}& \frac{\rot(\mathbf{Z})_{23}-\rot(\mathbf{Z})_{32}}{2} & \frac{\rot(\mathbf{Z})_{13} - \rot(\mathbf{Z})_{31}}{2} & \frac{\rot(\mathbf{Z})_{12}-\rot(\mathbf{Z})_{21}}{2}
+    \end{bmatrix},
+\end{align}
+then we can express $\Lop[\theta]$ as follows
+% \begin{align}
+%     \begin{split}
+%         \Lop\left[\rule{0em}{9mm}\frac{\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F}{\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)}\right]\!\!(\mathbf{Z}) &= \frac{\Lop\biggl[\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F\biggr](\mathbf{Z})\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)
+%         }{\frac{1}{4}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)^2}\\
+%         &- \frac{\Lop\biggl[\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)\biggr](\mathbf{Z})\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F}{\frac{1}{4}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)^2}
+%     \end{split}
+% \end{align}
+\begin{align}
+    \text{L}[\theta](\mathbf{Z}) = \frac{
+        -\frac{\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)}{4\sqrt{3 - \tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\mathbf{f} -
+    \frac{\sqrt{3 - \tr\bigl(\rot(\mathbf{Z})^2\bigr)}}{2}\mathbf{g}}
+    {\frac{3}{4} - \frac{1}{4}\tr\bigl(\rot(\mathbf{Z})^2\bigr)+\frac{1}{4}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)^2} 
+\end{align}
+
+To finally determine $\Lop[\widehat{D}]$, we still need to determine $\Lop\bigl[\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr]$. Since $\Lop$ is defined for scalar functions, we first express $\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})$ element wise, which results in
+\begin{align}
+    \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z}) = \sum_{i=1}^{3}\sum_{j=1}^{3} \trans(\mathbf{Z})_{i}\trans(\mathbf{Z})_{j}\bar{\mathbf{X}}_{ij}.
+\end{align}
+The $\Lop$ operator of this expression is given by
+\begin{align}
+    \begin{split}
+        \Lop\bigl[\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr](\mathbf{Z}) = \sum_{i=1}^{3}\sum_{j=1}^{3}& \Bigl(2\Lop\bigl[\trans(\mathbf{Z})_{i}\bigr](\mathbf{Z})\trans(\mathbf{Z})_{j}\bar{\mathbf{X}}_{ij} \\
+        & +\trans(\mathbf{Z})_{i}\trans(\mathbf{Z})_{j}\Lop\bigl[\bar{\mathbf{X}}_{ij}\bigr](\mathbf{Z})\Bigr),
+    \end{split}
+\end{align}
+since $\bar{\mathbf{X}}$ is symmetric. The $\Lop$ operator of $\trans(\mathbf{Z})_{i}$ is given by its implicit expression
+\begin{align}
+    \begin{split}
+        \Lop\bigl[\trans(\mathbf{Z})_{i}\bigr](\mathbf{Z}) \boldsymbol{\zeta}&= 
+        \frac{d}{d\varepsilon}\biggl(\trans\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)_{i}\biggr)\biggr|_{\varepsilon=0}\!\!\! = 
+        \trans\biggl(\frac{d}{d\varepsilon}\Bigl\{\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr\}_{i}\biggr|_{\varepsilon=0}\biggr) \!\!\!\!\!\!\\
+        &= \trans\biggl(\Bigl\{\SL[\boldsymbol{\zeta}]\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr\}_{i}\biggr|_{\varepsilon=0}\biggr)
+        = \trans\Bigl(\bigl\{\SL[\boldsymbol{\zeta}]\mathbf{Z}\bigr\}_{i}\Bigr)\\
+        &= \bigl\{\widehat{\mathcal{S}}(\boldsymbol{\omega})\trans(\mathbf{Z}) + \mathbf{v}\bigr\}_{i},
+    \end{split}
+\end{align}
+which in turn implies that
+\begin{align}
+    \Lop\bigl[\trans(\mathbf{Z})_{i}\bigr](\mathbf{Z}) = \begin{bmatrix}
+        \delta_{1i} & \delta_{2i} & \delta_{3i} & \{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_1)\trans(\mathbf{Z})\}_i & \{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_2)\trans(\mathbf{Z})\}_i & \{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_3)\trans(\mathbf{Z})\}_i
+    \end{bmatrix},
+\end{align}
+where $\delta_{ij}$ is the Kronecker delta, i.e., $\delta_{ij}=1 \iff i=j$ and $\delta_{ij}=0$ otherwise. Regarding $\Lop[\bar{\mathbf{X}}_{ij}]$ we have
+\begin{align}
+    \Lop[\bar{\mathbf{X}}_{ij}](\mathbf{Z})= \Lop[\beta_0](\mathbf{Z})\bigl(-2\delta_{ij}+ \rot(\mathbf{Z})_{ij} + \rot(\mathbf{Z})_{ji}\bigr) + \beta_0\Bigl(\Lop[\rot(\mathbf{Z})_{ij}](\mathbf{Z}) + \Lop[\rot(\mathbf{Z})_{ij}^\top](\mathbf{Z})\Bigr)
+\end{align}
+Expressing the $\Lop$ operator of  each element in the $i^{th}$ row and $j^{th}$ column of $\rot(\mathbf{Z})$, we have
+\begin{align}
+    \Lop[\rot(\mathbf{Z})_{ij}](\mathbf{Z})\boldsymbol{\zeta} &=  \left.\frac{d}{d\varepsilon}\left(\biggl\{\rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\biggr\}_{ij}\right)\right|_{\varepsilon=0}\\
+    &=  \frac{d}{d\varepsilon}\biggl(\Bigl\{\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\Bigr\}_{ij}\biggr)\biggr|_{\varepsilon=0}\\
+    &=\bigl\{\widehat{\mathcal{S}}(\boldsymbol{\omega})\rot(\mathbf{Z})\bigr\}_{ij},
+\end{align}
+which implies that
+\begin{align}
+    \Lop[\rot(\mathbf{Z})_{ij}](\mathbf{Z}) &= \begin{bmatrix}
+        \mathbf{0} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_1)\rot(\mathbf{Z})\bigr\}_{ij} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_2)\rot(\mathbf{Z})\bigr\}_{ij} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_3)\rot(\mathbf{Z})\bigr\}_{ij}
+    \end{bmatrix}.
+\end{align}
+Clearly, the $\Lop$ operator of each element in the $i^{th}$ row and $j^{th}$ column of $\rot(\mathbf{Z})^\top$ is directly given by $\Lop[\rot(\mathbf{Z})_{ij}](\mathbf{Z})$:
+\begin{align}
+    \Lop[\rot(\mathbf{Z})^\top_{ij}](\mathbf{Z}) = \Lop[\rot(\mathbf{Z})_{ji}](\mathbf{Z}).
+\end{align}
+The last term remaining is $\Lop[\beta_0](\mathbf{Z})$, which is given by
+\begin{align}
+    \Lop[\beta_0](\mathbf{Z}) &= \frac{d\beta_0}{d\theta} \Lop[\theta](\mathbf{Z}),\\
+    &= \frac{\theta^2\sin(\theta) - \theta - \sin(\theta) + \bigl(\theta + \sin(\theta)\bigr) \cos(\theta)}{2 (1 - \cos(\theta))^3} \Lop[\theta](\mathbf{Z}).
+\end{align}
+Now, we have all the ingredients necessary to compute
+\begin{align}
+    \Lop[\widehat{D}](\mathbf{Z}) = \frac{1}{2\widehat{D}(\mathbf{V}, \mathbf{W})} \Bigl(4\theta\text{L}[\theta](\mathbf{Z}) + \text{L}\bigl[\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr](\mathbf{Z})\Bigr)
+\end{align}
