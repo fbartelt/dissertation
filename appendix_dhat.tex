@@ -209,15 +209,15 @@ Thus, when $\theta\approx0$, we can use $\beta_0=-\frac{1}{12}$ in \eqref{eq:app
 \section{Explicit derivative of the EE-Distance in SE(3)}\label{app:explicit-derivative-SE3}
 In this section, our objective is to derive the explicit expression for the derivative of the EE-Distance $\widehat{D}$ in $\text{SE}(3)$ of \cref{sec:explicit-construction-SE3}. This will allow us to compute the normal vector $\boldsymbol{\xi}_N$ in \cref{def:normal-vector} explictly. First, we will introduce two operators that will be used in this derivation. Let $\rot(\cdot)$ be an operator that extracts the rotation matrix of a group element, such that $\rot(\mathbf{Z})=\mathbf{Q}\in\text{SO}(3)$. Additionally, let $\trans(\cdot)$ be an operator that extracts the translation vector of a group element, such that $\trans(\mathbf{Z})=\mathbf{u}\in\mathbb{R}^3$. Thus, the EE-distance is expressed as
 \begin{align}
-    \widehat{D}(\mathbf{V}, \mathbf{W}) \triangleq \widehat{E}(\mathbf{Z}) = \sqrt{2\theta^2 + \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})},
+    \widehat{E}(\mathbf{Z}) = \sqrt{2\theta^2 + \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})},
 \end{align}
-where $\theta$ is a function dependent on $\rot(\mathbf{Z})$. We will also need a clear distinction between the canonical isomorphisms for $\mathfrak{se}(3)$ and $\mathfrak{so}(3)$. Let $\widehat{\mathcal{S}}:\mathbb{R}^3\to\mathfrak{so}(3)$ be the canonical isomorphism of $\mathfrak{so}(3)$, and $\SL:\mathbb{R}^6\to\mathfrak{se}(3)$ be the canonical isomorphism of $\mathfrak{se}(3)$. This also requires the notation $\widehat{\mathbf{e}}_i$ for the canonical basis of $\mathbb{R}^3$ and $\mathbf{e}_i$ for the canonical basis of $\mathbb{R}^6$. These distinctions will only be used in this section.
+where $\theta$ is a function dependent on $\rot(\mathbf{Z})$. We will also need a clear distinction between the canonical isomorphisms for $\mathfrak{se}(3)$ and $\mathfrak{so}(3)$. Let $\widehat{\mathcal{S}}:\mathbb{R}^3\to\mathfrak{so}(3)$ be the canonical isomorphism of $\mathfrak{so}(3)$, and $\SL:\mathbb{R}^6\to\mathfrak{se}(3)$ be the canonical isomorphism of $\mathfrak{se}(3)$. This also requires the notation $\widehat{\mathbf{e}}_i$ for the canonical basis of $\mathbb{R}^3$ and $\mathbf{e}_i$ for the canonical basis of $\mathbb{R}^6$.
 
 The $\Lop$ operator of the EE-distance with respect to $\mathbf{Z}$ is then expressed as
 % To compute $\boldsymbol{\xi}_N$ according to \cref{def:normal-vector}, we need to compute $\text{L}_{\mathbf{V}}[\widehat{D}](\mathbf{H}, \mathbf{H}_d(s^*))$. First, note that the EE-distance is symmetric, i.e., $\bigl\|\log(\mathbf{V}^{-1}\mathbf{W})\bigr\|_F = \bigl\|\log\bigl(\mathbf{W}^{-1}\mathbf{V}\bigr)\bigr\|_F$. Let $\mathbf{Z}=\mathbf{H}_d(s^*)^{-1}\mathbf{H}$, then using expression \eqref{eq:explicit-EE-distance-SE3}, the $\text{L}$ operator can be computed as
 \begin{align}
     \begin{split}
-        \text{L}[\widehat{D}](\mathbf{Z}) &=  \frac{1}{2\sqrt{2\theta^2 + \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})}} \text{L}\bigl[2\theta^2 + \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr](\mathbf{Z}) \\
+        \text{L}[\widehat{E}](\mathbf{Z}) &=  \frac{1}{2\sqrt{2\theta^2 + \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})}} \text{L}\bigl[2\theta^2 + \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr](\mathbf{Z}) \\
         &= \frac{1}{2\sqrt{2\theta^2 + \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})}} \Bigl(\text{L}\bigl[2\theta^2\bigr](\mathbf{Z}) + \text{L}\bigl[\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr](\mathbf{Z})\Bigr),\!\!\!\!\! \label{eq:explicit-derivative-SE3-LdhatZ-firststep}
     \end{split}
 \end{align}
@@ -310,7 +310,7 @@ then we can express $\Lop[\theta]$ as follows
     {\frac{3}{4} - \frac{1}{4}\tr\bigl(\rot(\mathbf{Z})^2\bigr)+\frac{1}{4}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)^2} 
 \end{align}
 
-To finally determine $\Lop[\widehat{D}]$, we still need to determine $\Lop\bigl[\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr]$. Since $\Lop$ is defined for scalar functions, we first express $\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})$ element wise, which results in
+To finally determine $\Lop[\widehat{E}]$, we still need to determine $\Lop\bigl[\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr]$. Since $\Lop$ is defined for scalar functions, we first express $\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})$ element wise, which results in
 \begin{align}
     \trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z}) = \sum_{i=1}^{3}\sum_{j=1}^{3} \trans(\mathbf{Z})_{i}\trans(\mathbf{Z})_{j}\bar{\mathbf{X}}_{ij}.
 \end{align}
@@ -365,5 +365,5 @@ The last term remaining is $\Lop[\beta_0](\mathbf{Z})$, which is given by
 \end{align}
 Now, we have all the ingredients necessary to compute
 \begin{align}
-    \Lop[\widehat{D}](\mathbf{Z}) = \frac{1}{2\widehat{D}(\mathbf{V}, \mathbf{W})} \Bigl(4\theta\text{L}[\theta](\mathbf{Z}) + \text{L}\bigl[\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr](\mathbf{Z})\Bigr)
+    \Lop[\widehat{E}](\mathbf{Z}) = \frac{1}{2\widehat{E}(\mathbf{V}, \mathbf{W})} \Bigl(4\theta\text{L}[\theta](\mathbf{Z}) + \text{L}\bigl[\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr](\mathbf{Z})\Bigr)
 \end{align}

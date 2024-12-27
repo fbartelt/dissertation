@@ -1,20 +1,24 @@
 % !TeX root = main.tex
-\chapter{Results and Discussion}
+\chapter{Results and Discussion}\label{ch:results}
 \section{Kinematic control}
-\subsection{The target curve}
-The considered curve $\mathcal{C}$ was based on the hyperbolic paraboloid while rotating in the $x$ axis in the world frame. Its parametrization is expressed as 
+In this section, we present the results of the kinematic control simulation in order to demonstrate the effectiveness of the proposed vector field guidance strategy. The simulation was conducted in the context of a system following a curve $\mathcal{C}\in\text{SE}(3)$, aiming to converge to and circulate around it. As the control is kinematic, we assume the same single integrator model as \eqref{eq:derivative-H-SL-considered-system}:
+\begin{align}
+    \dot{\mathbf{H}}(t) = \SL[\boldsymbol{\xi}(t)]\mathbf{H}(t),
+\end{align}
+where our control input is the twist $\boldsymbol{\xi}$.
+\subsection{Target curve}
+The considered target curve $\mathcal{C}\in\text{SE}(3)$ was based on the hyperbolic paraboloid rotating in the $x$ axis in the world frame. Its parametrization $\mathbf{H}_d$ is expressed as 
 \begin{align}
     \mathbf{H}_d(s) = \begin{bmatrix}
-        1 & \ \ 0 & 0 & rc_\theta\\
-        0 & \ \ c_\theta & s_\theta & rs_\theta\\
-        0 & -s_\theta & c_\theta & b + dr^2(c_\theta^2 - s_\theta^2)\\
+        1 & \ \ 0 & 0 & r\cos(2\pi s)\\
+        0 & \ \ \cos(2\pi s) & \sin(2\pi s) & r\sin(2\pi s)\\
+        0 & -\sin(2\pi s) & \cos(2\pi s) & b + dr^2\bigl(\cos^2(2\pi s) - \sin^2(2\pi s)\bigr)\\
         0 & \ \ 0 & 0 & 1
     \end{bmatrix},
 \end{align}
-where $c_\theta$ and $s_\theta$ denotes $\cos\theta$ and $\sin\theta$ respectively, $\theta = 2\pi s$, $b=\qty{1}{\meter}$, $d=\qty{0.2}{\meter}$, and $r=\qty{1}{\meter}$.
-
-\subsection{The choice of S map}
-Let $\boldsymbol{\xi} = [\xi_1 \ \xi_2 \ \xi_3 \ \xi_4 \ \xi_5 \ \xi_6]^\top$. The map $\SL$ used is:
+where $b=\qty{1}{\meter}$, $d=\qty{0.2}{\meter}$, and $r=\qty{1}{\meter}$. This curve was then discretized into $P=\num{5000}$ points by sampling $s$ into $\num{5000}$ evenly spaced points within the interval $[0, 1]$. In order to distinguish the continuous and discrete parametrizations, we henceforth adopt the notations $\mathbf{H}_d[i]$ and $\mathbf{H}_d(s)$ to refer to the $i$-th sample of the curve and the continuous curve, respectively.
+\subsection{Choice of S map}
+For the simulation, we chose the canonical isomorphism $\SL$ between $\mathbb{R}^6$ and $\mathfrak{se}(3)$, i.e., let $\boldsymbol{\xi} = [\xi_1 \ \xi_2 \ \xi_3 \ \xi_4 \ \xi_5 \ \xi_6]^\top$. The map $\SL$ used is:
 \begin{equation}
     \SL[\boldsymbol{\xi}] = \left[\begin{array}{cccc} 
     \ 0 & -\xi_6 & \ \ \xi_5 & \ \ \xi_1 \\
@@ -23,10 +27,40 @@ Let $\boldsymbol{\xi} = [\xi_1 \ \xi_2 \ \xi_3 \ \xi_4 \ \xi_5 \ \xi_6]^\top$. T
     \ 0 & \ 0 & \ 0 & \ 0
     \end{array}\right].
 \end{equation}
-The basis $\mathbf{E}_1, ... ,\mathbf{E}_6$ of the Lie algebra $\mathfrak{se}(3)$ can be obtained by $\mathbf{E}_k = \SL[\mathbf{e}_k]$, where $\mathbf{e}_k$ are the columns of the $6 \times 6$ identity matrix. Geometrically, the interpretation for this choice of basis is that $\boldsymbol{\xi}$ is the classical \emph{twist} in mechanics. More precisely, $\boldsymbol{\omega} \triangleq [\xi_4 \  \xi_5 \  \xi_6]^\top$ represents the $x$, $y$ and $z$ components of the angular  velocity  measured in the fixed frame, whereas $\mathbf{v} \triangleq [\xi_1 \  \xi_2 \  \xi_3]^\top$ represents the $x, y$ and $z$ velocities of the virtual point at the origin of the fixed frame, measured in this fixed frame. This is related to the object's linear velocity $\dot{\mathbf{p}}$  by $\dot{\mathbf{p}} = \boldsymbol{\omega} \times \mathbf{p} + \mathbf{v}$.
+The basis $\mathbf{E}_1, ... ,\mathbf{E}_6$ of the Lie algebra $\mathfrak{se}(3)$ can be obtained by $\mathbf{E}_k = \SL[\mathbf{e}_k]$, where $\mathbf{e}_k$ are the columns of the $6 \times 6$ identity matrix. Geometrically, the interpretation for this choice of basis is that $\boldsymbol{\xi}$ is the classical \emph{twist} in mechanics. More precisely, $\boldsymbol{\omega} \triangleq [\xi_4 \  \xi_5 \  \xi_6]^\top$ represents the $x$, $y$ and $z$ components of the angular  velocity  measured in the inertial frame, whereas $\mathbf{v} \triangleq [\xi_1 \  \xi_2 \  \xi_3]^\top$ represents the $x, y$ and $z$ velocities of a virtual point at the origin of the inertial frame, measured in this inertial frame. This is related to the object's linear velocity $\dot{\mathbf{p}}$  by $\dot{\mathbf{p}} = \boldsymbol{\omega} \times \mathbf{p} + \mathbf{v}$.
 
-\subsection{Parameters}
-The optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve} was solved by discretizing the curve $\mathcal{C}$ using $\num{5000}$ points and determining the optimal $s=s^*$ through a brute-force approach. This discretization was also used to compute $\frac{d}{ds}\mathbf{H}_d(s)$ using finite differences, which is necessary for implementing $\boldsymbol{\xi}_T = \SL^{-1}(\frac{d\mathbf{H}_d}{ds}(s^*)\mathbf{H}_d(s^*)^{-1})$. The chosen gains were $k_N(D) = \tanh(20D)$ and $k_T(D) = 1 - 0.5\tanh(D)$. The system was simulated for $\qty{15}{\second}$ using the approximation $\mathbf{H}(t+\Delta t)\approx \exp(\SL[\Psi]\Delta t)\mathbf{H}(t)$, with a time step of $\Delta t=\qty{0.01}{\second}$. The initial condition $\mathbf{H}(0)$was set as follows:
+\subsection{Employed nummerical methods}
+In order to solve the optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve} and compute $D(\mathbf{H})$, we utilized the discretized curve and computed the nearest point $\mathbf{H}_d[i^*]$ through a brute-force approach. Although it would be possible to compute the curve derivative explicitly, we opted to use finite differences for this computation. Thus, using the discretized curve, we computed the derivative $\mathbf{H}_d'[i]$ as
+\begin{align}
+    \mathbf{H}_d'[i] \approx \begin{cases}
+        \frac{\mathbf{H}_d[i+1] - \mathbf{H}_d[i]}{\Delta s}, &  i < P\\    
+        \frac{\mathbf{H}_d[1] - \mathbf{H}_d[i]}{\Delta s}, &  i = P
+    \end{cases}
+\end{align}
+adopting $\Delta s = \num{1E-3}$. This implies that our tangent component $\boldsymbol{\xi}_T$ is also approximated, since
+\begin{align}
+    \boldsymbol{\xi}_T \approx \invSL\biggl(\mathbf{H}_d'[i^*]\mathbf{H}_d[i^*]^{-1}\biggr).
+\end{align}
+
+For the computation of the normal component $\boldsymbol{\xi}_N$, we also adopted an approximation given by the evaluation of the right-hand side of \eqref{eq:Leq} for each $\mathbf{e}_i$, which implies that the normal component $i^{th}$ element $\boldsymbol{\xi}_{N,i}$ is given by
+\begin{align}
+    \boldsymbol{\xi}_{N,i} \approx \frac{\widehat{D}\Bigl(\exp\bigl(\SL[\boldsymbol{\mathbf{e}}_i]\bigr)\mathbf{H}(t), \mathbf{H}_d[s^*]\Bigr) - \widehat{D}\bigl(\mathbf{H}(t), \mathbf{H}_d[s^*]\bigr)}{\varepsilon},
+\end{align} 
+in which $\varepsilon = \num{1E-3}$ was used.
+
+The system was simulated adopting the following approximation
+\begin{align}
+    \mathbf{H}(t + \Delta t) \approx \exp\Bigl(\SL\bigl(\Psi(\mathbf{H})\bigr)\Delta t\Bigr)\mathbf{H}(t),
+\end{align}
+using a time step of $\Delta t = \qty{1E-2}{\second}$. 
+\subsection{Vector field gains and initial condition}
+The vector field gains were chosen as to complement each other, so the normal component would have more influence when far from the curve, and the tangent component would have more influence when close to the curve. With this reasoning, the following gains were chosen:
+\begin{align}
+    k_N(\mathbf{H}) &= \tanh\bigl(20D(\mathbf{H})\bigr)\\
+    k_T(\mathbf{H}) &= 1 - 0.5\bigl(D(\mathbf{H})\bigr).
+\end{align}
+
+The initial condition $\mathbf{H}(0)$ was set as
 \begin{align}
     \mathbf{H}(0) = \begin{bmatrix}
         \frac{\sqrt{2}}{2} & -\frac{\sqrt{2}}{2} & 0 & -2\\
@@ -35,8 +69,7 @@ The optimization problem in \eqref{eq:optimization-problem-distance-definition-p
         0 & \ 0 & 0 & \ 1
     \end{bmatrix}.
 \end{align}
-
-\subsection{Results}
+\subsection{Simulation}
 \begin{figure}[ht!]
     \centering
     % First subfigure
@@ -65,6 +98,7 @@ The optimization problem in \eqref{eq:optimization-problem-distance-definition-p
     \caption{The solid blue line depicts the system trajectory, while the solid red line indicates the target curve. The dashed light blue line represents the past trajectory. The initial and final positions are marked by purple and orange spheres, respectively. Translucent pink spheres denote intermediary positions, with orientation frames shown by RGB axes.}
     \label{fig:vfplot-trajectory}
 \end{figure}
+The simulation was conducted for $\qty{15}{\second}$ and was implemented in C++. On average, the computation of the vector field took $\qty{60 \pm 5}{\milli\second}$ per iteration on a single core of an Intel i5-10300H @ 4.5GHz CPU, with 8 GB of RAM. On average, $99.5\%$ of this time was spent solving the optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve}. Since the optimization process is highly parallelizable -- allowing for the simultaneous computation of $\widehat{D}(\mathbf{H},\mathbf{H}_d(s))$ across different discretized $s$ -- the computational effort could be significantly reduced by leveraging parallel architectures such as GPUs, SIMD, or multi-threading.
 \begin{figure}[ht!]
     \centering
     \def\svgwidth{.8\linewidth}
@@ -72,10 +106,11 @@ The optimization problem in \eqref{eq:optimization-problem-distance-definition-p
     \caption{Value of EC-distance $D$, position error in centimeters and orientation error in degrees along time.}
     \label{fig:position-orientation-errors}
 \end{figure}
-We implemented the code in C++. On average, the computation of the vector field took $60\pm5$ milliseconds per iteration on a single core of an Intel i5-10300H @ 4.5GHz CPU, with 8 GB of RAM. On average, $99.5\%$ of this time was spent solving the optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve}. Since the optimization process is highly parallelizable -- allowing for the simultaneous computation of $\widehat{D}(\mathbf{H},\mathbf{H}_d(s))$ across different discretized $s$ -- the computational effort could be significantly reduced by leveraging parallel architectures such as GPUs, SIMD, or multi-threading. The system's trajectory is illustrated in \cref{fig:vfplot-trajectory}, while the values of the distance function $D$ are shown in \cref{fig:position-orientation-errors}. Additionally, \cref{fig:position-orientation-errors} provides a more intuitive representation of the position error (in centimeters) and the orientation error (in degrees). The results confirm that the system successfully converges to the desired curve and circulates around it as expected. Once the system reaches the curve, it remains there without deviation. Although our implementation was carried out in C++, we provide a less efficient sample code in Python for clarity and accessibility, available at \url{https://github.com/fbartelt/SE3-example/blob/main/SE3example.ipynb}.
+
+The system's trajectory is illustrated in \cref{fig:vfplot-trajectory}, where the blue line represents the system trajectory, the red line represents the target curve, and the system state is represented by colored spheres. The values of the distance function $D$ are shown in \cref{fig:position-orientation-errors}. Additionally, \cref{fig:position-orientation-errors} provides a more intuitive representation of the position error (in centimeters) and the orientation error (in degrees). The results confirm that the system successfully converges to the desired curve and circulates around it as expected. Once the system reaches the curve, it remains there without deviation. Although our implementation was carried out in C++, we provide a less efficient sample code in Python for clarity and accessibility, available at \url{https://github.com/fbartelt/SE3-example/blob/main/SE3example.ipynb}.
 
 \section{Collaborative Manipulation}
-For the conduction of the adaptive control simulation of \cref{ch:collaborative}, we considered the manipulation of a large cylindrical body by six agents, aiming to converge to and circulate a curve $\mathcal{C}\in\text{ISE}(3)$. The cylindrical body had a radius $r$ of $\qty{0.25}{\meter}$, a height $h$ of $\qty{1}{\meter}$ and a mass $m$ of $\qty{1.28E3}{\kilogram}$. The measurement point $\mathbf{r}_p$ was taken as the position of the first agent $\mathbf{r}_1=[0\ 0\ 1.5]^\top$. The other agents' positions as well as the inertia tensor components are detailed in \cref{tb:parameters}.
+For the adaptive control simulation of \cref{ch:collaborative}, we considered the manipulation of a large cylindrical body by six agents, aiming to converge to and circulate a curve $\mathcal{C}\in\text{ISE}(3)$. The cylindrical body had a radius $r$ of $\qty{0.25}{\meter}$, a height $h$ of $\qty{1}{\meter}$ and a mass $m$ of $\qty{1.28E3}{\kilogram}$. The measurement point $\mathbf{r}_p$ was taken as the position of the first agent $\mathbf{r}_1=[0\ 0\ 1.5]^\top$. The other agents' positions as well as the inertia tensor components are detailed in \cref{tb:parameters}.
 \begin{table}[htb]
     \centering
     \begin{threeparttable}
@@ -100,8 +135,6 @@ For the conduction of the adaptive control simulation of \cref{ch:collaborative}
     \end{tablenotes}
     \end{threeparttable}
 \end{table}
-
-The curve constants were set to $c_1 = 0.7$ and $c_2 = 0.4$, and $s$ was discretized into $5000$ evenly spaced samples within the interval $[0, 1]$, thus $\Delta s=1\slash5000$. For function $H$ we set $\kappa=1.4$. . The agents were symmetrically distributed, and the measurement point was located at the position of the first agent. Additionally, the dead zone strategy \citep{ioannou2012robust} was employed for $\|\boldsymbol{\zeta}\| \le 0.01$, in which no adaptation will occur.
 
 \subsection{Curve parametrization}
 In this simulation, we employed a more complex curve in the group $\text{ISE}(3)$, which was defined as
@@ -130,9 +163,6 @@ where
     \end{bmatrix}.
 \end{align}
 Instead of using the continuous curve, we discretized it into $P=\num{2000}$ points by sampling $s$ into $\num{2000}$ evenly spaced points within the interval $[0, 1]$. In order to distinguish both, we henceforth adopt the notations $\mathbf{H}_d[i]$, $\mathbf{p}_d[i]$ and $\mathbf{R}_d[i]$ to refer to the $i$-th sample of the curve, position and orientation, respectively.
-
-
-In both simulations, we employed the forward Euler method with a time step of $\Delta t = \qty{1E-2}{\second}$. 
 \subsection{Employed nummerical methods}\label{sec:results-adaptive-nummerical-methods}
 Although the curve has a representation in $\text{ISE}(3)$, our adaptive control formulation was based on the tuple representation of $\mathbb{R}^3\times \text{SO}(3)$, thus, to distinguish both, in this section we use the notation $\mathbf{H}$ to represent the element of $\text{ISE}(3)$ and $\boldsymbol{\chi}=(\mathbf{R}, \mathbf{p})$ to represent the same entity as an element of $\mathbb{R}^3\times \text{SO}(3)$. This equivalence also implies that $\boldsymbol{\xi}=\dot{\boldsymbol{\chi}}$ and $\dot{\boldsymbol{\xi}} = \ddot{\boldsymbol{\chi}}$, thus we adopt the notation using $\boldsymbol{\chi}$ for twists and accelerations to maintain consistency with the dynamics in \cref{sec:dynamic-modelling}.
 
@@ -219,7 +249,7 @@ where $\diag(\cdot)$ maps a vector into a diagonal matrix, and $\abs(\cdot)$ is 
 \end{align}
 where $\blkdiag(\cdot,\, \dots,\, \cdot)$ maps a list of matrices into a block diagonal matrix.
 \subsection{Simulation}
-The simulation was conducted for $\qty{40}{\second}$ and a time step was $\Delta t=\num{1E3}$ for the integration described in \cref{sec:results-adaptive-nummerical-methods}. The dead zone strategy (see \cref{sec:background-adaptive-control}) was employed adopting a deadband $\|\boldsymbol{\zeta}\| \le 0.01$. The initial conditions were set as follows:
+The simulation was conducted for $\qty{40}{\second}$ and a time step was $\Delta t=\qty{1E-3}{\second}$ for the integration described in \cref{sec:results-adaptive-nummerical-methods}. The dead zone strategy (see \cref{sec:background-adaptive-control}) was employed adopting a deadband $\|\boldsymbol{\zeta}\| \le 0.01$. The initial conditions were set as follows:
 \begin{align}
     \mathbf{p}(0) &= \begin{bmatrix}
         -0.1 & 0 & 0.2

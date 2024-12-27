@@ -49,10 +49,10 @@ A chain rule is already shown in \cref{lemma:chainrule}, however this is related
     &= \frac{d}{d\varepsilon}\biggl(g\Bigl(\exp\bigl(\varepsilon\mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}\bigr)\mathbf{Y}^{-1}\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0} \\
     &= \frac{d}{d\varepsilon}\biggl(g\Bigl(\exp\bigl(\varepsilon\mathcal{S}'(\boldsymbol{\zeta})\bigr)\mathbf{Y}^{-1}\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0},
 \end{align}
-where $\mathcal{S}'(\boldsymbol{\zeta}) = \mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$. However, since $\mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$ is in $\mathfrak{g}$, then there exists some vector $\boldsymbol{\zeta}'$ such that $\SL[\boldsymbol{\zeta}'] = \mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$, which further implies that $\boldsymbol{\zeta}'$ is a function of $\boldsymbol{\zeta}$, i.e., $\boldsymbol{\zeta}' \triangleq \boldsymbol{\zeta}'(\boldsymbol{\zeta})$. Therefore, we can write
+where $\mathcal{S}'(\boldsymbol{\zeta}) = \mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$. However, since $\mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$ is in $\mathfrak{g}$, then there exists some vector $\boldsymbol{\zeta}'$ such that $\SL[\boldsymbol{\zeta}'] = \mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$, which further implies that $\boldsymbol{\zeta}'$ is a function of $\boldsymbol{\zeta}$ and $\mathbf{Y}$, i.e., $\boldsymbol{\zeta}' \triangleq \boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y})$. Therefore, we can write
 \begin{align}
     \frac{d}{d\varepsilon}\biggl(g\Bigl(\mathbf{Y}^{-1}\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0} &= \frac{d}{d\varepsilon}\biggl(g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}']\bigr)\mathbf{Y}^{-1}\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\\
-    &= \Lop[g](\mathbf{Z})\boldsymbol{\zeta}'(\boldsymbol{\zeta}) \label{appendix-prop-Lop-chain-rule-LgZ-zeta-prime},
+    &= \Lop[g](\mathbf{Z})\boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y}) \label{appendix-prop-Lop-chain-rule-LgZ-zeta-prime},
 \end{align}
 by definition. Now, since $f$ is left-invariant, we can write
 \begin{align}
@@ -62,6 +62,64 @@ by definition. Now, since $f$ is left-invariant, we can write
 \end{align}
 which shows that
 \begin{align}
-    \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y})\boldsymbol{\zeta} = \Lop[g](\mathbf{Z})\boldsymbol{\zeta}'(\boldsymbol{\zeta})
+    \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y})\boldsymbol{\zeta} = \Lop[g](\mathbf{Z})\boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y}) \label{app:prop-Lop-chain-rule-LVf-final-form}.
 \end{align}
-\subsection{The case for SE(3)}
+\subsection{The case for SE(3)}\label{app:prop-Lop-chain-rule-SE3}
+In the $\text{SE}(3)$, we can show that $\boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y})$ is given by a matrix multiplication. Let $\SL:\mathbb{R}^6\to\mathfrak{se}(3)$ be the canonical isormophism between $\mathbb{R}^6$ and $\mathfrak{se}(3)$, such that $\mathbf{Y}$ can be written as
+\begin{align}
+    \mathbf{Y} = \begin{bmatrix}
+        \mathbf{R}_y & \mathbf{p}_y\\
+        \mathbf{0} & 1
+    \end{bmatrix},\,\mathbf{R}_y\in\text{SO}(3), \mathbf{p}_y\in\mathbb{R}^3.
+\end{align}
+
+Furthermore, if we define $\widehat{\mathcal{S}}:\mathbb{R}^3\to\mathfrak{so}(3)$ as the canonical isormophism between $\mathbb{R}^3$ and $\mathfrak{so}(3)$, and $\boldsymbol{\zeta}=[\mathbf{v}^\top\ \boldsymbol{\omega}^\top]^\top$ with $\mathbf{v}, \boldsymbol{\omega}\in\mathbb{R}^3$, then we have
+\begin{align}
+  \begin{split}
+      \mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y} &= 
+      \begin{bmatrix}
+          \mathbf{R}_y^\top & -\mathbf{R}_y^\top\mathbf{p}_y\\
+          \mathbf{0} & 1
+      \end{bmatrix}
+      \begin{bmatrix}
+          \widehat{\mathcal{S}}(\boldsymbol{\omega}) & \mathbf{v}\\
+          \mathbf{0} & 0
+      \end{bmatrix}
+      \begin{bmatrix}
+          \mathbf{R}_y & \mathbf{p}_y\\
+          \mathbf{0} & 1
+      \end{bmatrix}\\
+      &= 
+      \begin{bmatrix}
+          \mathbf{R}_y^\top\widehat{\mathcal{S}}(\boldsymbol{\omega})\mathbf{R}_y & \mathbf{R}_y^\top\widehat{\mathcal{S}}(\boldsymbol{\omega})\mathbf{p}_y + \mathbf{R}_y^\top\mathbf{v}\\
+          \mathbf{0} & 0
+      \end{bmatrix}\\
+      &= \SL[\boldsymbol{\zeta}'].
+  \end{split}
+\end{align}
+Using properties of $\widehat{\mathcal{S}}$, we have $\mathbf{R}_y^\top\widehat{\mathcal{S}}(\boldsymbol{\omega})\mathbf{R}_y = \widehat{S}(\mathbf{R}_y^\top\boldsymbol{\omega})$, thus we can express $\boldsymbol{\zeta}'$ as
+\begin{align}
+    \boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y}) = \begin{bmatrix}
+        \mathbf{R}_y^\top\widehat{\mathcal{S}}(\boldsymbol{\omega})\mathbf{p}_y + \mathbf{R}_y^\top\mathbf{v}\\
+        \mathbf{R}_y^\top\boldsymbol{\omega}
+    \end{bmatrix}.
+\end{align}
+
+Note that $\widehat{\mathcal{S}}(\boldsymbol{\omega})\mathbf{p}_y = -\widehat{\mathcal{S}}(\mathbf{p}_y)\boldsymbol{\omega}$, and thus the following holds
+\begin{align}
+    \boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y}) = \begin{bmatrix}
+        \mathbf{R}_y^\top & -\mathbf{R}_y^\top\widehat{\mathcal{S}}(\mathbf{p}_y)\\
+        \mathbf{0} & \mathbf{R}_y^\top
+    \end{bmatrix}\begin{bmatrix}
+        \mathbf{v}\\\boldsymbol{\omega}
+    \end{bmatrix}
+    = \mathcal{Z}(\mathbf{Y})\boldsymbol{\zeta}.
+\end{align}
+This implies that \eqref{app:prop-Lop-chain-rule-LVf-final-form} has the following form depending on a map $\mathcal{Z}$ that depends only on $\mathbf{Y}$:
+\begin{align}
+    \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y})\boldsymbol{\zeta} = \Lop[g](\mathbf{Z})\mathcal{Z}(\mathbf{Y})\boldsymbol{\zeta},
+\end{align}
+which in turn implies that the chain rule for the $\Lop$ operator can be expressed as
+\begin{align}
+    \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y}) = \Lop[g](\mathbf{Z})\mathcal{Z}(\mathbf{Y}). \label{eq:appendix-prop-Lop-chain-rule-SE3}
+\end{align}

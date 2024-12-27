@@ -1,34 +1,57 @@
 % !TeX root = main.tex
 \chapter{Introduction}\label{chap:Intro}
+Physical motions show a deep connection with Lie groups, be it in the realm of classical mechanics, quantum mechanics or special relativity, to name a few, all of which have some description in terms of Lie theory. This fact is not a mere nomenclature, but a sign of a deeper and more fundamental structure. As groups operations are interesting by themselves, the possibility of having a manifold that has a group structure -- a Lie group -- is even more interesting. Although more abstract, the study of systems based on Lie theory can guide to deeper understanding of the embedded structure of the system, allowing the possibility of more efficient control strategies.
 
-Introduction and motivation of the work.
+The application of Lie groups to control theory shares a connection with geometric control \citep{Bullo2004}. Geometric control theory tries to unify the framework of differential geometry with control theory. As such, instead of dealing with a local Euclidean charts, the control problem is treated directly on the inherent manifold structure. Our objective in this work is similar, as we aim to develop a control strategy that works directly on the Lie group structure of the system. 
 
-\section{Objective and Contributions}
+The main idea of this work is the development of a vector field guidance strategy for systems with inherent matrix Lie group structure. Vector field-based approaches have been widely employed to control a variety of robotic systems, offering a unified framework that integrates path planning, trajectory planning, and control \citep{goncalves2010vectorfield,yao2021singularity,Rezende2022,Gao2022,nunes2023quadcopter,yao2022topological,Chen2025}. This means that this approach can construct a path that connects a initial and final configuration, generate a signal that would guide the system to the objective, and control the system to follow this signal. 
 
-Write here the main goals and contributions of this work.
+This work is deeply connected with the work in \citet{Rezende2022}, where a vector field guidance strategy was developed in Euclidean space based on parametric representation of curves. We will use the results of this work to develop a more general vector field guidance strategy that works for systems represented as matrix Lie groups. As such we will present the summary of properties and results of \citet{Rezende2022} in this text, and use them as the foundation for our work. This will be made clear, since for every new oncept introduced, we use examples to draw the connections between both works.
+
+One particularly interesting application of the generalization of vector fields to matrix Lie groups is controlling systems that can move freely in both position and orientation, which can be obtained by considering the group $\text{SE}(3)$ in our framework. Omnidirectional unmanned aerial vehicles (UAVs), such as those depicted in \cref{fig:omnidirectionaldrone}, exhibit such abilities, and research in this field is rapidly expanding \citep{kamel2018voliro,Aboudorra2023,HamandiOmni}. In \citet{hamandi2021design}, a review of multirotor designs identifies key factors that contribute to achieving omnidirectional capabilities. For instance, tracking a path with complex maneuvers may be necessary, particularly when these drones are equipped with extensions such as drills to achieve target poses while avoiding collisions with the environment. Our approach can facilitate tracking such paths by manipulating the linear and angular velocities of the drone. Additionally, another application involving the group $\text{SE}(3)$ is the control of the end effector of a robotic manipulator through its linear and angular velocities.
+
+Although those are valid applications, we warn that our focus is not the applicability of the strategy, but the theoretical foundation itself. As will be seen, our generalization not only makes it possible to use vector fields in Lie groups, but also shows that the vector field strategy in Euclidean space has actually more flexibility than previously thought. As a way to summarize our intentions, we quote \citet{Bullo2004}, that states that ``the areas of overlap between mechanics and control possess the sort of mathematical elegance that makesthem appealing to study, independently of applications''.
+
+After developing our generalization, we provide two scenarios of application. The first one is a kinematic control of a system in $\text{SE}(3)$ that must converge to and circulate along a predefined curve in the same group. This simulation provides the reader with a practical example of how the generalization can be applied, as well as the visualization of our theoretical results. The second scenario is a collaborative simulation, where $6$ agents manipulate a cylindrical body with unkown properties to track a target curve. In this case we use the group $\mathbb{R}^3\times\text{SO}(3)$, where the translation and rotation are independent motions. As the object possesses unknown properties, we use an adaptive control strategy to estimate the parameters of the object and control the system. For this, we use the vector field strategy as a higher-level controller that sends a desired velocity to the dynamic controller. The lower-level controller then is responsible for tracking this velocity. This simulation showcases that our strategy can also be applied in dynamic scenarios, Specifically ones that require adaptation.
 
 Although it does not improve the understanding of this work, we add here a disclaimer to try to answer a possible question ``Why does this work involves adaptive control if the main focus is kinematic control?''. The work here first began through a search on what could be done with the knowledge acquired in the gradute courses, focusing on dynamic control applying nonlinear techniques. The main idea was to go a step further into what was developed in the courses assignments. After some research, we found another interesting paper \citep{Culbertson2021}, that treated an adaptation problem for the trajectory tracking of a manipulated body. Since the authors considered a trajectory tracking, the first question was ``can we change this to a vector field approach, thus changing the trajectory tracking to path tracking?''. As the answer was positive, what will be shown in the following text, we were faced with two choices: (1) develop more on the dynamic adaptive control, or (2) develop more on the kinemtic control, generalizing the vector field approach. The second option was chosen, as it aligns more with the author's interests and would open more possibilities for future works. Under this consideration, we extended the vector field approach in \citet{Rezende2022} to account for orientations, and thus developed a kinematic control strategy to work in $\mathbb{R}^3\times\text{SO}(3)$. Thus, our first published work covers both the usage of vector fields for path tracking in the adaptive scheme, and the generalization of the vector field approach to work in $\mathbb{R}^3\times\text{SO}(3)$, as it is published \citep{Pessoa2024}. The properties derived in this work gave us an insight that there existed more general properties for the vector field guidance, thus another question had risen ``How far can we extend this and maintain some of the intuitiveness of \citet{Rezende2022}?''. This question led to the development of a more general vector field guidance strategy, that works for systems represented as matrix Lie groups. This work was submitted to Automatica and is currently under review.
 
 The previous disclaimer not only provides a ``fun fact'' on how this work was developed, but also justifies modifications made in this text. Here, we will focus on the more generalized version of the vector field approach, that works for systems represented as matrix Lie groups, and treat the work in \citet{Pessoa2024} as an application of this strategy. For this reason, we present our results in a non-chronological order, as we believe it is more intuitive to present the more general case first, and then show how it can be applied to a specific case. We have rewritten some of the text in \citet{Pessoa2024} to better fit the context of this work, and so it will differ from the original text. We also present the results of the collaborative simulations in this text, as we believe it is more intuitive to present the results of the application of the strategy after the strategy itself. In addition, we also dive deeper into some derivations and proofs of both works.
+\section{Contributions summary}
+The main contributions of this work can be summarized as follows:
+\begin{itemize}
+    \item Present a novel vector field guidance strategy for systems with inherent matrix Lie group structure;
+    \item Provide all the necessary tools for the implementation of the strategy in $\text{SE}(3)$;
+    \item Simulate a kinematic control in $\text{SE}(3)$ to showcase the theoretical results;
+    \item Develop an adaptive control strategy for a collaborative simulation in $\mathbb{R}^3\times\text{SO}(3)$ for which a reference velocity is generated by the vector field guidance strategy.
+\end{itemize}
 
 \textbf{TODO}
 \begin{itemize}
-    \item Add explicit derivative for $\widehat{D}$;
+    % \item Add explicit derivative for $\widehat{D}$;
     % \item Improve Lie group section;
     % \item Add Lie algebra section;
     % \item Rerun collaborative simulations using the modified model;
     \item Change proposition 4.23 A,B etc. to X, Y...
     \item Run kinematic sim for other Lie group;
     % \item Add introduction and literature review;
-    \item Add introduction
+    % \item Add introduction
     \item Change symbols to reduce complexity;
     \item Improve proof for the derivative of Lie group element, based on flows;
     \item Add Flows + integral curves subsection in Lie group section;
     \item Maybe change spheres in trajectory plots to UAV models.
     \item Add image showing the interpolated curve?
+    \item Add block diagram for adaptive control
+    \item Chatgpt review
+    \item Add publications in Introduction
+    \item Add omnidirecitonal uav figure in intro
 \end{itemize}
-
+\section{Publications}
+In this section we highlight the publications that culminated into the present work
+\begin{itemize}
+    \item cba
+    \item automatica
+\end{itemize}
 \section{Structure of the Text}
-
-Write here the dissertation structure.
+This chapter is organized as follows. In \cref{chap:literature-review}, we present a literature review on the vector field formulation, and the application of Lie theory in various fields. In \cref{ch:background}, we review the vector field guidance strategy in Euclidean space, present the necessary background on Lie groups and Lie algebras, and also present the basic concepts of adaptive control. In \cref{ch:vector_field}, we present the generalization of the vector field guidance strategy to matrix Lie groups. In \cref{ch:kinematic}, we present the particularities of the strategy for kinematic control in exponential Lie groups, and provide the necessary tools for its implementation in $\text{SE}(3)$. In \cref{ch:collaborative}, we present the system model, lower-level controller, and the adaptive control strategy for the collaborative manipulation scenario. In \cref{ch:results}, we present the simulation details and results for both the explored scenarios. Finally, in \cref{ch:conclusion}, we present the conclusions and some possibilities for future work.
 
