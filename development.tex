@@ -170,14 +170,14 @@ As in \cref{sec:adriano-review}, the \emph{tangent} component of our vector fiel
 \section{Orthogonality of components}
 According to \cref{feat:adriano-orthogonality}, it is necessary that the normal and tangent components of the vector field be orthogonal to each other. This fact is related only to the EC-distance function $D$, consequently to the EE-distance function $\widehat{D}$, and can be achieved through a property of \emph{left-invariance}. We will first define a \emph{left-invariant} distance function and then provide a proposition for the orthogonality condition.
 \begin{definition}[Left-invariant distance]\label{def:distance-left-invariant}
-    An EE-distance function (\cref{def:distance-D-hat-arbitrary-elements}) $\widehat{D}:G\times G\to\mathbb{R}_+$ is said to be  \emph{left-invariant} if it also satisfies $\widehat{D}(\mathbf{A}\mathbf{V}, \mathbf{A}\mathbf{W}) = \widehat{D}(\mathbf{V}, \mathbf{W})$ for all $\mathbf{A}, \mathbf{V}, \mathbf{W}\in G$ .
+    An EE-distance function (\cref{def:distance-D-hat-arbitrary-elements}) $\widehat{D}:G\times G\to\mathbb{R}_+$ is said to be  \emph{left-invariant} if it also satisfies $\widehat{D}(\mathbf{X}\mathbf{V}, \mathbf{X}\mathbf{W}) = \widehat{D}(\mathbf{V}, \mathbf{W})$ for all $\mathbf{V}, \mathbf{W}, \mathbf{X} \in G$ .
 \end{definition}
 Given this definition, we can state the following:
 \begin{proposition}\label{propos:left-invariant-metric-induces-orthogonal}
     Let $\mathbf{H} \not \in \mathcal{C} \cup \mathcal{P}$. If $\widehat{D}$ is a left-invariant distance function (\cref{def:distance-left-invariant}), then the vector field components (\cref{def:normal-vector,def:tangent-vector}) will be orthogonal to each other, i.e., $\boldsymbol{\xi}_N(\mathbf{H})^{\top}\boldsymbol{\xi}_T(\mathbf{H})=0$.
 \end{proposition}
 \begin{proof}
-    Since $\widehat{D}$ is left-invariant, then $\widehat{D}(\mathbf{A}\mathbf{B}, \mathbf{A}\mathbf{C})=\widehat{D}(\mathbf{B}, \mathbf{C})\;\forall\;\mathbf{A}, \mathbf{B}, \mathbf{C}\in G$. Since this holds for any value, take $\mathbf{B}=\mathbf{H}$, $\mathbf{C}=\mathbf{H}_d(s^*)$, and $\mathbf{A}=\exp\left(\tau\SL[\boldsymbol{\xi}_T]\right)$. Now, due to the left-invariance,
+    Since $\widehat{D}$ is left-invariant, then $\widehat{D}(\mathbf{X}\mathbf{V}, \mathbf{X}\mathbf{W})=\widehat{D}(\mathbf{V}, \mathbf{W})\;\forall\;\mathbf{V}, \mathbf{W}, \mathbf{X}\in G$. Since this holds for any value, take $\mathbf{V}=\mathbf{H}$, $\mathbf{W}=\mathbf{H}_d(s^*)$, and $\mathbf{X}=\exp\bigl(\tau\SL[\boldsymbol{\xi}_T]\bigr)$. Now, due to the left-invariance,
     \begin{align}
     % \begin{split}
         \widehat{D}\Bigl(\exp\bigl(\tau\SL[\boldsymbol{\xi}_T]\bigr)\mathbf{H},\, \exp\bigl(\tau\SL[\boldsymbol{\xi}_T]\bigr)\mathbf{H}_d(s^*)\Bigr)
@@ -192,7 +192,7 @@ Given this definition, we can state the following:
     Finally, using \cref{def:normal-vector}, we prove the orthogonality property: $\text{L}_{\mathbf{V}}[\widehat{D}]\boldsymbol{\xi}_T = -\boldsymbol{\xi}_N^{\top}\boldsymbol{\xi}_T=0$ 
 \end{proof}
 \begin{example}
-    In \citet{Rezende2022}, the  EE-distance function $\widehat{D}(\mathbf{V}, \mathbf{W}) = \|\mathcal{T}(\mathbf{V}) - \mathcal{T}(\mathbf{W})\|$ (\cref{ex:adriano-distance-function}) is left-invariant. Note that $\mathcal{T}(\mathbf{A}\mathbf{B}) = \mathcal{T}(\mathbf{A}) + \mathcal{T}(\mathbf{B})\;\forall\;\mathbf{A},\mathbf{B}\in\text{T}(m)$. Let $\mathbf{A}, \mathbf{B}, \mathbf{C} \in \text{T}(m)$, consequently, $\widehat{D}(\mathbf{A}\mathbf{B}, \mathbf{A}\mathbf{C}) = \|\mathcal{T}(\mathbf{A}\mathbf{B}) - \mathcal{T}(\mathbf{A}\mathbf{C})\| = \|\mathcal{T}(\mathbf{A}) + \mathcal{T}(\mathbf{B}) - \mathcal{T}(\mathbf{A}) - \mathcal{T}(\mathbf{C})\| = \widehat{D}(\mathbf{B}, \mathbf{C})$.
+    In \citet{Rezende2022}, the  EE-distance function $\widehat{D}(\mathbf{V}, \mathbf{W}) = \|\mathcal{T}(\mathbf{V}) - \mathcal{T}(\mathbf{W})\|$ (\cref{ex:adriano-distance-function}) is left-invariant. Note that $\mathcal{T}(\mathbf{X}\mathbf{Y}) = \mathcal{T}(\mathbf{X}) + \mathcal{T}(\mathbf{Y})\;\forall\;\mathbf{X},\mathbf{Y}\in\text{T}(m)$. Let $\mathbf{V}, \mathbf{W}, \mathbf{X} \in \text{T}(m)$, consequently, $\widehat{D}(\mathbf{X}\mathbf{V}, \mathbf{X}\mathbf{W}) = \|\mathcal{T}(\mathbf{X}\mathbf{V}) - \mathcal{T}(\mathbf{X}\mathbf{W})\| = \|\mathcal{T}(\mathbf{X}) + \mathcal{T}(\mathbf{V}) - \mathcal{T}(\mathbf{X}) - \mathcal{T}(\mathbf{W})\| = \widehat{D}(\mathbf{V}, \mathbf{W})$.
 \end{example}
 \section{Local minima and gradients in distance function}
 \cref{feat:adriano-no-local-minima} is the only feature remaining to be present in our formulation. It consists of two parts: the absence of local minima outside the curve, and the fact that the gradient, here represented by its general form $-\boldsymbol{\xi}_N(\mathbf{H})$, never vanishes (whenever it exists).
@@ -237,7 +237,7 @@ It will now be proved that the chainability property in \cref{def:chainable-dist
 \begin{figure}[ht]
     \centering
     \def\svgwidth{.8\linewidth}
-    \import{figures/}{liegroup_curve_local_minima.pdf_tex}
+    {\small\import{figures/}{liegroup_curve_local_minima.pdf_tex}}
     \caption{Depiction of the proof in \cref{propos:D-NO-local-minima}}
     \label{fig:distance-without-local-minima}
 \end{figure}
@@ -245,31 +245,31 @@ It will now be proved that the chainability property in \cref{def:chainable-dist
     If $\widehat{D}$ is a chainable distance function (\cref{def:chainable-distance}), then it does not have local minima outside the curve $\mathcal{C}$.
 \end{proposition}
 \begin{proof}
-    The proof proceeds by contradiction and is depicted in \cref{fig:distance-without-local-minima}. Take $D$ as an EC-distance function (\cref{def:distance-D-element-curve}) with $\widehat{D}$ being a chainable EE-distance function. Assume that $\mathbf{B}\notin\mathcal{C}$ is a local minimum of $D$ outside the curve, and let $\mathbf{C} \in G$ be (one of) the nearest point(s) on $\mathcal{C}$ to $\mathbf{B}$, i.e., $\mathbf{C}=\arg\min_{\mathbf{Y}\in\mathcal{C}}\widehat{D}(\mathbf{B}, \mathbf{Y})$.
+    The proof proceeds by contradiction and is depicted in \cref{fig:distance-without-local-minima}. Take $D$ as an EC-distance function (\cref{def:distance-D-element-curve}) with $\widehat{D}$ being a chainable EE-distance function. Assume that $\mathbf{V}\notin\mathcal{C}$ is a local minimum of $D$ outside the curve, and let $\mathbf{W} \in G$ be (one of) the nearest point(s) on $\mathcal{C}$ to $\mathbf{V}$, i.e., $\mathbf{W}=\arg\min_{\mathbf{Y}\in\mathcal{C}}\widehat{D}(\mathbf{V}, \mathbf{Y})$.
 
-     Since $\mathbf{B}$ $\not \in \mathcal{C}$ is a local minimum of $D$, there exists a ball $\mathcal{B}_\varepsilon$, with respect to the topology induced by the distance function, of radius $\varepsilon>0$, small enough to not touch the curve, centered at $\mathbf{B}$ such that $D(\mathbf{Y}) \ge D(\mathbf{B})\; \forall\; \mathbf{Y} \in \mathcal{B}_\varepsilon$. Given that a path $\Phi$ between $\mathbf{B}$ and $\mathbf{C}$ is continuous (see \cref{def:PHI-path-parameterizer}), there must exist $\sigma_0 \in (0,1)$ such that a point $\mathbf{A}=\Phi(\sigma_0, \mathbf{B}, \mathbf{C})$ lies in the intersection of the boundary of the ball $\partial\mathcal{B}_\varepsilon$ and the path. According to our assumption, $D(\mathbf{B}) \le D(\mathbf{A})$, where $D(\mathbf{A}) = \min_{\mathbf{Y}\in\mathcal{C}} \widehat{D}(\mathbf{A}, \mathbf{Y})$. Now, since $D(\mathbf{A})$ is the minimum EE-distance between $\mathbf{A}$ and the curve, it must be true that this distance is less than or equal to the EE-distance between $\mathbf{A}$ and $\mathbf{C}$, i.e., $D(\mathbf{A})\le \widehat{D}(\mathbf{A}, \mathbf{C})$. The results until now allows us to obtain the following:
+     Since $\mathbf{V}$ $\not \in \mathcal{C}$ is a local minimum of $D$, there exists a ball $\mathcal{B}_\varepsilon$, with respect to the topology induced by the distance function, of radius $\varepsilon>0$, small enough to not touch the curve, centered at $\mathbf{V}$ such that $D(\mathbf{Y}) \ge D(\mathbf{V})\; \forall\; \mathbf{Y} \in \mathcal{B}_\varepsilon$. Given that a path $\Phi$ between $\mathbf{V}$ and $\mathbf{W}$ is continuous (see \cref{def:PHI-path-parameterizer}), there must exist $\sigma_0 \in (0,1)$ such that a point $\mathbf{X}=\Phi(\sigma_0, \mathbf{V}, \mathbf{W})$ lies in the intersection of the boundary of the ball $\partial\mathcal{B}_\varepsilon$ and the path. According to our assumption, $D(\mathbf{V}) \le D(\mathbf{X})$, where $D(\mathbf{X}) = \min_{\mathbf{Y}\in\mathcal{C}} \widehat{D}(\mathbf{X}, \mathbf{Y})$. Now, since $D(\mathbf{X})$ is the minimum EE-distance between $\mathbf{X}$ and the curve, it must be true that this distance is less than or equal to the EE-distance between $\mathbf{X}$ and $\mathbf{W}$, i.e., $D(\mathbf{X})\le \widehat{D}(\mathbf{X}, \mathbf{W})$. The results until now allows us to obtain the following:
      \begin{align}
-         D(\mathbf{B}) \le D(\mathbf{A}) \le \widehat{D}(\mathbf{A}, \mathbf{C}). \label{eq:lemma-local-minima-contradiction-eq1}
+         D(\mathbf{V}) \le D(\mathbf{X}) \le \widehat{D}(\mathbf{X}, \mathbf{W}). \label{eq:lemma-local-minima-contradiction-eq1}
      \end{align}
-    In addition, by the chainability property (see \cref{def:chainable-distance}), we also have $D(\mathbf{B}) \ge \widehat{D}(\Phi(\sigma, \mathbf{B}, \mathbf{C}), \mathbf{C})\;\forall\;\sigma\in[0,1]$. Since this holds for any value of $\sigma$, take $\sigma=\sigma_0$, which results in 
+    In addition, by the chainability property (see \cref{def:chainable-distance}), we also have $D(\mathbf{V}) \ge \widehat{D}(\Phi(\sigma, \mathbf{V}, \mathbf{W}), \mathbf{W})\;\forall\;\sigma\in[0,1]$. Since this holds for any value of $\sigma$, take $\sigma=\sigma_0$, which results in 
     \begin{align}
-        D(\mathbf{B}) \ge \widehat{D}(\mathbf{A}, \mathbf{C}). \label{eq:lemma-local-minima-contradiction-eq2}
+        D(\mathbf{V}) \ge \widehat{D}(\mathbf{X}, \mathbf{W}). \label{eq:lemma-local-minima-contradiction-eq2}
     \end{align}
-    We now force a contradiction. Since conditions \eqref{eq:lemma-local-minima-contradiction-eq1} and \eqref{eq:lemma-local-minima-contradiction-eq2} must hold simultaneously, it follows that $D(\mathbf{B}) = \widehat{D}(\mathbf{A}, \mathbf{C})$. But, from the chainability property (see \cref{def:chainable-distance}), we know that $D(\mathbf{B}) = \widehat{D}(\mathbf{B}, \mathbf{C}) = \widehat{D}(\mathbf{B}, \mathbf{A}) + \widehat{D}(\mathbf{A}, \mathbf{C})$. This implies that $\widehat{D}(\mathbf{B}, \mathbf{A})=0$, therefore, since $\widehat{D}$ is positive definite, it follows that $\mathbf{B}=\mathbf{A}$, contradicting the existence of such a ball $\mathcal{B}_\varepsilon$. 
+    We now force a contradiction. Since conditions \eqref{eq:lemma-local-minima-contradiction-eq1} and \eqref{eq:lemma-local-minima-contradiction-eq2} must hold simultaneously, it follows that $D(\mathbf{V}) = \widehat{D}(\mathbf{X}, \mathbf{W})$. But, from the chainability property (see \cref{def:chainable-distance}), we know that $D(\mathbf{V}) = \widehat{D}(\mathbf{V}, \mathbf{W}) = \widehat{D}(\mathbf{V}, \mathbf{X}) + \widehat{D}(\mathbf{X}, \mathbf{W})$. This implies that $\widehat{D}(\mathbf{V}, \mathbf{X})=0$, therefore, since $\widehat{D}$ is positive definite, it follows that $\mathbf{V}=\mathbf{X}$, contradicting the existence of such a ball $\mathcal{B}_\varepsilon$. 
 \end{proof}
 
 We now establish that, under certain mild conditions, $-\boldsymbol{\xi}_N(\mathbf{H})$, which plays the role of the gradient of the distance in our case, never vanishes wherever it is defined. This result is evident in \citet{Rezende2022}, as demonstrated in \cref{example:xi_N_rezende}. The necessary ``mild'' condition for establishing this is as follows.
 
 \begin{definition} [Locally linear] \label{def:locallylinear}
-    A chainable EE-distance $\widehat{D}$ is said to be \emph{locally linear} if, for any $\mathbf{A}, \mathbf{B} \in G$, $\mathbf{A} \not = \mathbf{B}$:
+    A chainable EE-distance $\widehat{D}$ is said to be \emph{locally linear} if, for any $\mathbf{V}, \mathbf{W} \in G$, $\mathbf{V} \not = \mathbf{W}$:
     \begin{equation}
-        \lim_{\sigma \rightarrow 0^+} \frac{1}{\sigma} \widehat{D}\bigl(\mathbf{A},\Phi(\sigma,\mathbf{A},\mathbf{B})\bigr) > 0.
+        \lim_{\sigma \rightarrow 0^+} \frac{1}{\sigma} \widehat{D}\bigl(\mathbf{V},\Phi(\sigma,\mathbf{V},\mathbf{W})\bigr) > 0.
     \end{equation}
 \end{definition}
-The name arises from the fact that, for any $\mathbf{A} \not= \mathbf{B}$, $\widehat{D}\bigl(\mathbf{A},\Phi(\sigma,\mathbf{A},\mathbf{B})\bigr) \approx o(\sigma)$ (i.e., it is approximately linear in the small ``$o$'' notation).
+The name arises from the fact that, for any $\mathbf{V} \not= \mathbf{W}$, $\widehat{D}\bigl(\mathbf{V},\Phi(\sigma,\mathbf{V},\mathbf{W})\bigr) \approx o(\sigma)$ (i.e., it is approximately linear in the small ``$o$'' notation).
 
 \begin{example}
-    Let $\widehat{D}$ be the EE-distance as in \cref{ex:adriano-distance-function} and $\Phi$ the path in \cref{ex:chainability}. From \eqref{eq:example-adriano-chainable-DvPhi}, we know that $\widehat{D}(\mathbf{A}, \Phi(\sigma, \mathbf{A}, \mathbf{B})) = \sigma\|\mathcal{T}(\mathbf{A}) - \mathcal{T}(\mathbf{B})\|$, thus $\lim_{\sigma \to 0^+} \frac{1}{\sigma} \widehat{D}\bigl(\mathbf{A},\Phi(\sigma,\mathbf{A},\mathbf{B})\bigr) = \lim_{\sigma \to 0^+} \frac{1}{\sigma}\sigma\|\mathcal{T}(\mathbf{A}) - \mathcal{T}(\mathbf{B})\| = \|\mathcal{T}(\mathbf{A}) - \mathcal{T}(\mathbf{B})\| > 0$ for $\mathbf{A} \not= \mathbf{B}$, and thus $\widehat{D}$ is locally linear.
+    Let $\widehat{D}$ be the EE-distance as in \cref{ex:adriano-distance-function} and $\Phi$ the path in \cref{ex:chainability}. From \eqref{eq:example-adriano-chainable-DvPhi}, we know that $\widehat{D}(\mathbf{V}, \Phi(\sigma, \mathbf{V}, \mathbf{W})) = \sigma\|\mathcal{T}(\mathbf{V}) - \mathcal{T}(\mathbf{W})\|$, thus $\lim_{\sigma \to 0^+} \frac{1}{\sigma} \widehat{D}\bigl(\mathbf{V},\Phi(\sigma,\mathbf{V},\mathbf{W})\bigr) = \lim_{\sigma \to 0^+} \frac{1}{\sigma}\sigma\|\mathcal{T}(\mathbf{V}) - \mathcal{T}(\mathbf{W})\| = \|\mathcal{T}(\mathbf{V}) - \mathcal{T}(\mathbf{W})\| > 0$ for $\mathbf{V} \not= \mathbf{W}$, and thus $\widehat{D}$ is locally linear.
     
 \end{example}
 
