@@ -50,7 +50,7 @@ In the Lyapunov stability proof, the final result shows that the time derivative
 In our generalization, we will incorporate and build upon these features.
 
 \section{Lie groups and Lie algebras}\label{sec:background-lie-theory}
-In this section, we introduce \emph{Lie groups}, which are smooth manifolds that are also groups, and \emph{Lie algebras}. Besides providing examples of both, we also introduce concepts that will prove valuable in our work. This section integrates concepts and ideas from the following books: \citet{Lee2012,Gallier2020,Hall2015,Duistermaat2012}, with the aim of presenting the concepts in a clearer and more accessible manner. We begin with the general definition of a Lie group.
+In this section, we introduce \emph{Lie groups}, which are smooth manifolds that are also groups, and \emph{Lie algebras}. Besides providing examples of both, we also introduce concepts that will prove valuable in our work. This section integrates concepts and ideas from the following books: \citet{Lee2012,Gallier2020,Hall2015,Duistermaat2012}, with the aim of presenting the concepts in a clearer and more accessible manner. We also introduce some concepts of our own and useful proofs not present in the literature, in the best of our knowledge. We begin with the general definition of a Lie group.
 \subsection{Lie groups}
 \begin{definition}[Lie group]
     A \emph{Lie group} is a smooth manifold $G$ satisfying the following properties:
@@ -256,8 +256,23 @@ Mappings between Lie algebras also have an important role in the study of Lie gr
 Lie algebra homomorphisms can also be induced by Lie group homomorphisms. If $\mathcal{H}$ is a Lie group homomorphism between Lie groups $G$ and $H$, then the differential of $\mathcal{H}$ at the identity element $d\mathcal{H}_\iota=\mathscr{H}$ is a Lie algebra homomorphism between the Lie algebras $\mathfrak{g}=T_\iota G$ and $\mathfrak{h}=T_\iota H$ \citep[p. 41]{Duistermaat2012}. Furthermore, if $\mathcal{H}$ is a Lie group isomorphism, then $d\mathcal{H}_\iota$ is a Lie algebra isomorphism.
 
 The most important Lie algebra homomorphism is the differential of the translation operations. As previously seen, every left-invariant (resp. right-invariant) vector field can be identified with the tangent space at the identity element, and since the translation operations are isomorphisms, the space of left-invariant (resp. right-invariant) vector fields $\text{Lie}(G)$ is isomorphic to the tangent space at the identity element $\mathfrak{g}$, i.e. $\text{Lie}(G)\cong\mathfrak{g}$. Both definitions of the Lie algebra of a Lie group are equally important and are used interchangeably depending on the context, as one definition might allow for easier comprehension or computtions. The concept of homomorphisms thus tie both definitions together. The strength of this implication relies on the fact that we can identify the tangent space of $G$ at $\mathbf{X}$, $T_\mathbf{X}G$, with the tangent space at the identity $\mathfrak{g}$.
+
+Another important fact about left-invariant and right-invariant vector fields is that they form a basis for the tangent space of $G$ at every point $\mathbf{X}$ in $G$, which means that every element of $T_\mathbf{X}G$, for every $\mathbf{X}\in G$, can be written as a linear combination of a finite collection of linearly independent left-invariant, or right-invariant, vector fields. In differential geometry terms, this means that left-invariant and right-invariant vector fields form a \emph{global frame} for $G$ \citep[p. 192]{Lee2012}.
+
+Now we introduce another isomorphism that will be essential for our generalization. Since the Lie algebra is a vector space, we can define a basis $\{\mathbf{E}_k\}\in\mathfrak{g}, k\in[1,m]$ for an $m$-dimensional Lie algebra $\mathfrak{g}$. Given a basis, for any $\mathbf{A} \in\mathfrak{g}$, there exist scalars $\{\zeta_k\},\, k\in[1,m]$, such that $\mathbf{A} = \sum_{k=1}^{m} \zeta_k\mathbf{E}_k$. Furthermore, for each choice of basis for the Lie algebra, it becomes possible to define uniquely a respective linear operator $\SL:\mathbb{R}^{m}\to\mathfrak{g}$ as follows:
+\begin{definition}[S map]\label{def:SL-left-isomorphism-act-on-xi}
+    Let $\mathbf{E}_1,\dots,\mathbf{E}_m$ be a basis for an $m$-dimensional Lie algebra $\mathfrak{g}$, and $\boldsymbol{\zeta}$ an $m$-dimensional vector. Then, there exists a unique isomorphism $\SL:\mathbb{R}^{m}\to\mathfrak{g}$ that maps the Lie algebra $\mathbb{R}^m$ to $\mathfrak{g}$ defined as
+    \begin{align}
+        \SL[\boldsymbol{\zeta}] \triangleq \sum_{k=1}^m\zeta_k\mathbf{E}_k.    
+    \end{align}
+\end{definition}
+Note that $\SL$ is indeed a \emph{linear operator}. Since $\SL$ is an isomorphism, the \emph{inverse map} that maps an element of the Lie algebra $\mathfrak{g}$ to a vector (an element of the Lie algebra $\mathbb{R}^m$) can be defined as well:
+\begin{definition}[Inverse S map]\label{def:inverse-isomorphism-SLinv}
+    Let $\mathfrak{g}$ be an $m$-dimensional Lie algebra. The \emph{inverse S map} is defined as $\invSL:\mathfrak{g}\to\mathbb{R}^m$, such that $\invSL[\SL[\boldsymbol{\zeta}]] = \boldsymbol{\zeta}$. 
+\end{definition}
+The intuition for the S maps is that we can deal with Lie algebra elements using tangent vectors to $\mathbb{R}^m$. Thus, if the Lie group has some physical interpretation, we can use terms such as ``velocity'' to describe elements of the tangent space of $G$ -- the Lie algebra $\mathfrak{g}$ -- itself. Clearly, this requires the defnition of a basis for $\mathfrak{g}$ that has some physical interpretation.
 \subsubsection{Examples of Lie algebras}
-In this section we present the corresponding ones for the Lie groups presented in the previous section, as well as some Lie algebras isomorphisms.
+In this section we present the corresponding Lie algebras for the Lie groups presented in the previous section, as well as some Lie algebras isomorphisms.
 \begin{example}
     The Lie algebra of the general linear group $\text{GL}(n, \mathbb{R})$ is the set of all $n\times n$ matrices, denoted $\mathfrak{gl}(n, \mathbb{R})$, with its Lie bracket given by the commutator $[\mathbf{A}, \mathbf{B}] = \mathbf{A}\mathbf{B} - \mathbf{B}\mathbf{A}$. Similarly, the Lie algebra of the general linear group $\text{GL}(n, \mathbb{C})$, denoted $\mathfrak{gl}(n, \mathbb{C})$, is the set of all $n\times n$ complex matrices with the same Lie bracket. Furthermore, the Lie algebra of the special linear group $\text{SL}(n, \mathbb{R})$ (resp. $\text{SL}(n, \mathbb{C})$) is the set of all $n\times n$ real (resp. complex) matrices with zero trace, denoted $\mathfrak{sl}(n, \mathbb{R})$ (resp. $\mathfrak{sl}(n, \mathbb{C})$).
 \end{example}
@@ -470,33 +485,17 @@ It is now possible to study the behavior of trajectories in matrix Lie groups an
     \end{align}
 \end{proof}
 
-From an engineering perspective, \cref{lemma:derivative-lie-element-H-parallelizable} is not powerful, since it is uncommon to control systems through its Lie algebra. In the case of $\text{SO}(3)$ for example, one would control it through the angular velocity, which is an element of $\mathbb{R}^3$, and not through the Lie algebra $\mathfrak{so}(3)$. We will now provide a useful map that will render \cref{lemma:derivative-lie-element-H-parallelizable} more practical for control purposes.
-
-Since the Lie algebra is a vector space, we can define a basis $\{\mathbf{E}_k\}\in\mathfrak{g}, k\in[1,m]$ for an $m$-dimensional Lie algebra $\mathfrak{g}$. Given a basis, for any $\mathbf{A} \in\mathfrak{g}$, there exist scalars $\{\zeta_k\},\, k\in[1,m]$, such that $\mathbf{A} = \sum_{k=1}^{m} \zeta_k\mathbf{E}_k$. Furthermore, for each choice of basis for the Lie algebra, it becomes possible to define uniquely a respective linear operator $\SL:\mathbb{R}^{m}\to\mathfrak{g}$ as follows:
-\begin{definition}[S map]\label{def:SL-left-isomorphism-act-on-xi}
-    Let $\mathbf{E}_1,\dots,\mathbf{E}_m$ be a basis for an $m$-dimensional Lie algebra $\mathfrak{g}$, and $\boldsymbol{\zeta}$ an $m$-dimensional vector. Then, there exists a unique isomorphism $\SL:\mathbb{R}^{m}\to\mathfrak{g}$ defined as
-    \begin{equation}
-        \SL[\boldsymbol{\zeta}] \triangleq \sum_{k=1}^m\zeta_k\mathbf{E}_k.    
-    \end{equation}
-    
-\end{definition}
-Note that $\SL$ is indeed a \emph{linear operator}. Since $\SL$ is an isomorphism, the \emph{inverse map} that maps an element of the Lie algebra to a vector can be defined as well:
-\begin{definition}[Inverse S map]\label{def:inverse-isomorphism-SLinv}
-    Let $\mathfrak{g}$ be an $m$-dimensional Lie algebra. The \emph{inverse map} is defined as $\invSL:\mathfrak{g}\to\mathbb{R}^m$, such that $\invSL[\SL[\boldsymbol{\zeta}]] = \boldsymbol{\zeta}$. 
-\end{definition}
-
-Considering \autoref{lemma:derivative-lie-element-H-parallelizable} and \autoref{def:SL-left-isomorphism-act-on-xi} we can conclude the following important fact.
-
+From an engineering perspective, \cref{lemma:derivative-lie-element-H-parallelizable} is not powerful, since it is uncommon to control systems through its Lie algebra. In the case of $\text{SO}(3)$ for example, one would control it through the angular velocity, which is an element of $\mathbb{R}^3$, and not through the Lie algebra $\mathfrak{so}(3)$. However, the previously defined S map (\cref{def:SL-left-isomorphism-act-on-xi}) enables this exact intuition. Thus, we rewrite \cref{lemma:derivative-lie-element-H-parallelizable} in terms of the S map as folllows:
 \begin{lemma} \label{lemma:very-important-fact}
     Given a differentiable function $\mathbf{\mathbf{G}}:\mathbb{R}\to G$, there exists a function $\boldsymbol{\zeta}:\mathbb{R}\to\mathbb{R}^m$, such that
     \begin{align}
     \label{eq:importantresult}
     \frac{d}{d\sigma} \mathbf{\mathbf{G}}(\sigma)=\SL\bigl(\boldsymbol{\zeta}(\sigma)\bigr)\mathbf{\mathbf{G}}(\sigma). 
 \end{align}
-
 \end{lemma}
 \begin{proof} This is a direct consequence of \cref{lemma:derivative-lie-element-H-parallelizable} and \cref{def:SL-left-isomorphism-act-on-xi}. 
 \end{proof}
+This lemma implies that the velocity of a curve in $G$ -- or trajectories in $G$ -- has the form of a single integrator model. As such, this result will be used to formulate a kinematic model for our strategy.
 \section{Adaptive Control}\label{sec:background-adaptive-control}
 Adaptive control emerges in 1950 as a response to the design of aircraft autopilots. Aircrafts operate on a wide range of speeds and altitudes, and thus its parameters suffers great variations. This inspired the main idea of adaptive control, on-line estimation of parameters based on measured system signals \citep{Slotine1991}. This need is also present for other systems: robot manipulators may need to carry objects of unknown mass; chemical processes may have unmodeled dynamics; the fuel consumption of a vehicle might pose a challenge for common controllers. In this section, we will briefly present the main concepts of adaptive control, basing our discussion on the books \citet{Slotine1991}, \citet{Krstic1995} and \citet{Ioannou2012}.
 
