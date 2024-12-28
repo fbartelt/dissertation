@@ -303,42 +303,63 @@ The problem addressed in this section revolves around designing an adaptive cont
 % The curve $\mathcal{C} \subset \mathbb{R}^3\times \text{SO}(3)$ incorporates an orientation frame attached to each of its points, represented by a rotation matrix.
 \begin{figure}[ht]
     \centering
+    \resizebox{\textwidth}{!}{%
     \begin{tikzpicture}[
         block/.style={draw, rectangle, minimum height=1.2cm, minimum width=2.4cm, align=center},
         arrow/.style={->, >=stealth, thick},
-        label/.style={font=\small}
+        label/.style={font=\small},
+        sumblock/.style={draw, circle, minimum size=0.8cm}
     ]
     
     % Nodes
     \node[block] (kinematic) {Vector Field};
-    \node[block, right=2cm of kinematic] (plant) {System};
-    \node[block, above=1cm of plant] (refmodel) {Reference Model};
+    \node[block, right=2cm of kinematic] (refmodel) {Reference Model};
+    \node[block, above=0.75cm of refmodel, xshift=1cm] (mapping) {Mapping\\$\mathbb{R}^3\times\text{SO}(3)\to\text{ISE}(3)$};
     % \node[block, right=2cm of kinematic] (plant) {Plant \\ $P(\theta)\to P_c(\theta_c)$};
-    \node[block, below=1cm of plant] (estimation) {Estimation of $\theta_c$};
+    \node[block, below=2cm of refmodel] (estimation) {Estimation of\\ $\mathbf{o}_i, \mathbf{r}_i$};
+    \node[block, right=1cm of refmodel,yshift=-1.25cm] (control) {Dynamic\\ Controller};
+    \node[block, right=1cm of control] (plant) {System};
+    \node[left=0.75cm of kinematic,yshift=-0.25cm] (input) {Curve $\mathcal{C}$};
+    \node[sumblock, left=0.8cm of estimation] (sum) {};
+    \node at ([yshift=-0.2cm]sum.north) {\(+\)};
+    \node at ([yshift=0.2cm]sum.south) {\(-\)};
+    \node[right=1.5cm of plant] (output) {$\boldsymbol{\chi}$};
     
     % Arrows between blocks
-    \draw[arrow] (kinematic) -- node[above, label] {$u$} (plant);
-    \draw[arrow] (plant) -- (estimation);
-    \draw[arrow] (estimation.south) |- ++(0, -0.5) -| node[left, label] {$\widehat{\theta}_c$} (kinematic);
+    \draw[arrow] (input) -- ($(kinematic.west)+(0,-0.25cm)$);
+    \draw[arrow] (plant.east) -- (output);
+    \draw[arrow] (kinematic) -- node[above, label] {$\Psi, \dot{\Psi}$} (refmodel);
+    \draw[arrow] (control) -- node[above, label] {$\boldsymbol{\tau}_i$} (plant);
+    \draw[arrow] ($(plant.east)+(0.75,0)$) |- (mapping.east) node[right, yshift=0.25cm, label] {$\boldsymbol{\chi}\in\mathbb{R}^3\times\text{SO}(3)$};
+    \draw[arrow] (mapping.west) node[left, yshift=0.25cm, label] {$\mathbf{H}\in\text{ISE}(3)$} -| ($(controller.west)+(-0.75,1)$) |- ($(controller.west)+(0,0.25)$);
+    \draw[arrow] (sum.east) -- node[below,label] {$\boldsymbol{\zeta}$} (estimation.west);
+    \draw[arrow] ($(sum.north)+(0,2.8)$) -- (sum.north);
+    \draw[arrow] ($(plant.east)+(0.75,0)$) |- ($(sum.south)+(0,-0.75)$) -| (sum.south);
+    \draw[arrow] ($(sum.east)+(0.4,0)$) |- ($(control.west)+(0,0.25)$);
+    \draw[arrow] (estimation.north) |- node[below, label, xshift=0.5cm] {$\widehat{\mathbf{o}}_i, \widehat{\mathbf{r}}_i$} ($(control.west)+(0,-0.25)$);
+    \draw[arrow] (refmodel.east) -| node[above, label] {$\mathbf{Y}_o$} (control.north);
+    \draw[arrow] ($(plant.east)+(0.75,-1.5)$) -| node[below, label] {$\boldsymbol{\chi}, \dot{\boldsymbol{\chi}}, \ddot{\boldsymbol{\chi}}$} (estimation.east);
+
+    
+    % -|  ($(controller.west)+(-0.75,0.25)$)                          
+    % -- ($(controller.west)+(0,0.25)$);
+    % \draw[arrow] (plant) -- (estimation);
+    % \draw[arrow] (estimation.south) |- ++(0, -0.5) -| node[left, label] {$\widehat{\theta}_c$} (kinematic);
     
     % Input and Output Arrows
-    \node[left=1.5cm of kinematic] (input) {Input $r$};
-    \draw[arrow] (input) -- (kinematic.west);
     
-    \node[right=0.75cm of estimation] (rr) {$r$};
-    \draw[arrow] (rr) -- (estimation.east);
+    
+    % \node[right=0.75cm of estimation] (rr) {$r$};
 
     % \node[right=0.9cm of kinematic] (csign) {};
-    \draw[arrow] ($(kinematic.east)+(1,0)$) |- (estimation.west);
     
-    \node[right=1.5cm of plant] (output) {$y$};
-    \draw[arrow] (plant.east) -- (output);
     
     % Feedback loop
-    \draw[arrow] ($(plant.east)+(0.75,0)$) |- ++(0,1.5) -| (kinematic.north);
-    \draw[arrow] ($(plant.east)+(0.75,0)$) |- node[left, label] {} ($(estimation.east)+(0, 0.25)$);
+    % \draw[arrow] ($(plant.east)+(0.75,0)$) |- ++(0,1.5) -| (kinematic.north);
     
-    \end{tikzpicture}
+    
+    \end{tikzpicture}%
+    }
     \caption{Block diagram of a direct adaptive control system.}
     \label{fig:collaborative-full-diagram}
 \end{figure}
