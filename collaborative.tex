@@ -301,6 +301,47 @@ where $\theta$ is the rotation angle as in \cref{app:rodrigues-formula}. Thus, i
 The problem addressed in this section revolves around designing an adaptive controller to guide a manipulated object along a predefined curve $\mathcal{C} \subset \mathbb{R}^3\times \text{SO}(3)$. The object's dynamics include uncertain parameters like mass and geometric properties. With $N$ agents involved in the manipulation process, a decentralized control law is devised for each agent. The agents are unaware of their precise positioning relative to the measurement point. It is assumed that each agent possesses the capability to measure the pose and velocity of the object's measurement point.
 % The problem addressed in this work revolves around designing an adaptive controller to guide a manipulated object along a predefined curve. The dynamics of the object, expressed by equations \eqref{eq:tau} and \eqref{eq:tauNtauIrelation}, incorporate uncertain parameters such as mass properties $m$ and $\mathbb{I}_p^\mathfrak{B}$, as well as geometric properties $\mathbf{r}_p^\mathfrak{B}$ and $\mathbf{r}_i$. With $N$ agents involved in the manipulation process, a decentralized control law is devised for each agent. It is assumed that each agent possesses the capability to measure the pose and velocity of the object's measurement point.
 % The curve $\mathcal{C} \subset \mathbb{R}^3\times \text{SO}(3)$ incorporates an orientation frame attached to each of its points, represented by a rotation matrix.
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+        block/.style={draw, rectangle, minimum height=1.2cm, minimum width=2.4cm, align=center},
+        arrow/.style={->, >=stealth, thick},
+        label/.style={font=\small}
+    ]
+    
+    % Nodes
+    \node[block] (kinematic) {Vector Field};
+    \node[block, right=2cm of kinematic] (plant) {System};
+    \node[block, above=1cm of plant] (refmodel) {Reference Model};
+    % \node[block, right=2cm of kinematic] (plant) {Plant \\ $P(\theta)\to P_c(\theta_c)$};
+    \node[block, below=1cm of plant] (estimation) {Estimation of $\theta_c$};
+    
+    % Arrows between blocks
+    \draw[arrow] (kinematic) -- node[above, label] {$u$} (plant);
+    \draw[arrow] (plant) -- (estimation);
+    \draw[arrow] (estimation.south) |- ++(0, -0.5) -| node[left, label] {$\widehat{\theta}_c$} (kinematic);
+    
+    % Input and Output Arrows
+    \node[left=1.5cm of kinematic] (input) {Input $r$};
+    \draw[arrow] (input) -- (kinematic.west);
+    
+    \node[right=0.75cm of estimation] (rr) {$r$};
+    \draw[arrow] (rr) -- (estimation.east);
+
+    % \node[right=0.9cm of kinematic] (csign) {};
+    \draw[arrow] ($(kinematic.east)+(1,0)$) |- (estimation.west);
+    
+    \node[right=1.5cm of plant] (output) {$y$};
+    \draw[arrow] (plant.east) -- (output);
+    
+    % Feedback loop
+    \draw[arrow] ($(plant.east)+(0.75,0)$) |- ++(0,1.5) -| (kinematic.north);
+    \draw[arrow] ($(plant.east)+(0.75,0)$) |- node[left, label] {} ($(estimation.east)+(0, 0.25)$);
+    
+    \end{tikzpicture}
+    \caption{Block diagram of a direct adaptive control system.}
+    \label{fig:collaborative-full-diagram}
+\end{figure}
 \subsection{Decentralized Adaptive Control}
 The considered problem revolves around providing the necessary total wrench $\boldsymbol{\tau}$ to guide the object along the curve $\mathcal{C}$. The equations of motion depend on the knowledge of the object's mass and inertia properties, which are uncertain, as well as the displacement of the agents relative to the measurement point $\mathbf{r}_i$. Given these considerations, we devise an adaptive control strategy that guarantees that the sytem's velocity converges to the vector field $\Psi$ and thus follows the curve $\mathcal{C}$.
 
@@ -397,7 +438,7 @@ where $\boldsymbol{\Gamma}_o$ and $\boldsymbol{\Gamma}_r$ are definite positive 
         \boldsymbol{\zeta}^\top \mathbf {M} \dot{\boldsymbol{\zeta}} &= \boldsymbol{\zeta}^\top\Biggl( - \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N\mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i)\mathbf{G}(\boldsymbol{\chi}, \hat{\mathbf{r}}_i)^{-1}\boldsymbol{\eta}_i - \mathbf{Y}_o\mathbf{o}_i\Biggr)\\
         &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta}+\sum_{i=1}^N(\mathbf{I}-\mathbf{G}(\boldsymbol{\chi}, \widetilde{\mathbf{r}}_i))\boldsymbol{\eta}_i - \mathbf{Y}_o\mathbf{o}_i \Biggr)\\
         &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N \mathbf{Y}_o\hat{\mathbf{o}}_i + \mathbf{Y}_r\widetilde{\mathbf{r}}_i - \mathbf{Y}_o\mathbf{o}_i- \mathbf{K}_D\boldsymbol{\zeta} \Biggr)\\
-        &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N \mathbf{Y}_o\widetilde{\mathbf{o}}_i + \mathbf{Y}_r\widetilde{\mathbf{r}}_i - \mathbf{K}_D\boldsymbol{\zeta} \Biggr). \label{eq:partial-term-of-adaptive2}.
+        &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N \mathbf{Y}_o\widetilde{\mathbf{o}}_i + \mathbf{Y}_r\widetilde{\mathbf{r}}_i - \mathbf{K}_D\boldsymbol{\zeta} \Biggr). \label{eq:partial-term-of-adaptive2}
     \end{align}
 
     Finally, substituting \eqref{eq:partial-term-of-adaptive2} into \eqref{eq:adaptive-lyapunov-derivative} renders the following result
