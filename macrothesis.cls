@@ -137,7 +137,7 @@
 % checks if option noglossaries was set, if not, define new command
 \ifthenelse{\equal{\@useglossaries}{true}}{%
     % Command to enable glossaries
-    \RequirePackage[acronym,nonumberlist]{glossaries}%
+    \RequirePackage[acronym,nonumberlist,toc=true]{glossaries}%
     % \RequirePackage{glossaries-extra}
     % \RequirePackage{glossary-mcols}
     \newglossary[nlg]{notation}{not}{ntn}{\notationname}

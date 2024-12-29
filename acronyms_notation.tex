@@ -6,6 +6,9 @@
 \newacronym{dof}{DoF}{Degree of Freedom}
 \newacronym{uav}{UAV}{Unmanned Aerial Vehicle}
 \newacronym{rgb}{RGB}{Red, Green, and Blue}
+\newacronym{eedistacro}{EE}{Element-Element}
+\newacronym{ecdistacro}{EC}{Element-Curve}
+\newacronym{mrac}{MRAC}{Model Reference Adaptive Control}
 %----------------------------------------------------------------------------------------
 %	Notation
 %----------------------------------------------------------------------------------------
@@ -31,6 +34,13 @@
 \newnotation{sympalg}{$\mathfrak{sp}(2n)$}{Lie algebra of $\text{Sp}(2n)$}
 \newnotation{indefortalg}{$\mathfrak{so}(p,q)$}{Lie algebra of $\text{O}(p,q)$ and $\text{SO}(p,q)$}
 \newnotation{lorentzalg}{$\mathfrak{so}(1,3)$}{Lie algebra of $\text{O}(1,3)$, $\text{SO}(1,3)$ and $\text{SO}^+(1,3)$}
+\newnotation{Smap}{$\mathcal{S}$}{Isomorphism that maps $\mathbb{R}^m$ to $\mathfrak{g}$}
+\newnotation{invSmap}{$\mathcal{S}^{-1}$}{Inverse isomorphism that maps $\mathfrak{g}$ to $\mathbb{R}^m$, such that $\mathcal{S}^{-1}\bigl(\mathcal{S}(\boldsymbol{\xi})\bigr)=\boldsymbol{\xi}$}
+\newnotation{Smapsothree}{$\widehat{\mathcal{S}}$}{Canonical isomorpshism that maps $\mathbb{R}^3$ to $\mathfrak{so}(3)$}
+\newnotation{SmapTn}{$\mathcal{T}$}{Isomorphism that maps $\text{T}(n)$ to $\mathbb{R}^n$}
+\newnotation{euclidbasis}{$\mathbf{e}_1,\dots,\mathbf{e}_n$}{Canonical basis elements of $\mathbb{R}^n$. The columns of an $n\times n$ identity matrix}
+\newnotation{rthreebasis}{$\widehat{\mathbf{e}}_1, \widehat{\mathbf{e}}_2, \widehat{\mathbf{e}}_3$}{Canonical basis elements of $\mathbb{R}^3$. The columns of a $3\times 3$ identity matrix}
+\newnotation{liealgbasis}{$\mathbf{E}_1,\dots,\mathbf{E}_n$}{Basis elements of an $n$-dimensional Lie algebra}
 \newnotation{liebracket}{$[\cdot, \cdot]$}{Lie bracket}
 \newnotation{tangspace}{$T_pM$}{Tangent space of a manifold $M$ at a point $p$}
 \newnotation{groupid}{$\iota$}{Identity element of a Lie group}
@@ -39,20 +49,60 @@
 \newnotation{righttrans}{$\mathcal{R}_\mathbf{X}$}{Right translation by $\mathbf{X}$}
 \newnotation{groupop}{$\circ$, $\star$}{Group operations}
 \newnotation{isomorph}{$\cong$}{Isomorphic. If $G$ and $H$ are isomorphic, then $G\cong H$}
-\newnotation{Smap}{$\mathcal{S}$}{Isomorphism that maps $\mathbb{R}^m$ to $\mathfrak{g}$}
-\newnotation{invSmap}{$\mathcal{S}^{-1}$}{Inverse isomorphism that maps $\mathfrak{g}$ to $\mathbb{R}^m$, such that $\mathcal{S}^{-1}\bigl(\mathcal{S}(\boldsymbol{\xi})\bigr)=\boldsymbol{\xi}$}
+\newnotation{directprod}{$\times$}{Direct product of two sets $G\times H$. Also used for the cross product of two vectors}
+\newnotation{semidirectprod}{$\rtimes$}{Semidirect product of two groups $G\rtimes H$}
+\newnotation{directsum}{$\oplus$}{Direct sum of two vector spaces}
 %% Notation for the vector field guidance
+\newnotation{Loperator}{$\text{L}[f](\mathbf{Z})$}{L operator of a function $f$ with argument $\mathbf{Z}\in G$. Maps a function $f:G\to\mathbb{R}$ into $\text{L}[f]:G\to\mathbb{R}^{1\times m}$}
+\newnotation{Loppart}{$\text{L}_\mathbf{V}, \text{L}_\mathbf{W}$}{L operator for a function of two variables, performing the variations on the first and second variable, respectively}
+\newnotation{chainruleLop}{$\mathcal{Z}(\mathbf{Y})$}{Part of the chain rule for the L operator in $\text{SE}(3)$}
+\newnotation{XIoperator}{$\Xi$}{Maps a differentiable function $\mathbf{G}:\mathbb{R}\to G$ into a function $\Xi[\mathbf{G}]:\mathbb{R}\to\mathbb{R}^m$}
 \newnotation{twist}{$\boldsymbol{\xi}$}{Gerenalized twist}
+\newnotation{vectorfield}{$\Psi$}{Vector field that guides a system along a curve in a Lie group}
+\newnotation{tangentcomp}{$\boldsymbol{\xi}_T$}{Tangent component of the vector field $\Psi$}
+\newnotation{normalcomp}{$\boldsymbol{\xi}_N$}{Normal component of the vector field $\Psi$}
+\newnotation{compgains}{$k_N, k_T$}{Gains for the normal and tangent components of the vector field $\Psi$, respectively. Both are continuous scalar functions}
 \newnotation{eedist}{$\widehat{D}(\mathbf{V}, \mathbf{W})$}{Element-Element (EE-) distance between two Lie group elements $\mathbf{V}$ and $\mathbf{W}$}
 \newnotation{ecdistance}{$D(\mathbf{V})$}{Element-Curve (EC-) distance between a Lie group element $\mathbf{V}$ and a curve $\mathcal{C}$}
-\newnotation{Rplus}{$\mathbb{R}_+$}{Set of non-negative real numbers}
-\newnotation{Rn}{$\mathbb{R}^n$}{Euclidean space of dimension $n$. The elements are $n$-dimensional column-vectors}
+\newnotation{problemset}{$\mathcal{P}$}{Set of all points that are either non-unique solutions or non-differentiable points of the EE-distance function}
+\newnotation{curve}{$\mathcal{C}$}{A curve in a Lie group}
+\newnotation{systemstate}{$\mathbf{H}$}{The system state, an element of a Lie group}
+\newnotation{curveparam}{$\mathbf{H}_d(s)$}{A curve parameterized by $s$ in a Lie group}
+\newnotation{nearestpoint}{$\mathbf{H}_d(s^*)$}{The nearest point on a curve $\mathcal{C}$ to a system state $\mathbf{H}$}
+\newnotation{curvetwist}{$\boldsymbol{\xi}_d(s)$}{The curve twist, $\boldsymbol{\xi}_d(s)=\Xi[\mathbf{H}_d](s)$}
+\newnotation{discretecurve}{$\mathbf{H}_d[i]$}{A discretized curve in a Lie group at the $i^{th}$point}
+\newnotation{discretenearpoint}{$\mathbf{H}_d[i^*]$}{The nearest point on a discretized curve to a system state $\mathbf{H}$}
+\newnotation{discretecurvederivative}{$\mathbf{H}_d'[i]$}{The derivative of a discretized curve at the $i^{th}$ point}
+\newnotation{liepath}{$\Phi$}{A continuous and differentiable path in a Lie group}
+
+
+\newnotation{posechi}{$\boldsymbol{\chi}$}{Pose of a rigid body represented as a tuple in $\mathbb{R}^3\times\text{SO}(3)$}
+\newnotation{heunsvari}{$\underline{x}$}{Intermediate variable of $x$ in the Heun's method}
+\newnotation{timederiv}{$\dot{x}$}{Time derivative of a time-dependent variable $x$}
+
+\newnotation{diagop}{$\diag(\cdot)$}{Maps a vector into a diagonal matrix}
+\newnotation{blkdiagop}{$\blkdiag(\cdot,\dots,\cdot)$}{Maps a set of matrices into a block-diagonal matrix}
+\newnotation{elementabs}{$\abs(\cdot)$}{Element-wise absolute value of a vector}
+
+\newnotation{rotop}{$\rot(\cdot)$}{Extracts the rotation matrix from an element of $\text{SE}(3)$ or $\text{ISE}(3)$}
+\newnotation{transop}{$\trans(\cdot)$}{Extracts the translation vector from an element of $\text{SE}(3)$ or $\text{ISE}(3)$}
+\newnotation{matrixcol}{$\mathbf{A}_i$}{The $i^{th}$ column of a matrix $\mathbf{A}$}
+\newnotation{matrixcolrow}{$\mathbf{A}_{ij}$}{The element at the $i^{th}$ row and $j^{th}$ column of a matrix $\mathbf{A}$}
+\newnotation{vecelement}{$\mathbf{v}_i$}{The $i^{th}$ element of a vector $\mathbf{v}$}
+\newnotation{tranpose}{$\cdot^\top$}{Transpose of a matrix or vector}
 \newnotation{Log}{$\Log$}{Principal matrix logarithm}
 \newnotation{log}{$\log$}{Matrix logarithm and scalar natural logarithm}
 \newnotation{exp}{$\exp$}{Matrix exponential and scalar exponential}
 \newnotation{tr}{$\tr$}{Matrix trace}
 \newnotation{norm}{$\|\cdot\|$}{Euclidean norm}
 \newnotation{frobnorm}{$\|\cdot\|_F$}{Frobenius norm}
-\newnotation{directprod}{$\times$}{Direct product of two sets $G\times H$. Also used for the cross product of two vectors}
-\newnotation{semidirectprod}{$\rtimes$}{Semidirect product of two groups $G\rtimes H$}
-\newnotation{directsum}{$\oplus$}{Direct sum of two vector spaces}
+\newnotation{Rplus}{$\mathbb{R}_+$}{Set of non-negative real numbers}
+\newnotation{Rn}{$\mathbb{R}^n$}{Euclidean space of dimension $n$. The elements are $n$-dimensional column-vectors}
+\newnotation{Rnn}{$\mathbb{R}^{n\times n}$}{Set of $n\times n$ real matrices}
+\newnotation{Rnnplus}{$\mathbb{R}^{n\times n}_+$}{Set of $n\times n$ with positive eigenvalues}
+
+\newnotation{smallo}{$o(\cdot)$}{Small-o notation}
+\newnotation{gradient}{$\nabla$}{Gradient operator}
+\newnotation{krondelta}{$\delta_{ij}$}{Kronecker delta}
+\newnotation{emptyset}{$\emptyset$}{Empty set}
+

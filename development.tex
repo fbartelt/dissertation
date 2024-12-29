@@ -2,7 +2,7 @@
 \chapter{Vector Fields in Matrix Lie Groups}\label{ch:vector_field}
 Our main objective is to develop a vector field strategy that guides a system to follow a curve in a Lie group. In this chapter, we will use the concepts introduced in \cref{sec:background-lie-theory} to develop the tools necessary to generalize the results from \citet{Rezende2022} to any matrix Lie group. We start by defining some useful operators that will facilitate the development of our results. Next, we introduce two distance functions, one that measures the distance between arbitrary elements in the group and another that measures the distance between an element and a curve. These distance functions are essential for the definition of the vector field components. As will be seen, the properties of orthogonality and lack of local minima are directly related to properties of the distance function. With all the developed concepts, we then state our main theorem that guarantees convergence and circulation of the target curve.
 
-In this chapter, we adopt $G$ as a Lie group of dimension $m$ (the degrees of freedom of the group), whose representation is an $n\times n$ matrix. Given \cref{lemma:very-important-fact}, we will \emph{assume} that our control system is given by
+In this chapter, we adopt $G$ as a connected matrix Lie group of dimension $m$ (the degrees of freedom of the group), whose representation is an $n\times n$ matrix. Given \cref{lemma:very-important-fact}, we will \emph{assume} that our control system is given by
 \begin{align}
     \dot{\mathbf{H}}(t)=\SL\bigl(\boldsymbol{\xi}(t)\bigr)\mathbf{H}(t),
     \label{eq:derivative-H-SL-considered-system}

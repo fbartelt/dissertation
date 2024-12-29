@@ -1,7 +1,7 @@
 % !TeX root = main.tex
 \chapter{Collaborative Manipulation}\label{ch:collaborative}
 Our objective in this chapter is developing an adaptive control for a collaborative task of manipulating a large object with unkown parameters. As the task involves convergence and circulation of the object along a predefined curve, we use the control strategy developed in \cref{ch:vector_field} as a reference for velocity tracking. Our final control system can be thought as a two-stage controller: the first one is kinematic and outputs the necessary velocity to guarantee curve tracking; the second controller is a dynamic one, responsible for ensuring that the object's velocity is equal to the kinematic controller output. We begin by presenting the system modelling, then we move to the vector field guidance employed in the kinematic controller, and finally, we present the adaptive control strategy.
-\section{Modelling and Problem Statement} \label{sec:dynamic-modelling}
+\section{Modelling and problem statement} \label{sec:dynamic-modelling}
 \begin{figure}[ht]
     \centering
     \def\svgwidth{.8\linewidth}
@@ -179,7 +179,7 @@ As previously stated, some system parameters will be unknown. For simpliticity w
     \item geometric properties $\mathbf{r}_p$ and $\mathbf{r}_i$.
 \end{itemize}
 
-\section{Path Planning}\label{sec:collaborative-path-planning}
+\section{Path planning}\label{sec:collaborative-path-planning}
 The manipulated object must follow a curve of poses $\mathcal{C}\subset \mathbb{R}^3\times\text{SO}(3)$, which can be interpreted as a curve in Euclidean space with an orientation frame attached to each of its points, as shown in \cref{fig:curvewithframes}. This objective aligns with our vector field formulation.
 \begin{figure}[ht]
     \centering
@@ -295,82 +295,14 @@ where $\theta$ is the rotation angle as in \cref{app:rodrigues-formula}. Thus, i
 % \end{equation}
 % where $\beta$ is a scaling parameter in squared meters utilized to maintain dimensional consistency. The Frobenius norm measures the parallelism of the rotation matrices columns, allowing parameter $\beta$ to balance position and orientation errors.
 
-\section{Collaborative Manipulation}
-
-% \textbf{MUDAR O COMEÇO, ESTA DEPENDENTE DA SECAO QUE VEM DEPOIS}
-The problem addressed in this section revolves around designing an adaptive controller to guide a manipulated object along a predefined curve $\mathcal{C} \subset \mathbb{R}^3\times \text{SO}(3)$. The object's dynamics include uncertain parameters like mass and geometric properties. With $N$ agents involved in the manipulation process, a decentralized control law is devised for each agent. The agents are unaware of their precise positioning relative to the measurement point. It is assumed that each agent possesses the capability to measure the pose and velocity of the object's measurement point.
-% The problem addressed in this work revolves around designing an adaptive controller to guide a manipulated object along a predefined curve. The dynamics of the object, expressed by equations \eqref{eq:tau} and \eqref{eq:tauNtauIrelation}, incorporate uncertain parameters such as mass properties $m$ and $\mathbb{I}_p^\mathfrak{B}$, as well as geometric properties $\mathbf{r}_p^\mathfrak{B}$ and $\mathbf{r}_i$. With $N$ agents involved in the manipulation process, a decentralized control law is devised for each agent. It is assumed that each agent possesses the capability to measure the pose and velocity of the object's measurement point.
-% The curve $\mathcal{C} \subset \mathbb{R}^3\times \text{SO}(3)$ incorporates an orientation frame attached to each of its points, represented by a rotation matrix.
-\begin{figure}[ht]
-    \centering
-    \resizebox{\textwidth}{!}{%
-    \begin{tikzpicture}[
-        block/.style={draw, rectangle, minimum height=1.2cm, minimum width=2.4cm, align=center},
-        arrow/.style={->, >=stealth, thick},
-        label/.style={font=\small},
-        sumblock/.style={draw, circle, minimum size=0.8cm}
-    ]
-    
-    % Nodes
-    \node[block] (kinematic) {Vector Field};
-    \node[block, right=2cm of kinematic] (refmodel) {Reference Model};
-    \node[block, above=0.75cm of refmodel, xshift=1cm] (mapping) {Mapping\\$\mathbb{R}^3\times\text{SO}(3)\to\text{ISE}(3)$};
-    % \node[block, right=2cm of kinematic] (plant) {Plant \\ $P(\theta)\to P_c(\theta_c)$};
-    \node[block, below=2cm of refmodel] (estimation) {Estimation of\\ $\mathbf{o}_i, \mathbf{r}_i$};
-    \node[block, right=1cm of refmodel,yshift=-1.25cm] (control) {Dynamic\\ Controller};
-    \node[block, right=1cm of control] (plant) {System};
-    \node[left=0.75cm of kinematic,yshift=-0.25cm] (input) {Curve $\mathcal{C}$};
-    \node[sumblock, left=0.8cm of estimation] (sum) {};
-    \node at ([yshift=-0.2cm]sum.north) {\(+\)};
-    \node at ([yshift=0.2cm]sum.south) {\(-\)};
-    \node[right=1.5cm of plant] (output) {$\boldsymbol{\chi}$};
-    
-    % Arrows between blocks
-    \draw[arrow] (input) -- ($(kinematic.west)+(0,-0.25cm)$);
-    \draw[arrow] (plant.east) -- (output);
-    \draw[arrow] (kinematic) -- node[above, label] {$\Psi, \dot{\Psi}$} (refmodel);
-    \draw[arrow] (control) -- node[above, label] {$\boldsymbol{\tau}_i$} (plant);
-    \draw[arrow] ($(plant.east)+(0.75,0)$) |- (mapping.east) node[right, yshift=0.25cm, label] {$\boldsymbol{\chi}\in\mathbb{R}^3\times\text{SO}(3)$};
-    \draw[arrow] (mapping.west) node[left, yshift=0.25cm, label] {$\mathbf{H}\in\text{ISE}(3)$} -| ($(controller.west)+(-0.75,1)$) |- ($(controller.west)+(0,0.25)$);
-    \draw[arrow] (sum.east) -- node[below,label] {$\boldsymbol{\zeta}$} (estimation.west);
-    \draw[arrow] ($(sum.north)+(0,2.8)$) -- (sum.north);
-    \draw[arrow] ($(plant.east)+(0.75,0)$) |- ($(sum.south)+(0,-0.75)$) -| (sum.south);
-    \draw[arrow] ($(sum.east)+(0.4,0)$) |- ($(control.west)+(0,0.25)$);
-    \draw[arrow] (estimation.north) |- node[below, label, xshift=0.5cm] {$\widehat{\mathbf{o}}_i, \widehat{\mathbf{r}}_i$} ($(control.west)+(0,-0.25)$);
-    \draw[arrow] (refmodel.east) -| node[above, label] {$\mathbf{Y}_o$} (control.north);
-    \draw[arrow] ($(plant.east)+(0.75,-1.5)$) -| node[below, label] {$\boldsymbol{\chi}, \dot{\boldsymbol{\chi}}, \ddot{\boldsymbol{\chi}}$} (estimation.east);
-
-    
-    % -|  ($(controller.west)+(-0.75,0.25)$)                          
-    % -- ($(controller.west)+(0,0.25)$);
-    % \draw[arrow] (plant) -- (estimation);
-    % \draw[arrow] (estimation.south) |- ++(0, -0.5) -| node[left, label] {$\widehat{\theta}_c$} (kinematic);
-    
-    % Input and Output Arrows
-    
-    
-    % \node[right=0.75cm of estimation] (rr) {$r$};
-
-    % \node[right=0.9cm of kinematic] (csign) {};
-    
-    
-    % Feedback loop
-    % \draw[arrow] ($(plant.east)+(0.75,0)$) |- ++(0,1.5) -| (kinematic.north);
-    
-    
-    \end{tikzpicture}%
-    }
-    \caption{Block diagram of a direct adaptive control system.}
-    \label{fig:collaborative-full-diagram}
-\end{figure}
-\subsection{Decentralized Adaptive Control}
-The considered problem revolves around providing the necessary total wrench $\boldsymbol{\tau}$ to guide the object along the curve $\mathcal{C}$. The equations of motion depend on the knowledge of the object's mass and inertia properties, which are uncertain, as well as the displacement of the agents relative to the measurement point $\mathbf{r}_i$. Given these considerations, we devise an adaptive control strategy that guarantees that the sytem's velocity converges to the vector field $\Psi$ and thus follows the curve $\mathcal{C}$.
+\section{Adaptive control}
+The problem addressed in this section focuses on designing an adaptive controller to guide a manipulated object along a predefined curve $\mathcal{C} \subset \mathbb{R}^3\times \text{SO}(3)$, despite uncertainties in the inertial and geometric parameters. With $N$ agents involved in the manipulation process, a decentralized control law is devised for each agent, assuming they can measure the pose and velocity of the object's measurement point but lack precise knowledge of their positions relative to it. The goal is to provide the necessary total wrench $\boldsymbol{\tau}$ to ensure the system's velocity converges to the vector field $\Psi$, thereby enabling the object to follow the curve $\mathcal{C}$.
 
 In this section, we modify the adaptive control strategy proposed by \cite{Culbertson2021}. In their approach, an error vector is established between the system velocity and a velocity reference, resulting in a non-autonomous system. In contrast, our method defines the velocity error $\boldsymbol{\zeta}$ with respect to the vector field, thereby establishing an autonomous system. This error vector is expressed as:
 \begin{equation}
     \boldsymbol{\zeta} = \dot{\boldsymbol{\chi}} - \Psi,\label{eq:errorvector-s}
 \end{equation}
-If the dynamic controller guarantees that $\boldsymbol{\zeta}=0$, the system follows the integrator model \eqref{eq:first-order-system-cba}, with the vector field $\Psi$ acting as its input. Therefore, leveraging the insights from the previous section, we anticipate that the system will exhibit the desired behavior. To develop the adaptive control strategy, we first define our reference model.
+If the dynamic controller guarantees that $\boldsymbol{\zeta}=0$, the system follows the integrator model \eqref{eq:first-order-system-cba}, with the vector field $\Psi$ acting as its input. Therefore, as shown in \cref{ch:vector_field}, we anticipate that the system will exhibit the desired behavior. To develop the adaptive control strategy, we first define our reference model.
 
 Given that the system is overactuated (meaning multiple sets of control inputs $\boldsymbol{\tau}_i$ produce identical object dynamics), each agent can contribute a portion of the control effort. Thus, we define a set of $N$ positive constants $\alpha_i$, ensuring $\sum_{i=1}^N\alpha_i=1$. Furthermore, analogously to the Euler-Lagrange formulation, the reference model can be linerly parametrized. Thus, the reference model can be expressed as 
 \begin{equation}
@@ -478,3 +410,58 @@ where $\boldsymbol{\Gamma}_o$ and $\boldsymbol{\Gamma}_r$ are definite positive 
     \end{align}
     Since $N$ is positive and $\mathbf{K}_D$ is definite positive, $\boldsymbol{\zeta}$ converges to zero as $t\to\infty$. This implies that velocity error is zero and the system behaves as the kinematic model \eqref{eq:first-order-system-cba}. Thus we can invoke \cref{thm:convergence-vector-field} to conclude that the system converges to and follows the curve $\mathcal{C}$.
 \end{proof}
+
+The connection of both controllers is shown in the block diagram of \cref{fig:collaborative-full-diagram}.
+\begin{figure}[ht]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tikzpicture}[
+        block/.style={draw, rectangle, minimum height=1.2cm, minimum width=2.4cm, align=center},
+        arrow/.style={->, >=stealth, thick},
+        label/.style={font=\small},
+        sumblock/.style={draw, circle, minimum size=0.8cm}
+    ]
+    
+    % Nodes
+    \node[block] (kinematic) {Vector Field};
+    \node[block, right=2cm of kinematic] (refmodel) {Reference\\Model};
+    % \node[block, right=2cm of kinematic] (plant) {Plant \\ $P(\theta)\to P_c(\theta_c)$};
+    \node[block, right=1cm of refmodel] (control) {Dynamic\\Controller};
+    \node[block, above=0.75cm of control] (estimation) {Estimation\\of $\mathbf{o}_i, \mathbf{r}_i$};
+    \node[block, above=1cm of estimation, xshift=-1cm] (mapping) {Mapping\\$\mathbb{R}^3\times\text{SO}(3)\to\text{ISE}(3)$};
+    \node[block, right=1cm of control] (plant) {System};
+    \node[left=0.75cm of kinematic,yshift=-0.25cm] (input) {Curve $\mathcal{C}$};
+    \node[sumblock, left=2cm of estimation, yshift=-0.25cm] (sum) {};
+    \node at ([xshift=0.2cm]sum.west) {\(+\)};
+    \node at ([yshift=-0.2cm]sum.north) {\(-\)};
+    \node[right=1.5cm of plant] (output) {$\boldsymbol{\chi}$};
+    
+    % Arrows between blocks
+    \draw[arrow] (input) -- ($(kinematic.west)+(0,-0.25cm)$);
+    \draw[arrow] (plant.east) -- (output);
+    % Ends in refmodel
+    \draw[arrow] (kinematic) -- node[below, label] {$\Psi, \dot{\Psi}$} (refmodel);
+    \draw[arrow] ($(plant.east)+(0.75, 0)$) |- ($(refmodel.south)+(0,-1)$) -| node[right, label,yshift=0.25cm] {$\boldsymbol{\chi}, \dot{\boldsymbol{\chi}}$} (refmodel.south);
+    % Ends in System
+    \draw[arrow] (control) -- node[above, label] {$\boldsymbol{\tau}_i$} (plant);
+    % Ends in mapping
+    \draw[arrow] ($(plant.east)+(0.75,0)$) |- (mapping.east) node[right, yshift=0.25cm, label] {$\boldsymbol{\chi}\in\mathbb{R}^3\times\text{SO}(3)$};
+    % Ends in Estimation
+    \draw[arrow] (sum.east) -- node[below,label] {$\boldsymbol{\zeta}$} ($(estimation.west)+(0,-0.25)$);
+    \draw[arrow] ($(plant.east)+(0.75,0)$) |- (estimation.east) node[right, label, yshift=0.25cm] {$\boldsymbol{\chi}, \dot{\boldsymbol{\chi}}$};
+    \draw[arrow] ($(refmodel.east)+(0.5,0)$) |- ($(estimation.west)+(0,0.25)$);
+    % Ends in Vector Field
+    \draw[arrow] (mapping.west) node[left, yshift=0.25cm, label] {$\mathbf{H}\in\text{ISE}(3)$} -| ($(kinematic.west)+(-0.75,1)$) |- ($(kinematic.west)+(0,0.25)$);
+    % Ends in Control
+    \draw[arrow] (estimation.south) -- node[right, label] {$\widehat{\mathbf{o}}_i, \widehat{\mathbf{r}}_i$} (control.north);
+    \draw[arrow] (refmodel.east) -- node[below, label] {$\mathbf{Y}_o$} (control.west);
+    \draw[arrow] ($(estimation.west)+(-0.25,-0.25)$) |- ($(control.west)+(0,0.25)$);
+    \draw[arrow] ($(plant.east)+(0.75, 0)$) |- ($(control.south)+(0,-0.5)$) -| node[right, label,yshift=0.25cm] {$\boldsymbol{\chi}$} (control.south);
+    % Ends in summation block
+    \draw[arrow] ($(kinematic.east)+(1,0)$) |- node[left, label] {$\Psi$} (sum.west);
+    \draw[arrow] ($(plant.east)+(0.75,0)$) |- ($(sum.north)+(0,1)$) -| node[left, label] {$\dot{\boldsymbol{\chi}}$} (sum.north);
+    \end{tikzpicture}%
+    }
+    \caption{Block diagram of the collaborative manipulation control framework.}
+    \label{fig:collaborative-full-diagram}
+\end{figure}

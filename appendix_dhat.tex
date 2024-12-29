@@ -1,7 +1,7 @@
-\chapter{In-depth derivations for the EE-Distance in SE(3)}\label{app:rodrigues-formula}
+\chapter{In-depth Derivations for the EE-Distance in SE(3)}\label{app:rodrigues-formula}
 In this chapter we provide all the derivations for the EE-Distance in SE(3) and its properties. We start by deriving the Rodrigues formula for rotation matrices in $\text{SO}(3)$ and showing some important properties of rotation matrices. This is done aiming at providing a self-contained text. Although we will not treat the EE-distance directly here, showing only the key properties used to obtain it, the reader will easily make the necessary connections to understand the derivations in \cref{sec:explicit-construction-SE3}
 
-\section{Deriving Rodrigues' Rotation Formula}
+\section{Deriving Rodrigues' rotation formula}
 In this section we derive the Rodrigues formula through a Lie group approach. This will be useful for obtaining important properties of rotation matrices. Let $\mathbf{R}\in\text{SO}(3)$ be a rotation matrix. Since $\text{SO}(3)$ is exponential group, it follows that it is the exponential of some Lie algebra element $\SL[\boldsymbol{\omega}]\in\mathfrak{so}(3)$, i.e.
 \begin{align}
     \mathbf{R} = \exp\bigl(\SL[\boldsymbol{\omega}]\bigr).
@@ -132,7 +132,7 @@ The Frobenius norm of the logarithm of a rotation matrix can be computed by noti
     \|\log(\mathbf{R})\|_F^2=\|\SL[\boldsymbol{\omega}]\|_F^2 &= \tr\bigl(\SL[\boldsymbol{\omega}]^\top\SL[\boldsymbol{\omega}]\bigr) = \tr\bigl(-\SL[\boldsymbol{\omega}]^2\bigr) = \tr\bigl(\theta^2\mathbf{I} - \mathbf{B}\bigr) = 2\theta^2.
 \end{align}
 
-\section{Translation Component of the SE(3) EE-Distance}\label{app:translation-component-SE3}
+\section{Translation component of the SE(3) EE-distance}\label{app:translation-component-SE3}
 Our objective in this section is to derive the function that allows us to compute the translation component of the EE-Distance in SE(3) (see \cref{sec:explicit-construction-SE3}). Let $\mathbf{X}=(\mathbf{I} - \mathbf{Q})^{-1}\log(\mathbf{Q})$, where $\mathbf{Q}\in\text{SO}(3)$ is a rotation matrix. Furthermore, let $\bar{\mathbf{X}}=\mathbf{X}^\top\mathbf{X}$. The derivations here will then allow a simple expression for $\mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}$ for any $\mathbf{u}\in\mathbb{R}^3$.
 
 We start by expressing $\bar{\mathbf{X}}$ as as a function $\Phi(\mathbf{Q})$:

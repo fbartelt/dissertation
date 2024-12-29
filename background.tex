@@ -1,8 +1,8 @@
 % !TeX root = main.tex
-\chapter{Thoeretical Background}\label{ch:background}
+\chapter{Theoretical Background}\label{ch:background}
 In this chapter we revisit the vector field strategy in the euclidean space based on a curve parametrization \citep{Rezende2022}, as it will prove valuable in drawing connections between both works. We also present some fundamental concepts of Lie groups and Lie algebras, which will be essential for the development of our extension.
 
-\section{Vector Field in Euclidean Space}\label{sec:adriano-review}
+\section{Vector field in Euclidean space}\label{sec:adriano-review}
 For clarity, we revisit the vector field strategy presented in \citet{Rezende2022}. Since our work extends this previous approach, this review will help establish direct connections between both works and highlight the core aspects of our contributions. The primary goal of the authors in \citet{Rezende2022} is to develop an artificial $n$-dimensional vector field that guides system trajectories toward a predefined curve and ensures circulation around it. A key element of this formulation is the definition of a distance function with essential properties. As their work focuses solely on Euclidean space, they adopt the Euclidean distance for the vector field computation, which is derived using a parametric representation of the curve.
 
 We summarize the main steps for constructing this vector field, emphasizing the most critical properties. Although the original paper addresses time-varying curves, we limit our discussion to the static portion of the methodology. The authors consider a system modeled as the following single integrator 
@@ -400,7 +400,7 @@ In this section we present the corresponding Lie algebras for the Lie groups pre
         \end{bmatrix}.
     \end{align*}
 \end{example}
-\subsection{Exponential Map}
+\subsection{Exponential map}\label{sec:background-exponential-map}
 The \emph{exponential map} is a fundamental concept in the study of Lie groups and Lie algebras, as it provides a way to map elements of the Lie algebra to elements of the Lie group. Although it is defined for any Lie group, we will focus on matrix Lie groups, as the definition will be more straightforward and related to our work. The exponential is simply given by the matrix exponential, defined as
 \begin{align}
     \exp : \mathfrak{g} &\to G,
@@ -496,7 +496,7 @@ From an engineering perspective, \cref{lemma:derivative-lie-element-H-paralleliz
 \begin{proof} This is a direct consequence of \cref{lemma:derivative-lie-element-H-parallelizable} and \cref{def:SL-left-isomorphism-act-on-xi}. 
 \end{proof}
 This lemma implies that the velocity of a curve in $G$ -- or trajectories in $G$ -- has the form of a single integrator model. As such, this result will be used to formulate a kinematic model for our strategy.
-\section{Adaptive Control}\label{sec:background-adaptive-control}
+\section{Adaptive control}\label{sec:background-adaptive-control}
 Adaptive control emerges in 1950 as a response to the design of aircraft autopilots. Aircrafts operate on a wide range of speeds and altitudes, and thus its parameters suffers great variations. This inspired the main idea of adaptive control, on-line estimation of parameters based on measured system signals \citep{Slotine1991}. This need is also present for other systems: robot manipulators may need to carry objects of unknown mass; chemical processes may have unmodeled dynamics; the fuel consumption of a vehicle might pose a challenge for common controllers. In this section, we will briefly present the main concepts of adaptive control, basing our discussion on the books \citet{Slotine1991}, \citet{Krstic1995} and \citet{Ioannou2012}.
 
 An adaptive controller is formed by the combination of a control law, designed for a nominal model, and an adaptation law, which is responsible for estimating the unkown parameters of the plant. The way the parameters estimator is designed divides the adaptive control into two main categories: \emph{direct} and \emph{indirect} adaptive control. In indirect adaptive control, the plant parameters are estimated on-line and are used to calculate the controller parameters. In the direct approach, the plant model is parameterized in terms of the controller parameters, and these are the parameters that get estimated on-line.
