@@ -279,21 +279,23 @@
     \begin{singlespace}
     \pagebreak{}
     \end{singlespace}
+
+    % First language Abstract
+    \selectlanguage{\@mainlanguage}%
+    \chapter*{\@abstractTitle}
+    \@abstractContent
+    
+    \begin{onehalfspace}
+    \pagebreak{}
+    \end{onehalfspace}
+
     %checks wheter second abstract is empty, if not, prints it
     \ifabstractsecond
         \selectlanguage{\@secondlanguage}%
         \chapter*{\@secondAbstractTitle}
         \@secondAbstractContent
     \fi
-    \begin{onehalfspace}
-    \pagebreak{}
-    \end{onehalfspace}
-
-    % First language Abstract
     \selectlanguage{\@mainlanguage}%
-    \chapter*{\@abstractTitle}
-    \@abstractContent
-
     \pagebreak{}
 
     % Table of Contents, Figures and Tables
