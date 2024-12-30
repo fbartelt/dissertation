@@ -1,11 +1,11 @@
 % !TeX root = main.tex
-\chapter{Properties of the L operator}\label{app:properties-L-op}
-In this chapter we explore further properties of the $\Lop$ operator defined in \cref{def:Loperator}. We start by showing that the $\Lop$ operator shares all the properties of derivatives. Let $G$ be an $m$-dimensional matrix Lie group and $\mathbf{X}\in G$ be a point in the group. Let $\SL:\mathbb{R}^m\to\mathfrak{g}$ be an isomorphism between $m$-dimensional vectors and the Lie algebra $\mathfrak{g}$ of $G$. Then, for some $f:G\to \mathbb{R}$, the $\Lop$ operator can be expressed as
+\chapter{Properties of the L Operator}\label{app:properties-L-op}
+In this chapter, we explore additional properties of the $\Lop$ operator, which is defined in \cref{def:Loperator}. First, we demonstrate that the $\Lop$ operator shares all the properties of derivatives. Let $G$ be an $m$-dimensional matrix Lie group and $\mathbf{X}\in G$ be a point in the group. Let $\SL:\mathbb{R}^m\to\mathfrak{g}$ be an isomorphism between $m$-dimensional vectors and the Lie algebra $\mathfrak{g}$ of $G$. For some function $f:G\to \mathbb{R}$, the $\Lop$ operator can be expressed as
 \begin{align}
     \Lop[f](\mathbf{X})\boldsymbol{\zeta} = \frac{d}{d\varepsilon}\biggl(f\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\,\forall\,\boldsymbol{\zeta}\in\mathbb{R}^m. \label{eq:appendix-prop-Lop-definition-L}
 \end{align}
 \section{Linearity}
-The $\Lop$ operator is linear, that is, for any $f,g:G\to \mathbb{R}$ and $a,b\in\mathbb{R}$, we have
+The $\Lop$ operator is linear. Specifically, for any functions $f,g:G\to \mathbb{R}$ and scalars $a,b\in\mathbb{R}$, we have
 \begin{align}
     \begin{split}
         \Lop[a f + b g](\mathbf{X})\boldsymbol{\zeta} &= \frac{d}{d\varepsilon}\biggl(a f\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr) + b g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\\
@@ -14,9 +14,9 @@ The $\Lop$ operator is linear, that is, for any $f,g:G\to \mathbb{R}$ and $a,b\i
         &= \bigl(a \Lop[f](\mathbf{X}) + b \Lop[g](\mathbf{X})\bigr)\boldsymbol{\zeta},
     \end{split}
 \end{align}
-which shows that $\Lop[a f + b g] = a \Lop[f] + b \Lop[g]$, and hence the $\Lop$ operator is linear.
-\section{Product and quotient rule}
-The $\Lop$ operator satisfies the product and quotient rule. For any $f,g:G\to \mathbb{R}$, we have
+which shows that $\Lop[a f + b g] = a \Lop[f] + b \Lop[g]$, which confirms that the $\Lop$ operator is linear.
+\section{Product and quotient rule}\label{sec:appendix-prop-Lop-product-quotient}
+The $\Lop$ operator satisfies both the product and quotient rules. Let $f,g:G\to \mathbb{R}$ be scalar functions. By definition, we have
 \begin{align}
   \begin{split}
       \Lop[fg](\mathbf{X})\boldsymbol{\zeta} =&
@@ -30,7 +30,7 @@ The $\Lop$ operator satisfies the product and quotient rule. For any $f,g:G\to \
         =& \bigl(\Lop[f](\mathbf{X})g(\mathbf{X}) + f(\mathbf{X})\Lop[g](\mathbf{X})\bigr)\boldsymbol{\zeta},
   \end{split}
 \end{align}
-since $f$ and $g$ are scalar functions. This shows that $\Lop[fg] = \Lop[f]g + f\Lop[g]$. Now, to show the quotient rule, it suffices to show that $\Lop[1/g] = -\Lop[g]/g^2$. We have
+since $f$ and $g$ are scalar functions. This shows that $\Lop[fg] = \Lop[f]g + f\Lop[g]$. Next, we demonstrate the quotient rule. For that, it suffices to show that $\Lop[1/g] = -\Lop[g]/g^2$. In this case, we have
 \begin{align}
     \begin{split}
         \Lop\biggl[\frac{1}{g}\biggr](\mathbf{X})\boldsymbol{\zeta} =& \left.\frac{d}{d\varepsilon}\left(\frac{1}{g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)}\right)\right|_{\varepsilon=0}\\
@@ -40,33 +40,36 @@ since $f$ and $g$ are scalar functions. This shows that $\Lop[fg] = \Lop[f]g + f
 \end{align}
 which implies
 \begin{align}
-    \Lop\biggl[\frac{f}{g}\biggr] = \Lop[f]\frac{1}{g} - f\frac{\Lop[g]}{g^2} = \frac{\Lop[f]g - f\Lop[g]}{g^2},
+    \Lop\biggl[\frac{f}{g}\biggr] = \Lop[f]\frac{1}{g} - f\frac{\Lop[g]}{g^2} = \frac{\Lop[f]g - f\Lop[g]}{g^2}.
 \end{align}
-and hence the $\Lop$ operator satisfies the quotient rule.
+Thus, the $\Lop$ operator satisfies the quotient rule.
 \section{Chain rule}
-A chain rule is already shown in \cref{lemma:chainrule}, however this is related only to expressions in the format $\frac{d}{d\sigma}f\bigl(\mathbf{X}(\sigma)\bigr)$. In this section we show a chain rule directly related to the $\Lop$ operator for left-invariant functions. Let $\mathbf{X},\mathbf{Y}\in G$, and $f : G \times G \to \mathbb{R}$ be a left-invariant function. If we define $\mathbf{Z} = \mathbf{Y}^{-1}\mathbf{X}$, then $f$ can be written as $f(\mathbf{X},\mathbf{Y}) = g(\mathbf{Z})$ for some $g:G\to\mathbb{R}$. Our objective is to find the $\Lop$ operator of $g$ with respect to $\mathbf{X}$. First, let us make a variation on $\mathbf{X}$ using the right-hand side of \eqref{eq:appendix-prop-Lop-definition-L} for $g$:
+A chain rule has already been shown in \cref{lemma:chainrule}, which applies to expressions of the form $\frac{d}{d\sigma}f\bigl(\mathbf{X}(\sigma)\bigr)$. In this section, we present a chain rule directly related to the $\Lop$ operator for left-invariant functions. Let $\mathbf{X},\mathbf{Y}\in G$, and $f : G \times G \to \mathbb{R}$ be a left-invariant function. Define $\mathbf{Z} = \mathbf{Y}^{-1}\mathbf{X}$, so that $f(\mathbf{X},\mathbf{Y}) = g(\mathbf{Z})$ for some $g:G\to\mathbb{R}$. Our goal is to determine the $\Lop$ operator of $g$ with respect to $\mathbf{X}$. 
+
+First, consider a variation of $\mathbf{X}$ using the right-hand side of \eqref{eq:appendix-prop-Lop-definition-L} for $g$:
 \begin{align}
     \frac{d}{d\varepsilon}\biggl(g\Bigl(\mathbf{Y}^{-1}\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0} &= \frac{d}{d\varepsilon}\biggl(g\Bigl(\mathbf{Y}^{-1}\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Y}\mathbf{Y}^{-1}\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\\
     &= \frac{d}{d\varepsilon}\biggl(g\Bigl(\exp\bigl(\varepsilon\mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}\bigr)\mathbf{Y}^{-1}\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0} \\
     &= \frac{d}{d\varepsilon}\biggl(g\Bigl(\exp\bigl(\varepsilon\mathcal{S}'(\boldsymbol{\zeta})\bigr)\mathbf{Y}^{-1}\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0},
 \end{align}
-where $\mathcal{S}'(\boldsymbol{\zeta}) = \mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$. However, since $\mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$ is in $\mathfrak{g}$, then there exists some vector $\boldsymbol{\zeta}'$ such that $\SL[\boldsymbol{\zeta}'] = \mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$, which further implies that $\boldsymbol{\zeta}'$ is a function of $\boldsymbol{\zeta}$ and $\mathbf{Y}$, i.e., $\boldsymbol{\zeta}' \triangleq \boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y})$. Therefore, we can write
+where $\mathcal{S}'(\boldsymbol{\zeta}) = \mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$. Since $\mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$ lies in $\mathfrak{g}$, there exists a vector $\boldsymbol{\zeta}'$ such that $\SL[\boldsymbol{\zeta}'] = \mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}$. This implies that $\boldsymbol{\zeta}'$ is a function of $\boldsymbol{\zeta}$ and $\mathbf{Y}$, i.e., $\boldsymbol{\zeta}' \triangleq \boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y})$. Therefore, we can write
 \begin{align}
     \frac{d}{d\varepsilon}\biggl(g\Bigl(\mathbf{Y}^{-1}\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0} &= \frac{d}{d\varepsilon}\biggl(g\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}']\bigr)\mathbf{Y}^{-1}\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\\
     &= \Lop[g](\mathbf{Z})\boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y}) \label{appendix-prop-Lop-chain-rule-LgZ-zeta-prime},
 \end{align}
-by definition. Now, since $f$ is left-invariant, we can write
+by definition. Now, since $f$ is left-invariant, we can express
 \begin{align}
     \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y})\boldsymbol{\zeta} &= 
     \Lop_\mathbf{V}[f](\mathbf{Y}^{-1}\mathbf{X}, \mathbf{I})\boldsymbol{\zeta}
     = \frac{d}{d\varepsilon}\biggl(f\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Y}^{-1}\mathbf{X}, \mathbf{I}\Bigr)\biggr)\biggr|_{\varepsilon=0},
 \end{align}
-which shows that
+which leads to
 \begin{align}
-    \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y})\boldsymbol{\zeta} = \Lop[g](\mathbf{Z})\boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y}) \label{app:prop-Lop-chain-rule-LVf-final-form}.
+    \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y})\boldsymbol{\zeta} = \Lop[g](\mathbf{Z})\boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y}) \label{app:prop-Lop-chain-rule-LVf-final-form},
 \end{align}
+which is the expression for the chain rule in the context of left-invariant functions.
 \subsection{The case for SE(3)}\label{app:prop-Lop-chain-rule-SE3}
-In the $\text{SE}(3)$, we can show that $\boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y})$ is given by a matrix multiplication. Let $\SL:\mathbb{R}^6\to\mathfrak{se}(3)$ be the canonical isormophism between $\mathbb{R}^6$ and $\mathfrak{se}(3)$, such that $\mathbf{Y}$ can be written as
+In the case of $\text{SE}(3)$, we can show that $\boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y})$ is given by a matrix multiplication. Let $\SL:\mathbb{R}^6\to\mathfrak{se}(3)$ be the canonical isomorphism between $\mathbb{R}^6$ and $\mathfrak{se}(3)$, so that $\mathbf{Y}$ can be written as
 \begin{align}
     \mathbf{Y} = \begin{bmatrix}
         \mathbf{R}_y & \mathbf{p}_y\\
@@ -74,7 +77,7 @@ In the $\text{SE}(3)$, we can show that $\boldsymbol{\zeta}'(\boldsymbol{\zeta},
     \end{bmatrix},\,\mathbf{R}_y\in\text{SO}(3), \mathbf{p}_y\in\mathbb{R}^3.
 \end{align}
 
-Furthermore, if we define $\widehat{\mathcal{S}}:\mathbb{R}^3\to\mathfrak{so}(3)$ as the canonical isormophism between $\mathbb{R}^3$ and $\mathfrak{so}(3)$, and $\boldsymbol{\zeta}=[\mathbf{v}^\top\ \boldsymbol{\omega}^\top]^\top$ with $\mathbf{v}, \boldsymbol{\omega}\in\mathbb{R}^3$, then we have
+Next, define $\widehat{\mathcal{S}}:\mathbb{R}^3\to\mathfrak{so}(3)$ as the canonical isomorphism between $\mathbb{R}^3$ and $\mathfrak{so}(3)$, and let $\boldsymbol{\zeta}=[\mathbf{v}^\top\ \boldsymbol{\omega}^\top]^\top$, where $\mathbf{v}, \boldsymbol{\omega}\in\mathbb{R}^3$. Then, we have the following expression:
 \begin{align}
   \begin{split}
       \mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y} &= 
@@ -98,7 +101,7 @@ Furthermore, if we define $\widehat{\mathcal{S}}:\mathbb{R}^3\to\mathfrak{so}(3)
       &= \SL[\boldsymbol{\zeta}'].
   \end{split}
 \end{align}
-Using properties of $\widehat{\mathcal{S}}$, we have $\mathbf{R}_y^\top\widehat{\mathcal{S}}(\boldsymbol{\omega})\mathbf{R}_y = \widehat{S}(\mathbf{R}_y^\top\boldsymbol{\omega})$, thus we can express $\boldsymbol{\zeta}'$ as
+Using the properties of $\widehat{\mathcal{S}}$, we have $\mathbf{R}_y^\top\widehat{\mathcal{S}}(\boldsymbol{\omega})\mathbf{R}_y = \widehat{S}(\mathbf{R}_y^\top\boldsymbol{\omega})$, thus we can express $\boldsymbol{\zeta}'$ as
 \begin{align}
     \boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y}) = \begin{bmatrix}
         \mathbf{R}_y^\top\widehat{\mathcal{S}}(\boldsymbol{\omega})\mathbf{p}_y + \mathbf{R}_y^\top\mathbf{v}\\
@@ -106,7 +109,7 @@ Using properties of $\widehat{\mathcal{S}}$, we have $\mathbf{R}_y^\top\widehat{
     \end{bmatrix}.
 \end{align}
 
-Note that $\widehat{\mathcal{S}}(\boldsymbol{\omega})\mathbf{p}_y = -\widehat{\mathcal{S}}(\mathbf{p}_y)\boldsymbol{\omega}$, and thus the following holds
+Note that $\widehat{\mathcal{S}}(\boldsymbol{\omega})\mathbf{p}_y = -\widehat{\mathcal{S}}(\mathbf{p}_y)\boldsymbol{\omega}$, so the following holds
 \begin{align}
     \boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y}) = \begin{bmatrix}
         \mathbf{R}_y^\top & -\mathbf{R}_y^\top\widehat{\mathcal{S}}(\mathbf{p}_y)\\
@@ -116,11 +119,11 @@ Note that $\widehat{\mathcal{S}}(\boldsymbol{\omega})\mathbf{p}_y = -\widehat{\m
     \end{bmatrix}
     = \mathcal{Z}(\mathbf{Y})\boldsymbol{\zeta}.
 \end{align}
-This implies that \eqref{app:prop-Lop-chain-rule-LVf-final-form} has the following form depending on a map $\mathcal{Z}$ that depends only on $\mathbf{Y}$:
+Thus, the expression \eqref{app:prop-Lop-chain-rule-LVf-final-form} becomes:
 \begin{align}
     \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y})\boldsymbol{\zeta} = \Lop[g](\mathbf{Z})\mathcal{Z}(\mathbf{Y})\boldsymbol{\zeta},
 \end{align}
-which in turn implies that the chain rule for the $\Lop$ operator can be expressed as
+which implies that the chain rule for the $\Lop$ operator can be expressed as:
 \begin{align}
     \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y}) = \Lop[g](\mathbf{Z})\mathcal{Z}(\mathbf{Y}). \label{eq:appendix-prop-Lop-chain-rule-SE3}
 \end{align}
