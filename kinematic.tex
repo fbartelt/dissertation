@@ -166,7 +166,7 @@ With this, we can express the EE-distance as
         &= \sqrt{\|\log\mathbf{Q}\|_F^2 + \mathbf{u}^\top\mathbf{X}^\top\mathbf{X}\mathbf{u}} = \sqrt{\|\log\mathbf{Q}\|_F^2 + \|\bar{\mathbf{u}}\|^2},
     \end{split}
 \end{align}
-where $\|\bar{\mathbf{u}}\|^2 = \mathbf{u}^T\bar{\mathbf{X}}\mathbf{u}$ and $\bar{\mathbf{X}}=\mathbf{X}^\top\mathbf{X}$.
+where $\|\bar{\mathbf{u}}\|^2 = \mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}$ and $\bar{\mathbf{X}}=\mathbf{X}^\top\mathbf{X}$.
 
 The term $\|\log\mathbf{Q}\|_F^2$ can be obtained by the following steps, using the properties derive in \cref{subsec:rotation-matrix-properties}:
 \begin{enumerate}
@@ -181,7 +181,7 @@ It is also possible to derive a simple expression for $\|\bar{\mathbf{u}}\|^2$. 
 \end{align}
 where $\beta_0=\frac{2-2\cos\theta-\theta^2}{4(1 - \cos\theta)^2}$. Thus $\|\bar{\mathbf{u}}\|^2$ can be easily obtained from the already computed angle $\theta$ and the translation vector $\mathbf{u}$. The EE-distance function reduces to
 \begin{align}
-    \widehat{D}(\mathbf{V}, \mathbf{W}) = \sqrt{2\theta^2 + \mathbf{u}^T\bar{\mathbf{X}}\mathbf{u}}, \label{eq:explicit-EE-distance-SE3}
+    \widehat{D}(\mathbf{V}, \mathbf{W}) = \sqrt{2\theta^2 + \mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}}, \label{eq:explicit-EE-distance-SE3}
 \end{align}
 where $\bar{\mathbf{X}}$ is explicitly computed by \eqref{eq:explicit-X-bar-eedist}. More succinctly, the algorithm for computing $\widehat{D}(\mathbf{V}, \mathbf{W})$ is as follows:
 \begin{algorithm}
@@ -210,16 +210,16 @@ It can be shown that the result of $\|\log(\mathbf{V}^{-1}\mathbf{W})\|_F$ is in
 Note that $\beta_0$ is well-defined for all $\theta \in (0,\pi]$. When $\theta=0$, we just need to take the limit to obtain $\beta_0=-1/12$ (see \cref{app:discontinuity-beta-EEdist}). To identify the points of non-differentiability of $\widehat{D}$, it suffices to analyze the derivatives with the respect to the variables $\mathbf{Q}$ and $\mathbf{u}$. The analysis reveals that the only sources of non-differentiability occur when (type i) $\mathbf{Q}=\mathbf{Q}^\top$, $\mathbf{Q} \not= \mathbf{I}$ (i.e., at rotations of $\pi$ radians) or when (type ii) $\widehat{D}=0$. However, in both cases, the directional derivatives exist. Furthermore, $D_{\text{min},\mathcal{C}}$, as defined in \cref{def:distance-D-hat-arbitrary-elements}, can be taken as $\widehat{D}$ when $\theta = \pi$  and $\mathbf{u} = \mathbf{0}$, which gives $D_{\text{min},\mathcal{C}} = \sqrt{2}\pi$. Thus, when $\widehat{D} < D_{\text{min},\mathcal{C}}$, it necessarily follows that $\theta < \pi$, avoiding the non-differentiable points of type i. Additionally, when $\widehat{D} > 0$, the non-differentiable points of type ii are also avoided. Therefore, the condition $0 < \widehat{D} < \sqrt{2}\pi$ guarantees that $\widehat{D}$ is differentiable, as required in \cref{def:distance-D-hat-arbitrary-elements}.
 % \begin{comment}
 \section{Components computation}
-Although this might not be trivial, the components of the vector field can be computed explicitly. First, note that the tangent component $\boldsymbol{\xi}_T$ relies on the nearest point in the curve and the derivative of the curve at this point. Since the curve is parametrized, we already have the equation that describes it, which implies that the derivative is also known. Thus, $\boldsymbol{\xi}_T = \invSL\bigl(\frac{d\mathbf{H}_d(s^*)}{ds}\mathbf{H}_d(s^*)^{-1}\bigr)$ is in fact computed explicitly.
+Although it may not be trivial, the components of the vector field can be computed explicitly. First, observe that the tangent component $\boldsymbol{\xi}_T$ depends on the nearest point on the curve and the derivative of the curve at this point. Since the curve is parametrized, we already have the equation that describes it, implying that the derivative is also known. Therefore, the tangent component $\boldsymbol{\xi}_T = \invSL\bigl(\frac{d\mathbf{H}_d(s^*)}{ds}\mathbf{H}_d(s^*)^{-1}\bigr)$ can be computed explicitly.
 
-To compute the normal component $\boldsymbol{\xi}_N$, we need to compute $\text{L}_{\mathbf{V}}[\widehat{D}](\mathbf{H}, \mathbf{H}_d(s^*))$. For this, two approaches exist. The first is to compute this component nummerically, by evaluating the left-hand side of \eqref{eq:Leq} for $\boldsymbol{\zeta} = \mathbf{e}_i$ with a small $\varepsilon$. The second is to compute the explicit derivative of $\widehat{D}$ with respect to $\mathbf{H}$, which we will now derive.
+To compute the normal component $\boldsymbol{\xi}_N$, we need to evaluate $\text{L}_{\mathbf{V}}[\widehat{D}](\mathbf{H}, \mathbf{H}_d(s^*))$. wo approaches can be used for this computation. The first is a numerical approach, where we evaluate the left-hand side of \eqref{eq:Leq} for $\boldsymbol{\zeta} = \mathbf{e}_i$ with a small $\varepsilon$. The second approach involves computing the explicit $\Lop$ operator of $\widehat{D}$ with respect to $\mathbf{H}$, which we will now derive.
 
-First, note that the EE-distance is symmetric, i.e., $\bigl\|\log(\mathbf{V}^{-1}\mathbf{W})\bigr\|_F = \bigl\|\log\bigl(\mathbf{W}^{-1}\mathbf{V}\bigr)\bigr\|_F$. Let $\mathbf{Z}=\mathbf{H}_d(s^*)^{-1}\mathbf{H}$, then using expression \eqref{eq:explicit-EE-distance-SE3}, define the following equivalent function:
+First, note that the EE-distance is symmetric, i.e., $\bigl\|\log(\mathbf{V}^{-1}\mathbf{W})\bigr\|_F = \bigl\|\log\bigl(\mathbf{W}^{-1}\mathbf{V}\bigr)\bigr\|_F$. Let $\mathbf{Z}=\mathbf{H}_d(s^*)^{-1}\mathbf{H}$, then using expression \eqref{eq:explicit-EE-distance-SE3}, we define the following equivalent function:
 \begin{align}
     \widehat{E}(\mathbf{Z}) \triangleq \widehat{D}(\mathbf{H}, \mathbf{H}_d(s^*)) = \sqrt{2\theta^2 + \mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}},
     \label{eq:explicit-EE-dista-SE3-component-Ehat}
 \end{align}
-for which the $\text{L}$ operator can be computed as
+for which the $\Lop$ operator can be computed as
 \begin{align}
     \Lop[\widehat{E}](\mathbf{Z}) = \frac{1}{2 \sqrt{2\theta^2 + \mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}}}\text{L}\bigl[2\theta^2 + \mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}\bigr](\mathbf{Z}),
 \end{align}
@@ -227,7 +227,7 @@ which in turn can be expressed by
 \begin{align}
     \Lop[\widehat{E}](\mathbf{Z}) = \frac{4\theta\text{L}[\theta] + \Lop\bigl[\sum_{i=1}^{3}\sum_{j=1}^{3}\mathbf{u}_i\mathbf{u}_j\bar{\mathbf{X}}_{ij}\bigr](\mathbf{Z})}{2 \widehat{E}(\mathbf{Z})}. \label{eq:explicit-derivative-L-Ehat-p1}
 \end{align}
-The computation of the two $\Lop$ operators in \eqref{eq:explicit-derivative-L-Ehat-p1} are rather long and are shown in \cref{app:explicit-derivative-SE3}. Note however that the computation of these only rely on already computed terms and elements of $\mathbf{u}$ and $\mathbf{Q}$. For completeness, we present the expressions for these terms without the detailed derivation:
+The computation of the two $\Lop$ operators in \eqref{eq:explicit-derivative-L-Ehat-p1} is rather lengthy and is provided in \cref{app:explicit-derivative-SE3}. However, note that these computations only rely on previously computed terms and the elements of $\mathbf{u}$ and $\mathbf{Q}$. For completeness, we present the expressions for these terms without the detailed derivation:
 \begin{align}
     \text{L}[\theta](\mathbf{Z}) = \frac{
         -\frac{\frac{1}{2}\bigl(\tr(\mathbf{Q})-1\bigr)}{4\sqrt{3 - \tr(\mathbf{Q}^2)}}\mathbf{f} -
@@ -264,7 +264,7 @@ in which $\delta_{ij}$ is the Kronecker delta, $\widehat{\mathcal{S}}:\mathbb{R}
     \end{bmatrix}. \label{eq:explicit-EE-dista-SE3-component-LQij}
 \end{align}
 
-To compute $\boldsymbol{\xi}_N$ we need $\Lop_\mathbf{V}[\widehat{D}](\mathbf{H}, \mathbf{H}_d(s^*))$, however, through the chain rule, we can compute it through $\Lop[\widehat{E}](\mathbf{Z})$ as follows (see \cref{app:prop-Lop-chain-rule-SE3}):
+To compute $\boldsymbol{\xi}_N$, we need to evaluate $\Lop_\mathbf{V}[\widehat{D}](\mathbf{H}, \mathbf{H}_d(s^*))$. However, by applying the chain rule, we can compute it via $\Lop[\widehat{E}](\mathbf{Z})$ as follows (see \cref{app:prop-Lop-chain-rule-SE3}):
 \begin{align}
     \Lop_\mathbf{V}[\widehat{D}](\mathbf{H}, \mathbf{H}_d(s^*)) = \Lop[\widehat{E}](\mathbf{Z})\mathcal{Z}\bigl(\mathbf{H}_d(s^*)\bigr),
 \end{align}

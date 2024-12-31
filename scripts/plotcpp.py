@@ -760,3 +760,173 @@ for i in range(6):
     print("Tmin: ", np.min(torques_norm[:, i]))
     print("Tmax: ", np.max(torques_norm[:, i]))
 # %%
+""" Plot automatica results again"""
+import numpy as np
+import csv
+
+def read_csv_and_restore(filename, isvfdata=True):
+    iteration_results = []
+
+    # Define the dimensions of the matrix and vectors
+    matrix_shape = (4, 4)  # Example for a 4x4 matrix
+    vector_size = 6  # Example for two 6x1 vectors
+
+    with open(filename, 'r') as csvfile:
+        csvreader = csv.reader(csvfile, delimiter=';')
+
+        for row in csvreader:
+            # Convert the row (list of strings) to a list of floats
+            data = list(map(float, row))
+
+            # Extract the matrix elements and reshape them into a 4x4 matrix
+            matrix_size = matrix_shape[0] * matrix_shape[1]
+            matrix_data = np.array(data[:matrix_size]).reshape(matrix_shape)
+
+            if isvfdata:
+                # Extract the first vector (6x1)
+                tangent_data = np.array(data[matrix_size:matrix_size + vector_size])
+
+                # Extract the second vector (6x1)
+                normal_data = np.array(data[matrix_size + vector_size:matrix_size + 2 * vector_size])
+
+                # Store the results as a tuple of matrix and two vectors
+                iteration_results.append((matrix_data, tangent_data, normal_data, data[-1]))
+            else:
+                iteration_results.append(matrix_data)
+    return iteration_results
+option = ''
+results = read_csv_and_restore(f'/home/fbartelt/Documents/Projetos/vector-field/vfcpp/logs/vf_data{option}.csv')
+curve = read_csv_and_restore(f'/home/fbartelt/Documents/Projetos/vector-field/vfcpp/logs/curve_data{option}.csv', isvfdata=False)
+states = read_csv_and_restore(f'/home/fbartelt/Documents/Projetos/vector-field/vfcpp/logs/iteration_data{option}.csv', isvfdata=False)
+#%%
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+closest_points, tangents, normals, distances = zip(*results)
+
+ori_errs = []
+pos_errs = []
+for closest_point, state in zip(closest_points, states):
+    p_near = closest_point[:3, 3]
+    ori_near = closest_point[:3, :3]
+    p_curr = state[:3, 3]
+    ori_curr = state[:3, :3]
+    pos_errs.append(np.linalg.norm(p_near - p_curr) * 100)
+    trace_ = np.trace(ori_near @ ori_curr.T)
+    acos = np.arccos((trace_ - 1) / 2)
+    # checks if acos is nan
+    if np.isnan(acos):
+        acos = 0
+    ori_errs.append(acos * 180 / np.pi)
+    # ori_errs.append(np.linalg.norm(np.eye(3) - ori_near @ ori_curr.T, 'fro'))
+
+# makes a figure with two plots, one above another. First the position error, then the orientation error
+dt = 0.01
+time_vec = np.arange(0, len(pos_errs) * dt, dt)
+fig = make_subplots(rows=3, cols=1, shared_xaxes=True, vertical_spacing=0.02)
+fig.add_trace(go.Scatter(x=time_vec, y=distances, showlegend=False, line=dict(width=3)), row=1, col=1)
+fig.add_trace(go.Scatter(x=time_vec, y=pos_errs, showlegend=False, line=dict(width=3)), row=2, col=1)
+fig.add_trace(go.Scatter(x=time_vec, y=ori_errs, showlegend=False, line=dict(width=3)), row=3, col=1)
+fig.update_xaxes(title_text="Time (s)", row=3, col=1, tickprefix="£", ticksuffix="£",gridcolor='rgba(0.0, 0, 0, 0.5)', 
+                 zerolinecolor='rgba(0.0, 0, 0, 0.5)', )
+fig.update_xaxes(title_text=None, row=1, col=1, gridcolor='rgba(0.0, 0, 0, 0.5)', zerolinecolor='rgba(0.0, 0, 0, 0.5)', )
+fig.update_xaxes(title_text=None, row=2, col=1, gridcolor='rgba(0.0, 0, 0, 0.5)', zerolinecolor='rgba(0.0, 0, 0, 0.5)', )
+fig.update_yaxes(title_text="Distance D", row=1, col=1, tickprefix="£", ticksuffix="£",gridcolor='rgba(0.0, 0, 0, 0.5)', 
+                 zerolinecolor='rgba(0.0, 0, 0, 0.5)', title_standoff=20)
+fig.update_yaxes(title_text="Pos. error (cm)", row=2, col=1, tickprefix="£", ticksuffix="£",gridcolor='rgba(0.0, 0, 0, 0.5)', 
+                 zerolinecolor='rgba(0.0, 0, 0, 0.5)', title_standoff=20)
+fig.update_yaxes(title_text="Ori. error (deg)", row=3, col=1, tickprefix="£", ticksuffix="£",gridcolor='rgba(0.0, 0, 0, 0.5)', 
+                 zerolinecolor='rgba(0.0, 0, 0, 0.5)', title_standoff=20)
+fig.update_layout(plot_bgcolor='white', paper_bgcolor='white', width=1200, height=600, margin=dict(l=10, r=0, t=0, b=10, pad=0))
+
+fig.show()
+# fig.write_image("/home/fbartelt/Documents/Projetos/dissertation/figures/distance_pos_ori_D.svg")
+# %%
+import sys
+import plotly.express as px
+sys.path.append('/home/fbartelt/Documents/Projetos/vector-field/')
+
+from vectorfield.plotting import vector_field_plot
+
+curve_positions = []
+obj_frames = []
+obj_positions = []
+vfs = []
+for i, H in enumerate(states[:-1]):
+    R = H[:3, :3]
+    p = H[:3, 3]
+    obj_frames.append(R)
+    obj_positions.append(p)
+    tangent_ = tangents[i][:3]
+    normal_ = normals[i][:3]
+    vf_ = tangent_ + normal_ 
+    vf_ = vf_ / (np.linalg.norm(vf_))
+    vfs.append(vf_)
+
+for i, htm in enumerate(curve):
+    curve_positions.append(htm[:3, 3])
+
+obj_positions = np.array(obj_positions).reshape(-1, 3)
+curve_positions = np.array(curve_positions).reshape(-1, 3)
+vfs = np.array(vfs).reshape(-1, 3)
+obj_frames = np.array(obj_frames).reshape(-1, 3, 3)
+
+# First Plot
+final_ball = 499
+init_ball = 0
+
+# Second Plot
+# final_ball = 970
+# init_ball = 499
+
+# Third Plot
+# final_ball = 1450 # 499 for 1st, 970 for 2nd, 1450 for 3rd
+# init_ball = 970  # 0 for 1st, 499 for 2nd, 970 for 3rd
+
+xticks = [-2, 1.2]
+yticks = [-2, 1.2]
+zticks = [-0.1, 1.5] 
+frame_scale = [abs(xticks[1] - xticks[0]), abs(yticks[1] - yticks[0]), abs(zticks[1] - zticks[0])]
+frame_scale = .3 * 1/(np.max(frame_scale) / frame_scale)
+fig = vector_field_plot(obj_positions, vfs, obj_frames, curve_positions, 
+                        num_arrows=0, init_ball=init_ball, final_ball=final_ball,
+                        curr_path_style="solid", prev_path_style="dash",
+                        sizemode="absolute", sizeref=6e-2, anchor="tail",
+                        ball_size=12, curve_width=5, path_width=10, frame_scale=frame_scale,
+                        frame_width=3)
+
+## New results:
+# FIRST PLOT
+eye = {'x': -1.1895395264042192, 'y': -0.7763234687127192,'z': 1.4869053271198966} # FIRST PLOT  # [-1.1895395264042192, -0.7763234687127192, 1.4869053271198966]
+center = {'x': 0.03903242065155699, 'y': 0.07130795959536744, 'z': -0.13962461747321292} # FIRST PLOT
+
+# SECOND PLOT
+# eye = {'x': -0.005417756765127929, 'y': 1.5295635461969768, 'z': 0.852109769210902} # SECOND PLOT
+# center = {'x': 0.08777933955447563, 'y': -0.13216780957261906, 'z': -0.16458099064064602} # SECOND PLOT
+
+# THIRD PLOT
+# eye = {'x': 0.9282984011542231, 'y': -0.08422883056475791, 'z': 1.609796084764507} # THIRD PLOT
+# center = {'x': -0.07743803067418094, 'y': 0.08348353761188693, 'z': -0.08028295936982242} # THIRD PLOT
+# camera = dict(eye=eye, center=center, up=dict(x=0, y=0, z=1))
+fig.update_layout(width=600, height=600, margin=dict(l=0, r=0, t=0, b=0), 
+                  showlegend=False, plot_bgcolor='white', paper_bgcolor='white')
+fig.update_layout(scene=dict(
+    camera=dict(eye=eye, center=center),
+    xaxis=dict(tickprefix="£", ticksuffix="£",gridcolor='rgba(0.0, 0, 0, 0.5)', 
+                 zerolinecolor='white', backgroundcolor='white',
+                 showticklabels=False, tickvals=np.linspace(xticks[0], xticks[-1], 3), range=[xticks[0], xticks[-1]],
+                 ticks="inside"),
+    yaxis=dict(tickprefix="£", ticksuffix="£",gridcolor='rgba(0.0, 0, 0, 0.5)', 
+                 zerolinecolor='white', backgroundcolor='white',
+                 showticklabels=False, tickvals=np.linspace(yticks[0], yticks[-1], 3), range=[yticks[0], yticks[-1]],
+                 ticks="inside"),
+    zaxis=dict(tickprefix="£", ticksuffix="£",gridcolor='rgba(0.0, 0, 0, 0.5)', 
+                 zerolinecolor='white', backgroundcolor='white',
+                 showticklabels=False, tickvals=np.linspace(zticks[0], zticks[-1], 3), range=[zticks[0], zticks[-1]],
+                 ticks="inside"),
+    aspectmode='cube',
+    # aspectmode='manual', aspectratio=dict(x=1.47, y=1.47, z=1),
+    ))
+fig.show()
+# %%

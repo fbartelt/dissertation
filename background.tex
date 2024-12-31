@@ -1,6 +1,6 @@
 % !TeX root = main.tex
 \chapter{Theoretical Background}\label{ch:background}
-In this chapter we revisit the vector field strategy in the euclidean space based on a curve parametrization \citep{Rezende2022}, as it will prove valuable in drawing connections between both works. We also present some fundamental concepts of Lie groups and Lie algebras, which will be essential for the development of our extension.
+In this chapter, we revisit the vector field strategy in Euclidean space based on a curve parametrization \citep{Rezende2022}, as it provides valuable connections between both works. Additionally, we present fundamental concepts of Lie groups and Lie algebras, alongside basic principles of adaptive control, which are essential for developing our extension.
 
 \section{Vector field in Euclidean space}\label{sec:adriano-review}
 For clarity, we revisit the vector field strategy presented in \citet{Rezende2022}. Since our work extends this previous approach, this review will help establish direct connections between both works and highlight the core aspects of our contributions. The primary goal of the authors in \citet{Rezende2022} is to develop an artificial $n$-dimensional vector field that guides system trajectories toward a predefined curve and ensures circulation around it. A key element of this formulation is the definition of a distance function with essential properties. As their work focuses solely on Euclidean space, they adopt the Euclidean distance for the vector field computation, which is derived using a parametric representation of the curve.
@@ -50,77 +50,86 @@ In the Lyapunov stability proof, the final result shows that the time derivative
 In our generalization, we will incorporate and build upon these features.
 
 \section{Lie groups and Lie algebras}\label{sec:background-lie-theory}
-In this section, we introduce \emph{Lie groups}, which are smooth manifolds that are also groups, and \emph{Lie algebras}. Besides providing examples of both, we also introduce concepts that will prove valuable in our work. This section integrates concepts and ideas from the following books: \citet{Lee2012,Gallier2020,Hall2015,Duistermaat2012}, with the aim of presenting the concepts in a clearer and more accessible manner. We also introduce some concepts of our own and useful proofs not present in the literature, in the best of our knowledge. We begin with the general definition of a Lie group.
+This section introduces \emph{Lie groups}, smooth manifolds that are also groups, and \emph{Lie algebras}, vector spaces with additional structure. Along with providing examples of both, we include key concepts relevant to our work. The content integrates ideas from the following texts: \citet{Lee2012,Gallier2020,Hall2015,Duistermaat2012}, aiming to enhance clarity and accessibility. Additionally, we introduce original concepts and useful proofs not, to the best of our knowledge, available in the literature. We begin with the general definition of a Lie group.
 \subsection{Lie groups}
 \begin{definition}[Lie group]
-    A \emph{Lie group} is a smooth manifold $G$ satisfying the following properties:
+    A \emph{Lie group} is a smooth manifold $G$ that satisfies the following properties:
     \begin{property}
         \item $G$ is a group (with identity element denoted $\iota$)
-        \item $G$ is a topological group (the group operation and the inverse map are continuous). Furthermore, the group operation $\circ: G\times G\to G$ and the inverse map $\cdot^{-1}: G\to G$ are smooth.
+        \item $G$ is a topological group, meaning the group operation and the inverse map are continuous. Additionally, the group operation $\circ: G\times G\to G$ and the inverse map $\cdot^{-1}: G\to G$ are smooth.
     \end{property}
 \end{definition}
 
-The mapping between Lie groups is a fundamental concept and will play an important role in our extension, specifically for drawing connections between our extension and the vector field strategy in Euclidean space. Usually these mappings have additional properties and are defined as follows:
+Mappings between Lie groups are fundamental and play a significant role in our extension, particularly for relating our approach to the vector field strategy in Euclidean space. These mappings often possess additional properties and are defined as follows:
 \begin{definition}
-    If $G$ and $H$ are Lie groups, a \emph{homomorphism} $\mathcal{H}: G\to H$ is a smooth map (between manifolds $G$ and $H$) that is also a group homomorphism, that is, if $\circ$ and $\star$ are the group operations in $G$ and $H$, respectively, then $\mathcal{H}(\mathbf{X}\circ\mathbf{Y}) = \mathcal{H}(\mathbf{X})\star\mathcal{H}(\mathbf{Y})$ for all $\mathbf{X},\mathbf{Y}\in G$. If this map is also a diffeomorphism (the inverse map $\mathcal{H}^{-1}$ is also a homomorphism), then $\mathcal{H}$ is an \emph{isomorphism}. In this case, we say that $G$ and $H$ are \emph{isomorphic} and denote this by $G\cong H$.
+    If $G$ and $H$ are Lie groups, a \emph{homomorphism} $\mathcal{H}: G\to H$ is a smooth map (between manifolds $G$ and $H$) that is also a group homomorphism. Specifically, if $\circ$ and $\star$ are the group operations in $G$ and $H$, respectively, then
+    \begin{align*}
+        \mathcal{H}(\mathbf{X}\circ\mathbf{Y}) = \mathcal{H}(\mathbf{X})\star\mathcal{H}(\mathbf{Y})\,\forall\,\mathbf{X},\mathbf{Y}\in G.
+    \end{align*}
+    If this map is also a diffeomorphism (with the inverse map $\mathcal{H}^{-1}$ being a homomorphism), then $\mathcal{H}$ is called an \emph{isomorphism}. In this case, $G$ and $H$ are said to be \emph{isomorphic}, denoted by $G\cong H$.
 \end{definition}
 
-There are two important isomorphisms in Lie groups that are important for the concept of Lie algebras. These are the translation isomorphisms, which are defined as follows:
+Two important isomorphisms in Lie groups, critical for the concept of Lie algebras, are the translation isomorphisms defined below:
 \begin{definition}
-    Given a Lie group $G$, we define two operations: the left translation $\mathcal{L}_{\mathbf{X}}: G\to G$ and the right translation $\mathcal{R}_{\mathbf{X}}: G\to G$ for any $\mathbf{X}\in G$. These operations are defined as 
+    Given a Lie group $G$, the left translation $\mathcal{L}_{\mathbf{X}}: G\to G$ and the right translation $\mathcal{R}_{\mathbf{X}}: G\to G$ are defined for any $\mathbf{X}\in G$ as follows:
     \begin{align}
         \mathcal{L}_{\mathbf{X}}(\mathbf{Y}) &= \mathbf{X}\circ\mathbf{Y}\\
-        \mathcal{R}_{\mathbf{X}}(\mathbf{Y}) &= \mathbf{Y}\circ\mathbf{X},
+        \mathcal{R}_{\mathbf{X}}(\mathbf{Y}) &= \mathbf{Y}\circ\mathbf{X}.
     \end{align}
-    respectively. Since the group operation and the inverse map are smooth, the left and right translations are diffeomorphisms, and thus isomorphisms.
+    Since the group operation and inverse map are smooth, the left and right translations are diffeomorphisms, making them isomorphisms.
 \end{definition}
 
 \subsubsection{Matrix Lie Groups}
-In general lines, Lie groups that can be represented by matrices are called \emph{matrix Lie groups}. These groups are defined by a set of matrices that satisfy the group properties. The group operation is matrix multiplication, the identity element is the identity matrix, and the inverse map is the matrix inverse. For a more precise definition, we need to define the \emph{general linear group} and the concept of \emph{convergence} of a sequence of matrices.
+In general, Lie groups that can be represented by matrices are called \emph{matrix Lie groups}. These groups are defined by a set of matrices that satisfy the group properties. The group operation is matrix multiplication, the identity element is the identity matrix, and the inverse map is the matrix inverse. To define these groups more precisely, we first introduce the \emph{general linear group} and the concept of \emph{convergence} of a sequence of matrices.
 \begin{definition}
-    The \emph{general linear group} over the real numbers, denoted $\text{GL}(n, \mathbb{R})$, is the set of all invertible $n\times n$ matrices with real entries. The general linaer group over the complex numbers, denoted $\text{GL}(n, \mathbb{C})$, is the group of all invertible $n\times n$ matrices with complex entries.
+    The \emph{general linear group} over the real numbers, denoted $\text{GL}(n, \mathbb{R})$, is the set of all invertible $n\times n$ matrices with real entries. The general linear group over the complex numbers, denoted $\text{GL}(n, \mathbb{C})$, is the group of all invertible $n\times n$ matrices with complex entries.
 \end{definition}
 \begin{definition}
-    Let $\mathbf{X}_k$ be a sequence of complex matrices in $\mathbb{C}^{n\times n}$. We say that $\mathbf{X}_k$ \emph{converges} to a matrix $\mathbf{Y}$ if each entry of $\mathbf{X}_k$ converges to the corresponding entry of $\mathbf{Y}$ as $k\to\infty$. This means that for each $i,j\in[1,n]$, the sequence $\{\mathbf{X}_k\}_{ij}$ converges to $\mathbf{Y}_{ij}$.
+    Let $\mathbf{X}_k$ be a sequence of complex matrices in $\mathbb{C}^{n\times n}$. We say that $\mathbf{X}_k$ \emph{converges} to a matrix $\mathbf{Y}$ if each entry of $\mathbf{X}_k$ converges to the corresponding entry of $\mathbf{Y}$ as $k\to\infty$. Specifically, for each $i,j\in[1,n]$, the sequence $\{\mathbf{X}_k\}_{ij}$ converges to $\mathbf{Y}_{ij}$.
 \end{definition}
-With both definitions, we can now define a matrix Lie group formally.
+With these definitions in place, we can now formally define a matrix Lie group.
 \begin{definition}
-    A \emph{matrix Lie group} is a subgroup $G$ of $\text{GL}(n, \mathbb{C})$ with the property that if $\mathbf{X}_k$ is a sequence of matrices in $G$, and $\mathbf{X}_k$ converges to some matrix $\mathbf{Y}$, then either $\mathbf{Y}$ is in $G$ or $\mathbf{Y}$ is not invertible. This property is equivalent to sayint that $G$ is a \emph{closed subgroup} of $\text{GL}(n, \mathbb{C})$.
+    A \emph{matrix Lie group} is a subgroup $G$ of $\text{GL}(n, \mathbb{C})$ with the property that if $\mathbf{X}_k$ is a sequence of matrices in $G$, and $\mathbf{X}_k$ converges to some matrix $\mathbf{Y}$, then either $\mathbf{Y}$ is in $G$ or $\mathbf{Y}$ is not invertible. This property is equivalent to saying that $G$ is a \emph{closed subgroup} of $\text{GL}(n, \mathbb{C})$.
 \end{definition}
+Furthermore, every matrix Lie group is an \emph{embedded submanifold} of $\mathbb{C}^{n\times n}\cong\mathbb{R}^{2n^2}$ \citep[p. 70]{Hall2015}.
 
-Although present in the context of any Lie group, we can define two interesting properties more easily for matrix Lie groups. The knowledge of \emph{compactness} and \emph{connectedness} can reduce complexity in the study of these groups.
+Although the concepts of \emph{compactness} and \emph{connectedness} apply to any Lie group, their definitions are easier to state for matrix Lie groups, and knowledge of these properties can reduce complexity in their study.
 \begin{definition}
     A matrix Lie group $G\subset\text{GL}(n,\mathbb{C})$ is said to be \emph{compact} if and only if:
     \begin{property}
         \item whenever a sequence $\mathbf{X}_k$ is in $G$ and $\mathbf{X}_k$ converges to $\mathbf{Y}$, then $\mathbf{Y}$ is in $G$;
-        \item there exists a constant $C>0$ such that for all $\mathbf{X}\in G$, $\|\{\mathbf{X}\}_{ij}\|\leq C$ for all $i,j\in[1,n]$.
+        \item there exists a constant $C>0$ such that for all $\mathbf{X}\in G$, $\|\mathbf{X}_{ij}\|\leq C$ for all $i,j\in[1,n]$.
     \end{property}
 \end{definition}
 \begin{definition}
-    A matrix Lie group $G$ is termed \emph{connected} if for all $\mathbf{X},\mathbf{Y}\in G$, there exists a continuous path $\mathbf{G}(\sigma)\in G$, $a\le\sigma\le b$ such that $\mathbf{G}(a) = \mathbf{X}$ and $\mathbf{G}(b) = \mathbf{Y}$. The \emph{identity component} of $G$, denoted $G_\iota$, is the set $\mathbf{X}\in G$ for which there exists a continuous path $\mathbf{G}(\sigma)\in G$, $a\le\sigma\le b$ such that $\mathbf{G}(a) = \iota=\mathbf{I}$ and $\mathbf{G}(b) = \mathbf{X}$.
+    A matrix Lie group $G$ is termed \emph{connected} if for all $\mathbf{X},\mathbf{Y}\in G$, there exists a continuous path $\mathbf{G}(\sigma)\in G$, $a\le\sigma\le b$ such that $\mathbf{G}(a) = \mathbf{X}$ and $\mathbf{G}(b) = \mathbf{Y}$. The \emph{identity component} of $G$, denoted $G_\iota$, is the set of elements $\mathbf{X}$ in  $G$ for which there exists a continuous path $\mathbf{G}(\sigma)\in G$, $a\le\sigma\le b$ such that $\mathbf{G}(a) = \iota=\mathbf{I}$ and $\mathbf{G}(b) = \mathbf{X}$.
 \end{definition}
 
 \subsubsection{Examples of Lie groups}
-In this section we present some examples of the most common Lie groups, which will also introduce the notation and concepts that will be used in our extension.
+In this section, we present some of the most common examples of Lie groups, which also serve to introduce the notation and concepts used in our extension.
 \begin{example}\label{ex:general-linear-group-special-linear-group}
     The \emph{special linear group} $\text{SL}(n, \mathbb{R})$ (resp. $\text{SL}(n, \mathbb{C})$) is a subgroup of $\text{GL}(n, \mathbb{R})$ (resp. $\text{GL}(n, \mathbb{C})$) consisting of invertible matrices with determinant equal to 1.
+
+    While none of these groups are compact, $\text{GL}(n, \mathbb{C})$, $\text{SL}(n, \mathbb{R})$ and $\text{SL}(n, \mathbb{C})$ are connected.
 \end{example}
 \begin{example}
-    The group formed by the direct product of Lie groups $G = G_1 \times G_2 \times \dots \times G_k$ is a Lie group \citep[p. 152]{Lee2012}. It is also true that the semidirect product of Lie groups $G = G_1\rtimes G_2$ is also a Lie group \citep[p. 168]{Lee2012}.
+    The group formed by the direct product of Lie groups, $G = G_1 \times G_2 \times \dots \times G_k$, is itself a Lie group \citep[p. 152]{Lee2012}. Additionally, the semidirect product of Lie groups, $G = G_1\rtimes G_2$, is also a Lie group \citep[p. 168]{Lee2012}.
 \end{example}
 \begin{example}\label{ex:orthogonal-group-special-orthogonal-group}
-    The \emph{orthogonal group} $\text{O}(n)$ is the Lie group of distance-preserving transformation and comprises rotations and reflections. It consists of all $n\times n$ orthogonal matrices:
+    The \emph{orthogonal group} $\text{O}(n)$ is the Lie group of distance-preserving transformations, which includes rotations and reflections. It consists of all $n\times n$ orthogonal matrices:
     \begin{align}
-        \text{O}(n) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} | \mathbf{X}^T\mathbf{X} = \mathbf{I}_n\right\}.
+        \text{O}(n) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} | \mathbf{X}^\top\mathbf{X} = \mathbf{I}_n\right\}.
     \end{align}
 
-    Its subgroup $\text{SO}(n)$, the \emph{special orthogonal group}, consists of all orthogonal matrices with determinant equal to 1. This group represents rotations and as such are formed by the set of rotation matrices:
+    Its subgroup $\text{SO}(n)$, the \emph{special orthogonal group}, consists of all orthogonal matrices with determinant equal to 1. This group represents rotations and is formed by the set of rotation matrices:
     \begin{align}
-        \text{SO}(n) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} | \mathbf{X}^T\mathbf{X} = \mathbf{I}_n,\, \det(\mathbf{X}) = 1\right\}.
+        \text{SO}(n) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} | \mathbf{X}^\top\mathbf{X} = \mathbf{I}_n,\, \det(\mathbf{X}) = 1\right\}.
     \end{align}
+
+    Both $\text{O}(n)$ and $\text{SO}(n)$ are compact; however, only $\text{SO}(n)$ is connected.
 \end{example}
 \begin{example}\label{ex:euclidean-group-special-euclidean-group}
-    The \emph{Euclidean group} $\text{E}(n)$ is a Lie group of isometries in Euclidean space. This group is formed by the semidirect product $\mathbb{R}^n \rtimes \text{O}(n)$ and is defined as
+    The \emph{Euclidean group} $\text{E}(n)$ is a Lie group of isometries in Euclidean space, formed by the semidirect product $\mathbb{R}^n \rtimes \text{O}(n)$:
     \begin{align}
         \text{E}(n) = \left\{\begin{bmatrix}
             \mathbf{R} & \mathbf{p} \\ \mathbf{0} & 1
@@ -133,17 +142,21 @@ In this section we present some examples of the most common Lie groups, which wi
             \mathbf{R} & \mathbf{p} \\ \mathbf{0} & 1
         \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} | \mathbf{R}\in\text{SO}(n),\, \mathbf{p}\in\mathbb{R}^n\right\}.
     \end{align}
+
+    While neither of these groups are compact, $\text{SE}(n)$ is connected.
 \end{example}
 \begin{example}\label{ex:translation-group}
-    The group $(\mathbb{R}^n,+)$, also denoted $\mathbb{R}^n$, is also a Lie group, where the group operation is the vector addition, the identity element is the zero vector, and the inverse map is the negation of the vector. We will usually represent this group through an inclusion map $\mathbb{R}^n \hookrightarrow \text{SE}(n)$ and denote the group under this inclusion the \emph{translation group} $\text{T}(n)$, defined as
+    The group $(\mathbb{R}^n,+)$, also denoted $\mathbb{R}^n$, is a Lie group where the group operation is vector addition, the identity element is the zero vector, and the inverse map is the negation of the vector. This group is typically represented by an inclusion map $\mathbb{R}^n \hookrightarrow \text{SE}(n)$, and is denoted the \emph{translation group} $\text{T}(n)$:
     \begin{align}
         \text{T}(n) = \left\{\begin{bmatrix}
             \mathbf{I}_n & \mathbf{p} \\ \mathbf{0} & 1
         \end{bmatrix} \in \text{SE}(n) | \mathbf{p}\in\mathbb{R}^n\right\}.
     \end{align}
+
+    This group is not compact, but it is connected.
 \end{example}
 \begin{example}\label{ex:independent-translation-rotation-ISE}
-    Although not present in the literature, we introduce the group of independent translations and rotations (\emph{Independent Special Euclidean group}) $\text{ISE}(n)\cong\mathbb{R}^n\times\text{SO}(n)$, defined as
+    Although not present in the literature, we introduce the group of independent translations and rotations (\emph{Independent Special Euclidean group}) $\text{ISE}(n)\cong\mathbb{R}^n\times\text{SO}(n)$, defined as:
     \begin{align}
         \begin{split}
             \text{ISE}(n) &= \left\{\begin{bmatrix}
@@ -157,10 +170,12 @@ In this section we present some examples of the most common Lie groups, which wi
             \end{bmatrix}\in\mathbb{R}^{(2n+1)\times(2n+1)}\,|\, \mathbf{R}\in\text{SO}(n),\,\mathbf{p}\in\mathbb{R}^n\right\}.
         \end{split} \label{eq:ISE-group}
     \end{align}
-    Although they are isomorphic, we will use the representation $\mathbb{R}^n\times \text{SO}(n)$ to denote tuples of translations and rotations $(\mathbf{p},\mathbf{R})$, and the representation $\text{ISE}(n)$ to denote elements represented as the matrices in \eqref{eq:ISE-group}. Note that we can use both representations interchangeably, since we can easily extract the position and orientation from the matrix representation by means of matrix multiplication.
+    While these two representations are isomorphic, we use $\mathbb{R}^n\times \text{SO}(n)$ to denote tuples of translations and rotations $(\mathbf{p},\mathbf{R})$, and $\text{ISE}(n)$ to denote elements represented as the matrices in \eqref{eq:ISE-group}. Both representations are interchangeable, as position and orientation can be easily extracted from the matrix representation via matrix multiplication.
+
+    This group is not compact, but it is connected.
 \end{example}
 \begin{example}\label{ex:symplectic-group}
-    The \emph{real symplectic group} $\text{Sp}(2n)$ is the group of all $2n\times 2n$ real matrices that preserve a non-degenerate skew-symmetric bilinear form $\omega$. This group plays an important role in classical mechanics, specially in the study of Hamiltonian systems. The group is defined as
+    The \emph{real symplectic group} $\text{Sp}(2n)$ is the group of all $2n\times 2n$ real matrices that preserve a non-degenerate skew-symmetric bilinear form  $\omega$. This group plays an important role in classical mechanics, especially in the study of Hamiltonian systems. The group is defined as
     \begin{align}
         \text{Sp}(2n) &= \left\{\mathbf{X}\in\mathbb{R}^{2n\times 2n} | \mathbf{X}^\top\boldsymbol{\Omega}\mathbf{X} = \boldsymbol{\Omega}\right\}\\
         &= \left\{\mathbf{X}\in\mathbb{R}^{2n\times 2n} | -\boldsymbol{\Omega}\mathbf{X}^\top\boldsymbol{\Omega} = \mathbf{X}^{-1}\right\},
@@ -172,7 +187,9 @@ In this section we present some examples of the most common Lie groups, which wi
             -\mathbf{I}_n & \mathbf{0}
         \end{bmatrix}.
     \end{align}
-    The skew-symmetric bilinear form can be characterized by $\omega(x,y)=\langle x, \boldsymbol{\Omega}y\rangle\,\forall\,x,y\in\mathbb{R}^{2n}$. We can also define the \emph{complex symplectic group} $\text{Sp}(2n, \mathbb{C})$ as the group of all $n\times n$ complex matrices that preserve the same non-degenerate skew-symmetric bilinear form, thus the group definition is the same, but with matrices with complex entries.
+    The skew-symmetric bilinear form can be characterized by $\omega(x,y)=\langle x, \boldsymbol{\Omega}y\rangle\,\forall\,x,y\in\mathbb{R}^{2n}$. We can also define the \emph{complex symplectic group} $\text{Sp}(2n, \mathbb{C})$ as the group of all $2n\times 2n$ complex matrices that preserve the same non-degenerate skew-symmetric bilinear form. The group definition remains the same, but with complex matrices.
+
+    Both $\text{Sp}(2n)$ and $\text{Sp}(2n, \mathbb{C})$ are non-compact, but they are connected.
 \end{example}
 \begin{example}
     The \emph{indefinite orthogonal group} (or generalized orthogonal group) $\text{O}(p,q)$ is the group of all $n\times n$ real matrices
@@ -188,19 +205,18 @@ In this section we present some examples of the most common Lie groups, which wi
     \end{align}
     and $n=p+q$.
 
-    Similarly, we can define the \emph{indefinite special orthogonal group} $\text{SO}(p,q)$ as the group
+    Similarly, the \emph{indefinite special orthogonal group} $\text{SO}(p,q)$ is defined as:
     \begin{align}
         \text{SO}(p, q) = \left\{\mathbf{X}\in\text{O}(p, q) | \det\mathbf{X}=1\right\}.
     \end{align}
-    The group $\text{O}(1,3)$ is of particular interest in the study of special relativity, and is denoted the \emph{Lorentz group}. This group preserves the Lorentz metric
+    The group $\text{O}(1,3)$, of particular interest in the study of special relativity, is called the \emph{Lorentz group}. It preserves the Lorentz metric:
     \begin{align}
         (t,x,y,z) \mapsto t^2 - x^2 - y^2 - z^2.
     \end{align}
-    The Lorentz group is also represented as $\text{O}(3,1)$, which would preserve the metric $x^2 + y^2 + z^2 - t^2$.
-    If we restrict this group to transformations that preserve orientation, we obtain the \emph{proper Lorentz group} $\text{SO}(1,3)$. Furthermore, the subgrtoup of all Lorentz transformations that preserve orientation and the time direction is called the  \emph{proper orthochronous Lorentz group} $\text{SO}^+(1,3)$, this is the identity component $G_\iota$ of $\text{SO}(1,3)$.
+    The Lorentz group is also represented as $\text{O}(3,1)$, which would preserve the metric $x^2 + y^2 + z^2 - t^2$. If we restrict this group to transformations that preserve orientation, we obtain the \emph{proper Lorentz group} $\text{SO}(1,3)$. Furthermore, the subgroup of all Lorentz transformations that preserve orientation and the time direction is called the  \emph{proper orthochronous Lorentz group} $\text{SO}^+(1,3)$, which is the identity component $G_\iota$ of $\text{SO}(1,3)$.
     
+    Neither $\text{O}(p,q)$ nor $\text{SO}(p,q)$ are compact or connected. However, $\text{SO}^+(1,3)$ is connected.
 \end{example}
-% ADD Examples for indefinite orthogonal (with lorentz), heisenberg?, and symplectic groups
 \begin{example}\label{ex:non-matrix-lie-group}
     An example of a Lie group that is not a matrix Lie group is given in \citet[p. 25]{Hall2015} and reproduced here:
 
@@ -208,17 +224,17 @@ In this section we present some examples of the most common Lie groups, which wi
     \begin{align}
         (x_1, y_1, \theta_1)\circ (x_2, y_2, \theta_2) = (x_1 + x_2, y_1 + y_2, e^{ix_1y_2}\theta_1\theta_2),
     \end{align}
-    is a Lie group without a matrix representation. The identity element is $\iota=(0, 0, 1)$, and the inverse map is $(x, y, \theta)^{-1} = (-x, -y, e^{ixy}\theta^{-1})$.
+    is a Lie group that does not have a matrix representation. The identity element is $\iota=(0, 0, 1)$, and the inverse map is $(x, y, \theta)^{-1} = (-x, -y, e^{ixy}\theta^{-1})$.
 \end{example} 
 
 \subsection{Lie algebras}
-Lie groups are closely associated with a mathematical structure called the \emph{Lie algebra}, which allows us to study their properties using linear algebra. Usually the Lie algebra of a Lie group $G$ is denoted as the set of all smooth \emph{left-invariant} vector fields on $G$, denoted $\text{Lie}(G)$. These are vector fields that remain unchanged when ``shifted'' by the group operations. To define left-invariant vector fields formally, we first need to understand the concept of differentials in the context of Lie groups.
+Lie groups are intimately connected to a mathematical structure called the \emph{Lie algebra}, which provides a linear algebraic framework for studying the properties of Lie groups. The Lie algebra of a Lie group $G$, denoted $\text{Lie}(G)$, is defined as the set of all smooth \emph{left-invariant} vector fields on $G$. These are vector fields that remain unchanged under the ``shifting'' induced by the group operations. To formally define left-invariant vector fields, it is necessary first to understand the concept of differentials in the context of Lie groups.
 
-Suppose $\mathcal{H}:G\to H$ is a homomorphism between Lie groups $G$ and $H$. If $V$ is a vector field on $G$, then at every point $\mathbf{X}\in G$, the differential of $\mathcal{H}$ at $\mathbf{X}$, denoted $d(\mathcal{H})_\mathbf{X}$, maps the vector $V(\mathbf{X})$ in the tangent space of $G$ at $\mathbf{X}$ to a vector in the tangent space of $H$ at $\mathcal{H}(\mathbf{X})$, i.e. $d(\mathcal{H})_\mathbf{X}:T_\mathbf{X}G\to T_{\mathcal{H}(\mathbf{X})}H$.
+Consider a homomorphism of Lie groups $\mathcal{H}:G\to H$. If $V$ is a vector field on $G$, the differential of $\mathcal{H}$ at a point $\mathbf{X}\in G$, denoted $d(\mathcal{H})_\mathbf{X}$, maps the vector $V(\mathbf{X})$ in the tangent space of $G$ at $\mathbf{X}$ to a vector in the tangent space of $H$ at $\mathcal{H}(\mathbf{X})$. Formally, $d(\mathcal{H})_\mathbf{X}:T_\mathbf{X}G\to T_{\mathcal{H}(\mathbf{X})}H$.
 
-Furthermore, if there exists a vector field $W$ on $H$ such that $d(\mathcal{H})_\mathbf{X}\bigl(V(\mathbf{X})\bigr) = W\bigl(\mathcal{H}(\mathbf{X})\bigr)$ for all $\mathbf{X}\in G$, then $V$ and $W$ are said to be $\mathcal{H}$-related. This concept is important since if $\mathcal{H}$ is a diffeomorphism, a Lie group isomorphism in this context, then there is a unique vector field $W$ on $H$ that is $\mathcal{H}$-related to $V$ \citep[p. 183]{Lee2012}.
+If there exists a vector field $W$ on $H$ such that $d(\mathcal{H})_\mathbf{X}\bigl(V(\mathbf{X})\bigr) = W\bigl(\mathcal{H}(\mathbf{X})\bigr)$ for all $\mathbf{X}\in G$, then $V$ and $W$ are said to be $\mathcal{H}$-related. This concept is particularly significant because, if $\mathcal{H}$ is a diffeomorphism (a Lie group isomorphism in this context), there exists a unique vector field $W$ on $H$ that is $\mathcal{H}$-related to $V$ \citep[p. 183]{Lee2012}.
 
-Finally, the concept of left-invariant (resp. right-invariant) vector fields on Lie groups can be introduced by means of the differential mappings of these translations:
+The concept of left-invariant (resp. right-invariant) vector fields on Lie groups can now be introduced using the differential mappings of the translation operations:
 \begin{definition}
     A vector field $V$ on a Lie group $G$ is said to be \emph{left-invariant} (resp. \emph{right-invariant}) if it is invariant under all left (resp. right) translations:
     \begin{align*}
@@ -226,18 +242,18 @@ Finally, the concept of left-invariant (resp. right-invariant) vector fields on 
         \text{(resp.) }d(\mathcal{R}_\mathbf{X})_\mathbf{Y}(V(\mathbf{Y})) &= V(\mathbf{Y}\circ\mathbf{X}) \,\forall\,\mathbf{X},\mathbf{Y}\in G.
     \end{align*}  
 \end{definition}
-Since the translation operations are isomorphisms, it follows that every left-invariant (resp. right-invariant) vector field on a Lie group can be identified with its value at the identity element. In other words, if $V$ is a left-invariant (resp. right-invariant) vector field and $V_\iota\triangleq V(\iota) \in T_\iota G$ is the value of the vector field at the identity element of $G$, then $V$ and $V_\iota$ are $\mathcal{L}_\mathbf{X}$-related (resp. $\mathcal{R}_\mathbf{X}$-related) for all $\mathbf{X}\in G$, which implies that $V(\mathbf{X}) = d(\mathcal{L}_\mathbf{X})_\iota V_\iota$ (resp. $V(\mathbf{X}) = d(\mathcal{R}_\mathbf{X})_\iota V_\iota$).
+Since the translation operations are isomorphisms, every left-invariant (resp. right-invariant) vector field on a Lie group can be fully determined by its value at the identity element. In other words, if $V$ is a left-invariant (resp. right-invariant) vector field and $V_\iota\triangleq V(\iota) \in T_\iota G$ is its value at the identity element $\iota$, then $V$ and $V_\iota$ are $\mathcal{L}_\mathbf{X}$-related (resp. $\mathcal{R}_\mathbf{X}$-related) for all $\mathbf{X}\in G$. This relationship implies that $V(\mathbf{X}) = d(\mathcal{L}_\mathbf{X})_\iota V_\iota$ (resp. $V(\mathbf{X}) = d(\mathcal{R}_\mathbf{X})_\iota V_\iota$).
 
-From the last statement, it is clear that the Lie algebra is a vector space that captures the local behavior of the group around the identity element. For this reason, the Lie algebra of a Lie group $G$ is also defined as the tangent space at the identity element $T_\iota G$, commonly denoted $\mathfrak{g}$. More generally, a Lie algebra is defined as follows:
+From this observation, the Lie algebra can be understood as a vector space that encapsulates the local behavior of the group near the identity element. For this reason, the Lie algebra of $G$ is often defined as the tangent space at the identity element, $T_\iota G$, and is commonly denoted by $\mathfrak{g}$. More generally, a Lie algebra is defined as follows:
 \begin{definition}
-    A \emph{real Lie algebra} is a real vector space $\mathfrak{g}$, endowed with a map $[\cdot, \cdot]:\mathfrak{g}\times\mathfrak{g}\to\mathfrak{g}$, called the \emph{Lie bracket} on $\mathfrak{g}$, that satisfies the following properties for all $\mathbf{A},\mathbf{B},\mathbf{C}\in\mathfrak{g}$:
+    A \emph{real Lie algebra} is a real vector space $\mathfrak{g}$ endowed with a map $[\cdot, \cdot]:\mathfrak{g}\times\mathfrak{g}\to\mathfrak{g}$, called the \emph{Lie bracket} on $\mathfrak{g}$, that satisfies the following properties for all $\mathbf{A},\mathbf{B},\mathbf{C}\in\mathfrak{g}$:
     \begin{property}
         \item \emph{Bilinearity}: For all $a,b\in\mathbb{R}$,
         \begin{align*}
             [a\mathbf{A}+b\mathbf{B}, \mathbf{C}] &= a[\mathbf{A}, \mathbf{C}] + b[\mathbf{B}, \mathbf{C}], \\
              [\mathbf{C}, a\mathbf{A}+b\mathbf{B}] &= a[\mathbf{C}, \mathbf{A}] + b[\mathbf{C}, \mathbf{B}];
         \end{align*}
-        \item \emph{skew-symmetry}: 
+        \item \emph{Skew-symmetry}: 
         \begin{align*}
             [\mathbf{A}, \mathbf{B}] = -[\mathbf{B}, \mathbf{A}];
         \end{align*} \label{prop:lie-algebra-skew-symmetry}
@@ -247,53 +263,57 @@ From the last statement, it is clear that the Lie algebra is a vector space that
         \end{align*}
     \end{property}
 \end{definition}
-Note that \cref{prop:lie-algebra-skew-symmetry} implies that $[\mathbf{A}, \mathbf{A}]=0\,\forall\,\mathbf{A}\in\mathfrak{g}$. 
+As a direct consequence of skew-symmetry (\cref{prop:lie-algebra-skew-symmetry}), it follows that $[\mathbf{A}, \mathbf{A}]=0\,\forall\,\mathbf{A}\in\mathfrak{g}$. 
 
-Mappings between Lie algebras also have an important role in the study of Lie groups, specially homomorphisms and isomorphisms. The definition of a homomorphism between Lie algebras is given as follows:
+Mappings between Lie algebras, particularly homomorphisms and isomorphisms, play a crucial role in understanding their structure. A homomorphism of Lie algebras is defined as follows:
 \begin{definition}
-    If $\mathfrak{g}$ and $\mathfrak{h}$ are Lie algebras with Lie brackets $[\cdot, \cdot]_\mathfrak{g}$ and $[\cdot, \cdot]_\mathfrak{h}$, respectively, a linear map $\mathscr{H}:\mathfrak{g}\to\mathfrak{h}$ is denoted a \emph{homomorphism} if it preserves the Lie bracket, that is, $\mathscr{H}([\mathbf{A}, \mathbf{B}]_\mathfrak{g}) = [\mathscr{H}(\mathbf{A}), \mathscr{H}(\mathbf{B})]_\mathfrak{h}\,\forall\, \mathbf{A},\mathbf{B}\in\mathfrak{g}$. Furthermore, if $\mathscr{H}$ is a bijection, then $\mathscr{H}^{-1}$ is also a homomorphism, and $\mathscr{H}$ is an \emph{isomorphism}. In this case, we say that $\mathfrak{g}$ and $\mathfrak{h}$ are \emph{isomorphic} and denote this by $\mathfrak{g}\cong\mathfrak{h}$.
+    Let $\mathfrak{g}$ and $\mathfrak{h}$ be Lie algebras with Lie brackets $[\cdot, \cdot]_\mathfrak{g}$ and $[\cdot, \cdot]_\mathfrak{h}$, respectively. A linear map $\mathscr{H}:\mathfrak{g}\to\mathfrak{h}$ is called a \emph{homomorphism} if it preserves the Lie bracket:
+    \begin{align*}
+        \mathscr{H}([\mathbf{A}, \mathbf{B}]_\mathfrak{g}) = [\mathscr{H}(\mathbf{A}), \mathscr{H}(\mathbf{B})]_\mathfrak{h}\,\forall\, \mathbf{A},\mathbf{B}\in\mathfrak{g}.
+    \end{align*}
+    If $\mathscr{H}$ is bijective, then $\mathscr{H}^{-1}$ is also a homomorphism, and $\mathscr{H}$ is called an \emph{isomorphism}. In this case, $\mathfrak{g}$ and $\mathfrak{h}$ are said to be \emph{isomorphic}, denoted $\mathfrak{g}\cong\mathfrak{h}$.
 \end{definition}
-Lie algebra homomorphisms can also be induced by Lie group homomorphisms. If $\mathcal{H}$ is a Lie group homomorphism between Lie groups $G$ and $H$, then the differential of $\mathcal{H}$ at the identity element $d\mathcal{H}_\iota=\mathscr{H}$ is a Lie algebra homomorphism between the Lie algebras $\mathfrak{g}=T_\iota G$ and $\mathfrak{h}=T_\iota H$ \citep[p. 41]{Duistermaat2012}. Furthermore, if $\mathcal{H}$ is a Lie group isomorphism, then $d\mathcal{H}_\iota$ is a Lie algebra isomorphism.
+Lie algebra homomorphisms can be induced by Lie group homomorphisms. Specifically, if $\mathcal{H}$ is a Lie group homomorphism between $G$ and $H$, then the differential of $\mathcal{H}$ at the identity element, $d\mathcal{H}_\iota=\mathscr{H}$, is a Lie algebra homomorphism between $\mathfrak{g}=T_\iota G$ and $\mathfrak{h}=T_\iota H$ \citep[p. 41]{Duistermaat2012}. Moreover, if $\mathcal{H}$ is a Lie group isomorphism, then $d\mathcal{H}_\iota$ is a Lie algebra isomorphism.
 
-The most important Lie algebra homomorphism is the differential of the translation operations. As previously seen, every left-invariant (resp. right-invariant) vector field can be identified with the tangent space at the identity element, and since the translation operations are isomorphisms, the space of left-invariant (resp. right-invariant) vector fields $\text{Lie}(G)$ is isomorphic to the tangent space at the identity element $\mathfrak{g}$, i.e. $\text{Lie}(G)\cong\mathfrak{g}$. Both definitions of the Lie algebra of a Lie group are equally important and are used interchangeably depending on the context, as one definition might allow for easier comprehension or computtions. The concept of homomorphisms thus tie both definitions together. The strength of this implication relies on the fact that we can identify the tangent space of $G$ at $\mathbf{X}$, $T_\mathbf{X}G$, with the tangent space at the identity $\mathfrak{g}$.
+The most important Lie algebra homomorphism is the differential of the translation operations. As discussed earlier, every left-invariant (resp. right-invariant) vector field can be associated with the tangent space at the identity element. Since the translation operations are isomorphisms, the space of left-invariant (resp. right-invariant) vector fields, $\text{Lie}(G)$, is isomorphic to the tangent space at the identity element, $\mathfrak{g}$, i.e., $\text{Lie}(G) \cong \mathfrak{g}$. Both definitions of the Lie algebra of a Lie group are equally significant and are used interchangeably depending on the context, as each definition may simplify comprehension or computations in specific scenarios. Homomorphisms serve as a bridge between these definitions, with their utility stemming from the ability to identify the tangent space of $G$ at any point $\mathbf{X}$, $T_\mathbf{X}G$, with the tangent space at the identity $\mathfrak{g}$.
 
-Another important fact about left-invariant and right-invariant vector fields is that they form a basis for the tangent space of $G$ at every point $\mathbf{X}$ in $G$, which means that every element of $T_\mathbf{X}G$, for every $\mathbf{X}\in G$, can be written as a linear combination of a finite collection of linearly independent left-invariant, or right-invariant, vector fields. In differential geometry terms, this means that left-invariant and right-invariant vector fields form a \emph{global frame} for $G$ \citep[p. 192]{Lee2012}.
+Additionally, left-invariant and right-invariant vector fields form a basis for the tangent space of $G$ at every point $\mathbf{X} \in G$. Consequently, any element of $T_\mathbf{X}G$ can be expressed as a linear combination of a finite collection of linearly independent left-invariant or right-invariant vector fields. In differential geometry terms, this implies that left-invariant and right-invariant vector fields form a \emph{global frame} for $G$ \citep[p. 192]{Lee2012}.
 
-Now we introduce another isomorphism that will be essential for our generalization. Since the Lie algebra is a vector space, we can define a basis $\{\mathbf{E}_k\}\in\mathfrak{g}, k\in[1,m]$ for an $m$-dimensional Lie algebra $\mathfrak{g}$. Given a basis, for any $\mathbf{A} \in\mathfrak{g}$, there exist scalars $\{\zeta_k\},\, k\in[1,m]$, such that $\mathbf{A} = \sum_{k=1}^{m} \zeta_k\mathbf{E}_k$. Furthermore, for each choice of basis for the Lie algebra, it becomes possible to define uniquely a respective linear operator $\SL:\mathbb{R}^{m}\to\mathfrak{g}$ as follows:
+We now introduce another isomorphism essential for our generalization. Since the Lie algebra is a vector space, we can define a basis $\{\mathbf{E}_k\}\in\mathfrak{g}, k\in[1,m]$ for an $m$-dimensional Lie algebra $\mathfrak{g}$. For any $\mathbf{A} \in\mathfrak{g}$, there exist scalars $\{\zeta_k\},\, k\in[1,m]$, such that $\mathbf{A} = \sum_{k=1}^{m} \zeta_k\mathbf{E}_k$. Furthermore, for each choice of basis for the Lie algebra, we can uniquely define a linear operator $\SL:\mathbb{R}^{m}\to\mathfrak{g}$ as follows:
 \begin{definition}[S map]\label{def:SL-left-isomorphism-act-on-xi}
-    Let $\mathbf{E}_1,\dots,\mathbf{E}_m$ be a basis for an $m$-dimensional Lie algebra $\mathfrak{g}$, and $\boldsymbol{\zeta}$ an $m$-dimensional vector. Then, there exists a unique isomorphism $\SL:\mathbb{R}^{m}\to\mathfrak{g}$ that maps the Lie algebra $\mathbb{R}^m$ to $\mathfrak{g}$ defined as
+    Let $\mathbf{E}_1,\dots,\mathbf{E}_m$ be a basis for an $m$-dimensional Lie algebra $\mathfrak{g}$, and let $\boldsymbol{\zeta}$ be an $m$-dimensional vector. The \emph{S map} is the unique isomorphism $\SL:\mathbb{R}^{m}\to\mathfrak{g}$, defined by
     \begin{align}
         \SL[\boldsymbol{\zeta}] \triangleq \sum_{k=1}^m\zeta_k\mathbf{E}_k.    
     \end{align}
 \end{definition}
-Note that $\SL$ is indeed a \emph{linear operator}. Since $\SL$ is an isomorphism, the \emph{inverse map} that maps an element of the Lie algebra $\mathfrak{g}$ to a vector (an element of the Lie algebra $\mathbb{R}^m$) can be defined as well:
+Since $\SL$ is an isomorphism, the \emph{inverse map}, which maps elements of the Lie algebra $\mathfrak{g}$ back to a vector in $\mathbb{R}^m$, can also be defined:
 \begin{definition}[Inverse S map]\label{def:inverse-isomorphism-SLinv}
-    Let $\mathfrak{g}$ be an $m$-dimensional Lie algebra. The \emph{inverse S map} is defined as $\invSL:\mathfrak{g}\to\mathbb{R}^m$, such that $\invSL[\SL[\boldsymbol{\zeta}]] = \boldsymbol{\zeta}$. 
+    Let $\mathfrak{g}$ be an $m$-dimensional Lie algebra. The \emph{inverse S map} is the isomorphism $\invSL:\mathfrak{g}\to\mathbb{R}^m$, such that $\invSL[\SL[\boldsymbol{\zeta}]] = \boldsymbol{\zeta}$. 
 \end{definition}
-The intuition for the S maps is that we can deal with Lie algebra elements using tangent vectors to $\mathbb{R}^m$. Thus, if the Lie group has some physical interpretation, we can use terms such as ``velocity'' to describe elements of the tangent space of $G$ -- the Lie algebra $\mathfrak{g}$ -- itself. Clearly, this requires the defnition of a basis for $\mathfrak{g}$ that has some physical interpretation.
+The intuition behind the S maps is that they allow elements of the Lie algebra $\mathfrak{g}$ to be represented as tangent vectors to $\mathbb{R}^m$. In cases where the Lie group has physical significance, this enables terms like ``velocity'' to describe elements of the tangent space of $G$ -- the Lie algebra $\mathfrak{g}$ -- itself. Clearly, this approach requires the choice of a basis for $\mathfrak{g}$ that aligns with the underlying physical interpretation.
 \subsubsection{Examples of Lie algebras}
-In this section we present the corresponding Lie algebras for the Lie groups presented in the previous section, as well as some Lie algebras isomorphisms.
+This section presents the Lie algebras corresponding to the Lie groups introduced previously, along with several Lie algebra isomorphisms.
 \begin{example}
-    The Lie algebra of the general linear group $\text{GL}(n, \mathbb{R})$ is the set of all $n\times n$ matrices, denoted $\mathfrak{gl}(n, \mathbb{R})$, with its Lie bracket given by the commutator $[\mathbf{A}, \mathbf{B}] = \mathbf{A}\mathbf{B} - \mathbf{B}\mathbf{A}$. Similarly, the Lie algebra of the general linear group $\text{GL}(n, \mathbb{C})$, denoted $\mathfrak{gl}(n, \mathbb{C})$, is the set of all $n\times n$ complex matrices with the same Lie bracket. Furthermore, the Lie algebra of the special linear group $\text{SL}(n, \mathbb{R})$ (resp. $\text{SL}(n, \mathbb{C})$) is the set of all $n\times n$ real (resp. complex) matrices with zero trace, denoted $\mathfrak{sl}(n, \mathbb{R})$ (resp. $\mathfrak{sl}(n, \mathbb{C})$).
+    The Lie algebra of the general linear group $\text{GL}(n, \mathbb{R})$ is the space of all $n\times n$ matrices, denoted $\mathfrak{gl}(n, \mathbb{R})$, with its Lie bracket defined by the commutator $[\mathbf{A}, \mathbf{B}] = \mathbf{A}\mathbf{B} - \mathbf{B}\mathbf{A}$. Similarly, the Lie algebra of the general linear group $\text{GL}(n, \mathbb{C})$, denoted $\mathfrak{gl}(n, \mathbb{C})$, is the set of all $n\times n$ complex matrices with the same Lie bracket. Furthermore, the Lie algebra of the special linear group $\text{SL}(n, \mathbb{R})$ (resp. $\text{SL}(n, \mathbb{C})$) is the space of all $n\times n$ real (resp. complex) matrices with null trace, denoted $\mathfrak{sl}(n, \mathbb{R})$ (resp. $\mathfrak{sl}(n, \mathbb{C})$).
 \end{example}
 \begin{example}
-    The lie algebra for the direct product of Lie groups $G=G_1 \times G_2 \times \dots \times G_k$ is the direct sum of the Lie algebras of the groups, i.e. $\mathfrak{g}_1\oplus\mathfrak{g}_2\oplus\dots\oplus\mathfrak{g}_k$.
+    The lie algebra for the direct product of Lie groups $G=G_1 \times G_2 \times \dots \times G_k$ is the direct sum of the Lie algebras of the individual groups, i.e. $\mathfrak{g}_1\oplus\mathfrak{g}_2\oplus\dots\oplus\mathfrak{g}_k$.
 \end{example}
 \begin{example}
-    The Lie algebra of the orthogonal group $\text{O}(n)$ is the same as the Lie algebra of the special orthogonal group $\text{SO}(n)$, denoted $\mathfrak{so}(n)$. This Lie algebra is the set of all $n\times n$ skew-symmetric matrices:
+    The Lie algebra of the orthogonal group $\text{O}(n)$  is identical to that of the special orthogonal group $\text{SO}(n)$, denoted $\mathfrak{so}(n)$. This Lie algebra consists of all $n\times n$ skew-symmetric matrices:
     \begin{align*}
         \mathfrak{so}(n) = \left\{\mathbf{A}\in\mathbb{R}^{n\times n} | \mathbf{A}^\top = -\mathbf{A}\right\}.
     \end{align*}
-    In the special case of the special orthogonal Lie group $\text{SO}(3)$, with Lie algebra $\mathfrak{so}(3)$, a common basis is given by the of matrices
+    In the special case of $\text{SO}(3)$, the Lie algebra $\mathfrak{so}(3)$is commonly represented using the basis
     \begin{align*}
         \mathbf{E}_1 = \begin{bmatrix} 0 & 0 & 0 \\ 0 & 0 & -1 \\ 0 & 1 & 0 \end{bmatrix}, \quad \mathbf{E}_2 = \begin{bmatrix} 0 & 0 & 1 \\ 0 & 0 & 0 \\ -1 & 0 & 0 \end{bmatrix}, \quad \mathbf{E}_3 = \begin{bmatrix} 0 & -1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}.
     \end{align*}
-    It is usual to represent elements of $\mathfrak{so}(3)$ through a map $\SL$ that maps a vector $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3]^\top$ into a skew-symmetric matrix:
+    Additionally, a mapping $\SL$ is often employed to represent elements of $\mathfrak{so}(3)$ by mapping a vector $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3]^\top$ to a skew-symmetric matrix:
     \begin{align*}
         \SL[\boldsymbol{\zeta}] = \zeta_1 \mathbf{E}_1 + \zeta_2 \mathbf{E}_2 + \zeta_3 \mathbf{E}_3
         = \begin{bmatrix} 0 & -\zeta_3 & \zeta_2 \\ \zeta_3 & 0 & -\zeta_1 \\ -\zeta_2 & \zeta_1 & 0 \end{bmatrix}.
     \end{align*}
-    In fact, this map is an isomorphism between the Lie algebra of $\mathbb{R}^3$ and $\mathfrak{so}(3)$. Let the Lie bracket of $\mathbb{R}^3$ be the cross product, $\mathbf{a} = [a_1\ a_2\ a_3]^\top$ and $\mathbf{b} = [b_1\ b_2\ b_3]^\top$, then 
+    This mapping $\SL$ establishes an isomorphism between the Lie algebra $\mathbb{R}^3$ (under the cross product as its Lie bracket) and $\mathfrak{so}(3)$. Specifically, given two vectors $\mathbf{a} = [a_1\ a_2\ a_3]^\top$ and $\mathbf{b} = [b_1\ b_2\ b_3]^\top$, then 
     \begin{align*}
         \SL[\mathbf{a}\times \mathbf{b}] &= \begin{bmatrix}
             0 & a_2b_1-a_1b_2 & a_3b_1-a_1b_3\\
@@ -316,16 +336,16 @@ In this section we present the corresponding Lie algebras for the Lie groups pre
             a_3b_1 & a_3b_2 & -a_2b_2 - a_1b_1
         \end{bmatrix}.
     \end{align*}
-    Clearly, $\SL[\mathbf{a}\times \mathbf{b}] = [\SL[\mathbf{a}], \SL[\mathbf{b}]] = \SL[\mathbf{a}]\SL[\mathbf{b}] - \SL[\mathbf{b}]\SL[\mathbf{a}]$, which shows that $\SL$ is an isomorphism between $\mathbb{R}^3$ and $\mathfrak{so}(3)$.
+    Clearly, $\SL[\mathbf{a}\times \mathbf{b}] = [\SL[\mathbf{a}], \SL[\mathbf{b}]] = \SL[\mathbf{a}]\SL[\mathbf{b}] - \SL[\mathbf{b}]\SL[\mathbf{a}]$. This demonstrates that $\SL$ is indeed an isomorphism.
 \end{example}
 \begin{example}
-    The Lie algebra of the Euclidean group $\text{E}(n)$ and the special Euclidean group $\text{SE}(n)$ is denoted $\mathfrak{se}(n)$, and is the set 
+    The Lie algebra of the Euclidean group $\text{E}(n)$ and the special Euclidean group $\text{SE}(n)$, denoted $\mathfrak{se}(n)$, is the space
     \begin{align*}
         \mathfrak{se}(n) = \left\{\begin{bmatrix}
             \mathbf{A} & \mathbf{b} \\ \mathbf{0} & 0
         \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} | \mathbf{A}\in\mathfrak{so}(n),\, \mathbf{b}\in\mathbb{R}^n\right\}.
     \end{align*}
-    specially in the case of $\mathfrak{se}(3)$, although some texts refer to elements of the Lie algebra as twists, the most common representation is given by a six-dimensional vector, the twit, $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3\ \zeta_4\ \zeta_5\ \zeta_6]^\top$ and an isomorphism $\SL$ is given by
+    For the case of $\mathfrak{se}(3)$, elements of this Lie algebra are frequently represented as six-dimensional vectors, called twists, $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3\ \zeta_4\ \zeta_5\ \zeta_6]^\top$. An isomorphism $\SL$ is given by
     \begin{align*}
         \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
             0 & -\zeta_6 & \zeta_5 & \zeta_1 \\
@@ -334,10 +354,10 @@ In this section we present the corresponding Lie algebras for the Lie groups pre
             0 & 0 & 0 & 0
         \end{bmatrix},
     \end{align*}
-    where $[\zeta_1\ \zeta_2\ \zeta_3]^\top$ is the linear velocity $\mathbf{v}$ and $[\zeta_4\ \zeta_5\ \zeta_6]^\top$ is the angular velocity $\boldsymbol{\omega}$.
+    where $[\zeta_1\ \zeta_2\ \zeta_3]^\top$ represents the linear velocity $\mathbf{v}$ and $[\zeta_4\ \zeta_5\ \zeta_6]^\top$ represents the angular velocity $\boldsymbol{\omega}$.
 \end{example}
 \begin{example}
-    The Lie algebra of $\text{T}(n)$ is a subset of $\mathfrak{se}(n)$, and is given by
+    The Lie algebra of $\text{T}(n)$ is a subset of $\mathfrak{se}(n)$, explicitly given by
     \begin{align*}
         \mathfrak{t}(n) = \left\{\begin{bmatrix}
             \mathbf{0} & \mathbf{a} \\ \mathbf{0} & 0
@@ -357,17 +377,16 @@ In this section we present the corresponding Lie algebras for the Lie groups pre
             \mathbf{0} & \mathbf{0} & 0
         \end{bmatrix} \in \mathbb{R}^{(2n+1)\times(2n+1)}\,;\, \mathbf{A}\in\mathfrak{so}(n),\,\mathbf{b}\in\mathbb{R}^n\right\}.
     \end{align*}
-    This means that $\mathfrak{ise}(n) = \mathfrak{so}(n)\oplus\mathfrak{t}(n)$, as expected from the definition of the Lie algebra of a direct product of Lie groups.
+    This implies that $\mathfrak{ise}(n) = \mathfrak{so}(n)\oplus\mathfrak{t}(n)$, consistent with the definition of the Lie algebra of a direct product of Lie groups.
 \end{example}
 \begin{example}
     The symplectic Lie algebra $\mathfrak{sp}(2n, \mathbb{R})$ is defined as
     \begin{align*}
         \begin{split}
-            \mathfrak{sp}(2n, \mathbb{R}) &= \left\{ \mathbf{A} \in \mathbb{R}^{2n\times 2n} | \mathbf{A}^T\boldsymbol{\Omega} + \boldsymbol{\Omega}\mathbf{A} = 0 \right\} \\&= \left\{ \begin{bmatrix} \mathbf{B} & \mathbf{C} \\ \mathbf{D} & -\mathbf{B}^T \end{bmatrix}\in \mathbb{R}^{2n\times 2n}| \mathbf{C} = \mathbf{C}^\top,\, \mathbf{D} = \mathbf{D}^\top\right\},            
+            \mathfrak{sp}(2n, \mathbb{R}) &= \left\{ \mathbf{A} \in \mathbb{R}^{2n\times 2n} | \mathbf{A}^\top\boldsymbol{\Omega} + \boldsymbol{\Omega}\mathbf{A} = 0 \right\} \\&= \left\{ \begin{bmatrix} \mathbf{B} & \mathbf{C} \\ \mathbf{D} & -\mathbf{B}^\top \end{bmatrix}\in \mathbb{R}^{2n\times 2n}| \mathbf{C} = \mathbf{C}^\top,\, \mathbf{D} = \mathbf{D}^\top\right\},            
         \end{split}
     \end{align*}
-    where $\boldsymbol{\Omega}$ the same as defined in \autoref{ex:symplectic-group}. Clearly, the dimension of $\mathfrak{sp}(2n, \mathbb{R})$ is $n(2n + 1)$. Thus,
-    for a vector $\boldsymbol{\zeta} = [\zeta_1\ \dots\ \zeta_{2n^2+n}]^\top$, an isomorphism $\SL$ is given by
+    where $\boldsymbol{\Omega}$ is the same matrix as defined in \autoref{ex:symplectic-group}. The dimension of $\mathfrak{sp}(2n, \mathbb{R})$ is $n(2n + 1)$. For a vector $\boldsymbol{\zeta} = [\zeta_1\ \dots\ \zeta_{2n^2+n}]^\top$, an isomorphism $\SL$ is given by
     \begin{align*}
         \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
             \zeta_1 & \dots & \zeta_n & \zeta_{n^2 + 1} & \dots & \zeta_{n^2 + n} \\
@@ -380,7 +399,7 @@ In this section we present the corresponding Lie algebras for the Lie groups pre
     \end{align*}
 \end{example}
 \begin{example}
-    The Lie algebra of the indefinite orthogonal group $\text{O}(p, q)$ and the indefinite special orthogonal group $\text{SO}(p, q)$ are the same and denoted $\mathfrak{so}(p, q)$. This Lie algebra is defined by
+    The Lie algebra of the indefinite orthogonal group $\text{O}(p, q)$ and the indefinite special orthogonal group $\text{SO}(p, q)$ is the same and is denoted $\mathfrak{so}(p, q)$. This Lie algebra is defined as
     \begin{align*}
         \mathfrak{so}(p, q) = \left\{
             \begin{bmatrix}
@@ -390,7 +409,7 @@ In this section we present the corresponding Lie algebras for the Lie groups pre
         \right\},
     \end{align*}
 
-    As for the most common subgroups: the full Lorentz group $\text{O}(3, 1)$, the special Lorentz group $\text{SO}(3, 1)$, and the proper orthochronous Lorentz group $\text{SO}^+(3, 1)$ share the same Lie algebra $\mathfrak{so}(3, 1)$, for which an isomosphism for a vector $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3\ \zeta_4\ \zeta_5\ \zeta_6]^\top$ is described as follows:
+    For the Lorentz group $\text{O}(3, 1)$, the special Lorentz group $\text{SO}(3, 1)$, and the proper orthochronous Lorentz group $\text{SO}^+(3, 1)$, the shared Lie algebra $\mathfrak{so}(3, 1)$ has an isomorphism for a vector $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3\ \zeta_4\ \zeta_5\ \zeta_6]^\top$ defined as:
     \begin{align*}
         \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
             0 & \zeta_1 & \zeta_2 & \zeta_4 \\
@@ -401,91 +420,93 @@ In this section we present the corresponding Lie algebras for the Lie groups pre
     \end{align*}
 \end{example}
 \subsection{Exponential map}\label{sec:background-exponential-map}
-The \emph{exponential map} is a fundamental concept in the study of Lie groups and Lie algebras, as it provides a way to map elements of the Lie algebra to elements of the Lie group. Although it is defined for any Lie group, we will focus on matrix Lie groups, as the definition will be more straightforward and related to our work. The exponential is simply given by the matrix exponential, defined as
+The \emph{exponential map} is a fundamental concept in the study of Lie groups and Lie algebras, providing a means to map elements of a Lie algebra to elements of its corresponding Lie group. While the exponential map can be defined for any Lie group, we focus on matrix Lie groups, where the definition is more straightforward and directly relevant to our work. For matrix Lie groups, the exponential map is given by the matrix exponential:
 \begin{align}
     \exp : \mathfrak{g} &\to G,
 \end{align}
-and it is given by the power series
+defined via the power series:
 \begin{align}
-    \exp(\mathbf{A}) = \sum_{k=0}^\infty \frac{\mathbf{A}^k}{k!}.
+    \exp(\mathbf{A}) = \sum_{k=0}^\infty \frac{\mathbf{A}^k}{k!},\,\mathbf{A}\in G.
 \end{align}
 
-The exponential map is also useful for obtaining the Lie algebra of a Lie group, as the following theorem shows.
+The exponential map is also instrumental in determining the Lie algebra of a matrix Lie group, as shown in the following classical theorem:
 \begin{theorem}[Von Neumann and Cartan, 1927]
     Let $G\subset\text{GL}(n, \mathbb{R})$ be a matrix Lie group. The set $\mathfrak{g}$ defined as
     \begin{align}
         \mathfrak{g} = \left\{\mathbf{A}\in\mathbb{R}^{n\times n} | \exp(\sigma\mathbf{A})\in G\,\forall\,\sigma\in\mathbb{R}\right\}
     \end{align}
-    is a vector space equal to the tangent space $T_\iota G$ at the identity $\iota$. Furthermore, $\mathfrak{g}$ is closed under the Lie bracket $[\mathbf{A}, \mathbf{B}] = \mathbf{A}\mathbf{B} - \mathbf{B}\mathbf{A}\,\forall\,\mathbf{A},\mathbf{B}\in\mathbb{R}^{n\times n}$.\hfill\qedsymbol
+    forms a vector space equal to the tangent space $T_\iota G$ at the identity element $\iota$. Furthermore, $\mathfrak{g}$ is closed under the Lie bracket $[\mathbf{A}, \mathbf{B}] = \mathbf{A}\mathbf{B} - \mathbf{B}\mathbf{A}\,\forall\,\mathbf{A},\mathbf{B}\in\mathbb{R}^{n\times n}$.\hfill\qedsymbol
 \end{theorem}
 
-Although the exponential map maps elements of the Lie algebra to the Lie group, it is not necessarily surjective. All elements $\exp(\mathbf{A})$ lie in the identity component $G_\iota$ of the Lie group, and the image of the exponential map is a neighborhood of the identity element in $G_\iota$ \citep[p. 56]{Hall2015}. Although there are sufficient conditions for the exponential map to be surjective, for example, if the Lie group is connected and compact \citep[p. 316]{Hall2015}, there is no necessary conditions for this property in the literature. Groups that possess this property are denoted \emph{exponential Lie groups} \citep{djokovic1995exponential}, for which examples are the special orthogonal group $\text{SO}(n)$ \citep[p. 28]{Gallier2020}, the special Euclidean  group $\text{SE}(n)$ \citep[p. 42]{Gallier2020}, and the Heisenberg group $\text{H}$ \citep[p. 75]{Hall2015}. Additional non-trivial examples can be found in \citet{djokovic1995exponential}. In contrast, examples of non-exponential Lie groups include the special linear group $\text{SL}(n)$ \citep[p. 28]{Gallier2020}.
+Although the exponential map maps elements of the Lie algebra to the Lie group, it is not necessarily surjective. The image of the exponential map lies within the identity component $G_\iota$ of the Lie group and, more specifically, forms a neighborhood of the identity element in $G_\iota$ \citep[p. 56]{Hall2015}. While sufficient conditions for surjectivity exist -- such as the Lie group being connected and compact \citep[p. 316]{Hall2015} -- no general necessary conditions are currently known.
 
+Lie groups for which the exponential map is surjective are called \emph{exponential Lie groups} \citep{djokovic1995exponential}. Examples of exponential Lie groups include the special orthogonal group $\text{SO}(n)$ \citep[p. 28]{Gallier2020}, the special Euclidean  group $\text{SE}(n)$ \citep[p. 42]{Gallier2020}, and the Heisenberg group $\text{H}$ \citep[p. 75]{Hall2015}. Additional nontrivial examples can be found in \citet{djokovic1995exponential}. Conversely, an example of a non-exponential Lie group is the special linear group $\text{SL}(n)$ \citep[p. 28]{Gallier2020}.
 \subsection{Integral curves, flows and derivatives}
-The contents of this section will be used to define our kinematic model for the vector field strategy. We begin by introducing the concept of integral curves, which are solutions to the differential equation defined by a vector field. More formally, its definition is as follows
+The contents of this section will be utilized to define our kinematic model for the vector field strategy. We begin by introducing the concept of integral curves, which correspond to the solutions of the differential equation defined by a vector field. More formally, their definition is as follows:
 \begin{definition}
-    If $V$ is a vector field on a Lie group $G$, and $I\subseteq \mathbb{R}$ is an open interval containing $0$, an \emph{integral curve} of $V$ is a differentiable curve $\gamma:I\to G$ whose velocity at each point $\mathbf{X}\in G$ is equal to the value of $V(\mathbf{X})$ at that point:
+    If $V$ is a vector field on a Lie group $G$, and $I\subseteq \mathbb{R}$ is an open interval containing $0$, an \emph{integral curve} of $V$ is a differentiable curve $\gamma:I\to G$ such that its velocity at each point $\mathbf{X}\in G$ equals the value of $V(\mathbf{X})$ at that point:
     \begin{align*}
         \frac{d}{d\sigma}\gamma(\sigma) = V\bigl(\gamma(t)\bigr)\,\forall\,\sigma\in I.
     \end{align*}
-    The point $\gamma(0)$ is called the \emph{initial condition} of the integral curve. Note that it is always possible to redefine an interval $I$ to include the point $0$ by the translation lemma \citep[p. 208]{Lee2012}.
+    The point $\gamma(0)$ is called the \emph{initial condition} of the integral curve. Note that it is always possible to redefine the interval $I$ to include the point $0$ by the translation lemma \citep[p. 208]{Lee2012}.
 \end{definition}
-This means that, for each point $\mathbf{X}=\gamma(\sigma)$, its velocity $\frac{d}{d\sigma}\gamma(\sigma)$ is equal to the value of the vector field $V(\mathbf{X})$ at that point.
+This definition implies that, at every point $\mathbf{X}=\gamma(\sigma)$, the velocity $\frac{d}{d\sigma}\gamma(\sigma)$ matches the value of the vector field $V(\mathbf{X})$ at that point.
 
-A flow is a collection of integral curves of a vector field $V$, i.e., it is a family of solutions to the differential equation defined by $V$. Its formal definitions is
+A flow, in this context, is a collection of integral curves of a vector field $V$, i.e., a family of solutions to the differential equation defined by $V$. Its formal definition is:
 \begin{definition}
     Let $V$ be a vector field on a Lie group $G$, and let $\mathbf{X}$ be a point in $G$. A \emph{local flow} of $V$ is a map
     \begin{align*}
         \rho : I \times G \to G,
     \end{align*}
-    where $I\subseteq\mathbb{R}$ is an open interval containing $0$. It follows that, for every $\mathbf{Y}\in G$, the curve $\rho(\sigma, \mathbf{X})$ is an integral curve of $V$ with initial condition $\mathbf{X}$. Furthermore, if $I=\mathbb{R}$, then $\rho$ is a \emph{global flow}. Since a flow is directly dependent on the vector field, it is common to use the notation $\rho_V$ to denote the flow of the vector field $V$. This notation, however, would become cumbersome later, and thus we will assume that the vector field dependency is implicit.
+    where $I\subseteq\mathbb{R}$ is an open interval containing $0$. It follows that, for every $\mathbf{X}\in G$, the curve $\rho(\sigma, \mathbf{X})$ is an integral curve of $V$ with initial condition $\mathbf{X}$. Furthermore, if $I=\mathbb{R}$, then $\rho$ is a \emph{global flow}. Since a flow is directly dependent on the vector field it is often denoted by $\rho_V$. However, for conciseness, we will omit this explicit dependency.
 \end{definition}
-The concept of a flow is exactly the same as the concept of the trajectory of a system in the context of control theory. When one says that a trajectory $x(t)$ has initial condition $x(0)=x_0$, it is equivalent to defining a flow $\rho(t, x_0)$ that maps a point to the integral curve with initial condition at time $t$. 
+In control theory, the concept of a flow aligns with the notion of a trajectory. For example, stating that a trajectory $x(t)$ has the initial condition $x(0)=x_0$ is equivalent to defining a flow $\rho(t, x_0)$ that maps a point to the integral curve with the given initial condition at time $t$. 
 
-It is a fact that every smooth global flow gives rise to a smooth vector field whose integral curves are the curves defined by the flow \citep[p. 211]{Lee2012}, but it is not always true that every smooth vector field generates a smooth global flow. However, this is true for left-invariant, or right-invariant, vector fields on Lie groups. This is a direct consequence of the fact that left-invariant (resp. right-invariant) vector fields on Lie groups are complete \citep[p. 570]{Gallier2020}, meaning that they generate a global flow \citep[p. 215]{Lee2012}. Furthermore, the integral curves generated by these flows are unique \citep[p. 18]{Duistermaat2012} and they are commonly termed \emph{maximal integral curves} \citep[p. 570]{Gallier2020}.
+It is known that every smooth global flow gives rise to a smooth vector field whose integral curves coincide with the curves defined by the flow \citep[p. 211]{Lee2012}. However, the converse is not always true: not every smooth vector field generates a smooth global flow. This limitation does not apply to left-invariant or right-invariant vector fields on Lie groups, as these are \emph{complete} \citep[p. 570]{Gallier2020}, meaning that they generate global flows \citep[p. 215]{Lee2012}. Moreover, the integral curves of these flows are unique \citep[p. 18]{Duistermaat2012} and are commonly referred to as \emph{maximal integral curves} \citep[p. 570]{Gallier2020}.
 
-We now have all the concepts necessary to study one main aspect for our work: the trajectories and velocities of a system in a matrix Lie group. Or, using the presented terminology, we want to study the global flows of a vector field on a matrix Lie group. We begin with the following lemma that was adapted from \citet[p. 570]{Gallier2020}.
+With these concepts in place, we can now focus on an important aspect of our work: the trajectories and velocities of a system on a matrix Lie group. More specifically, we aim to study the global flows of vector fields defined on matrix Lie groups. To that end, we present the following lemma, adapted from \citet[p. 570]{Gallier2020}:
 \begin{lemma}\label{lemma:lie-group-flow}
-    Given a Lie group $G$, if $V$ is a right-invariant (resp. left-invariant) vector field, $\rho:\mathbb{R}\times G\to G$ its global flow, and $\gamma(\sigma)=\rho(\sigma, \mathbf{X})$ the associated maximal integral curve with initial condition $\mathbf{X}\in G$, then
+    Let $G$ be a Lie group, $V$ a right-invariant (resp. left-invariant) vector field, $\rho:\mathbb{R}\times G\to G$ its global flow, and $\gamma(\sigma)=\rho(\sigma, \mathbf{X})$ the associated maximal integral curve with initial condition $\mathbf{X}\in G$. Then
     \begin{align*}
-        \gamma(\sigma) = \rho(\sigma, \mathbf{X}) &=  \rho(\sigma, \iota)\mathbf{X} = \mathcal{R}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr)\\
-        (\text{resp.})\ \rho(\sigma, \mathbf{X}) &=  \mathbf{X}\rho(\sigma, \iota) = \mathcal{L}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr)
+        \gamma(\sigma) = \rho(\sigma, \mathbf{X}) &=  \rho(\sigma, \iota)\circ\mathbf{X} = \mathcal{R}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr)\\
+        (\text{resp.})\ \rho(\sigma, \mathbf{X}) &=  \mathbf{X}\circ\rho(\sigma, \iota) = \mathcal{L}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr)
     \end{align*}
 \end{lemma}
 \begin{proof}
-    Let $\gamma(\sigma) = \mathcal{R}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr)$, then $\gamma(0) = \mathbf{X}$. Applying the chain rule:
+    Let $\gamma(\sigma) = \mathcal{R}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr)$, where $\gamma(0) = \mathbf{X}$. Applying the chain rule:
     \begin{align}
         \frac{d}{d\sigma}\gamma(\sigma) = d(\mathcal{R}_{\mathbf{X}})_{\rho(\sigma, \iota)}\Bigl(V\bigl(\rho(\sigma, \iota)\bigr)\Bigr) = V\Bigl(\mathcal{R}_{\mathbf{X}}\bigl(\rho(\sigma, \iota)\bigr)\Bigr) = V\bigl(\gamma(\sigma)\bigr),
     \end{align}
-    which implies that vector field $V$ also generates another integral curve $\gamma(t)=\rho(\sigma, \iota)\mathbf{X}$. However, since maximal integral curves are unique, $\gamma(\sigma) = \rho(\sigma, \mathbf{X})\,\forall\, \sigma$, thus $\rho(\sigma, \mathbf{X}) = \rho(\sigma, \iota)\mathbf{X}$. The proof for the left-invariant case is analogous.
+    which implies that the vector field $V$ generates another integral curve $\gamma(t)=\rho(\sigma, \iota)\circ\mathbf{X}$. By the uniqueness of maximal integral curves, $\gamma(\sigma) = \rho(\sigma, \mathbf{X})\,\forall\, \sigma$. Hence $\rho(\sigma, \mathbf{X}) = \rho(\sigma, \iota)\circ\mathbf{X}$. The proof for the left-invariant case is analogous.
 \end{proof}
-This lemma implies that following a curve with initial condition $\mathbf{X}$ and velocity $v$ is the same as following a curve starting at the identity with the same velocity and then translating the result by $\mathbf{X}$.
+This lemma indicates that following a curve with an initial condition $\mathbf{X}$ and velocity $v$ is equivalent to following a curve starting at the identity with the same velocity and subsequently translating the result by $\mathbf{X}$.
 
-It is now possible to study the behavior of trajectories in matrix Lie groups and their velocities. The following lemma will be essential for this purpose.
+We now examine the behavior of trajectories and their velocities in matrix Lie groups. The following lemma will play a central role in this analysis:
 \begin{lemma} \label{lemma:derivative-lie-element-H-parallelizable} Let $G$ be a matrix Lie group, and let $\mathbf{G}:\mathbb{R}\to G$ be a differentiable function. Then, there exists a function $\mathbf{A}:\mathbb{R} \to \mathfrak{g}$ such that 
 \begin{align}
     \frac{d}{d\sigma} \mathbf{G}(\sigma) = \mathbf{A}(\sigma) \mathbf{G}(\sigma). \label{eq:derivative-lie-element-H-parallelizable}
 \end{align}
-
 \end{lemma}
 \begin{proof}
-    As defined, $\mathbf{G}(\sigma)$ is an integral curve with some initial condition $\mathbf{X}$. Thus, by definition, its derivative is given by the value of a vector field $V$ at that point, i.e., $\frac{d}{d\sigma}\mathbf{G}(\sigma) = V\bigl(\mathbf{G}(\sigma)\bigr)$. Now, since right-invariant vector fields form a basis for the tangent space at any point in a Lie group, we can assume that $V$ is a right-invariant vector field.
+    As defined, $\mathbf{G}(\sigma)$ is an integral curve with some initial condition $\mathbf{X}\in G$. THence, its derivative is given by the value of a vector field $V$ at that point, i.e., $\frac{d}{d\sigma}\mathbf{G}(\sigma) = V\bigl(\mathbf{G}(\sigma)\bigr)$. Since right-invariant vector fields form a basis for the tangent space at any point in a Lie group, we may assume, without loss of generality, that $V$ is a right-invariant vector field.
 
-    Let $\rho: \mathbb{R} \times G \to G$ be the global flow of $V$, thus $\mathbf{G}(\sigma) = \rho(\sigma, \mathbf{X})$. By \cref{lemma:lie-group-flow}, we can write
+    Let $\rho: \mathbb{R} \times G \to G$ denote the global flow of $V$, thus $\mathbf{G}(\sigma) = \rho(\sigma, \mathbf{X})$. By \cref{lemma:lie-group-flow}, we can express
     \begin{align}
-        \frac{d}{d\sigma} \mathbf{G}(\sigma) = V\bigl(\rho(\sigma, \mathbf{X})\bigr) = V\Bigl(\mathcal{R}_{\mathbf{X}}\bigl(\rho(\sigma, \iota)\bigr)\Bigr) = d(\mathcal{R}_{\mathbf{X}})_{\rho(\sigma, \iota)}\Bigl(V\bigl(\rho(\sigma, \iota)\bigr)\Bigr).
+        \frac{d}{d\sigma} \mathbf{G}(\sigma) = V\bigl(\rho(\sigma, \mathbf{X})\bigr) = V\Bigl(\mathcal{R}_{\rho(\sigma, \mathbf{X})}(\iota)\Bigr) = d(\mathcal{R}_{\rho(\sigma, \mathbf{X})})_{\iota}\bigl(V(\iota)\bigr) = d(\mathcal{R}_{\mathbf{G}(\sigma)})_{\iota}\bigl(V(\iota)\bigr),
     \end{align}
-    Note that $V\bigl(\rho(\sigma, \iota)\bigr)$ belongs to the tangent space at $\rho(\sigma, \iota)$, and since $V$ is right-invariant it is an element of $\text{Lie}(G)$. Given the isomorphism between $\text{Lie}(G)$ and $\mathfrak{g}$, we can identify an element $\mathbf{A}\in \mathfrak{g}$ with $V\bigl(\rho(\sigma, \iota)\bigr)$ for every $\sigma$. Thus, we can write $V\bigl(\rho(\sigma, \iota)\bigr) = \mathbf{A}(\sigma)$, which implies
+    Furthermore, since $V$ is right-invariant, since $V$ is right-invariant it belongs to $\text{Lie}(G)$. Given the isomorphism between $\text{Lie}(G)$ and $\mathfrak{g}$, we can identify $V\bigl(\rho(\sigma, \mathbf{X})\bigr)$ with an element in the tangent space at the identity, $V(\iota)\in T_\iota G$, for every $\sigma$. 
+    
+    Additionally, as the Lie algebra $\mathfrak{g}$ is defined as the tangent space at the identity, we can write $V(\iota) = \mathbf{A} \in \mathfrak{g}$. However, $V$ is not an arbitrary vector field but one that generates the integral curve $\mathbf{G}(\sigma)$. Thus, to make the dependence on $\sigma$ explicit, we write $V(\iota) = \mathbf{A}(\sigma) \in \mathfrak{g}$. Substituting this, the derivative becomes
     \begin{align}
-        \frac{d}{d\sigma} \mathbf{G}(\sigma) = d(\mathcal{R}_{\mathbf{X}})_{\rho(\sigma, \iota)}\bigl(\mathbf{A}(\sigma)\bigr).
+        \frac{d}{d\sigma} \mathbf{G}(\sigma) = d(\mathcal{R}_{\mathbf{G}(\sigma)})_{\iota}\bigl(\mathbf{A}(\sigma)\bigr).
     \end{align}
-    Since $G$ is a matrix Lie group, the right translation $\mathcal{R}_\mathbf{X}(\mathbf{Y})$ is a linear map $\mathbf{Y}\mapsto \mathbf{Y}\mathbf{X}$, this implies that the differential of this map is given by $d(\mathcal{R}_\mathbf{X})_{\mathbf{Y}}(W) = W\mathbf{X}$ \citep[p. 194]{Lee2012} for any vector field $W$ on $G$. Thus, we can write
+    Since $G$ is a matrix Lie group, the right translation $\mathcal{R}_\mathbf{X}(\mathbf{Y})$ is a linear map $\mathbf{Y}\mapsto \mathbf{Y}\mathbf{X}$. This implies that the differential of this map is given by $d(\mathcal{R}_\mathbf{X})_{\mathbf{Y}}(W(\mathbf{Y})) = W(\mathbf{Y})\mathbf{X}$ \citep[p. 194]{Lee2012} for any vector field $W$ on $G$. Consequently, we can write
     \begin{align}
-        \frac{d}{d\sigma} \mathbf{G}(\sigma) = d(\mathcal{R}_{\mathbf{X}})_{\rho(\sigma, \iota)}\bigl(\mathbf{A}(\sigma)\bigr) = \mathbf{A}(\sigma)\mathbf{G}(\sigma).
+        \frac{d}{d\sigma} \mathbf{G}(\sigma) = d(\mathcal{R}_{\mathbf{G}(\sigma)})_{\iota}\bigl(\mathbf{A}(\sigma)\bigr) = \mathbf{A}(\sigma)\mathbf{G}(\sigma).
     \end{align}
 \end{proof}
 
-From an engineering perspective, \cref{lemma:derivative-lie-element-H-parallelizable} is not powerful, since it is uncommon to control systems through its Lie algebra. In the case of $\text{SO}(3)$ for example, one would control it through the angular velocity, which is an element of $\mathbb{R}^3$, and not through the Lie algebra $\mathfrak{so}(3)$. However, the previously defined S map (\cref{def:SL-left-isomorphism-act-on-xi}) enables this exact intuition. Thus, we rewrite \cref{lemma:derivative-lie-element-H-parallelizable} in terms of the S map as folllows:
+From an engineering perspective, \cref{lemma:derivative-lie-element-H-parallelizable} is of limited utility, as it is uncommon to control systems directly through their Lie algebra. For instance, in the case of $\text{SO}(3)$, control is typically applied via angular velocity, which belongs to $\mathbb{R}^3$, rather than through the Lie algebra $\mathfrak{so}(3)$. However, the previously defined $S$ map (\cref{def:SL-left-isomorphism-act-on-xi}) enables precisely this intuition. Thus, we restate \cref{lemma:derivative-lie-element-H-parallelizable} in terms of the $S$ map as follows:
 \begin{lemma} \label{lemma:very-important-fact}
     Given a differentiable function $\mathbf{\mathbf{G}}:\mathbb{R}\to G$, there exists a function $\boldsymbol{\zeta}:\mathbb{R}\to\mathbb{R}^m$, such that
     \begin{align}
@@ -495,14 +516,13 @@ From an engineering perspective, \cref{lemma:derivative-lie-element-H-paralleliz
 \end{lemma}
 \begin{proof} This is a direct consequence of \cref{lemma:derivative-lie-element-H-parallelizable} and \cref{def:SL-left-isomorphism-act-on-xi}. 
 \end{proof}
-This lemma implies that the velocity of a curve in $G$ -- or trajectories in $G$ -- has the form of a single integrator model. As such, this result will be used to formulate a kinematic model for our strategy.
+This lemma implies that the velocity of a curve in $G$ -- or trajectories in $G$ -- can be expressed as a single integrator model. As such, this result will be used to formulate a kinematic model for our strategy.
 \section{Adaptive control}\label{sec:background-adaptive-control}
-Adaptive control emerges in 1950 as a response to the design of aircraft autopilots. Aircrafts operate on a wide range of speeds and altitudes, and thus its parameters suffers great variations. This inspired the main idea of adaptive control, on-line estimation of parameters based on measured system signals \citep{Slotine1991}. This need is also present for other systems: robot manipulators may need to carry objects of unknown mass; chemical processes may have unmodeled dynamics; the fuel consumption of a vehicle might pose a challenge for common controllers. In this section, we will briefly present the main concepts of adaptive control, basing our discussion on the books \citet{Slotine1991}, \citet{Krstic1995} and \citet{Ioannou2012}.
+Adaptive control emerged in the 1950s as a response to the challenges of designing aircraft autopilots. Aircraft operate across a wide range of speeds and altitudes, leading to significant variations in their parameters. This inspired the central idea of adaptive control: the online estimation of parameters based on measured system signals \citep{Slotine1991}. Similar needs arise in other systems: robot manipulators may handle objects of unknown mass; chemical processes often involve unmodeled dynamics; and variations in fuel consumption can challenge conventional vehicle controllers. In this section, we briefly present the main concepts of adaptive control, drawing on the foundational works of \citet{Slotine1991}, \citet{Krstic1995} and \citet{Ioannou2012}.
 
-An adaptive controller is formed by the combination of a control law, designed for a nominal model, and an adaptation law, which is responsible for estimating the unkown parameters of the plant. The way the parameters estimator is designed divides the adaptive control into two main categories: \emph{direct} and \emph{indirect} adaptive control. In indirect adaptive control, the plant parameters are estimated on-line and are used to calculate the controller parameters. In the direct approach, the plant model is parameterized in terms of the controller parameters, and these are the parameters that get estimated on-line.
+An adaptive controller combines a control law, designed for a nominal model, with an adaptation law that estimates the unknown parameters of the plant in real time. Adaptive control can be broadly categorized into two main approaches based on how the parameter estimation is performed: \emph{direct} and \emph{indirect} adaptive control. In indirect adaptive control, the plant parameters are estimated online and subsequently used to compute the controller parameters. In contrast, the direct approach parameterizes the plant model in terms of the controller parameters, which are then estimated online.
 
-More specifically, in indirect approach, the plant model $P(\theta)$ is parameterized with respect to some unkown parameter vector $\theta$. For example, using the Euler-Lagrange for dynamic systems, the plant would be represented by a regressor matrix $\mathbf{Y}$ and a parameter vector $\theta$, that contains the unknowns. The adaptation law performs an on-line estimation of the parameters $\widehat{\theta}(t)$, and one obtains a estimated plant $\widehat{P}(\widehat{\theta})$. This plant treated as the true model, and is used in the design of the controller: the controller parameters $\theta_c(t)$ are obtained by solving some equation dependent on the estimated plant. A block diagram of this approach is shown in \cref{fig:indirect-adaptive-control}.
-
+In the indirect approach, the plant model $P(\theta)$ is parameterized with respect to an unknown parameter vector $\theta$. For instance, using the Euler-Lagrange formulation for dynamic systems, the plant can be represented by a regressor matrix $\mathbf{Y}$ and a parameter vector $\theta$, which contains the unknowns. The adaptation law performs online estimation of the parameters, yielding an estimate $\widehat{\theta}(t)$, which is then used to construct an estimated plant $\widehat{P}(\widehat{\theta})$. This estimated plant is treated as if it were the true model and serves as the basis for designing the controller. The controller parameters $\theta_c(t)$ are determined by solving equations that depend on the estimated plant. A block diagram of this approach is shown in \cref{fig:indirect-adaptive-control}.
 \begin{figure}[ht]
     \centering
     \begin{tikzpicture}[
@@ -546,7 +566,7 @@ More specifically, in indirect approach, the plant model $P(\theta)$ is paramete
     \label{fig:indirect-adaptive-control}
 \end{figure}
 
-In direct adaptive control, the plant model $P(\theta)$ is parameterized in terms of the unkown controller parameter vector $\theta_c$, such that this parametrization with the true controller parameters $P_c(\theta_c)$ renders the same results as the true plant. This parametrization is used to estimate the values of the controller parameters $\widehat{\theta}_c(t)$, which are used to calculate the control signal. A block diagram of this approach is shown in \cref{fig:direct-adaptive-control}.
+In the direct adaptive control approach, the plant model $P(\theta)$ is parameterized directly in terms of the unknown controller parameter vector $\theta_c$. This parameterization ensures that when the true controller parameters are used, denoted by $P_c(\theta_c)$, the results are equivalent to the behavior of the true plant. The adaptation law estimates the controller parameters $\widehat{\theta}_c(t)$, which are then used to compute the control signal. A block diagram of this approach is shown in \cref{fig:direct-adaptive-control}.
 \begin{figure}[ht]
     \centering
     \begin{tikzpicture}[
@@ -587,19 +607,40 @@ In direct adaptive control, the plant model $P(\theta)$ is parameterized in term
     \label{fig:direct-adaptive-control}
 \end{figure}
 
-A common usage of the indirect approach is in Model Reference Adaptive Control (MRAC), in which the plant is compared to a reference model, and the controller is designed to make the plant behave like the reference model. This reference model is designed such that it describes the desired relationship between the input and output of the plant. The controller is then designed to change the dynamics of the plant to match the reference model. This is the approach that will be used in this text.
+A common application of the indirect approach is in Model Reference Adaptive Control (MRAC). In MRAC, the plant's behavior is compared to a reference model, and the controller is designed to make the plant emulate the reference model. This reference model is chosen to represent the desired relationship between the plant's input and output. The adaptive controller then adjusts the plant dynamics to align with those of the reference model. This approach will be employed throughout this text.
 
-One common problem with adaptive control is the \emph{parameter drift}. This occurs when the input signal is not persistently exciting, that is, the input signal does not contain enough information to estimate the parameters. This can lead to the parameters drifting away from the true values, and the control system becoming unstable, even though it might initially seem stable for some interval. This is a common problem in practice, and several methods have been proposed to mitigate this issue.
+A frequent challenge in adaptive control is the issue of \emph{parameter drift}. Parameter drift occurs when the input signal is not persistently exciting, meaning it lacks sufficient information to accurately estimate the parameters. As a result, the estimated parameters can drift away from their true values, potentially causing the control system to become unstable, even if it initially appears stable over some interval. This problem frequently arises in practice, and various methods have been proposed to mitigate it.
 
-The most common and simple technique is the \emph{dead-zone} or \emph{deadband}. This technique consists of setting a threshold for the parameter adaptation, such that if the tracking error is below this threshold, the adaptation dynamics are set to $0$. For example, if the adaptation law is described by $\dot{\widehat{\boldsymbol{\theta}}} = -\gamma\mathbf{Y}\mathbf{e}$, then the dead-zone implies
+
+One of the simplest and most widely used techniques is the \emph{dead-zone} or \emph{deadband} method. This approach involves setting a threshold for parameter adaptation: if the tracking error falls below this threshold, the adaptation dynamics are disabled. For example, if $\gamma$ is a positive constant, $\mathbf{Y}$ is a matrix related to a plant parametrization, and $\mathbf{e}$ is the tracking error, with an adaptation law is expressed as $\dot{\widehat{\boldsymbol{\theta}}} = -\gamma\mathbf{Y}\mathbf{e}$. The dead-zone modification results in:
 \begin{align*}
     \dot{\widehat{\boldsymbol{\theta}}} = \begin{cases}
         -\gamma\mathbf{Y}\mathbf{e} &\|\mathbf{e}\| > \epsilon,\\
         \mathbf{0} & \|\mathbf{e}\| \le \epsilon,
     \end{cases}
 \end{align*}
-where $\epsilon$ is the size of the dead-zone, or deadband.
+where $\epsilon$ is the size of the dead-zone or deadband.
 
-Many common other techniques reside under the same branch of \emph{leakage} modification, which is based on Lyapunov analysis. These techniques have the same format $\dot{\widehat{\boldsymbol{\theta}}} = -\gamma\mathbf{Y}\mathbf{e} - \gamma w\widehat{\boldsymbol{\theta}}$, where $w(t)$ is the \emph{leakage term}. The most common leakage term is the \emph{$\sigma$-modification}, that consists of setting a positive small constant $\sigma$ as the leakage term. If one combines the dead-zone with the $\sigma$-modification, the result is the \emph{switching $\sigma$} technique, where $w(t)=\sigma$, with $\sigma=\sigma_0$ if $\|\widehat{\boldsymbol{\theta}}\|\ge M$, or $\sigma=\mathbf{0}$ otherwise. The \emph{$\epsilon$-modification} consists of using the norm of the tracking error in the leakage term: $w(t) = \nu_0\|\mathbf{e}\|$.
+Another category of techniques designed to address parameter drift falls under the umbrella of \emph{leakage modifications}, which are often based on Lyapunov stability analysis. These techniques modify the adaptation law to include a leakage term, resulting in the form:
+\begin{align}
+    \dot{\widehat{\boldsymbol{\theta}}} = -\gamma\mathbf{Y}\mathbf{e} - \gamma w\widehat{\boldsymbol{\theta}},
+\end{align}
+where $w(t)$ is the \emph{leakage term}.
 
-There are many other techniques to improve robustness, as covered in \citet[ch. 8]{Ioannou2012}, such as \emph{parameter projection}, which constrains the parameter estimates within predefined bounds; \emph{normalization}, which mitigates large parameter variation. With these techniques, and a choice of adaptation law, we can design an adaptive controller that is suitable for application.
+One of the most common leakage modifications is the \emph{$\sigma$-modification}, which introduces a small positive constant $\sigma$ as the leakage term. When combined with the dead-zone technique, this modification leads to the \emph{switching $\sigma$-modification}, where the leakage term $w(t)$ is defined as:
+\begin{align}
+    w(t) = \begin{cases}
+        \sigma & \|\widehat{\boldsymbol{\theta}}\| \ge M,\\
+        0 & \|\widehat{\boldsymbol{\theta}}\| < M,
+    \end{cases}
+\end{align}
+
+Another related method is the \emph{$\epsilon$-modification}, where the leakage term depends on the norm of the tracking error, specifically
+\begin{align}
+    w(t) = \nu_0\|\mathbf{e}\|,
+\end{align}
+where $\nu_0$ is a positive constant.
+
+In addition to these techniques, other methods exist to enhance robustness, as discussed in \citet[ch. 8]{Ioannou2012}. For instance, \emph{parameter projection} constrains the parameter estimates within predefined bounds, ensuring they do not grow unbounded. Similarly, \emph{normalization} mitigates large parameter variations by normalizing the adaptation dynamics.
+
+By employing these techniques and selecting an appropriate adaptation law, it is possible to design an adaptive controller that is both robust and suitable for practical applications.

@@ -136,7 +136,7 @@ Our objective in this section is to derive the function that allows us to comput
 
 We start by expressing $\bar{\mathbf{X}}$ as as a function $\Phi(\mathbf{Q})$:
 \begin{align}
-    \bar{\mathbf{X}} &= \mathbf{X}^T\mathbf{X} = (\log\mathbf{Q})^\top\bigl((\mathbf{I} - \mathbf{Q})^{-1}\bigr)^\top(\mathbf{I} - \mathbf{Q})^{-1}\log\mathbf{Q}\\
+    \bar{\mathbf{X}} &= \mathbf{X}^\top\mathbf{X} = (\log\mathbf{Q})^\top\bigl((\mathbf{I} - \mathbf{Q})^{-1}\bigr)^\top(\mathbf{I} - \mathbf{Q})^{-1}\log\mathbf{Q}\\
     &= -\log\mathbf{Q}(\mathbf{I} - \mathbf{Q}^\top)^{-1}(\mathbf{I} - \mathbf{Q})^{-1}\log\mathbf{Q}\\
     &=-\log\mathbf{Q}\bigl((\mathbf{I} - \mathbf{Q})(\mathbf{I} - \mathbf{Q}^\top)\bigr)^{-1}\log\mathbf{Q}\\
     &=-\log\mathbf{Q}(2\mathbf{I}-(\mathbf{Q}+\mathbf{Q}^\top))^{-1}\log\mathbf{Q} \label{eq:appendix-Xbar-translation-dhat}\\

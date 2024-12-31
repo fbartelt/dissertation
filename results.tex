@@ -101,8 +101,8 @@ The initial condition $\mathbf{H}(0)$ was set as
 The simulation was conducted over a period of $\qty{15}{\second}$ and implemented in C++. On average, the computation of the vector field took $\qty{60 \pm 5}{\milli\second}$ per iteration on a single core of an Intel i5-10300H @ 4.5GHz CPU, with 8 GB of RAM. On average, $99.5\%$ of this time was spent solving the optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve}. Since the optimization process is highly parallelizable -- allowing simultaneous computation of $\widehat{D}(\mathbf{H},\mathbf{H}_d(s))$ for different discretized values of $s$ -- the computational effort could be significantly reduced by leveraging parallel architectures such as GPUs, SIMD, or multi-threading.
 \begin{figure}[ht!]
     \centering
-    \def\svgwidth{.8\linewidth}
-    {\tiny\import{figures/}{distance_pos_ori_D.pdf_tex}}
+    \def\svgwidth{\linewidth}
+    {\footnotesize\import{figures/}{distance_pos_ori_D.pdf_tex}}
     \caption{Value of EC-distance $D$, position error in centimeters and orientation error in degrees over time.}
     \label{fig:position-orientation-errors}
 \end{figure}
@@ -203,7 +203,7 @@ Finally, the update of the system's state and reference model was given by
     \end{split}
 \end{align}
 
-As defined in \cref{sec:collaborative-path-planning}, the normal component is discontinuous. To avoid chattering and noise propagation caused by numerical differentiation, we employed a smoothing strategy for the distance function $D$ based on the approach of \citet{viniciusmooth}. The smoothed distance $\bar{D}$ is defined in terms of the discretized curve as
+As defined in \cref{sec:collaborative-path-planning}, the normal component is discontinuous. To avoid chattering and noise propagation caused by numerical differentiation, we employed a smoothing strategy for the distance function $D$ based on the approach of \citet{Goncalves2024}. The smoothed distance $\bar{D}$ is defined in terms of the discretized curve as
 \begin{align}
     \bar{D}(\mathbf{H}) = D(\mathbf{H}) - \delta\log\biggl(\frac{\sum_{i=1}^{P}w_i}{P}\biggr),
 \end{align}
