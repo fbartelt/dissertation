@@ -43,8 +43,22 @@ which implies
     \Lop\biggl[\frac{f}{g}\biggr] = \Lop[f]\frac{1}{g} - f\frac{\Lop[g]}{g^2} = \frac{\Lop[f]g - f\Lop[g]}{g^2}.
 \end{align}
 Thus, the $\Lop$ operator satisfies the quotient rule.
-\section{Chain rule}
-A chain rule has already been shown in \cref{lemma:chainrule}, which applies to expressions of the form $\frac{d}{d\sigma}f\bigl(\mathbf{X}(\sigma)\bigr)$. In this section, we present a chain rule directly related to the $\Lop$ operator for left-invariant functions. Let $\mathbf{X},\mathbf{Y}\in G$, and $f : G \times G \to \mathbb{R}$ be a left-invariant function. Define $\mathbf{Z} = \mathbf{Y}^{-1}\mathbf{X}$, so that $f(\mathbf{X},\mathbf{Y}) = g(\mathbf{Z})$ for some $g:G\to\mathbb{R}$. Our goal is to determine the $\Lop$ operator of $g$ with respect to $\mathbf{X}$. 
+\section{Chain rules}
+A chain rule has already been shown in \cref{lemma:chainrule}, which applies to expressions of the form $\frac{d}{d\sigma}f\bigl(\mathbf{X}(\sigma)\bigr)$. In this section, we present \vtwo{two other chain rules. The first one is the chain rule of the $\Lop$ operator of function composition. The second one is the chain rule related to the ``partial'' $\Lop_\mathbf{V}$ operator for left-invariant functions.}
+
+\vtwo{Let $f:\mathbb{R}\to\mathbb{R}$ and $g:G\to \mathbb{R}$ be functions, and $\mathbf{X}$ be a point in $G$. The chain rule for the $\Lop$ operator of function composition is given by:
+\begin{align}
+    \Lop\Bigl[f\bigl(g(\mathbf{X})\bigr)\Bigr](\mathbf{X})\boldsymbol{\zeta} &= \frac{d}{d\varepsilon}\Biggl(f\biggl(g\Bigl(\exp\bigl(\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\Biggr)\Biggr|_{\varepsilon=0}\\
+    &= \frac{df}{dg}\bigl(g(\mathbf{X})\bigr)\biggl(\frac{d}{d\varepsilon}g\Bigl(\exp\bigl(\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr)\biggr)\biggr|_{\varepsilon=0}\\
+    &= \frac{df}{dg}\bigl(g(\mathbf{X})\bigr)\Lop[g](\mathbf{X})\boldsymbol{\zeta},
+\end{align}
+which implies
+\begin{align}
+    \Lop\Bigl[f\bigl(g(\mathbf{X})\bigr)\Bigr](\mathbf{X}) = \frac{df}{dg}\bigl(g(\mathbf{X})\bigr)\Lop[g](\mathbf{X}).
+\end{align}
+}
+
+\vtwo{Now, we derive a} chain rule directly related to the $\Lop_\mathbf{V}$ operator for left-invariant functions. Let $\mathbf{X},\mathbf{Y}\in G$, and $f : G \times G \to \mathbb{R}$ be a left-invariant function. Define $\mathbf{Z} = \mathbf{Y}^{-1}\mathbf{X}$, so that $f(\mathbf{X},\mathbf{Y}) = g(\mathbf{Z})$ for some $g:G\to\mathbb{R}$. Our goal is to determine the $\Lop$ operator of $g$ with respect to $\mathbf{X}$. 
 
 First, consider a variation of $\mathbf{X}$ using the right-hand side of \eqref{eq:appendix-prop-Lop-definition-L} for $g$:
 \begin{align}
@@ -67,9 +81,23 @@ which leads to
 \begin{align}
     \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y})\boldsymbol{\zeta} = \Lop[g](\mathbf{Z})\boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y}) \label{app:prop-Lop-chain-rule-LVf-final-form},
 \end{align}
-which is the expression for the chain rule in the context of left-invariant functions.
+which is the expression for the chain rule in the context of left-invariant functions. \vtwo{Clearly, $\boldsymbol{\zeta}'$ is expressed as:
+\begin{align}
+    \boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y}) &= \invSL[\mathbf{Y}^{-1}\SL[\boldsymbol{\zeta}]\mathbf{Y}]\\
+    &= \invSL[\sum_{i=1}^m\mathbf{Y}^{-1}\SL[\mathbf{e}_i]\mathbf{Y}\zeta_i]\\
+    &= \sum_{i=1}^m\invSL[\mathbf{Y}^{-1}\SL[\mathbf{e}_i]\mathbf{Y}]\zeta_i\\
+    &= \begin{bmatrix}
+        \invSL[\mathbf{Y}^{-1}\SL[\mathbf{e}_1]\mathbf{Y}] & \cdots & \invSL[\mathbf{Y}^{-1}\SL[\mathbf{e}_m]\mathbf{Y}]
+    \end{bmatrix} \boldsymbol{\zeta}\\
+    &= \mathcal{Z}(\mathbf{Y})\boldsymbol{\zeta},
+\end{align}
+where the linearity properties of $\SL$ and $\invSL$ have been used. This implies that the chain rule for the $\Lop_\mathbf{V}$ operator can be expressed as:
+\begin{align}
+    \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y})\boldsymbol{\zeta} = \Lop[g](\mathbf{Z})\mathcal{Z}(\mathbf{Y})\boldsymbol{\zeta}. \label{app:prop-Lop-chain-rule-LVf-final-form-matrix}
+\end{align}
+}
 \subsection{The case for SE(3)}\label{app:prop-Lop-chain-rule-SE3}
-In the case of $\text{SE}(3)$, we can show that $\boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y})$ is given by a matrix multiplication. Let $\SL:\mathbb{R}^6\to\mathfrak{se}(3)$ be the canonical isomorphism between $\mathbb{R}^6$ and $\mathfrak{se}(3)$, so that $\mathbf{Y}$ can be written as
+In the case of $\text{SE}(3)$, we can show that $\boldsymbol{\zeta}'(\boldsymbol{\zeta}, \mathbf{Y})$ is given by a \vtwo{simple} matrix multiplication. Let $\SL:\mathbb{R}^6\to\mathfrak{se}(3)$ be the canonical isomorphism between $\mathbb{R}^6$ and $\mathfrak{se}(3)$, so that $\mathbf{Y}$ can be written as
 \begin{align}
     \mathbf{Y} = \begin{bmatrix}
         \mathbf{R}_y & \mathbf{p}_y\\
@@ -115,15 +143,40 @@ Note that $\widehat{\mathcal{S}}(\boldsymbol{\omega})\mathbf{p}_y = -\widehat{\m
         \mathbf{R}_y^\top & -\mathbf{R}_y^\top\widehat{\mathcal{S}}(\mathbf{p}_y)\\
         \mathbf{0} & \mathbf{R}_y^\top
     \end{bmatrix}\begin{bmatrix}
-        \mathbf{v}\\\boldsymbol{\omega}
+        \mathbf{v}\\ \boldsymbol{\omega}
     \end{bmatrix}
     = \mathcal{Z}(\mathbf{Y})\boldsymbol{\zeta}.
 \end{align}
-Thus, the expression \eqref{app:prop-Lop-chain-rule-LVf-final-form} becomes:
-\begin{align}
-    \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y})\boldsymbol{\zeta} = \Lop[g](\mathbf{Z})\mathcal{Z}(\mathbf{Y})\boldsymbol{\zeta},
-\end{align}
-which implies that the chain rule for the $\Lop$ operator can be expressed as:
+\vtwo{Thus, achieving the expression \eqref{app:prop-Lop-chain-rule-LVf-final-form-matrix}}:
 \begin{align}
     \Lop_\mathbf{V}[f](\mathbf{X}, \mathbf{Y}) = \Lop[g](\mathbf{Z})\mathcal{Z}(\mathbf{Y}). \label{eq:appendix-prop-Lop-chain-rule-SE3}
 \end{align}
+
+\section{Relationship with the Lie derivative}
+\vtwo{In the context of vector fields, the Lie derivative is a directional derivative of a vector field on a manifold as is defined as follows. Let $G$ be a Lie group and $V\in T_\mathbf{X}G$, $W\in T_\mathbf{Y}G$ vector fields on $G$. Since these vector fields belong to different tangent spaces, it is necessary to transport points by means of the flow. Let $\rho:\mathbb{R}\times G$ be the flow of $V$. We can follow the integral curve given by $\rho$ with initial condition $\mathbf{X}$ and evaluate $W(\rho(t, \mathbf{X}))$, which belongs to the tangent space of $G$ at $\rho(t, \mathbf{X})$. Thus, to compare both vector fields, we need to transport $W\bigl(\rho(t, \mathbf{X})\bigr)$ back to $T_\mathbf{X}G$. The Lie derivative of $W$ with respect to $V$, denoted $\mathcal{L}_V W$, at $\mathbf{X}$ is defined as \citep[p. 316]{Gallier2020}
+\begin{align}
+    (\mathcal{L}_V W)_\mathbf{X}=\frac{d}{d\sigma}\bigl(d(\rho(-\sigma, \mathbf{X}))_{\rho(\sigma, \mathbf{X})}\bigr)\bigl(W(\rho(\sigma, \mathbf{X}))\bigr)\bigr|_{\sigma=0}.
+\end{align}
+This operation is commonly expressed in terms of the \emph{pull-back} of $W$ by $\rho$, denoted $\rho(\sigma, \mathbf{X})^*W$, achieving the simpler expression \citep[p. 317]{Gallier2020}
+\begin{align}
+    (\mathcal{L}_V W)_\mathbf{X} = \frac{d}{d\sigma}\bigl(\rho(\sigma, \mathbf{X})^*W\bigr)\bigr|_{\sigma=0}.
+\end{align}}
+
+\vtwo{The Lie derivative of a function $f:G\to \mathbb{R}$ at a point $\mathbf{X}\in G$ is expressed as \citep[p. 121]{Lang2012}:
+\begin{align}
+    (\mathcal{L}_V f)_\mathbf{X} = \lim_{\sigma \to 0 }\frac{f\bigl(\rho(\sigma, \mathbf{X})\bigr) - f(\mathbf{X})}{\sigma} = \frac{d}{d\sigma}\Bigl(f\bigl(\rho(\sigma, \mathbf{X})\bigr)\Bigr)\Bigr|_{\sigma=0}.
+\end{align}}
+
+\vtwo{If $G$ is a matrix Lie group, and $\mathbf{G}(\sigma)$ is a curve in $G$ with tangent vector $V$ at $\mathbf{G}(\sigma)$ and initial condition $\mathbf{X}$, we have
+\begin{align}
+    \frac{d}{d\sigma}\mathbf{G}(\sigma) = V(\mathbf{G}(\sigma)),
+\end{align}
+which, as shown in \cref{lemma:very-important-fact}, can be expressed as
+\begin{align}
+    \frac{d}{d\sigma}\mathbf{G}(\sigma) = \SL\bigl(\boldsymbol{\xi}(\sigma)\bigr)\mathbf{G}(\sigma),
+\end{align}
+for some isomorphism $\SL:\mathbb{R}^m\to \mathfrak{g}$ and function $\boldsymbol{\xi}:\mathbb{R}\to\mathbb{R}^m$. Thus, a local flow $\rho$ of $V$ can be expressed as $\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}$ for a small $\varepsilon$ and some vector $\boldsymbol{\zeta}\in\mathbb{R}^m$. The Lie derivative of $f$ with respect to $V$ at $\mathbf{X}$ can be expressed as
+\begin{align}
+    (\mathcal{L}_V f)_{\mathbf{X}} = \lim_{\varepsilon \to 0 }\frac{f\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{X}\Bigr) - f(\mathbf{X})}{\varepsilon},
+\end{align}
+which by definition is exactly equal to $\Lop[f](\mathbf{X})\boldsymbol{\zeta}$, which shows that the $\Lop$ operator is a portion of the Lie derivative.}

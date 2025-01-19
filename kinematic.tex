@@ -1,6 +1,6 @@
 % !TeX root = main.tex
 \chapter{Kinematic Control}\label{ch:kinematic}
-The proposed vector field strategy was developed for any connected matrix Lie group. In this chatper, we define a path and EE-distance function specifically for a class of groups known as exponential Lie groups (see \cref{sec:background-exponential-map}), which are among the most common in engineering applications.
+The proposed vector field strategy was developed for any connected matrix Lie group. In this \vtwo{chapter}, we define a path and EE-distance function specifically for a class of groups known as exponential Lie groups (see \cref{sec:background-exponential-map}), which are among the most common in engineering applications.
 
 Our objective is then providing the necessary tools to control a system $\mathbf{H}(t)$ in some exponential Lie group $G$ as the following diagram illustrates:
 \begin{figure}[ht]
@@ -234,7 +234,7 @@ The computation of the two $\Lop$ operators in \eqref{eq:explicit-derivative-L-E
 \end{align}}
 where 
 \begin{align}
-    \mathbf{f} &= \vtwo{\begin{bmatrix}
+    \mathbf{f} &= \vtwo{2\begin{bmatrix}
         \mathbf{0}& \{\mathbf{Q}^2\}_{23}-\{\mathbf{Q}^2\}_{32} & \{\mathbf{Q}^2\}_{31} - \{\mathbf{Q}^2\}_{13} & \{\mathbf{Q}^2\}_{12}-\{\mathbf{Q}^2\}_{21}
     \end{bmatrix}},\label{eq:explicit-EE-dista-SE3-component-fvec}\\
     \mathbf{g} &= \begin{bmatrix}
@@ -272,27 +272,43 @@ where $\mathcal{Z}\bigl(\mathbf{H}_d(s^*)\bigr)$ is computed as
         \mathbf{0} & \mathbf{R}_d^\top(s^*)
     \end{bmatrix}, \label{eq:explicit-EE-dista-SE3-component-Zmap}
 \end{align}
-in which $\mathbf{R}_d(s^*)$ and $\mathbf{p}_d(s^*)$ are the rotation matrix and position of $\mathbf{H}_d(s^*)$, respectively. The computation of $\mathcal{Z}\bigl(\mathbf{H}_d(s^*)\bigr)$ is straightforward, and thus $\boldsymbol{\xi}_N$ can be computed explicitly. Algorithmically, the computation of $\Lop_\mathbf{V}[\widehat{D}]$ is as follows:
+in which $\mathbf{R}_d(s^*)$ and $\mathbf{p}_d(s^*)$ are the rotation matrix and position of $\mathbf{H}_d(s^*)$, respectively. The computation of $\mathcal{Z}\bigl(\mathbf{H}_d(s^*)\bigr)$ is straightforward, and thus $\boldsymbol{\xi}_N$ can be computed explicitly. Algorithmically, the computation of $\Lop_\mathbf{V}[\widehat{D}]\vtwo{(\mathbf{Z})}$ is as follows:
 \begin{algorithm}[H]
-    \caption{Compute the $\text{L}_\mathbf{V}[\widehat{D}]$ for $\text{SE}(3)$}
+    \caption{\vtwo{Computation of $\text{L}_\mathbf{V}[\widehat{D}](\mathbf{Z})$ in $\text{SE}(3)$}}
     \begin{algorithmic}[1]
     \Statex \textbf{Input:} $\mathbf{H}_d(s^*)$, $\mathbf{H}$
-    \Statex \textbf{Output:} $\text{L}_\mathbf{V}[\widehat{D}]$ 
+    \Statex \textbf{Output:} $\text{L}_\mathbf{V}[\widehat{D}]\vtwo{(\mathbf{Z})}$ 
     
-    \State Compute $\mathbf{Z} \gets \mathbf{H}_d(s^*)^{-1} \mathbf{H}$
+    \State $\mathbf{Z} \gets \mathbf{H}_d(s^*)^{-1} \mathbf{H}$
     \State Extract rotation matrix $\mathbf{Q}$ and translation $\mathbf{u}$ from $\mathbf{Z}$
-    \State Compute $\widehat{E}(\mathbf{Z}) \gets$  \eqref{eq:explicit-EE-dista-SE3-component-Ehat}
-    \State Compute $\mathbf{f} \gets$ \eqref{eq:explicit-EE-dista-SE3-component-fvec}
-    \State Compute $\mathbf{g} \gets$ \eqref{eq:explicit-EE-dista-SE3-component-gvec}
-    \State Compute $\Lop[\theta] \gets$ \eqref{eq:explicit-EE-dista-SE3-component-Ltheta}
-    \State Compute $\Lop[\beta_0] \gets$ \eqref{eq:explicit-EE-dista-SE3-component-Lbeta}
+    \vtwo{\State $u \gets \frac{1}{2} (\tr(\mathbf{Q}) - 1)$
+    \State $v \gets \frac{1}{2\sqrt{2}} \|\mathbf{Q} - \mathbf{Q}^\top\|_F$
+    \State $\theta \gets \atantwo(v, u)$
+    \State $\beta_0 \gets \frac{2 - 2u - \theta^2}{4(1 - u)^2}$
+    \State $\bar{\mathbf{X}} \gets \mathbf{I}(1 - 2\beta_0) + (\mathbf{Q} + \mathbf{Q}^\top)\beta_0$}
+    \State $\widehat{E}(\mathbf{Z}) \gets$  \vtwo{$\sqrt{2\theta^2 + \mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}}$}
+    \State $\mathbf{f} \gets$ \vtwo{$2\begin{bmatrix}
+        \mathbf{0}& \{\mathbf{Q}^2\}_{23}-\{\mathbf{Q}^2\}_{32} & \{\mathbf{Q}^2\}_{31} - \{\mathbf{Q}^2\}_{13} & \{\mathbf{Q}^2\}_{12}-\{\mathbf{Q}^2\}_{21}
+    \end{bmatrix}$}
+    \State $\mathbf{g} \gets$ \vtwo{$\begin{bmatrix}
+        \mathbf{0}& \mathbf{Q}_{23}-\mathbf{Q}_{32} & \mathbf{Q}_{31} - \mathbf{Q}_{13} & \mathbf{Q}_{12}-\mathbf{Q}_{21}
+    \end{bmatrix}$}
+    \State $\Lop[\theta] \gets$ \vtwo{$\frac{-\cos\theta}{8\sin\theta}\mathbf{f} - \frac{\sin\theta}{2}\mathbf{g}$}
+    \State $\Lop[\beta_0] \gets$ \vtwo{$\frac{\theta^2\sin(\theta) - \theta - \sin(\theta) + \bigl(\theta + \sin(\theta)\bigr) \cos(\theta)}{2 (1 - \cos(\theta))^3} \Lop[\theta]$}
     \State Initialize $\Lop[\mathbf{u}^\top \bar{\mathbf{X}} \mathbf{u}] \gets 0$ 
 
     \For{$i \gets 1$ to $3$}
-        \State Compute $\Lop[\mathbf{u}_i] \gets$ \eqref{eq:explicit-EE-dista-SE3-component-Lui}
+        \State $\Lop[\mathbf{u}_i] \gets$ \vtwo{$\begin{bmatrix}
+            \delta_{1i} & \delta_{2i} & \delta_{3i} & \{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_1)\mathbf{u}\}_i & \{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_2)\mathbf{u}\}_i & \{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_3)\mathbf{u}\}_i 
+        \end{bmatrix}$}
         \For{$j \gets 1$ to $3$} 
-            \State Compute $\Lop[\mathbf{Q}_{ij}] \gets$ \eqref{eq:explicit-EE-dista-SE3-component-LQij}
-            \State Compute $\Lop[\bar{\mathbf{X}}_{ij}]\gets$ \eqref{eq:explicit-EE-dista-SE3-component-Xij}
+            \State $\Lop[\mathbf{Q}_{ij}] \gets$ \vtwo{$\begin{bmatrix}
+                \mathbf{0} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_1)\mathbf{Q}\bigr\}_{ij} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_2)\mathbf{Q}\bigr\}_{ij} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_3)\mathbf{Q}\bigr\}_{ij}
+            \end{bmatrix}$}
+            \vtwo{\State $\Lop[\mathbf{Q}_{ji}] \gets$ $\begin{bmatrix}
+                \mathbf{0} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_1)\mathbf{Q}\bigr\}_{ji} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_2)\mathbf{Q}\bigr\}_{ji} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_3)\mathbf{Q}\bigr\}_{ji}
+            \end{bmatrix}$}
+            \State $\Lop[\bar{\mathbf{X}}_{ij}]\gets$ \vtwo{$\Lop[\beta_0]\bigl(-2\delta_{ij}+ \mathbf{Q}_{ij} + \mathbf{Q}_{ji}\bigr) + \beta_0\Bigl(\Lop[\mathbf{Q}_{ij}] + \Lop[\mathbf{Q}_{ji}]\Bigr)$}
             % \State Accumulate $\Lop[u^\top X u]$:
         
             \State $\Lop[\mathbf{u}^\top \bar{\mathbf{X}} \mathbf{u}] \gets$ $\Lop[\mathbf{u}^\top \bar{\mathbf{X}} \mathbf{u}]
@@ -302,7 +318,7 @@ in which $\mathbf{R}_d(s^*)$ and $\mathbf{p}_d(s^*)$ are the rotation matrix and
         \EndFor
     \EndFor
     
-    \State $\Lop[\widehat{E}] \gets \frac{4\theta\Lop[\theta] + \Lop[\mathbf{u}^\top \bar{\mathbf{X}} \mathbf{u}]}{\widehat{E}(\mathbf{Z})}$
+    \State $\Lop[\widehat{E}] \gets \frac{4\theta\Lop[\theta] + \Lop[\mathbf{u}^\top \bar{\mathbf{X}} \mathbf{u}]}{\vtwo{2}\widehat{E}(\mathbf{Z})}$
     \State $\mathcal{Z}\bigl(\mathbf{H}_d(s^*)\bigr) \gets$\eqref{eq:explicit-EE-dista-SE3-component-Zmap}
     \State $\Lop_\mathbf{V}[\widehat{D}] \gets \Lop[\widehat{E}]\mathcal{Z}\bigl(\mathbf{H}_d(s^*)\bigr)$
     \end{algorithmic}

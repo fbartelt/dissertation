@@ -16,7 +16,7 @@ Our work builds upon the results of \citet{Rezende2022}, which introduced a vect
 \end{figure}
 One particularly compelling application of extending vector fields to matrix Lie groups is the control of systems capable of simultaneous motion in both position and orientation, which can be addressed by considering the group $\text{SE}(3)$ within our framework. Omnidirectional unmanned aerial vehicles (UAVs), such as those illustrated in \cref{fig:omnidirectionaldrone}, exemplify such capabilities, and research in this domain is rapidly advancing \citep{kamel2018voliro,Aboudorra2023,HamandiOmni}. For instance, \citet{hamandi2021design} provide a comprehensive review of multirotor designs, identifying critical factors that enable omnidirectional motion. These capabilities are particularly relevant for tasks requiring complex maneuvers, such as tracking paths that involve intricate trajectories. This is especially important when UAVs are equipped with tools like drills, where precise positioning is needed to achieve target poses while avoiding environmental collisions. Our approach facilitates such tasks by controlling the linear and angular velocities of the UAV. Additionally, another notable application of $\text{SE}(3)$ is in robotic manipulators, where our method can control the end effector's linear and angular velocities.
 
-Although these applications demonstrate the versatility of our approach, it is important to emphasize that our primary focus is not on specific use cases but on the theoretical foundation itself. As will become evident, our generalization not only enables the use of vector fields on Lie groups but also reveals that the vector field strategy in Euclidean space offers more flexibility than previously recognized. To encapsulate our intent, we draw on the perspective of \citet{Bullo2004}, who states that ``the areas of overlap between mechanics and control possess the sort of mathematical elegance that makesthem appealing to study, independently of applications.''.
+Although these applications demonstrate the versatility of our approach, it is important to emphasize that our primary focus is not on specific use cases but on the theoretical foundation itself. As will become evident, our generalization not only enables the use of vector fields on Lie groups but also reveals that the vector field strategy in Euclidean space offers more flexibility than previously recognized. To encapsulate our intent, we draw on the perspective of \citet{Bullo2004}, who states that ``the areas of overlap between mechanics and control possess the sort of mathematical elegance that \vtwo{makes them} appealing to study, independently of applications.''.
 
 To illustrate the potential of our generalization, we provide two application scenarios. The first is a kinematic control simulation of a system in $\text{SE}(3)$, where the goal is to converge to and circulate along a predefined curve within the group. This simulation offers a concrete example of how our theoretical results can be practically applied and visualized. The second scenario involves a collaborative simulation in which six agents manipulate a cylindrical object with unknown properties to track a target curve. In this case, we work within the group $\mathbb{R}^3\times\text{SO}(3)$, where translation and rotation are treated as independent motions. Due to the object's unknown parameters, we employ an adaptive control strategy to estimate these properties and achieve control. Here, our vector field strategy serves as a higher-level controller, providing desired velocity inputs to a lower-level dynamic controller responsible for tracking these velocities. This simulation highlights the adaptability of our approach to dynamic scenarios, particularly those requiring parameter estimation and adaptation.
 
@@ -34,31 +34,6 @@ The main contributions of this work can be summarized as follows:
     \item Design of an adaptive control strategy for collaborative simulations in $\mathbb{R}^3 \times \text{SO}(3)$, where the vector field guidance strategy generates reference velocities for dynamic control.
 \end{itemize}
 
-\textbf{TODO}
-\begin{itemize}
-    % \item Add explicit derivative for $\widehat{D}$;
-    % \item Improve Lie group section;
-    % \item Add Lie algebra section;
-    % \item Rerun collaborative simulations using the modified model;
-    % \item Change proposition 4.23 A,B etc. to X, Y...
-    % \item Run kinematic sim for other Lie group;
-    % \item Add introduction and literature review;
-    % \item Add introduction
-    % \item Change symbols to reduce complexity;
-    % \item Improve proof for the derivative of Lie group element, based on flows;
-    % \item Add Flows + integral curves subsection in Lie group section;
-    % \item Add fact that left-invariant vector fields form a basis;
-    % \item Move definition of S map to Lie algebra section;
-    % \item Maybe change spheres in trajectory plots to UAV models.
-    \item CHANGE $\Lop[\tr^2]$
-    \item Add image showing the interpolated curve?
-    % \item Add block diagram for adaptive control
-    % \item Chatgpt review (background) [vector field, kinematic, collaborative were review for submissions]
-    % \item Add publications in Introduction
-    % \item Add omnidirecitonal uav figure in intro
-    % \item Add reference to smooth distance in results
-    \item Add relation of L operator and Lie derivative?
-\end{itemize}
 \section{Publications}
 In this section we highlight the publications that culminated into the present work
 \begin{itemize}

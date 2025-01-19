@@ -245,13 +245,13 @@ As shown in \cref{sec:explicit-construction-SE3}, $\theta$ is expressed as $\the
 \end{align}
 Using \vtwo{this result and }the implicit definition of $\Lop$ through derivatives, we can express
 \begin{align}
-   \begin{split}
-     \Lop[\cos\theta](\mathbf{Z})\boldsymbol{\zeta}=\Lop\biggl[\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)\biggr](\mathbf{Z})\boldsymbol{\zeta} &= \frac{1}{2}\frac{d}{d\varepsilon}\Biggl(\tr\biggl(\rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\biggr)\Biggr)\Biggr|_{\varepsilon=0}\\
+%    \begin{split}
+     \Lop[\cos\theta](\mathbf{Z})\boldsymbol{\zeta}=\Lop\biggl[\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)\biggr](\mathbf{Z})\boldsymbol{\zeta} &= \frac{1}{2}\frac{d}{d\varepsilon}\Biggl(\tr\biggl(\rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\biggr)\Biggr)\Biggr|_{\varepsilon=0} \nonumber\\
      = \frac{1}{2}\frac{d}{d\varepsilon}\Biggl(\tr\biggl(\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\biggr)\Biggr)\Biggr|_{\varepsilon=0}
-     &= \frac{1}{2}\tr\Biggl(\frac{d}{d\varepsilon}\biggl(\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\biggr)\biggr|_{\varepsilon=0}\Biggr)\\
+     &= \frac{1}{2}\tr\Biggl(\frac{d}{d\varepsilon}\biggl(\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\biggr)\biggr|_{\varepsilon=0}\Biggr) \nonumber\\
      = \frac{1}{2}\tr\Biggl(\biggl(\widehat{\mathcal{S}}(\boldsymbol{\omega})\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\biggr)\biggr|_{\varepsilon=0}\Biggr)
-     &= \frac{1}{2}\tr\bigl(\widehat{\mathcal{S}}(\boldsymbol{\omega})\rot(\mathbf{Z})\bigr).
-   \end{split}
+     &= \frac{1}{2}\tr\bigl(\widehat{\mathcal{S}}(\boldsymbol{\omega})\rot(\mathbf{Z})\bigr). \label{eq:appendix-L-cos-theta-implicit-defn}
+%    \end{split}
 \end{align}
 This implies that:
 \vtwo{\begin{align}
@@ -262,10 +262,10 @@ This implies that:
 If we denote $\rot(\mathbf{Z})_{ij}$ as the element in the $i^{th}$ row and $j^{th}$ column of $\rot(\mathbf{Z})$, this expression \vtwo{can also be written as}:
 \vtwo{\begin{align}
     \begin{split}
-        \Lop[\cos\theta](\mathbf{Z}) &= \frac{1}{2}\begin{bmatrix}
+        \Lop[\cos\theta](\mathbf{Z}) &= \frac{1}{2}\underbrace{\begin{bmatrix}
             \mathbf{0}& \rot(\mathbf{Z})_{23}-\rot(\mathbf{Z})_{32} & \rot(\mathbf{Z})_{31} - \rot(\mathbf{Z})_{13} & \rot(\mathbf{Z})_{12}-\rot(\mathbf{Z})_{21}
-        \end{bmatrix}\label{eq:appendix-L-of-trace-OR-Lop-cos-theta-explicit}\\
-        &= \frac{1}{2}\mathbf{g}.
+        \end{bmatrix}}_{\mathbf{g}}\label{eq:appendix-L-of-trace-OR-Lop-cos-theta-explicit}
+        % &= \frac{1}{2}\mathbf{g}.
     \end{split}
 \end{align}}
 
@@ -278,21 +278,30 @@ Switching our attention to the \vtwo{other $\Lop$ operator of \eqref{eq:explicit
 \end{align}
 using properties of the trace. With this, we can express the $\Lop$ operator of \vtwo{$\sin\theta$} as:
 \vtwo{\begin{align}
-    \Lop[\sin\theta](\mathbf{Z}) &=\Lop\biggl[\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F\biggr](\mathbf{Z}) \\
-    &= \Lop\left[\frac{1}{2\sqrt{2}}\sqrt{6 - 2\tr\bigl(\rot(\mathbf{Z})^2\bigr)}\right](\mathbf{Z})\\
+    \Lop[\sin\theta](\mathbf{Z}) &=\Lop\biggl[\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F\biggr](\mathbf{Z}) 
+    = \Lop\left[\frac{1}{2\sqrt{2}}\sqrt{6 - 2\tr\bigl(\rot(\mathbf{Z})^2\bigr)}\right](\mathbf{Z})\\
     &= \frac{-2}{4\sqrt{2}\sqrt{6 - 2\tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\Lop\Bigl[\tr\bigl(\rot(\mathbf{Z})^2\bigr)\Bigr](\mathbf{Z})\\
     &= \frac{-1}{4\sqrt{3 - \tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\Lop\Bigl[\tr\bigl(\rot(\mathbf{Z})^2\bigr)\Bigr](\mathbf{Z}).
 \end{align}}
-\vtwo{Now, note that $\Lop[\tr(\cdot)]$ was already computed in \eqref{eq:appendix-L-of-trace-OR-Lop-cos-theta-explicit} -- it is the same as $\Lop[\cos\theta]$ except for the $1/2$ coefficient. Therefore, we can express $\Lop[\sin\theta]$ as:}
+\vtwo{Using the implicit definition of $\Lop$:
+\begin{align}
+    \Lop\Bigl[\tr\bigl(\rot(\mathbf{Z})^2\bigr)\Bigr](\mathbf{Z})\boldsymbol{\zeta} &= \frac{d}{d\varepsilon}\Biggl(\tr\biggl(\rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\biggr)\Biggr)\Biggr|_{\varepsilon=0}\\
+    =&\tr\biggl(\frac{d}{d\varepsilon}\Bigl(\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\Bigr)\Bigr|_{\varepsilon=0}\biggr)\\
+    =&\tr\Bigl(\widehat{\mathcal{S}}(\boldsymbol{\omega})\rot(\mathbf{Z})\rot(\mathbf{Z})
+    +\rot(\mathbf{Z})\widehat{\mathcal{S}}(\boldsymbol{\omega})\rot(\mathbf{Z})
+    \Bigr)\\
+    =& 2\tr\bigl(\widehat{\mathcal{S}}(\boldsymbol{\omega})\rot(\mathbf{Z})^2\bigr).
+\end{align}
+Note that this final result is in the same format as \eqref{eq:appendix-L-cos-theta-implicit-defn}, and thus has a similar expression to $\Lop[\cos\theta](\mathbf{Z})$. Therefore, we can express $\Lop[\sin\theta]$ as:}
 \vtwo{\begin{align}
     \Lop[\sin\theta](\mathbf{Z}) = \frac{-1}{4\sqrt{3 - \tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\mathbf{f},
 \end{align}}
 where 
-\vtwo{\begin{align}
-    \mathbf{f} = \begin{bmatrix}
-        \mathbf{0}& \{\rot(\mathbf{Z})^2\}_{23}-\{\rot(\mathbf{Z})^2\}_{32} & \{\rot(\mathbf{Z})^2\}_{31} - \{\rot(\mathbf{Z})^2\}_{13} & \{\rot(\mathbf{Z})^2\}_{12}-\{\rot(\mathbf{Z})^2\}_{21}
+\vtwo{\begin{align*}
+    \mathbf{f} = 2\begin{bmatrix}
+        \mathbf{0}& \!\{\rot(\mathbf{Z})^2\}_{23} {-} \{\rot(\mathbf{Z})^2\}_{32} & \!\{\rot(\mathbf{Z})^2\}_{31} {-} \{\rot(\mathbf{Z})^2\}_{13} & \!\{\rot(\mathbf{Z})^2\}_{12} {-} \{\rot(\mathbf{Z})^2\}_{21}
     \end{bmatrix}.
-\end{align}}
+\end{align*}}
 
 \vtwo{It is possible to simplify the expression for $\Lop[\sin\theta]$ even further by expanding $\tr(\mathbf{\rot(\mathbf{Z})}^2)$ using the Rodrigues' formula \eqref{eq:appendix-rodrigues-fomula-with-B}:}
 \vtwo{\begin{align}
