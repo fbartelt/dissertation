@@ -299,6 +299,7 @@
     \pagebreak{}
 
     % Table of Contents, Figures and Tables
+    \addtocontents{toc}{\protect{\pdfbookmark[0]{\contentsname}{toc}}}
     \tableofcontents{}\listoffigures\listoftables
 
     \glossarypage
