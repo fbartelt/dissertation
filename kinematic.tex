@@ -228,20 +228,17 @@ which in turn can be expressed by
     \Lop[\widehat{E}](\mathbf{Z}) = \frac{4\theta\text{L}[\theta] + \Lop\bigl[\sum_{i=1}^{3}\sum_{j=1}^{3}\mathbf{u}_i\mathbf{u}_j\bar{\mathbf{X}}_{ij}\bigr](\mathbf{Z})}{2 \widehat{E}(\mathbf{Z})}. \label{eq:explicit-derivative-L-Ehat-p1}
 \end{align}
 The computation of the two $\Lop$ operators in \eqref{eq:explicit-derivative-L-Ehat-p1} is rather lengthy and is provided in \cref{app:explicit-derivative-SE3}. However, note that these computations only rely on previously computed terms and the elements of $\mathbf{u}$ and $\mathbf{Q}$. For completeness, we present the expressions for these terms without the detailed derivation:
-\begin{align}
-    \text{L}[\theta](\mathbf{Z}) = \frac{
-        -\frac{\frac{1}{2}\bigl(\tr(\mathbf{Q})-1\bigr)}{4\sqrt{3 - \tr(\mathbf{Q}^2)}}\mathbf{f} -
-    \frac{\sqrt{3 - \tr(\mathbf{Q}^2)}}{2}\mathbf{g}}
-    {\frac{3}{4} - \frac{1}{4}\tr(\mathbf{Q}^2)+\frac{1}{4}\bigl(\tr(\mathbf{Q})-1\bigr)^2},
+\vtwo{\begin{align}
+    \text{L}[\theta](\mathbf{Z}) = \frac{-\cos\theta}{8\sin\theta}\mathbf{f} - \frac{\sin\theta}{2}\mathbf{g},
     \label{eq:explicit-EE-dista-SE3-component-Ltheta}
-\end{align}
+\end{align}}
 where 
 \begin{align}
-    \mathbf{f} &= \begin{bmatrix}
-        \mathbf{0}& \frac{\{\mathbf{Q}^2\}_{23}-\{\mathbf{Q}^2\}_{32}}{2} & \frac{\{\mathbf{Q}^2\}_{13} - \{\mathbf{Q}^2\}_{31}}{2} & \frac{\{\mathbf{Q}^2\}_{12}-\{\mathbf{Q}^2\}_{21}}{2}
-    \end{bmatrix},\label{eq:explicit-EE-dista-SE3-component-fvec}\\
+    \mathbf{f} &= \vtwo{\begin{bmatrix}
+        \mathbf{0}& \{\mathbf{Q}^2\}_{23}-\{\mathbf{Q}^2\}_{32} & \{\mathbf{Q}^2\}_{31} - \{\mathbf{Q}^2\}_{13} & \{\mathbf{Q}^2\}_{12}-\{\mathbf{Q}^2\}_{21}
+    \end{bmatrix}},\label{eq:explicit-EE-dista-SE3-component-fvec}\\
     \mathbf{g} &= \begin{bmatrix}
-        \mathbf{0}& \frac{\mathbf{Q}_{23}-\mathbf{Q}_{32}}{2} & \frac{\mathbf{Q}_{13} - \mathbf{Q}_{31}}{2} & \frac{\mathbf{Q}_{12}-\mathbf{Q}_{21}}{2}
+        \mathbf{0}& \mathbf{Q}_{23}-\mathbf{Q}_{32} & \vtwo{\mathbf{Q}_{31} - \mathbf{Q}_{13}} & \mathbf{Q}_{12}-\mathbf{Q}_{21}
     \end{bmatrix} \label{eq:explicit-EE-dista-SE3-component-gvec}.
 \end{align}
 The remaining $\Lop$ operator is expressed as

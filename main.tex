@@ -9,11 +9,13 @@
 \usepackage{adjustbox}
 \usepackage{subcaption}
 \usepackage[toc]{appendix}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
+\usepackage{algorithm} % for algorithms
+\usepackage{algpseudocode} % for pseudocode
 \usepackage{tikz}
-\usepackage{mathrsfs}
-\usepackage{threeparttable}
+\usepackage{mathrsfs} % for script fonts \mathscr
+\usepackage{threeparttable} % for table notes
+\usepackage{color, soul} % coloring new text in versions
+\usepackage{cancel} % for strikethrough "cancels to zero"
 \usetikzlibrary{positioning, arrows, calc}
 \numberwithin{algorithm}{chapter}
 
@@ -108,6 +110,7 @@
 }
 
 \newcommand{\chapref}[1]{\cref{#1}: \nameref{#1}}
+\newcommand{\vtwo}[1]{\textcolor{magenta}{#1}}
 
 \sisetup{
   exponent-product = \cdot,
