@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="190mm"
+   height="106.875mm"
+   viewBox="0 0 190 106.875"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   sodipodi:docname="liegroup_curve_local_minima.svg"
+   inkscape:export-filename="liegroup_curve_local_minima.pdf"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.6820163"
+     inkscape:cx="175.38475"
+     inkscape:cy="212.83979"
+     inkscape:window-width="1920"
+     inkscape:window-height="1047"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect3"
+       is_visible="true"
+       lpeversion="1.3"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false"
+       uniform="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect9"
+       is_visible="true"
+       lpeversion="1.3"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false"
+       uniform="false" />
+    <marker
+       style="overflow:visible"
+       id="Stop"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Stop"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1"
+         d="M 0,4 V -4"
+         id="path23" />
+    </marker>
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect10"
+       is_visible="true"
+       lpeversion="1.3"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false"
+       uniform="false" />
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect12"
+       is_visible="true"
+       lpeversion="1.3"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false"
+       uniform="false" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#ff0303;stroke-width:0.403;stroke-dasharray:2.418, 0.403;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 100.41772,36.733313 C 97.400289,35.816631 94.382855,34.899948 90.336728,35.783673 86.2906,36.667397 81.216085,39.351367 77.39619,42.284271 73.576295,45.217174 71.011482,48.398656 65.647856,47.519038 60.28423,46.63942 52.122272,41.69871 43.960151,36.7579"
+       id="path6"
+       inkscape:path-effect="#path-effect3"
+       inkscape:original-d="M 100.41772,36.733313 C 97.400289,35.81663 94.382856,34.899946 91.365421,33.983265 86.2906,36.667397 81.216085,39.351367 76.141263,42.0355 73.576295,45.217174 71.011482,48.398656 68.446515,51.580329 60.28423,46.639421 52.122272,41.69871 43.960151,36.7579"
+       sodipodi:nodetypes="ccccc"
+       inkscape:label="path"
+       inkscape:export-filename="local_minima.pdf"
+       inkscape:export-xdpi="29.271606"
+       inkscape:export-ydpi="29.271606"
+       transform="matrix(2.492669,0,0,2.492669,-93.091695,-31.144358)" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#2801fb;stroke-width:0.503;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 103.73583,24.209982 c 1.00159,1.941304 2.82246,4.487144 2.75653,7.220684 -0.0659,2.733539 -2.01859,5.654668 -3.06256,8.869556 -1.04397,3.214887 -1.1792,6.723271 2.01544,8.078732 3.19465,1.355461 9.7188,0.557836 12.33713,-1.506501 2.61832,-2.064337 1.33052,-5.395139 0.23116,-8.897411 -1.09936,-3.502271 -2.01013,-7.175592 -1.80866,-9.764814 0.20146,-2.589221 1.51513,-4.094036 1.39686,-5.635432 -0.11827,-1.541396 -1.66848,-3.119224 -3.33733,-4.039539 -1.66885,-0.920314 -3.45623,-1.183068 -5.45848,-0.896821 -2.00225,0.286247 -4.21926,1.121468 -5.23663,2.207484 -1.01736,1.086016 -0.83505,2.422758 0.16654,4.364062 z"
+       id="path9"
+       inkscape:path-effect="#path-effect9"
+       inkscape:original-d="m 102.91655,23.605447 c 1.82087,2.545839 3.64174,5.091679 5.46261,7.637518 -1.95273,2.921241 -3.90539,5.842368 -5.85808,8.763551 -0.13525,3.508593 -0.27048,7.016977 -0.40573,10.525571 6.52454,-0.797672 13.04869,-1.595296 19.57323,-2.392969 -1.28789,-3.331001 -2.5757,-6.661802 -3.86358,-9.992804 -0.91083,-3.673542 -1.8216,-7.346863 -2.73242,-11.020403 1.31375,-1.504902 2.62742,-3.009717 3.94116,-4.514617 -1.55028,-1.577892 -3.10049,-3.155723 -4.65074,-4.733587 -1.78745,-0.262764 -3.57483,-0.525517 -5.36224,-0.788276 -2.21709,0.835253 -4.4341,1.670473 -6.65115,2.50571 0.18232,1.336795 0.36463,2.673537 0.54694,4.010306 z"
+       transform="matrix(2.4418738,0.50065053,-0.50065053,2.4418738,-87.088692,-69.645564)"
+       sodipodi:nodetypes="cccccccccccc"
+       inkscape:label="newcurve" />
+    <circle
+       style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.916865;stroke-dasharray:none;stroke-opacity:1"
+       id="circle6"
+       cx="157.1039"
+       cy="60.480915"
+       r="1.0812355"
+       inkscape:label="V" />
+    <ellipse
+       style="fill:none;fill-rule:evenodd;stroke:#0bfadb;stroke-width:0.506012;stroke-dasharray:0.506012, 0.506012;stroke-dashoffset:0;stroke-opacity:1"
+       id="ellipse6"
+       cx="15.938765"
+       cy="60.070484"
+       rx="14.405708"
+       ry="13.455647"
+       inkscape:label="bola" />
+    <circle
+       style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.916865;stroke-dasharray:none;stroke-opacity:1"
+       id="path4-2"
+       cx="15.938765"
+       cy="60.070484"
+       r="1.0812355"
+       inkscape:label="U" />
+    <circle
+       style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.916865;stroke-dasharray:none;stroke-opacity:1"
+       id="path4-5"
+       cx="27.946945"
+       cy="67.415558"
+       r="1.0812355"
+       inkscape:label="B" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.506009;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#Stop);marker-end:url(#Stop)"
+       d="M 16.032685,11.231015 H 157.21644"
+       id="path7"
+       sodipodi:nodetypes="cc"
+       inkscape:label="d(u)" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.203;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#Stop);marker-end:url(#Stop)"
+       d="m 48.557846,19.90685 c 17.286623,0 34.573247,0 51.859874,0"
+       id="path10"
+       inkscape:path-effect="#path-effect10"
+       inkscape:original-d="m 48.557846,19.90685 c 17.286623,0 34.573247,0 51.859874,0"
+       inkscape:label="dc(bv)"
+       transform="matrix(2.492669,0,0,2.492669,-93.091686,-28.573178)" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.203;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#Stop);marker-end:url(#Stop)"
+       d="m 48.557846,23.411701 c 16.579357,0 33.158714,0 49.738073,0"
+       id="path12"
+       inkscape:path-effect="#path-effect12"
+       inkscape:original-d="m 48.557846,23.411701 c 16.579357,0 33.158714,0 49.738073,0"
+       sodipodi:nodetypes="cc"
+       transform="matrix(2.492669,0,0,2.492669,-93.091686,-27.492608)"
+       inkscape:label="d(b)" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.506012;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       x="91.317688"
+       y="7.9691982"
+       id="text52"><tspan
+         sodipodi:role="line"
+         id="tspan52"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.506012"
+         x="91.317688"
+         y="7.9691982">$D(\mathbf{V})$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.506012;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       x="57.878654"
+       y="79.885414"
+       id="text52-8"><tspan
+         sodipodi:role="line"
+         id="tspan52-62"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.506012"
+         x="57.878654"
+         y="79.885414">$\Phi(\sigma, \mathbf{V}, \mathbf{W})$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.506012;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       x="91.319855"
+       y="17.943316"
+       id="text52-5"><tspan
+         sodipodi:role="line"
+         id="tspan52-0"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.506012"
+         x="91.319855"
+         y="17.943316">$\widehat{D}(\mathbf{X}, \mathbf{W})$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.506012;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       x="91.318321"
+       y="27.893576"
+       id="text52-0"><tspan
+         sodipodi:role="line"
+         id="tspan52-6"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.506012"
+         x="91.318321"
+         y="27.893576">$D(\mathbf{X})$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.85914px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.411309;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       x="200.59679"
+       y="46.652115"
+       id="text52-6"
+       transform="scale(0.79115378,1.2639768)"><tspan
+         sodipodi:role="line"
+         id="tspan52-1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.85914px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.411309"
+         x="200.59679"
+         y="46.652115">$\mathbf{W}$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.506012;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       x="137.25407"
+       y="86.027313"
+       id="text52-6-8"><tspan
+         sodipodi:role="line"
+         id="tspan52-1-5"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.506012"
+         x="137.25407"
+         y="86.027313">$\mathcal{C}$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.506012;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       x="29.806852"
+       y="66.908249"
+       id="text52-3"><tspan
+         sodipodi:role="line"
+         id="tspan52-7"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.506012"
+         x="29.806852"
+         y="66.908249">$\mathbf{X}$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.506012;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       x="13.445518"
+       y="56.918236"
+       id="text52-7"><tspan
+         sodipodi:role="line"
+         id="tspan52-8"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.506012"
+         x="13.445518"
+         y="56.918236">$\mathbf{V}$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.506012;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       x="9.1465511"
+       y="45.123924"
+       id="text52-4"><tspan
+         sodipodi:role="line"
+         id="tspan52-3"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.51744px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.506012"
+         x="9.1465511"
+         y="45.123924">$\mathcal{B}_\varepsilon$</tspan></text>
+  </g>
+</svg>

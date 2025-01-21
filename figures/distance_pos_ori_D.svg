@@ -1,0 +1,1238 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   class="main-svg"
+   width="1200"
+   height="600"
+   style=""
+   viewBox="0 0 1200 600"
+   version="1.1"
+   id="svg188"
+   sodipodi:docname="distance_pos_ori_D.svg"
+   inkscape:export-filename="distance_pos_ori_D.pdf"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview188"
+     pagecolor="#ffffff"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.3933333"
+     inkscape:cx="1205.0239"
+     inkscape:cy="300"
+     inkscape:window-width="1920"
+     inkscape:window-height="1047"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg188" />
+  <rect
+     x="0"
+     y="0"
+     width="1200"
+     height="600"
+     style="fill: rgb(255, 255, 255); fill-opacity: 1;"
+     id="rect1" />
+  <defs
+     id="defs-bbcacc">
+    <g
+       class="clips"
+       id="g19">
+      <clipPath
+         id="clipbbcaccxyplot"
+         class="plotclip">
+        <rect
+           width="1136"
+           height="178.55999999999997"
+           id="rect2" />
+      </clipPath>
+      <clipPath
+         id="clipbbcaccx2y2plot"
+         class="plotclip">
+        <rect
+           width="1136"
+           height="178.56"
+           id="rect3" />
+      </clipPath>
+      <clipPath
+         id="clipbbcaccx3y3plot"
+         class="plotclip">
+        <rect
+           width="1136"
+           height="178.56"
+           id="rect4" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccx">
+        <rect
+           x="64"
+           y="0"
+           width="1136"
+           height="600"
+           id="rect5" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccy">
+        <rect
+           x="0"
+           y="1"
+           width="1200"
+           height="178.55999999999997"
+           id="rect6" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccxy">
+        <rect
+           x="64"
+           y="1"
+           width="1136"
+           height="178.55999999999997"
+           id="rect7" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccy2">
+        <rect
+           x="0"
+           y="190.71999999999997"
+           width="1200"
+           height="178.56"
+           id="rect8" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccxy2">
+        <rect
+           x="64"
+           y="190.71999999999997"
+           width="1136"
+           height="178.56"
+           id="rect9" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccy3">
+        <rect
+           x="0"
+           y="380.43999999999994"
+           width="1200"
+           height="178.56"
+           id="rect10" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccxy3">
+        <rect
+           x="64"
+           y="380.43999999999994"
+           width="1136"
+           height="178.56"
+           id="rect11" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccx2">
+        <rect
+           x="64"
+           y="0"
+           width="1136"
+           height="600"
+           id="rect12" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccx2y">
+        <rect
+           x="64"
+           y="1"
+           width="1136"
+           height="178.55999999999997"
+           id="rect13" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccx2y2">
+        <rect
+           x="64"
+           y="190.71999999999997"
+           width="1136"
+           height="178.56"
+           id="rect14" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccx2y3">
+        <rect
+           x="64"
+           y="380.43999999999994"
+           width="1136"
+           height="178.56"
+           id="rect15" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccx3">
+        <rect
+           x="64"
+           y="0"
+           width="1136"
+           height="600"
+           id="rect16" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccx3y">
+        <rect
+           x="64"
+           y="1"
+           width="1136"
+           height="178.55999999999997"
+           id="rect17" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccx3y2">
+        <rect
+           x="64"
+           y="190.71999999999997"
+           width="1136"
+           height="178.56"
+           id="rect18" />
+      </clipPath>
+      <clipPath
+         class="axesclip"
+         id="clipbbcaccx3y3">
+        <rect
+           x="64"
+           y="380.43999999999994"
+           width="1136"
+           height="178.56"
+           id="rect19" />
+      </clipPath>
+    </g>
+    <g
+       class="gradients"
+       id="g20" />
+    <g
+       class="patterns"
+       id="g21" />
+  </defs>
+  <g
+     class="bglayer"
+     id="g22" />
+  <g
+     class="layer-below"
+     id="g25">
+    <g
+       class="imagelayer"
+       id="g23" />
+    <g
+       class="shapelayer"
+       id="g24" />
+  </g>
+  <g
+     class="cartesianlayer"
+     id="g166">
+    <g
+       class="subplot xy"
+       id="g67">
+      <g
+         class="layer-subplot"
+         id="g28">
+        <g
+           class="shapelayer"
+           id="g26" />
+        <g
+           class="imagelayer"
+           id="g27" />
+      </g>
+      <g
+         class="minor-gridlayer"
+         id="g31">
+        <g
+           class="x"
+           id="g29" />
+        <g
+           class="y"
+           id="g30" />
+      </g>
+      <g
+         class="gridlayer"
+         id="g41">
+        <g
+           class="x"
+           id="g37">
+          <path
+             class="xgrid crisp"
+             transform="translate(215.57,0)"
+             d="M0,1v178.55999999999997"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path31" />
+          <path
+             class="xgrid crisp"
+             transform="translate(367.14,0)"
+             d="M0,1v178.55999999999997"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path32" />
+          <path
+             class="xgrid crisp"
+             transform="translate(518.7,0)"
+             d="M0,1v178.55999999999997"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path33" />
+          <path
+             class="xgrid crisp"
+             transform="translate(670.27,0)"
+             d="M0,1v178.55999999999997"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path34" />
+          <path
+             class="xgrid crisp"
+             transform="translate(821.84,0)"
+             d="M0,1v178.55999999999997"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path35" />
+          <path
+             class="xgrid crisp"
+             transform="translate(973.41,0)"
+             d="M0,1v178.55999999999997"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path36" />
+          <path
+             class="xgrid crisp"
+             transform="translate(1124.97,0)"
+             d="M0,1v178.55999999999997"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path37" />
+        </g>
+        <g
+           class="y"
+           id="g40">
+          <path
+             class="ygrid crisp"
+             transform="translate(0,122.19)"
+             d="M64,0h1136"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path38" />
+          <path
+             class="ygrid crisp"
+             transform="translate(0,73.71)"
+             d="M64,0h1136"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path39" />
+          <path
+             class="ygrid crisp"
+             transform="translate(0,25.24)"
+             d="M64,0h1136"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path40" />
+        </g>
+      </g>
+      <g
+         class="zerolinelayer"
+         id="g42">
+        <path
+           class="xzl zl crisp"
+           transform="translate(64,0)"
+           d="M0,1v178.55999999999997"
+           style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 2px;"
+           id="path41" />
+        <path
+           class="yzl zl crisp"
+           transform="translate(0,170.66)"
+           d="M64,0h1136"
+           style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 2px;"
+           id="path42" />
+      </g>
+      <g
+         class="layer-between"
+         id="g45">
+        <g
+           class="shapelayer"
+           id="g43" />
+        <g
+           class="imagelayer"
+           id="g44" />
+      </g>
+      <path
+         class="xlines-below"
+         id="path45" />
+      <path
+         class="ylines-below"
+         id="path46" />
+      <g
+         class="overlines-below"
+         id="g46" />
+      <g
+         class="xaxislayer-below"
+         id="g47" />
+      <g
+         class="yaxislayer-below"
+         id="g48" />
+      <g
+         class="overaxes-below"
+         id="g49" />
+      <g
+         class="overplot"
+         id="g58">
+        <g
+           class="xy"
+           transform="translate(64,1)"
+           clip-path="url(#clipbbcaccxyplot)"
+           id="g57">
+          <g
+             class="scatterlayer mlayer"
+             id="g56">
+            <g
+               class="trace scatter trace062ea2"
+               style="stroke-miterlimit: 2; opacity: 1;"
+               id="g55">
+              <g
+                 class="fills"
+                 id="g50" />
+              <g
+                 class="errorbars"
+                 id="g51" />
+              <g
+                 class="lines"
+                 id="g52">
+                <path
+                   class="js-line"
+                   d="M0,8.93L14.4,25.38L15.16,26.17L28.04,38.5L28.8,39.16L42.44,50.08L43.2,50.64L58.35,60.65L59.11,61.11L75.78,70.14L76.54,70.52L96.25,79.33L97,79.64L122.01,89.06L122.77,89.33L168.24,105.64L169,105.95L186.43,114.3L187.19,114.72L200.07,122.71L200.83,123.24L229.63,143.39L230.38,143.79L245.54,150.55L246.3,150.86L272.82,161.27L273.58,161.53L291.01,166.76L291.77,166.94L303.14,168.77L303.89,168.85L322.08,169.56L322.84,169.57L1136,169.63"
+                   style="vector-effect: none; fill: none; stroke: rgb(99, 110, 250); stroke-opacity: 1; stroke-width: 3px; opacity: 1;"
+                   id="path51" />
+              </g>
+              <g
+                 class="points"
+                 id="g53" />
+              <g
+                 class="text"
+                 id="g54" />
+            </g>
+          </g>
+        </g>
+      </g>
+      <path
+         class="xlines-above crisp"
+         d="M0,0"
+         style="fill: none;"
+         id="path58" />
+      <path
+         class="ylines-above crisp"
+         d="M0,0"
+         style="fill: none;"
+         id="path59" />
+      <g
+         class="overlines-above"
+         id="g59" />
+      <g
+         class="xaxislayer-above"
+         id="g60" />
+      <g
+         class="yaxislayer-above"
+         id="g65">
+        <g
+           class="ytick"
+           id="g61">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             transform="translate(0,170.66)"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             id="text60">£0£</text>
+        </g>
+        <g
+           class="ytick"
+           id="g62">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(0,122.19)"
+             id="text61">£1£</text>
+        </g>
+        <g
+           class="ytick"
+           id="g63">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(0,73.71)"
+             id="text62">£2£</text>
+        </g>
+        <g
+           class="ytick"
+           id="g64">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(0,25.24)"
+             id="text63">£3£</text>
+        </g>
+      </g>
+      <g
+         class="overaxes-above"
+         id="g66" />
+    </g>
+    <g
+       class="subplot x2y2"
+       id="g113">
+      <g
+         class="layer-subplot"
+         id="g70">
+        <g
+           class="shapelayer"
+           id="g68" />
+        <g
+           class="imagelayer"
+           id="g69" />
+      </g>
+      <g
+         class="minor-gridlayer"
+         id="g73">
+        <g
+           class="x2"
+           id="g71" />
+        <g
+           class="y2"
+           id="g72" />
+      </g>
+      <g
+         class="gridlayer"
+         id="g85">
+        <g
+           class="x2"
+           id="g79">
+          <path
+             class="x2grid crisp"
+             transform="translate(215.57,0)"
+             d="M0,190.71999999999997v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path73" />
+          <path
+             class="x2grid crisp"
+             transform="translate(367.14,0)"
+             d="M0,190.71999999999997v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path74" />
+          <path
+             class="x2grid crisp"
+             transform="translate(518.7,0)"
+             d="M0,190.71999999999997v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path75" />
+          <path
+             class="x2grid crisp"
+             transform="translate(670.27,0)"
+             d="M0,190.71999999999997v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path76" />
+          <path
+             class="x2grid crisp"
+             transform="translate(821.84,0)"
+             d="M0,190.71999999999997v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path77" />
+          <path
+             class="x2grid crisp"
+             transform="translate(973.41,0)"
+             d="M0,190.71999999999997v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path78" />
+          <path
+             class="x2grid crisp"
+             transform="translate(1124.97,0)"
+             d="M0,190.71999999999997v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path79" />
+        </g>
+        <g
+           class="y2"
+           id="g84">
+          <path
+             class="y2grid crisp"
+             transform="translate(0,327.49)"
+             d="M64,0h1136"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path80" />
+          <path
+             class="y2grid crisp"
+             transform="translate(0,294.59999999999997)"
+             d="M64,0h1136"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path81" />
+          <path
+             class="y2grid crisp"
+             transform="translate(0,261.71)"
+             d="M64,0h1136"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path82" />
+          <path
+             class="y2grid crisp"
+             transform="translate(0,228.81999999999996)"
+             d="M64,0h1136"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path83" />
+          <path
+             class="y2grid crisp"
+             transform="translate(0,195.91999999999996)"
+             d="M64,0h1136"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path84" />
+        </g>
+      </g>
+      <g
+         class="zerolinelayer"
+         id="g86">
+        <path
+           class="x2zl zl crisp"
+           transform="translate(64,0)"
+           d="M0,190.71999999999997v178.56"
+           style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 2px;"
+           id="path85" />
+        <path
+           class="y2zl zl crisp"
+           transform="translate(0,360.38)"
+           d="M64,0h1136"
+           style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 2px;"
+           id="path86" />
+      </g>
+      <g
+         class="layer-between"
+         id="g89">
+        <g
+           class="shapelayer"
+           id="g87" />
+        <g
+           class="imagelayer"
+           id="g88" />
+      </g>
+      <path
+         class="xlines-below"
+         id="path89" />
+      <path
+         class="ylines-below"
+         id="path90" />
+      <g
+         class="overlines-below"
+         id="g90" />
+      <g
+         class="xaxislayer-below"
+         id="g91" />
+      <g
+         class="yaxislayer-below"
+         id="g92" />
+      <g
+         class="overaxes-below"
+         id="g93" />
+      <g
+         class="overplot"
+         id="g102">
+        <g
+           class="x2y2"
+           transform="translate(64,190.71999999999997)"
+           clip-path="url(#clipbbcaccx2y2plot)"
+           id="g101">
+          <g
+             class="scatterlayer mlayer"
+             id="g100">
+            <g
+               class="trace scatter trace23fb5e"
+               style="stroke-miterlimit: 2; opacity: 1;"
+               id="g99">
+              <g
+                 class="fills"
+                 id="g94" />
+              <g
+                 class="errorbars"
+                 id="g95" />
+              <g
+                 class="lines"
+                 id="g96">
+                <path
+                   class="js-line"
+                   d="M0,8.93L13.64,29.83L14.4,30.87L25.77,45.24L26.52,46.09L40.17,60.21L40.92,60.92L52.29,70.45L53.05,71.04L64.42,78.93L65.17,79.35L75.03,84.97L75.78,85.33L84.88,89.59L85.64,89.89L93.21,92.87L93.97,93.14L108.37,97.46L109.13,97.64L132.62,102.21L133.38,102.33L158.39,106.93L159.15,107.13L172.79,111.88L173.55,112.22L183.4,117.26L184.15,117.71L194.01,124.43L194.76,125.02L205.37,134.44L206.13,135.19L220.53,148.57L221.29,149.05L227.35,152.03L228.11,152.26L234.93,153.51L235.69,153.61L252.36,156.61L253.12,156.82L274.34,163.3L275.1,163.51L290.25,167.19L291.01,167.33L303.89,169.01L304.65,169.06L323.6,169.58L324.35,169.59L1136,169.62"
+                   style="vector-effect: none; fill: none; stroke: rgb(239, 85, 59); stroke-opacity: 1; stroke-width: 3px; opacity: 1;"
+                   id="path95" />
+              </g>
+              <g
+                 class="points"
+                 id="g97" />
+              <g
+                 class="text"
+                 id="g98" />
+            </g>
+          </g>
+        </g>
+      </g>
+      <path
+         class="xlines-above crisp"
+         d="M0,0"
+         style="fill: none;"
+         id="path102" />
+      <path
+         class="ylines-above crisp"
+         d="M0,0"
+         style="fill: none;"
+         id="path103" />
+      <g
+         class="overlines-above"
+         id="g103" />
+      <g
+         class="xaxislayer-above"
+         id="g104" />
+      <g
+         class="yaxislayer-above"
+         id="g111">
+        <g
+           class="y2tick"
+           id="g105">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             transform="translate(0,360.38)"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             id="text104">£0£</text>
+        </g>
+        <g
+           class="y2tick"
+           id="g106">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(0,327.49)"
+             id="text105">£50£</text>
+        </g>
+        <g
+           class="y2tick"
+           id="g107">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(0,294.59999999999997)"
+             id="text106">£100£</text>
+        </g>
+        <g
+           class="y2tick"
+           id="g108">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(0,261.71)"
+             id="text107">£150£</text>
+        </g>
+        <g
+           class="y2tick"
+           id="g109">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(0,228.81999999999996)"
+             id="text108">£200£</text>
+        </g>
+        <g
+           class="y2tick"
+           id="g110">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(0,195.91999999999996)"
+             id="text109">£250£</text>
+        </g>
+      </g>
+      <g
+         class="overaxes-above"
+         id="g112" />
+    </g>
+    <g
+       class="subplot x3y3"
+       id="g165">
+      <g
+         class="layer-subplot"
+         id="g116">
+        <g
+           class="shapelayer"
+           id="g114" />
+        <g
+           class="imagelayer"
+           id="g115" />
+      </g>
+      <g
+         class="minor-gridlayer"
+         id="g119">
+        <g
+           class="x3"
+           id="g117" />
+        <g
+           class="y3"
+           id="g118" />
+      </g>
+      <g
+         class="gridlayer"
+         id="g130">
+        <g
+           class="x3"
+           id="g125">
+          <path
+             class="x3grid crisp"
+             transform="translate(215.57,0)"
+             d="M0,380.43999999999994v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path119" />
+          <path
+             class="x3grid crisp"
+             transform="translate(367.14,0)"
+             d="M0,380.43999999999994v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path120" />
+          <path
+             class="x3grid crisp"
+             transform="translate(518.7,0)"
+             d="M0,380.43999999999994v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path121" />
+          <path
+             class="x3grid crisp"
+             transform="translate(670.27,0)"
+             d="M0,380.43999999999994v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path122" />
+          <path
+             class="x3grid crisp"
+             transform="translate(821.84,0)"
+             d="M0,380.43999999999994v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path123" />
+          <path
+             class="x3grid crisp"
+             transform="translate(973.41,0)"
+             d="M0,380.43999999999994v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path124" />
+          <path
+             class="x3grid crisp"
+             transform="translate(1124.97,0)"
+             d="M0,380.43999999999994v178.56"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path125" />
+        </g>
+        <g
+           class="y3"
+           id="g129">
+          <path
+             class="y3grid crisp"
+             transform="translate(0,511.77)"
+             d="M64,0h1136"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path126" />
+          <path
+             class="y3grid crisp"
+             transform="translate(0,473.4699999999999)"
+             d="M64,0h1136"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path127" />
+          <path
+             class="y3grid crisp"
+             transform="translate(0,435.15999999999997)"
+             d="M64,0h1136"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path128" />
+          <path
+             class="y3grid crisp"
+             transform="translate(0,396.85999999999996)"
+             d="M64,0h1136"
+             style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 1px;"
+             id="path129" />
+        </g>
+      </g>
+      <g
+         class="zerolinelayer"
+         id="g131">
+        <path
+           class="x3zl zl crisp"
+           transform="translate(64,0)"
+           d="M0,380.43999999999994v178.56"
+           style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 2px;"
+           id="path130" />
+        <path
+           class="y3zl zl crisp"
+           transform="translate(0,550.0699999999999)"
+           d="M64,0h1136"
+           style="stroke: rgb(0, 0, 0); stroke-opacity: 0.5; stroke-width: 2px;"
+           id="path131" />
+      </g>
+      <g
+         class="layer-between"
+         id="g134">
+        <g
+           class="shapelayer"
+           id="g132" />
+        <g
+           class="imagelayer"
+           id="g133" />
+      </g>
+      <path
+         class="xlines-below"
+         id="path134" />
+      <path
+         class="ylines-below"
+         id="path135" />
+      <g
+         class="overlines-below"
+         id="g135" />
+      <g
+         class="xaxislayer-below"
+         id="g136" />
+      <g
+         class="yaxislayer-below"
+         id="g137" />
+      <g
+         class="overaxes-below"
+         id="g138" />
+      <g
+         class="overplot"
+         id="g147">
+        <g
+           class="x3y3"
+           transform="translate(64,380.43999999999994)"
+           clip-path="url(#clipbbcaccx3y3plot)"
+           id="g146">
+          <g
+             class="scatterlayer mlayer"
+             id="g145">
+            <g
+               class="trace scatter trace627567"
+               style="stroke-miterlimit: 2; opacity: 1;"
+               id="g144">
+              <g
+                 class="fills"
+                 id="g139" />
+              <g
+                 class="errorbars"
+                 id="g140" />
+              <g
+                 class="lines"
+                 id="g141">
+                <path
+                   class="js-line"
+                   d="M0,8.93L20.46,19.19L21.22,19.68L31.83,25.63L32.59,26.07L53.81,37.71L54.56,38.08L63.66,42.8L64.42,43.15L75.78,48.85L76.54,49.19L102.31,61.94L103.07,62.3L120.5,71.23L121.25,71.65L168.24,96.17L169,96.53L200.83,111.94L201.59,112.36L215.98,121.73L216.74,122.28L246.3,144.92L247.06,145.34L259.18,152.29L259.94,152.65L273.58,159.18L274.34,159.52L290.25,165.65L291.01,165.89L300.86,168.16L301.62,168.27L312.23,169.22L312.99,169.25L338.75,169.63L339.51,169.54L346.33,169.63L347.09,169.54L353.15,169.63L353.91,169.48L358.46,169.63L359.22,169.56L367.55,169.63L368.31,169.57L385.74,169.63L386.5,169.63L394.08,169.58L394.83,169.54L422.12,169.55L422.87,169.53L472.89,169.53L473.65,169.63L481.23,169.57L481.99,169.63L487.29,169.56L488.05,169.58L498.66,169.63L499.42,169.5L503.96,169.54L504.72,169.57L532.76,169.56L533.52,169.52L538.82,169.59L539.58,169.63L1136,169.57"
+                   style="vector-effect: none; fill: none; stroke: rgb(0, 204, 150); stroke-opacity: 1; stroke-width: 3px; opacity: 1;"
+                   id="path140" />
+              </g>
+              <g
+                 class="points"
+                 id="g142" />
+              <g
+                 class="text"
+                 id="g143" />
+            </g>
+          </g>
+        </g>
+      </g>
+      <path
+         class="xlines-above crisp"
+         d="M0,0"
+         style="fill: none;"
+         id="path147" />
+      <path
+         class="ylines-above crisp"
+         d="M0,0"
+         style="fill: none;"
+         id="path148" />
+      <g
+         class="overlines-above"
+         id="g148" />
+      <g
+         class="xaxislayer-above"
+         id="g157">
+        <g
+           class="x3tick"
+           id="g149">
+          <text
+             text-anchor="middle"
+             x="0"
+             y="572"
+             transform="translate(64,0)"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             id="text148">£0£</text>
+        </g>
+        <g
+           class="x3tick"
+           id="g150">
+          <text
+             text-anchor="middle"
+             x="0"
+             y="572"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(215.57,0)"
+             id="text149">£2£</text>
+        </g>
+        <g
+           class="x3tick"
+           id="g151">
+          <text
+             text-anchor="middle"
+             x="0"
+             y="572"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(367.14,0)"
+             id="text150">£4£</text>
+        </g>
+        <g
+           class="x3tick"
+           id="g152">
+          <text
+             text-anchor="middle"
+             x="0"
+             y="572"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(518.7,0)"
+             id="text151">£6£</text>
+        </g>
+        <g
+           class="x3tick"
+           id="g153">
+          <text
+             text-anchor="middle"
+             x="0"
+             y="572"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(670.27,0)"
+             id="text152">£8£</text>
+        </g>
+        <g
+           class="x3tick"
+           id="g154">
+          <text
+             text-anchor="middle"
+             x="0"
+             y="572"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(821.84,0)"
+             id="text153">£10£</text>
+        </g>
+        <g
+           class="x3tick"
+           id="g155">
+          <text
+             text-anchor="middle"
+             x="0"
+             y="572"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(973.41,0)"
+             id="text154">£12£</text>
+        </g>
+        <g
+           class="x3tick"
+           id="g156">
+          <text
+             text-anchor="middle"
+             x="0"
+             y="572"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(1124.97,0)"
+             id="text155">£14£</text>
+        </g>
+      </g>
+      <g
+         class="yaxislayer-above"
+         id="g163">
+        <g
+           class="y3tick"
+           id="g158">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             transform="translate(0,550.0699999999999)"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             id="text157">£0£</text>
+        </g>
+        <g
+           class="y3tick"
+           id="g159">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(0,511.77)"
+             id="text158">£20£</text>
+        </g>
+        <g
+           class="y3tick"
+           id="g160">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(0,473.4699999999999)"
+             id="text159">£40£</text>
+        </g>
+        <g
+           class="y3tick"
+           id="g161">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(0,435.15999999999997)"
+             id="text160">£60£</text>
+        </g>
+        <g
+           class="y3tick"
+           id="g162">
+          <text
+             text-anchor="end"
+             x="63"
+             y="4.199999999999999"
+             style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;"
+             transform="translate(0,396.85999999999996)"
+             id="text161">£80£</text>
+        </g>
+      </g>
+      <g
+         class="overaxes-above"
+         id="g164" />
+    </g>
+  </g>
+  <g
+     class="polarlayer"
+     id="g167" />
+  <g
+     class="smithlayer"
+     id="g168" />
+  <g
+     class="ternarylayer"
+     id="g169" />
+  <g
+     class="geolayer"
+     id="g170" />
+  <g
+     class="funnelarealayer"
+     id="g171" />
+  <g
+     class="pielayer"
+     id="g172" />
+  <g
+     class="iciclelayer"
+     id="g173" />
+  <g
+     class="treemaplayer"
+     id="g174" />
+  <g
+     class="sunburstlayer"
+     id="g175" />
+  <g
+     class="glimages"
+     id="g176" />
+  <defs
+     id="topdefs-bbcacc">
+    <g
+       class="clips"
+       id="g177" />
+  </defs>
+  <g
+     class="layer-above"
+     id="g180">
+    <g
+       class="imagelayer"
+       id="g178" />
+    <g
+       class="shapelayer"
+       id="g179" />
+  </g>
+  <g
+     class="infolayer"
+     id="g188">
+    <g
+       class="g-gtitle"
+       id="g181" />
+    <g
+       class="g-xtitle"
+       id="g182" />
+    <g
+       class="g-x2title"
+       id="g183" />
+    <g
+       class="g-x3title"
+       transform="translate(0,-2.2999999999999545)"
+       id="g184">
+      <text
+         class="x3title"
+         x="632"
+         y="599.3"
+         text-anchor="middle"
+         style="opacity: 1; font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 14px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;"
+         id="text183">Time (s)</text>
+    </g>
+    <g
+       class="g-ytitle"
+       id="g185">
+      <text
+         class="ytitle"
+         transform="rotate(-90,18.56875,90.28)"
+         x="18.56875"
+         y="90.279999"
+         text-anchor="middle"
+         style="font-size:14px;font-family:'Open Sans', verdana, arial, sans-serif;white-space:pre;opacity:1;fill:#2a3f5f;fill-opacity:1"
+         id="text184">Distance $D$</text>
+    </g>
+    <g
+       class="g-y2title"
+       transform="translate(7.775390625,0)"
+       id="g186">
+      <text
+         class="y2title"
+         transform="rotate(-90,5.225000000000001,280)"
+         x="5.225000000000001"
+         y="280"
+         text-anchor="middle"
+         style="opacity: 1; font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 14px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;"
+         id="text185">Pos. error (cm)</text>
+    </g>
+    <g
+       class="g-y3title"
+       transform="translate(1.1044921875,0)"
+       id="g187">
+      <text
+         class="y3title"
+         transform="rotate(-90,11.896875000000001,469.7199999999999)"
+         x="11.896875000000001"
+         y="469.7199999999999"
+         text-anchor="middle"
+         style="opacity: 1; font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 14px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;"
+         id="text186">Ori. error (deg)</text>
+    </g>
+  </g>
+</svg>
