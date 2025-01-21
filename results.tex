@@ -111,16 +111,16 @@ The system's trajectory is illustrated in \cref{fig:vfplot-trajectory}, where th
 
 Although our implementation was carried out in C++, we provide a less efficient sample code in Python for clarity and accessibility, available at \url{https://github.com/fbartelt/SE3-example/blob/main/SE3example.ipynb}.
 \subsection{Proper orthochronous Lorentz group}
-\vtwo{Before specifying the performed simulation in $\text{SO}^+(3, 1)$ it is necessary to introduce some concepts on special relativity. Relativistic motions occur in the Minkowski space, a four-dimensional description of spacetime. Elements of this space are called \emph{events}, represented as $\mathbf{p}=[x\ y \ z\ t]^\top\in\mathbb{R}^4$, where $x$, $y$ and $z$ are the spatial coordinates and $t$ is the time coordinate. Since time dilation and length contraction are effects experienced by observers in relative motion, a transformation of rerentials is required to relate the coordinates of events in different frames. These transformations are called \emph{Lorentz transformations}.}
+\vtwo{Before describing the simulation conducted in $\text{SO}^+(3, 1)$, we first introduce key concepts from special relativity. Relativistic motion takes place within Minkowski space, a four-dimensional representation of spacetime. The elements of this space, known as \emph{events}, are represented by vectors $\mathbf{p}=[x\ y \ z\ t]^\top\in\mathbb{R}^4$, where $x$, $y$, and $z$ are spatial coordinates and $t$ is the time coordinate. Since effects such as time dilation and length contraction depend on the relative motion of observers, a transformation of reference frames is necessary to relate the coordinates of events between different observers. These transformations are known as \emph{Lorentz transformations}.}
 
-\vtwo{Lorentz transformations are matrices that belong to the \emph{Lorentz group}. These transformations include spatial rotations, and reflections, and \emph{boosts} \citep[p. 12]{Carroll2019}, which is a transformation in Minkowski space without rotation. Specifically, the proper orthochronous Lorentz group $\text{SO}^+(3, 1)$ is the subgroup of the Lorentz group that includes only rotations and boosts that preserve the direction of time. The elements of $\text{SO}^+(3, 1)$ are $4\times 4$ matrices that preserve the \emph{Minkowski metric}:}
+\vtwo{Lorentz transformations form a group called the \emph{Lorentz group}, encompassing spatial rotations, reflections, and \emph{boosts} \citep[p. 12]{Carroll2019} -- the latter being transformations in Minkowski space without rotation. Specifically, the proper orthochronous Lorentz group, $\text{SO}^+(3, 1)$, is a subgroup of the Lorentz group that includes only rotations and boosts preserving the direction of time. The elements of $\text{SO}^+(3, 1)$ are $4 \times 4$ matrices that preserve the \emph{Minkowski metric}, defined by:}
 \vtwo{
 \begin{align}
     \nu^2 = x^2 + y^2 + z^2 - t^2,
 \end{align}
-where $\nu$ is called the \emph{spacetime interval}.}
+where $\nu$ is the \emph{spacetime interval}.}
 
-\vtwo{If an observer $O_2$ moves near the speed of light, it will experience an event with different coordinates $\mathbf{p}' = [x'\ y'\ z'\ t']^\top$ compared to the inertial observer $O_1$. These coordinates are related to $\mathbf{p}$ by the transformation $\mathbf{p}' = \boldsymbol{\Lambda}\mathbf{p}$, where $\boldsymbol{\Lambda}$ is a Lorentz transformation. For example, if $O_2$ boosts along the $x$-axis with a velocity $v$, the Lorentz transformation is given by
+\vtwo{If an observer $O_2$ moves near the speed of light, they will perceive an event with coordinates $\mathbf{p}' = [x'\ y'\ z'\ t']^\top$ that differ from the coordinates $\mathbf{p}$ observed by an inertial observer $O_1$. These coordinates are related by the transformation $\mathbf{p}' = \boldsymbol{\Lambda} \mathbf{p}$, where $\boldsymbol{\Lambda}$ is a Lorentz transformation. For instance, if $O_2$ moves along the $x$-axis with velocity $v$, the Lorentz transformation is given by
 \begin{align}
    \begin{split}
      x' &= \gamma(x - vt)\\
@@ -131,12 +131,12 @@ where $\nu$ is called the \emph{spacetime interval}.}
 \end{align}
 where $c$ is the speed of light and $\gamma = \frac{1}{\sqrt{1 - v^2/c^2}}$ is the \emph{Lorentz factor}.}
 
-\vtwo{As can be seen in \eqref{eq:results-lorentz-example}, observer $O_2$ will experience time dilation if it moves near the speed of light. It is the common to think about the different ``times'' as if each reference frame had an attached clock that ticks at a different rate. The time measured by a clock at the inertial frame $O_1$ is denoted as the \emph{coordinate time}, while the time measured by a clock at the relativistic frame $O_2$ is called the \emph{proper time}. The proper time $\tau$ is related to the coordinate time $t$ by $\frac{dt}{d\tau} = \gamma$ \citep[p. 32]{steane2012relativity}.}
+\vtwo{As shown in \eqref{eq:results-lorentz-example}, observer $O_2$ experiences time dilation when traveling near the speed of light. It is common to interpret the differing ``times'' as if each reference frame has an attached clock that ticks at a distinct rate. The time measured by a clock in the inertial frame $O_1$ is referred to as the \emph{coordinate time}, while the time measured by a clock in the relativistic frame $O_2$ is called the \emph{proper time}. The proper time $\tau$ is related to the coordinate time $t$ via $\frac{dt}{d\tau} = \gamma$ \citep[p. 32]{steane2012relativity}.}
 
-\vtwo{With all these concepts introduced, we can now present the simulation performed in $\text{SO}^+(3, 1)$. We henceforth adopt $c=1$, as it is usual in special relativity, which implies that all quantities are adimensional.}
+\vtwo{With these concepts established, we now turn to the simulation conducted in $\text{SO}^+(3, 1)$. For simplicity, we adopt $c = 1$, as is customary in special relativity, implying all quantities are dimensionless.}
 
 \subsubsection{Target curve}
-\vtwo{The target curve $\mathcal{C}\in\text{SO}^+(3, 1)$ was taken as a periodic boost along the $x$-axis. The parametrization of the curve $\mathbf{H}_d$ was defined as:
+\vtwo{The target curve $\mathcal{C} \in \text{SO}^+(3, 1)$ was chosen as a periodic boost along the $x$-axis. The parametrization of the curve, denoted by $\mathbf{H}_d$, is defined as:
 \begin{align}
     \mathbf{H}_d(s) = \begin{bmatrix}
         \gamma(s) & 0 & 0 & -\gamma(s) v(s)\\
@@ -147,13 +147,13 @@ where $c$ is the speed of light and $\gamma = \frac{1}{\sqrt{1 - v^2/c^2}}$ is t
 \end{align}
 where
 \begin{align}
-    v(s) = 0.9 + \frac{0.09}{2}(\cos(2\pi s) + 1)\\
-    \gamma(s) = \frac{1}{\sqrt{1 - v(s)^2}}.
+    v(s) &= 0.9 + \frac{0.09}{2}(\cos(2\pi s) + 1)\\
+    \gamma(s) &= \frac{1}{\sqrt{1 - v(s)^2}}.
 \end{align}}
-\vtwo{This curve was discretized into $P=\num{30000}$ points by sampling $s$ into $\num{30000}$ evenly spaced points within the interval $[0, 1]$. To distinguish the continuous and discrete parametrizations, we again use the notations $\mathbf{H}_d[i]$ for the $i$-th sample of the discretized curve and $\mathbf{H}_d(s)$ for the continuous curve.}
+\vtwo{This curve was discretized into $P=\num{30000}$ points by sampling $s$ into $\num{30000}$ evenly spaced points within the interval $[0, 1]$. To distinguish the continuous and discrete parametrizations, we again adopt the notations $\mathbf{H}_d[i]$ for the $i$-th sample of the discretized curve and $\mathbf{H}_d(s)$ for the continuous curve.}
 
 \subsubsection{Choice of S map}
-\vtwo{The chosen S map was the same as the one shown in \cref{ex:lorentz-group-lie-algebra}, thus for a vector $\boldsymbol{\xi}=[\xi_1\ \xi_2\ \xi_3\ \xi_4\ \xi_5\ \xi_6 ]^\top$, the corresponding isomorphism $\mathcal{S}:\mathbb{R}^6\to\mathfrak{so}(3,1)$ is given by:
+\vtwo{The selected S map is the same as the one presented in \cref{ex:lorentz-group-lie-algebra}. Thus, for a vector $\boldsymbol{\xi}=[\xi_1\ \xi_2\ \xi_3\ \xi_4\ \xi_5\ \xi_6 ]^\top$, the corresponding isomorphism $\mathcal{S}:\mathbb{R}^6\to\mathfrak{so}(3,1)$ is given by:
 \begin{align}
     \SL[\boldsymbol{\xi}] = \begin{bmatrix}
         0 & \xi_1 & \xi_2 & \xi_4 \\
@@ -163,7 +163,7 @@ where
     \end{bmatrix}.
 \end{align}}
 \subsubsection{Employed numerical methods}
-\vtwo{The optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve} was solved using the discretized curve, and the nearest point $\mathbf{H}_d[i^*]$ was computed through a brute-force approach. The derivative $\mathbf{H}_d'[i]$ was taken as the explicit derivative of the discrete version of \cref{eq:results-lorentz-curve-parametrization}. The normal component was approximated using the same method as in the previous simulation, and thus the $i^{th}$ normal component element $\boldsymbol{\xi}_{N,i}$ as:
+\vtwo{The optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve} was solved using the discretized curve, with the nearest point $\mathbf{H}_d[i^*]$ computed through a brute-force approach. The derivative $\mathbf{H}_d'[i]$ was obtained as the explicit derivative of the discrete version of \cref{eq:results-lorentz-curve-parametrization}. The normal component was approximated following the same method as in the previous simulation. Specifically, the $i^{th}$ normal component element $\boldsymbol{\xi}_{N,i}$ as:
 \begin{align}
     \boldsymbol{\xi}_{N,i} \approx \frac{\widehat{D}\Bigl(\exp\bigl(\SL[\boldsymbol{\mathbf{e}}_i]\bigr)\mathbf{H}(t), \mathbf{H}_d[s^*]\Bigr) - \widehat{D}\bigl(\mathbf{H}(t), \mathbf{H}_d[s^*]\bigr)}{\varepsilon},
 \end{align} 
@@ -175,19 +175,19 @@ in which $\varepsilon = \num{1E-4}$ was used.}
 \end{align}
 using a time step of $\Delta t = \qty{1E-3}{\second}$.}
 \subsubsection{Vector field gains and initial condition}
-\vtwo{The gains were selected using the same reasoning as in the previous simulation, ensuring that the normal component would dominate when the system was far from the curve, and the tangent component would dominate when the system was near the curve. The following gains were chosen:
+\vtwo{The gains were selected following the same reasoning as in the previous simulation, ensuring that the normal component would dominate when the system was far from the curve, while the tangent component would dominate when the system was near the curve. The chosen gains were:
 \begin{align}
     k_N(\mathbf{H}) &= \tanh\bigl(\num{1000}D(\mathbf{H})\bigr)\\
     k_T(\mathbf{H}) &= 0.5\Bigl(1 - \bigl(100D(\mathbf{H})\bigr)\Bigr).
 \end{align}}
 
-\vtwo{The initial condition $\mathbf{H}(0)$ was set as a boost along the $x$-axis, but in the opposite direction:
+\vtwo{The initial condition $\mathbf{H}(0)$ was set as a boost along the $x$-axis in the opposite direction:
 \begin{align}
     \mathbf{H}(0) = \exp\bigl(\SL[\boldsymbol{\xi}_0]\bigr),
 \end{align}
 where $\boldsymbol{\xi}_0 = [0\ 0\ 0\ 0.7\ 0\ 0]^\top$.}
 \subsubsection{Simulation}
-\vtwo{As it is impossible to plot the behavior of the system in $\text{SO}^+(3, 1)$ directly, we chose to provide visualizations based on special relativity. As such, we first simulate a circular motion in the inertial frame, and then we simulate the same motion in a relativistic frame, given by the Lorentz transformation of the current state. This circular motion is described by:}
+\vtwo{As it is impossible to plot the behavior of the system in $\text{SO}^+(3, 1)$ directly, we chose to provide visualizations based on special relativity. As such, we first simulate a circular motion in the inertial frame, and then we simulate the same motion in a relativistic frame, given by the Lorentz transformation of the current state. This circular motion is described by:
 \begin{align}
     \begin{split}
         \mathbf{p}_c &= [x_c\ y_c\ z_c\ t_c]^\top\\
@@ -196,7 +196,7 @@ where $\boldsymbol{\xi}_0 = [0\ 0\ 0\ 0.7\ 0\ 0]^\top$.}
         z_c &= 1\\
         t_c &= \ell. \label{eq:results-lorentz-circular-motion}
     \end{split}
-\end{align}
+\end{align}}
 \begin{figure}[ht!]
     \centering
     \def\svgwidth{\linewidth}
@@ -205,7 +205,7 @@ where $\boldsymbol{\xi}_0 = [0\ 0\ 0\ 0.7\ 0\ 0]^\top$.}
     \label{fig:lorentz-sim-inertial-motion}
 \end{figure}
 
-\vtwo{The first visualization is shown in \cref{fig:lorentz-sim-inertial-motion}, where we set $\mathbf{p}=\mathbf{p}_c$ and evaluated $\mathbf{p}'=\mathbf{H}(t)\mathbf{p}$ as well as the elapsed proper time $\Delta \tau = \frac{1}{\gamma}\Delta t$. As can be seen, an observer following the motion of the system -- constantly changing referential frames -- sees a distorted circular motion. The elapsed time for this observer is almost $40\%$ of the ``real'' elapsed time, when at maximum speed.}
+\vtwo{The first visualization is shown in \cref{fig:lorentz-sim-inertial-motion}, where we set $\mathbf{p}=\mathbf{p}_c$, which represents a circular motion with respect to the inertial frame, and $\mathbf{p}'=\mathbf{H}(t)\mathbf{p}$ denotes the motion as perceived by the relativistic observer. The elapsed proper time was computed as $\Delta \tau = \frac{1}{\gamma}\Delta t$. As shown, an observer following the system's motion -- continuously transitioning between referential frames -- perceives a distorted circular trajectory. At maximum speed, the proper elapsed time for this observer is approximately $40\%$ of the coordinate elapsed time.}
 \begin{figure}[ht!]
     \centering
     \def\svgwidth{\linewidth}
@@ -214,7 +214,7 @@ where $\boldsymbol{\xi}_0 = [0\ 0\ 0\ 0.7\ 0\ 0]^\top$.}
     \label{fig:lorentz-sim-relativistic-motion}
 \end{figure}
 
-\vtwo{The second visualization is shown in \cref{fig:lorentz-sim-relativistic-motion}, where we set $\mathbf{p}'=\mathbf{p}_c$ and evaluated $\mathbf{p}=\mathbf{H}^{-1}(t)\mathbf{p}'$ as well as the elapsed coordinate time $\Delta t = \gamma\Delta\tau$. As can be seen, an observer in the inertial frame sees the motion of the system as a distorted circular motion, although different. As the elapsed time shows, the inertial observer sees the events happening at a slower rate, almost double the proper elapsed time.}
+\vtwo{The second visualization is shown in \cref{fig:lorentz-sim-relativistic-motion}, where $\mathbf{p}'=\mathbf{p}_c$ represents a circular motion in the relativistic frame, and $\mathbf{p}=\mathbf{H}^{-1}(t)\mathbf{p}'$ denotes the motion as perceived in the inertial frame. The elapsed coordinate time is computed as $\Delta t = \gamma\Delta\tau$. As observed, an inertial frame observer perceives the system's motion as a distorted circular trajectory, albeit distinct from the one seen by the relativistic observer. The elapsed time further indicates that events in the inertial frame occur at a slower rate, with the coordinate elapsed time being nearly double the proper elapsed time.}
 \begin{figure}[ht!]
     \centering
     \def\svgwidth{\linewidth}
@@ -223,16 +223,16 @@ where $\boldsymbol{\xi}_0 = [0\ 0\ 0\ 0.7\ 0\ 0]^\top$.}
     \label{fig:lorentz-sim-time-dilat}
 \end{figure}
 
-\vtwo{A comparison of both the proper time and the coordinate time is shown in \cref{fig:lorentz-sim-time-dilat}. As can be seen, the proper time elapses slower than the coordinate time, which is a direct consequence of time dilation. This effect is more pronounced as the system approaches the speed of light, as expected. }
+\vtwo{A comparison of both the proper time and the coordinate time is shown in \cref{fig:lorentz-sim-time-dilat}. As observed, the proper time elapses slower than the coordinate time due to the effect of time dilation, a fundamental consequence of special relativity. This effect becomes increasingly pronounced as the system approaches the speed of light, consistent with theoretical expectations.}
 \begin{figure}[ht!]
     \centering
     \def\svgwidth{\linewidth}
     {\footnotesize\import{figures/}{lorentz_distanceD.pdf_tex}}
-    \caption{Value of EC-distance $D$ over time.}
+    \caption{Value of EC-distance $D$ in $\text{SO}^+(3,1)$ over time.}
     \label{fig:lorentz-sim-distance-D}
 \end{figure}
 
-\vtwo{Finally, we show the value of the EC-distance $D$ in \cref{fig:lorentz-sim-distance-D}. The system successfully converges to the desired curve, achieving a final distance of approximately $0.03$. This result also allows the confirmation of the circulation of the curve, since after convergence we still observe varying dilation effects. The noisy behavior of the distance function is due to the magnitude of the Lorentz transformation matrices components. During the system motion, we observed variations on the $z$ and $y$-axis related components of the Lorentz transformation, although their magnitude was at maximum $\num{1E-4}$. This small magnitude along with the approximations made, propagated as noise in the distance function. Although we set $c=1$ to reduce possible numerical errors, it is still visible that the group $\text{SO}^+(3, 1)$ is a lot more sensitive than $\text{SE}(3)$, and thus require more careful numerical methods.}
+\vtwo{Finally, the value of the EC-distance $D$ is shown in \cref{fig:lorentz-sim-distance-D}. The system successfully converges to the desired curve, achieving a final distance of approximately $0.03$, which was deemed acceptable but could potentially be reduced by adjusting the gains. This result also confirms the circulation of the curve, as varying dilation effects are still observed after convergence. The noisy behavior in the distance function arises from the magnitude of the Lorentz transformation matrix components. During the system's motion, variations were observed in the $z$- and $y$-axis-related components of the Lorentz transformation, though their magnitudes were at most $\num{1E-4}$. These small variations, combined with the approximations used, propagated as noise in the distance function. Although $c = 1$ was chosen to minimize numerical errors, it remains evident that the group $\text{SO}^+(3, 1)$ is significantly more sensitive to numerical methods than $\text{SE}(3)$, requiring more careful numerical handling.}
 
 \section{Collaborative Manipulation}
 For the adaptive control simulation described in \cref{ch:collaborative}, we considered the manipulation of a large cylindrical body by six agents. The goal was to converge to and circulate a curve $\mathcal{C}\in\text{ISE}(3)$. The cylindrical body had a radius $r$ of $\qty{0.25}{\meter}$, a height $h$ of $\qty{1}{\meter}$, and a mass $m$ of $\qty{1.28E3}{\kilogram}$. The measurement point $\mathbf{r}_p$ was taken as the position of the first agent, $\mathbf{r}_1=[0\ 0\ 1.5]^\top$. The positions of the other agents, along with the components of the inertia tensor, are provided in \cref{tb:parameters}.
