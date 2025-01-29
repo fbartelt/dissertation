@@ -64,13 +64,13 @@
     \put(0.71256667,0.03166667){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$14$\end{tabular}}}}%
     \put(0.80591667,0.03166667){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$16$\end{tabular}}}}%
     \put(0.89925833,0.03166667){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$18$\end{tabular}}}}%
-    \put(0.05833333,0.05924167){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$0$\end{tabular}}}}%
-    \put(0.05833333,0.1254){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$0.5$\end{tabular}}}}%
-    \put(0.05833333,0.19155833){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$1$\end{tabular}}}}%
-    \put(0.05833333,0.25771667){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$1.5$\end{tabular}}}}%
-    \put(0.05833333,0.32386667){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$2$\end{tabular}}}}%
-    \put(0.05833333,0.390025){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$2.5$\end{tabular}}}}%
-    \put(0.05833333,0.45618333){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$3$\end{tabular}}}}%
+    \put(0.05833333,0.0589){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$0$\end{tabular}}}}%
+    \put(0.05833333,0.12510833){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$0.5$\end{tabular}}}}%
+    \put(0.05833333,0.191325){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$1$\end{tabular}}}}%
+    \put(0.05833333,0.25754167){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$1.5$\end{tabular}}}}%
+    \put(0.05833333,0.32375){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$2$\end{tabular}}}}%
+    \put(0.05833333,0.38996667){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$2.5$\end{tabular}}}}%
+    \put(0.05833333,0.456175){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}$3$\end{tabular}}}}%
     \put(0.52541667,0.00891668){\color[rgb]{0.16470588,0.24705882,0.37254902}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Coordinate Time $t$\end{tabular}}}}%
     \put(0.01297396,0.26708333){\color[rgb]{0.16470588,0.24705882,0.37254902}\rotatebox{90}{\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Distance $D$\end{tabular}}}}}%
   \end{picture}%

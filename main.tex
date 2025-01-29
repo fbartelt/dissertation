@@ -35,7 +35,7 @@
 \emph{(Friedrich Nietzsche)}
 }
 
-  \acknowledgments[Agradecimentos]{
+\acknowledgments[Agradecimentos]{
    Agradeço primeiramente aos meus pais, Renata e João Bosco, pelo apoio e incentivo durante toda a minha vida. O orgulho de vocês me faz questionar quanto à eficácia dos circuitos de consagração social de Bourdieu. À minha futura esposa, Giovanna, que, além do amor incondicional e companheirismo, mais uma vez adquiriu um novo conhecimento em uma área que não lhe é útil. Após todas as nossas conversas a respeito do meu trabalho, agora você consegue não somente ``gastar'' termos e conhecimentos de controle e robótica, mas também de matemática abstrata. 
 
   Aos amigos do LCR, que já estão quase convencidos a trabalhar com grupos de Lie. Em especial ao Brener, tanto pelas inúmeras pausas e discussões sobre o trabalho, quanto pelo queijo e doce de leite (aqui acredito agradecer também em nome do Luciano), e aos outros companheiros do melhor CBA da história, Aclécio e Daniel, que tornaram a experiência do primeiro congresso, com certeza, única. 
@@ -54,7 +54,7 @@
   \emph{Keywords:} autonomous systems; guidance navigation and control; tracking; asymptotic stabilization; vector fields; Lie groups; adaptive control; collaborative manipulation.
 }
 \abstractsecond{
-  Este trabalho apresenta uma nova estratégia de campos vetoriais para controlar sistemas em grupos de Lie matriciais conexos, garantindo tanto a convergência quanto a circulação ao longo de uma curva definida no grupo. Esta abordagem generaliza a estratégia apresentada em \citet{Rezende2022} e se reduz a ela quando aplicada ao grupo de Lie de translações no espaço euclidiano. Baseando-se nas propriedades chave de \citet{Rezende2022}, como a ortogonalidade entre os componentes de convergência e de circulação, estendeu-se esses resultados explorando propriedades adicionais dos grupos de Lie. Em especial, este método garante que a entrada de controle seja não redundante, correspondendo à dimensão do grupo de Lie ao invés da dimensão potencialmente maior do espaço em que está mergulhado. Isso resulta em entradas de controle mais práticas em certos cenários. Uma aplicação significativa dessa estratégia é no controle de sistemas em $\text{SE}(3)$, no qual a entrada não redundante corresponde ao heligiro do objeto. Isso torna o método particularmente adequado para controlar sistemas com liberdade tanto translacional quanto rotacional, como drones omnidirecionais. Apresenta-se também um algoritmo eficiente para calcular o campo vetorial nesse contexto. Além disso, a estratégia é aplicada como um controlador cinemático de alto nível em uma tarefa de manipulação colaborativa, na qual seis agentes manipulam um objeto grande com parâmetros desconhecidos no grupo de Lie $\mathbb{R}^3 \times \text{SO}(3)$. Um controlador dinâmico adaptativo de baixo nível garante que o erro de rastreamento de velocidade entre o sistema e a saída do controlador cinemático convirja para zero, resultado que é comprovado teoricamente. Os resultados das simulações validam a eficácia do método proposto tanto no cenário cinemático quanto na integração de controladores cinemáticos e dinâmicos.
+  Este trabalho apresenta uma nova estratégia de campos vetoriais para controlar sistemas em grupos de Lie matriciais conexos, garantindo tanto a convergência quanto a circulação ao longo de uma curva definida no grupo. Esta abordagem generaliza a estratégia apresentada em \citet{Rezende2022} e se reduz a ela quando aplicada ao grupo de Lie de translações no espaço euclidiano. Baseando-se nas propriedades chave de \citet{Rezende2022}, como a ortogonalidade entre os componentes de convergência e de circulação, estenderam-se esses resultados explorando propriedades adicionais dos grupos de Lie. Em especial, este método garante que a entrada de controle seja não redundante, correspondendo à dimensão do grupo de Lie ao invés da dimensão potencialmente maior do espaço em que está mergulhado. Isso resulta em entradas de controle mais práticas em certos cenários. Uma aplicação significativa dessa estratégia é no controle de sistemas em $\text{SE}(3)$, no qual a entrada não redundante corresponde ao heligiro do objeto. Isso torna o método particularmente adequado para controlar sistemas com liberdade tanto translacional quanto rotacional, como drones omnidirecionais. Apresenta-se também um algoritmo eficiente para calcular o campo vetorial nesse contexto. Além disso, a estratégia é aplicada como um controlador cinemático de alto nível em uma tarefa de manipulação colaborativa, na qual seis agentes manipulam um objeto grande com parâmetros desconhecidos no grupo de Lie $\mathbb{R}^3 \times \text{SO}(3)$. Um controlador dinâmico adaptativo de baixo nível garante que o erro de rastreamento de velocidade entre o sistema e a saída do controlador cinemático convirja para zero, resultado que é comprovado teoricamente. Os resultados das simulações validam a eficácia do método proposto tanto no cenário cinemático quanto na integração de controladores cinemáticos e dinâmicos.
 
   \emph{Palavras-chave:} sistemas autônomos; direcionamento, navegação e controle; rastreamento; estabilização assintótica; campos vetoriais; grupos de Lie; controle adaptativo; manipulação colaborativa.
 }
@@ -91,6 +91,7 @@
 \Crefname{remark}{Remark}{Remarks}
 \addtotheorempostheadhook[definition]{\crefalias{propertyi}{listprop}}
 \crefname{featurei}{Feature}{Features}
+\Crefname{figure}{Figure}{Figures}
 
 \DeclareMathOperator{\Log}{Log}
 \DeclareMathOperator{\tr}{tr}
@@ -120,6 +121,7 @@
 
 \newcommand{\chapref}[1]{\cref{#1}: \nameref{#1}}
 \newcommand{\vtwo}[1]{\textcolor{magenta}{#1}}
+\newcommand{\vthree}[1]{\textcolor{blue}{#1}}
 
 \sisetup{
   exponent-product = \cdot,
@@ -136,7 +138,7 @@
 \input{literature.tex}
 \input{background.tex}
 \input{development.tex}
-\input{kinematic.tex}
+% \input{kinematic.tex}
 \input{collaborative.tex}
 \input{results.tex}
 \input{conclusion.tex}

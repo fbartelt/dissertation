@@ -191,7 +191,7 @@ In this section, we present some of the most common examples of Lie groups, whic
 
     Both $\text{Sp}(2n)$ and $\text{Sp}(2n, \mathbb{C})$ are non-compact, but they are connected.
 \end{example}
-\begin{example}
+\begin{example}\label{ex:indefinite-orthogonal-group-lorentz-group}
     The \emph{indefinite orthogonal group} (or generalized orthogonal group) $\text{O}(p,q)$ is the group of all $n\times n$ real matrices
     \begin{align}
         \text{O}(p,q) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} | \mathbf{X}^\top\mathbf{I}_{p,q}\mathbf{X} = \mathbf{I}_{p,q}\right\},
@@ -213,7 +213,7 @@ In this section, we present some of the most common examples of Lie groups, whic
     \begin{align}
         (t,x,y,z) \mapsto t^2 - x^2 - y^2 - z^2.
     \end{align}
-    The Lorentz group is also represented as $\text{O}(3,1)$, which would preserve the metric $x^2 + y^2 + z^2 - t^2$. If we restrict this group to transformations that preserve orientation, we obtain the \emph{proper Lorentz group} $\text{SO}(1,3)$. Furthermore, the subgroup of all Lorentz transformations that preserve orientation and the time direction is called the  \emph{proper orthochronous Lorentz group} $\text{SO}^+(1,3)$, which is the identity component $G_\iota$ of $\text{SO}(1,3)$.
+    The Lorentz group is also represented as $\text{O}(3,1)$, which would preserve the metric $x^2 + y^2 + z^2 - t^2$. If we restrict this group to transformations that preserve orientation, we obtain the \emph{special Lorentz group} $\text{SO}(1,3)$. Furthermore, the subgroup of all Lorentz transformations that preserve orientation and the time direction is called the  \emph{proper orthochronous Lorentz group} $\text{SO}^+(1,3)$, which is the identity component $G_\iota$ of $\text{SO}(1,3)$.
     
     Neither $\text{O}(p,q)$ nor $\text{SO}(p,q)$ are compact or connected. However, $\text{SO}^+(1,3)$ is connected.
 \end{example}
@@ -412,9 +412,9 @@ This section presents the Lie algebras corresponding to the Lie groups introduce
     For the Lorentz group $\text{O}(3, 1)$, the special Lorentz group $\text{SO}(3, 1)$, and the proper orthochronous Lorentz group $\text{SO}^+(3, 1)$, the shared Lie algebra $\mathfrak{so}(3, 1)$ has an isomorphism for a vector $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3\ \zeta_4\ \zeta_5\ \zeta_6]^\top$ defined as:
     \begin{align*}
         \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
-            0 & \zeta_1 & \zeta_2 & \zeta_4 \\
-            -\zeta_1 & 0 & \zeta_3 & \zeta_5 \\
-            -\zeta_2 & -\zeta_3 & 0 & \zeta_6 \\
+            0 & -\zeta_3 & \zeta_2 & \zeta_4 \\
+            \zeta_3 & 0 & -\zeta_1 & \zeta_5 \\
+            -\zeta_2 & \zeta_1 & 0 & \zeta_6 \\
             \zeta_4 & \zeta_5 & \zeta_6 & 0
         \end{bmatrix}.
     \end{align*}
@@ -446,7 +446,7 @@ The contents of this section will be utilized to define our kinematic model for 
 \begin{definition}
     If $V$ is a vector field on a Lie group $G$, and $I\subseteq \mathbb{R}$ is an open interval containing $0$, an \emph{integral curve} of $V$ is a differentiable curve $\gamma:I\to G$ such that its velocity at each point $\mathbf{X}\in G$ equals the value of $V(\mathbf{X})$ at that point:
     \begin{align*}
-        \frac{d}{d\sigma}\gamma(\sigma) = V\bigl(\gamma(t)\bigr)\,\forall\,\sigma\in I.
+        \frac{d}{d\sigma}\gamma(\sigma) = V\bigl(\gamma(\sigma)\bigr)\,\forall\,\sigma\in I.
     \end{align*}
     The point $\gamma(0)$ is called the \emph{initial condition} of the integral curve. Note that it is always possible to redefine the interval $I$ to include the point $0$ by the translation lemma \citep[p. 208]{Lee2012}.
 \end{definition}
@@ -488,13 +488,13 @@ We now examine the behavior of trajectories and their velocities in matrix Lie g
 \end{align}
 \end{lemma}
 \begin{proof}
-    As defined, $\mathbf{G}(\sigma)$ is an integral curve with some initial condition $\mathbf{X}\in G$. THence, its derivative is given by the value of a vector field $V$ at that point, i.e., $\frac{d}{d\sigma}\mathbf{G}(\sigma) = V\bigl(\mathbf{G}(\sigma)\bigr)$. Since right-invariant vector fields form a basis for the tangent space at any point in a Lie group, we may assume, without loss of generality, that $V$ is a right-invariant vector field.
+    As defined, $\mathbf{G}(\sigma)$ is an integral curve with some initial condition $\mathbf{X}\in G$. Hence, its derivative is given by the value of a vector field $V$ at that point, i.e., $\frac{d}{d\sigma}\mathbf{G}(\sigma) = V\bigl(\mathbf{G}(\sigma)\bigr)$. Since right-invariant vector fields form a basis for the tangent space at any point in a Lie group, we may assume, without loss of generality, that $V$ is a right-invariant vector field.
 
     Let $\rho: \mathbb{R} \times G \to G$ denote the global flow of $V$, thus $\mathbf{G}(\sigma) = \rho(\sigma, \mathbf{X})$. By \cref{lemma:lie-group-flow}, we can express
     \begin{align}
-        \frac{d}{d\sigma} \mathbf{G}(\sigma) = V\bigl(\rho(\sigma, \mathbf{X})\bigr) = V\Bigl(\mathcal{R}_{\rho(\sigma, \mathbf{X})}(\iota)\Bigr) = d(\mathcal{R}_{\rho(\sigma, \mathbf{X})})_{\iota}\bigl(V(\iota)\bigr) = d(\mathcal{R}_{\mathbf{G}(\sigma)})_{\iota}\bigl(V(\iota)\bigr),
+        \frac{d}{d\sigma} \mathbf{G}(\sigma) = V\bigl(\rho(\sigma, \mathbf{X})\bigr) = V\Bigl(\mathcal{R}_{\rho(\sigma, \mathbf{X})}(\iota)\Bigr) = d(\mathcal{R}_{\rho(\sigma, \mathbf{X})})_{\iota}\bigl(V(\iota)\bigr) = d(\mathcal{R}_{\mathbf{G}(\sigma)})_{\iota}\bigl(V(\iota)\bigr).
     \end{align}
-    Furthermore, since $V$ is right-invariant, since $V$ is right-invariant it belongs to $\text{Lie}(G)$. Given the isomorphism between $\text{Lie}(G)$ and $\mathfrak{g}$, we can identify $V\bigl(\rho(\sigma, \mathbf{X})\bigr)$ with an element in the tangent space at the identity, $V(\iota)\in T_\iota G$, for every $\sigma$. 
+    Furthermore, since $V$ is right-invariant, it belongs to $\text{Lie}(G)$. Given the isomorphism between $\text{Lie}(G)$ and $\mathfrak{g}$, we can identify $V\bigl(\rho(\sigma, \mathbf{X})\bigr)$ with an element in the tangent space at the identity, $V(\iota)\in T_\iota G$, for every $\sigma$. 
     
     Additionally, as the Lie algebra $\mathfrak{g}$ is defined as the tangent space at the identity, we can write $V(\iota) = \mathbf{A} \in \mathfrak{g}$. However, $V$ is not an arbitrary vector field but one that generates the integral curve $\mathbf{G}(\sigma)$. Thus, to make the dependence on $\sigma$ explicit, we write $V(\iota) = \mathbf{A}(\sigma) \in \mathfrak{g}$. Substituting this, the derivative becomes
     \begin{align}
