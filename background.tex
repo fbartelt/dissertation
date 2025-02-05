@@ -41,7 +41,7 @@ Next, we address the tangent component. This component is solely related to the 
 \end{align}
 A noteworthy property of both components is that they are orthogonal to each other, which is essential in the proof of convergence for this algorithm.
 
-In the Lyapunov stability proof, the final result shows that the time derivative of $D$ is negative semidefinite. The proof is then completed using two other essential properties: the fact that the distance function has no local minima outside the curve, and the fact that the ``generalized gradient'' of this function never vanishes. With these features, the authors demonstrate that if the system trajectories follow the vector field, the system will converge to and circulate around a predefined curve. A summary of these key features is as follows:
+In the Lyapunov stability proof, the final result shows that the time derivative of $D$ is negative semidefinite. The proof is then completed using two other essential properties: the fact that the distance function has no local minima outside the curve, and the fact that the \vthree{gradient} of this function never vanishes. With these features, the authors demonstrate that if the system trajectories follow the vector field, the system will converge to and circulate around a predefined curve. A summary of these key features is as follows:
 \begin{feature}
     \item The time derivative of the distance function is the opposite of the dot product between the so called \emph{normal} component and the system control input; \label{feat:adriano-time-derivative-lyapunov-normal-comp}
     \item The \emph{normal} and \emph{tangent} components are orthogonal to each other; \label{feat:adriano-orthogonality}
@@ -55,7 +55,7 @@ This section introduces \emph{Lie groups}, smooth manifolds that are also groups
 \begin{definition}[Lie group]
     A \emph{Lie group} is a smooth manifold $G$ that satisfies the following properties:
     \begin{property}
-        \item $G$ is a group (with identity element denoted $\iota$)
+        \item $G$ is a group (with identity element denoted $\iota$);
         \item $G$ is a topological group, meaning the group operation and the inverse map are continuous. Additionally, the group operation $\circ: G\times G\to G$ and the inverse map $\cdot^{-1}: G\to G$ are smooth.
     \end{property}
 \end{definition}
@@ -73,7 +73,7 @@ Two important isomorphisms in Lie groups, critical for the concept of Lie algebr
 \begin{definition}
     Given a Lie group $G$, the left translation $\mathcal{L}_{\mathbf{X}}: G\to G$ and the right translation $\mathcal{R}_{\mathbf{X}}: G\to G$ are defined for any $\mathbf{X}\in G$ as follows:
     \begin{align}
-        \mathcal{L}_{\mathbf{X}}(\mathbf{Y}) &= \mathbf{X}\circ\mathbf{Y}\\
+        \mathcal{L}_{\mathbf{X}}(\mathbf{Y}) &= \mathbf{X}\circ\mathbf{Y},\\
         \mathcal{R}_{\mathbf{X}}(\mathbf{Y}) &= \mathbf{Y}\circ\mathbf{X}.
     \end{align}
     Since the group operation and inverse map are smooth, the left and right translations are diffeomorphisms, making them isomorphisms.
@@ -118,12 +118,12 @@ In this section, we present some of the most common examples of Lie groups, whic
 \begin{example}\label{ex:orthogonal-group-special-orthogonal-group}
     The \emph{orthogonal group} $\text{O}(n)$ is the Lie group of distance-preserving transformations, which includes rotations and reflections. It consists of all $n\times n$ orthogonal matrices:
     \begin{align}
-        \text{O}(n) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} | \mathbf{X}^\top\mathbf{X} = \mathbf{I}_n\right\}.
+        \text{O}(n) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} \,|\, \mathbf{X}^\top\mathbf{X} = \mathbf{I}_n\right\}.
     \end{align}
 
     Its subgroup $\text{SO}(n)$, the \emph{special orthogonal group}, consists of all orthogonal matrices with determinant equal to 1. This group represents rotations and is formed by the set of rotation matrices:
     \begin{align}
-        \text{SO}(n) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} | \mathbf{X}^\top\mathbf{X} = \mathbf{I}_n,\, \det(\mathbf{X}) = 1\right\}.
+        \text{SO}(n) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} \,|\, \mathbf{X}^\top\mathbf{X} = \mathbf{I}_n,\, \det(\mathbf{X}) = 1\right\}.
     \end{align}
 
     Both $\text{O}(n)$ and $\text{SO}(n)$ are compact; however, only $\text{SO}(n)$ is connected.
@@ -133,14 +133,14 @@ In this section, we present some of the most common examples of Lie groups, whic
     \begin{align}
         \text{E}(n) = \left\{\begin{bmatrix}
             \mathbf{R} & \mathbf{p} \\ \mathbf{0} & 1
-        \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} | \mathbf{R}\in\text{O}(n),\, \mathbf{p}\in\mathbb{R}^n\right\}.
+        \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} \,\biggl|\, \mathbf{R}\in\text{O}(n),\, \mathbf{p}\in\mathbb{R}^n\right\}.
     \end{align}
 
     Its subgroup $\text{SE}(n)$, the \emph{special Euclidean group}, consists of all matrices in the Euclidean group with determinant equal to 1, formed by the semidirect product $\mathbb{R}^n\rtimes \text{SO}(n)$. This group represents rigid transformations and is formed by the set of homogeneous transformation matrices:
     \begin{align}
         \text{SE}(n) = \left\{\begin{bmatrix}
             \mathbf{R} & \mathbf{p} \\ \mathbf{0} & 1
-        \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} | \mathbf{R}\in\text{SO}(n),\, \mathbf{p}\in\mathbb{R}^n\right\}.
+        \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} \,\biggl|\, \mathbf{R}\in\text{SO}(n),\, \mathbf{p}\in\mathbb{R}^n\right\}.
     \end{align}
 
     While neither of these groups are compact, $\text{SE}(n)$ is connected.
@@ -150,7 +150,7 @@ In this section, we present some of the most common examples of Lie groups, whic
     \begin{align}
         \text{T}(n) = \left\{\begin{bmatrix}
             \mathbf{I}_n & \mathbf{p} \\ \mathbf{0} & 1
-        \end{bmatrix} \in \text{SE}(n) | \mathbf{p}\in\mathbb{R}^n\right\}.
+        \end{bmatrix} \in \text{SE}(n) \,\biggl|\, \mathbf{p}\in\mathbb{R}^n\right\}.
     \end{align}
 
     This group is not compact, but it is connected.
@@ -162,12 +162,12 @@ In this section, we present some of the most common examples of Lie groups, whic
             \text{ISE}(n) &= \left\{\begin{bmatrix}
             \mathbf{R} & \mathbf{0}\\
             \mathbf{0} & \mathbf{P}\\
-            \end{bmatrix}\in\mathbb{R}^{(2n+1)\times(2n+1)}\,|\, \mathbf{R}\in\text{SO}(n),\,\mathbf{P}\in\text{T}(n)\right\}\\
+            \end{bmatrix}\in\mathbb{R}^{(2n+1)\times(2n+1)}\,\biggl|\, \mathbf{R}\in\text{SO}(n),\,\mathbf{P}\in\text{T}(n)\right\}\\
             &= \left\{\begin{bmatrix}
             \mathbf{R} & \mathbf{0} & \mathbf{0}\\
             \mathbf{0} & \mathbf{I} & \mathbf{p}\\
             \mathbf{0} & \mathbf{0} & 1
-            \end{bmatrix}\in\mathbb{R}^{(2n+1)\times(2n+1)}\,|\, \mathbf{R}\in\text{SO}(n),\,\mathbf{p}\in\mathbb{R}^n\right\}.
+            \end{bmatrix}\in\mathbb{R}^{(2n+1)\times(2n+1)}\,\Biggl|\, \mathbf{R}\in\text{SO}(n),\,\mathbf{p}\in\mathbb{R}^n\right\}.
         \end{split} \label{eq:ISE-group}
     \end{align}
     While these two representations are isomorphic, we use $\mathbb{R}^n\times \text{SO}(n)$ to denote tuples of translations and rotations $(\mathbf{p},\mathbf{R})$, and $\text{ISE}(n)$ to denote elements represented as the matrices in \eqref{eq:ISE-group}. Both representations are interchangeable, as position and orientation can be easily extracted from the matrix representation via matrix multiplication.
@@ -177,8 +177,8 @@ In this section, we present some of the most common examples of Lie groups, whic
 \begin{example}\label{ex:symplectic-group}
     The \emph{real symplectic group} $\text{Sp}(2n)$ is the group of all $2n\times 2n$ real matrices that preserve a non-degenerate skew-symmetric bilinear form  $\omega$. This group plays an important role in classical mechanics, especially in the study of Hamiltonian systems. The group is defined as
     \begin{align}
-        \text{Sp}(2n) &= \left\{\mathbf{X}\in\mathbb{R}^{2n\times 2n} | \mathbf{X}^\top\boldsymbol{\Omega}\mathbf{X} = \boldsymbol{\Omega}\right\}\\
-        &= \left\{\mathbf{X}\in\mathbb{R}^{2n\times 2n} | -\boldsymbol{\Omega}\mathbf{X}^\top\boldsymbol{\Omega} = \mathbf{X}^{-1}\right\},
+        \text{Sp}(2n) &= \left\{\mathbf{X}\in\mathbb{R}^{2n\times 2n} \,|\, \mathbf{X}^\top\boldsymbol{\Omega}\mathbf{X} = \boldsymbol{\Omega}\right\}\\
+        &= \left\{\mathbf{X}\in\mathbb{R}^{2n\times 2n} \,|\, -\boldsymbol{\Omega}\mathbf{X}^\top\boldsymbol{\Omega} = \mathbf{X}^{-1}\right\},
     \end{align}
     where 
     \begin{align}
@@ -187,27 +187,26 @@ In this section, we present some of the most common examples of Lie groups, whic
             -\mathbf{I}_n & \mathbf{0}
         \end{bmatrix}.
     \end{align}
-    The skew-symmetric bilinear form can be characterized by $\omega(x,y)=\langle x, \boldsymbol{\Omega}y\rangle\,\forall\,x,y\in\mathbb{R}^{2n}$. We can also define the \emph{complex symplectic group} $\text{Sp}(2n, \mathbb{C})$ as the group of all $2n\times 2n$ complex matrices that preserve the same non-degenerate skew-symmetric bilinear form. The group definition remains the same, but with complex matrices.
+    The skew-symmetric bilinear form can be characterized by $\omega(\mathbf{x},\mathbf{y})=\langle \mathbf{x}, \boldsymbol{\Omega}\mathbf{y}\rangle\,\forall\,\mathbf{x},\mathbf{y}\in\mathbb{R}^{2n}$. We can also define the \emph{complex symplectic group} $\text{Sp}(2n, \mathbb{C})$ as the group of all $2n\times 2n$ complex matrices that preserve the same non-degenerate skew-symmetric bilinear form. The group definition remains the same, but with complex matrices.
 
     Both $\text{Sp}(2n)$ and $\text{Sp}(2n, \mathbb{C})$ are non-compact, but they are connected.
 \end{example}
 \begin{example}\label{ex:indefinite-orthogonal-group-lorentz-group}
     The \emph{indefinite orthogonal group} (or generalized orthogonal group) $\text{O}(p,q)$ is the group of all $n\times n$ real matrices
     \begin{align}
-        \text{O}(p,q) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} | \mathbf{X}^\top\mathbf{I}_{p,q}\mathbf{X} = \mathbf{I}_{p,q}\right\},
+        \text{O}(p,q) = \left\{\mathbf{X}\in\mathbb{R}^{n\times n} \,|\, \mathbf{X}^\top\mathbf{I}_{p,q}\mathbf{X} = \mathbf{I}_{p,q}\right\},
     \end{align}
-    where
+    where $n=p+q$, and
     \begin{align}
         \mathbf{I}_{p,q} = \begin{bmatrix}
             \mathbf{I}_p & \mathbf{0}\\
             \mathbf{0} & -\mathbf{I}_q
-        \end{bmatrix},
+        \end{bmatrix}.
     \end{align}
-    and $n=p+q$.
 
     Similarly, the \emph{indefinite special orthogonal group} $\text{SO}(p,q)$ is defined as:
     \begin{align}
-        \text{SO}(p, q) = \left\{\mathbf{X}\in\text{O}(p, q) | \det\mathbf{X}=1\right\}.
+        \text{SO}(p, q) = \left\{\mathbf{X}\in\text{O}(p, q) \,|\, \det(\mathbf{X})=1\right\}.
     \end{align}
     The group $\text{O}(1,3)$, of particular interest in the study of special relativity, is called the \emph{Lorentz group}. It preserves the Lorentz metric:
     \begin{align}
@@ -222,7 +221,7 @@ In this section, we present some of the most common examples of Lie groups, whic
 
     The group $G = \mathbb{R} \times \mathbb{R} \times \mathbb{S}^1 = \left\{(x, y, \theta) | x \in \mathbb{R}, y \in \mathbb{R}, \theta \in \mathbb{S}^1\subset\mathbb{C}\right\}$, equipped with the group operation
     \begin{align}
-        (x_1, y_1, \theta_1)\circ (x_2, y_2, \theta_2) = (x_1 + x_2, y_1 + y_2, e^{ix_1y_2}\theta_1\theta_2),
+        (x_1, y_1, \theta_1)\circ (x_2, y_2, \theta_2) = (x_1 + x_2, y_1 + y_2, e^{ix_1y_2}\theta_1\theta_2)
     \end{align}
     is a Lie group that does not have a matrix representation. The identity element is $\iota=(0, 0, 1)$, and the inverse map is $(x, y, \theta)^{-1} = (-x, -y, e^{ixy}\theta^{-1})$.
 \end{example} 
@@ -302,9 +301,9 @@ This section presents the Lie algebras corresponding to the Lie groups introduce
 \begin{example}
     The Lie algebra of the orthogonal group $\text{O}(n)$  is identical to that of the special orthogonal group $\text{SO}(n)$, denoted $\mathfrak{so}(n)$. This Lie algebra consists of all $n\times n$ skew-symmetric matrices:
     \begin{align*}
-        \mathfrak{so}(n) = \left\{\mathbf{A}\in\mathbb{R}^{n\times n} | \mathbf{A}^\top = -\mathbf{A}\right\}.
+        \mathfrak{so}(n) = \left\{\mathbf{A}\in\mathbb{R}^{n\times n} \,|\, \mathbf{A}^\top = -\mathbf{A}\right\}.
     \end{align*}
-    In the special case of $\text{SO}(3)$, the Lie algebra $\mathfrak{so}(3)$is commonly represented using the basis
+    In the special case of $\text{SO}(3)$, the Lie algebra $\mathfrak{so}(3)$is commonly represented using the canonical basis
     \begin{align*}
         \mathbf{E}_1 = \begin{bmatrix} 0 & 0 & 0 \\ 0 & 0 & -1 \\ 0 & 1 & 0 \end{bmatrix}, \quad \mathbf{E}_2 = \begin{bmatrix} 0 & 0 & 1 \\ 0 & 0 & 0 \\ -1 & 0 & 0 \end{bmatrix}, \quad \mathbf{E}_3 = \begin{bmatrix} 0 & -1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}.
     \end{align*}
@@ -313,7 +312,7 @@ This section presents the Lie algebras corresponding to the Lie groups introduce
         \SL[\boldsymbol{\zeta}] = \zeta_1 \mathbf{E}_1 + \zeta_2 \mathbf{E}_2 + \zeta_3 \mathbf{E}_3
         = \begin{bmatrix} 0 & -\zeta_3 & \zeta_2 \\ \zeta_3 & 0 & -\zeta_1 \\ -\zeta_2 & \zeta_1 & 0 \end{bmatrix}.
     \end{align*}
-    This mapping $\SL$ establishes an isomorphism between the Lie algebra $\mathbb{R}^3$ (under the cross product as its Lie bracket) and $\mathfrak{so}(3)$. Specifically, given two vectors $\mathbf{a} = [a_1\ a_2\ a_3]^\top$ and $\mathbf{b} = [b_1\ b_2\ b_3]^\top$, then 
+    This mapping $\SL$ establishes a Lie algebra isomorphism between the Lie algebra $\mathbb{R}^3$ (under the cross product as its Lie bracket) and $\mathfrak{so}(3)$. Specifically, given two vectors $\mathbf{a} = [a_1\ a_2\ a_3]^\top$ and $\mathbf{b} = [b_1\ b_2\ b_3]^\top$, then 
     \begin{align*}
         \SL[\mathbf{a}\times \mathbf{b}] &= \begin{bmatrix}
             0 & a_2b_1-a_1b_2 & a_3b_1-a_1b_3\\
@@ -336,16 +335,16 @@ This section presents the Lie algebras corresponding to the Lie groups introduce
             a_3b_1 & a_3b_2 & -a_2b_2 - a_1b_1
         \end{bmatrix}.
     \end{align*}
-    Clearly, $\SL[\mathbf{a}\times \mathbf{b}] = [\SL[\mathbf{a}], \SL[\mathbf{b}]] = \SL[\mathbf{a}]\SL[\mathbf{b}] - \SL[\mathbf{b}]\SL[\mathbf{a}]$. This demonstrates that $\SL$ is indeed an isomorphism.
+    Clearly, $\SL[\mathbf{a}\times \mathbf{b}] = [\SL[\mathbf{a}], \SL[\mathbf{b}]] = \SL[\mathbf{a}]\SL[\mathbf{b}] - \SL[\mathbf{b}]\SL[\mathbf{a}]$. This demonstrates that $\SL$ is indeed a Lie algebra isomorphism.
 \end{example}
 \begin{example}
     The Lie algebra of the Euclidean group $\text{E}(n)$ and the special Euclidean group $\text{SE}(n)$, denoted $\mathfrak{se}(n)$, is the space
     \begin{align*}
         \mathfrak{se}(n) = \left\{\begin{bmatrix}
             \mathbf{A} & \mathbf{b} \\ \mathbf{0} & 0
-        \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} | \mathbf{A}\in\mathfrak{so}(n),\, \mathbf{b}\in\mathbb{R}^n\right\}.
+        \end{bmatrix} \in \mathbb{R}^{(n+1)\times(n+1)} \,\biggl|\, \mathbf{A}\in\mathfrak{so}(n),\, \mathbf{b}\in\mathbb{R}^n\right\}.
     \end{align*}
-    For the case of $\mathfrak{se}(3)$, elements of this Lie algebra are frequently represented as six-dimensional vectors, called twists, $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3\ \zeta_4\ \zeta_5\ \zeta_6]^\top$. An isomorphism $\SL$ is given by
+    For the case of $\mathfrak{se}(3)$, elements of this Lie algebra are frequently represented as six-dimensional vectors, called twists, $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3\ \zeta_4\ \zeta_5\ \zeta_6]^\top$. The canonical isomorphism $\SL$ is given by
     \begin{align*}
         \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
             0 & -\zeta_6 & \zeta_5 & \zeta_1 \\
@@ -361,7 +360,7 @@ This section presents the Lie algebras corresponding to the Lie groups introduce
     \begin{align*}
         \mathfrak{t}(n) = \left\{\begin{bmatrix}
             \mathbf{0} & \mathbf{a} \\ \mathbf{0} & 0
-        \end{bmatrix} \in \mathfrak{se}(n) | \mathbf{a}\in\mathbb{R}^n\right\}.
+        \end{bmatrix} \in \mathfrak{se}(n) \,\biggl|\, \mathbf{a}\in\mathbb{R}^n\right\}.
     \end{align*} 
 \end{example}
 \begin{example}
@@ -370,23 +369,23 @@ This section presents the Lie algebras corresponding to the Lie groups introduce
         \mathfrak{ise}(n) &= \left\{\begin{bmatrix}
             \mathbf{A} & \mathbf{0}\\
             \mathbf{0} & \mathbf{B}
-        \end{bmatrix} \in \mathbb{R}^{(2n+1)\times(2n+1)}\,;\, \mathbf{A}\in\mathfrak{so}(n),\,\mathbf{B}\in\mathfrak{t}(n)\right\}\\
+        \end{bmatrix} \in \mathbb{R}^{(2n+1)\times(2n+1)}\,\biggl|\,  \mathbf{A}\in\mathfrak{so}(n),\,\mathbf{B}\in\mathfrak{t}(n)\right\}\\
         &= \left\{\begin{bmatrix}
             \mathbf{A} & \mathbf{0} & \mathbf{0}\\
             \mathbf{0} & \mathbf{0} & \mathbf{b}\\
             \mathbf{0} & \mathbf{0} & 0
-        \end{bmatrix} \in \mathbb{R}^{(2n+1)\times(2n+1)}\,;\, \mathbf{A}\in\mathfrak{so}(n),\,\mathbf{b}\in\mathbb{R}^n\right\}.
+        \end{bmatrix} \in \mathbb{R}^{(2n+1)\times(2n+1)}\,\Biggl|\,  \mathbf{A}\in\mathfrak{so}(n),\,\mathbf{b}\in\mathbb{R}^n\right\}.
     \end{align*}
     This implies that $\mathfrak{ise}(n) = \mathfrak{so}(n)\oplus\mathfrak{t}(n)$, consistent with the definition of the Lie algebra of a direct product of Lie groups.
 \end{example}
 \begin{example}
-    The symplectic Lie algebra $\mathfrak{sp}(2n, \mathbb{R})$ is defined as
+    The symplectic Lie algebra $\mathfrak{sp}(2n)$ is defined as
     \begin{align*}
         \begin{split}
-            \mathfrak{sp}(2n, \mathbb{R}) &= \left\{ \mathbf{A} \in \mathbb{R}^{2n\times 2n} | \mathbf{A}^\top\boldsymbol{\Omega} + \boldsymbol{\Omega}\mathbf{A} = 0 \right\} \\&= \left\{ \begin{bmatrix} \mathbf{B} & \mathbf{C} \\ \mathbf{D} & -\mathbf{B}^\top \end{bmatrix}\in \mathbb{R}^{2n\times 2n}| \mathbf{C} = \mathbf{C}^\top,\, \mathbf{D} = \mathbf{D}^\top\right\},            
+            \mathfrak{sp}(2n) &= \left\{ \mathbf{A} \in \mathbb{R}^{2n\times 2n} \,|\, \mathbf{A}^\top\boldsymbol{\Omega} + \boldsymbol{\Omega}\mathbf{A} = 0 \right\} \\&= \left\{ \begin{bmatrix} \mathbf{B} & \mathbf{C} \\ \mathbf{D} & -\mathbf{B}^\top \end{bmatrix}\in \mathbb{R}^{2n\times 2n}\,\biggl|\,  \mathbf{C} = \mathbf{C}^\top,\, \mathbf{D} = \mathbf{D}^\top\right\},            
         \end{split}
     \end{align*}
-    where $\boldsymbol{\Omega}$ is the same matrix as defined in \autoref{ex:symplectic-group}. The dimension of $\mathfrak{sp}(2n, \mathbb{R})$ is $n(2n + 1)$. For a vector $\boldsymbol{\zeta} = [\zeta_1\ \dots\ \zeta_{2n^2+n}]^\top$, an isomorphism $\SL$ is given by
+    where $\boldsymbol{\Omega}$ is the same matrix as defined in \autoref{ex:symplectic-group}. The dimension of $\mathfrak{sp}(2n)$ is $n(2n + 1)$. For a vector $\boldsymbol{\zeta} = [\zeta_1\ \dots\ \zeta_{2n^2+n}]^\top$, an isomorphism $\SL$ is given by
     \begin{align*}
         \SL[\boldsymbol{\zeta}] = \begin{bmatrix}
             \zeta_1 & \dots & \zeta_n & \zeta_{n^2 + 1} & \dots & \zeta_{n^2 + n} \\
@@ -395,7 +394,7 @@ This section presents the Lie algebras corresponding to the Lie groups introduce
             \zeta_{\frac{3n^2+n}{2} + 1} & \dots & \zeta_{\frac{3n^2+3n}{2}} & -\zeta_1 & \dots & -\zeta_{n^2 - n + 1}\\
             \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
             \zeta_{\frac{3n^2+3n}{2}} & \dots & \zeta_{2n^2 + n}& -\zeta_n & \dots & -\zeta_{n^2} 
-        \end{bmatrix},
+        \end{bmatrix}.
     \end{align*}
 \end{example}
 \begin{example}\label{ex:lorentz-group-lie-algebra}
@@ -405,8 +404,8 @@ This section presents the Lie algebras corresponding to the Lie groups introduce
             \begin{bmatrix}
                 \mathbf{A} & \mathbf{B}\\
                 \mathbf{B}^\top & \mathbf{C}
-            \end{bmatrix} \in \mathbb{R}^{(p+q)\times(p+q)} | \mathbf{A}^\top = -\mathbf{A},\, \mathbf{C}^\top = -\mathbf{C},\, \mathbf{B} \in \mathbb{R}^{p\times q}
-        \right\},
+            \end{bmatrix} \in \mathbb{R}^{(p+q)\times(p+q)} \,\biggl|\,  \mathbf{A}^\top = -\mathbf{A},\, \mathbf{C}^\top = -\mathbf{C},\, \mathbf{B} \in \mathbb{R}^{p\times q}
+        \right\}.
     \end{align*}
 
     For the Lorentz group $\text{O}(3, 1)$, the special Lorentz group $\text{SO}(3, 1)$, and the proper orthochronous Lorentz group $\text{SO}^+(3, 1)$, the shared Lie algebra $\mathfrak{so}(3, 1)$ has an isomorphism for a vector $\boldsymbol{\zeta} = [\zeta_1\ \zeta_2\ \zeta_3\ \zeta_4\ \zeta_5\ \zeta_6]^\top$ defined as:
@@ -433,14 +432,14 @@ The exponential map is also instrumental in determining the Lie algebra of a mat
 \begin{theorem}[Von Neumann and Cartan, 1927]
     Let $G\subset\text{GL}(n, \mathbb{R})$ be a matrix Lie group. The set $\mathfrak{g}$ defined as
     \begin{align}
-        \mathfrak{g} = \left\{\mathbf{A}\in\mathbb{R}^{n\times n} | \exp(\sigma\mathbf{A})\in G\,\forall\,\sigma\in\mathbb{R}\right\}
+        \mathfrak{g} = \left\{\mathbf{A}\in\mathbb{R}^{n\times n} \,|\, \exp(\sigma\mathbf{A})\in G\,\forall\,\sigma\in\mathbb{R}\right\}
     \end{align}
     forms a vector space equal to the tangent space $T_\iota G$ at the identity element $\iota$. Furthermore, $\mathfrak{g}$ is closed under the Lie bracket $[\mathbf{A}, \mathbf{B}] = \mathbf{A}\mathbf{B} - \mathbf{B}\mathbf{A}\,\forall\,\mathbf{A},\mathbf{B}\in\mathbb{R}^{n\times n}$.\hfill\qedsymbol
 \end{theorem}
 
-Although the exponential map maps elements of the Lie algebra to the Lie group, it is not necessarily surjective. The image of the exponential map lies within the identity component $G_\iota$ of the Lie group and, more specifically, forms a neighborhood of the identity element in $G_\iota$ \citep[p. 56]{Hall2015}. While sufficient conditions for surjectivity exist -- such as the Lie group being connected and compact \citep[p. 316]{Hall2015} -- no general necessary conditions are currently known.
+Although the exponential map maps elements of the Lie algebra to the Lie group, it is not necessarily surjective. The image of the exponential map lies within the identity component $G_\iota$ of the Lie group and, more specifically, forms a neighborhood of the identity element \citep[p. 56]{Hall2015}. While sufficient conditions for surjectivity exist -- such as the Lie group being connected and compact \citep[p. 316]{Hall2015} -- no general necessary conditions are currently known.
 
-Lie groups for which the exponential map is surjective are called \emph{exponential Lie groups} \citep{djokovic1995exponential}. Examples of exponential Lie groups include the special orthogonal group $\text{SO}(n)$ \citep[p. 28]{Gallier2020}, the special Euclidean  group $\text{SE}(n)$ \citep[p. 42]{Gallier2020}, and the Heisenberg group $\text{H}$ \citep[p. 75]{Hall2015}. Additional nontrivial examples can be found in \citet{djokovic1995exponential}. Conversely, an example of a non-exponential Lie group is the special linear group $\text{SL}(n)$ \citep[p. 28]{Gallier2020}.
+Lie groups for which the exponential map is surjective are called \emph{exponential Lie groups} \citep{djokovic1995exponential}. Examples of exponential Lie groups include the special orthogonal group $\text{SO}(n)$ \citep[p. 28]{Gallier2020}, the special Euclidean  group $\text{SE}(n)$ \citep[p. 42]{Gallier2020}, and the \vthree{proper orthochronous Lorentz group $\text{SO}^+(3,1)$ \citep[p. 197]{Gallier2020}}. Additional nontrivial examples can be found in \citet{djokovic1995exponential}. Conversely, an example of a non-exponential Lie group is the special linear group $\text{SL}(n)$ \citep[p. 28]{Gallier2020}.
 \subsection{Integral curves, flows and derivatives}
 The contents of this section will be utilized to define our kinematic model for the vector field strategy. We begin by introducing the concept of integral curves, which correspond to the solutions of the differential equation defined by a vector field. More formally, their definition is as follows:
 \begin{definition}
@@ -468,16 +467,16 @@ With these concepts in place, we can now focus on an important aspect of our wor
 \begin{lemma}\label{lemma:lie-group-flow}
     Let $G$ be a Lie group, $V$ a right-invariant (resp. left-invariant) vector field, $\rho:\mathbb{R}\times G\to G$ its global flow, and $\gamma(\sigma)=\rho(\sigma, \mathbf{X})$ the associated maximal integral curve with initial condition $\mathbf{X}\in G$. Then
     \begin{align*}
-        \gamma(\sigma) = \rho(\sigma, \mathbf{X}) &=  \rho(\sigma, \iota)\circ\mathbf{X} = \mathcal{R}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr)\\
-        (\text{resp.})\ \rho(\sigma, \mathbf{X}) &=  \mathbf{X}\circ\rho(\sigma, \iota) = \mathcal{L}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr)
+        \gamma(\sigma) = \rho(\sigma, \mathbf{X}) &=  \rho(\sigma, \iota)\circ\mathbf{X} = \mathcal{R}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr),\\
+        (\text{resp.})\ \rho(\sigma, \mathbf{X}) &=  \mathbf{X}\circ\rho(\sigma, \iota) = \mathcal{L}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr).
     \end{align*}
 \end{lemma}
 \begin{proof}
-    Let $\gamma(\sigma) = \mathcal{R}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr)$, where $\gamma(0) = \mathbf{X}$. Applying the chain rule:
-    \begin{align}
-        \frac{d}{d\sigma}\gamma(\sigma) = d(\mathcal{R}_{\mathbf{X}})_{\rho(\sigma, \iota)}\Bigl(V\bigl(\rho(\sigma, \iota)\bigr)\Bigr) = V\Bigl(\mathcal{R}_{\mathbf{X}}\bigl(\rho(\sigma, \iota)\bigr)\Bigr) = V\bigl(\gamma(\sigma)\bigr),
+    Let $\bar{\gamma}(\sigma) = \mathcal{R}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr)$, where $\bar{\gamma}(0) = \mathbf{X}$. Applying the chain rule:
+    \vthree{\begin{align}
+        \frac{d}{d\sigma}\bar{\gamma}(\sigma) = d(\mathcal{R}_{\mathbf{X}})_{\rho(\sigma, \iota)}\Bigl(V\bigl(\rho(\sigma, \iota)\bigr)\Bigr) = V\Bigl(\mathcal{R}_{\mathbf{X}}\bigl(\rho(\sigma, \iota)\bigr)\Bigr) = V\bigl(\bar{\gamma}(\sigma)\bigr),
     \end{align}
-    which implies that the vector field $V$ generates another integral curve $\gamma(t)=\rho(\sigma, \iota)\circ\mathbf{X}$. By the uniqueness of maximal integral curves, $\gamma(\sigma) = \rho(\sigma, \mathbf{X})\,\forall\, \sigma$. Hence $\rho(\sigma, \mathbf{X}) = \rho(\sigma, \iota)\circ\mathbf{X}$. The proof for the left-invariant case is analogous.
+    since $V$ is right-invariant. By the uniqueness of maximal integral curves, $\bar{\gamma}(\sigma) = \rho(\sigma, \mathbf{X})\,\forall\, \sigma$. Hence $\rho(\sigma, \mathbf{X}) = \rho(\sigma, \iota)\circ\mathbf{X}$}. The proof for the left-invariant case is analogous.
 \end{proof}
 This lemma indicates that following a curve with an initial condition $\mathbf{X}$ and velocity $v$ is equivalent to following a curve starting at the identity with the same velocity and subsequently translating the result by $\mathbf{X}$.
 
@@ -612,7 +611,7 @@ A common application of the indirect approach is in Model Reference Adaptive Con
 A frequent challenge in adaptive control is the issue of \emph{parameter drift}. Parameter drift occurs when the input signal is not persistently exciting, meaning it lacks sufficient information to accurately estimate the parameters. As a result, the estimated parameters can drift away from their true values, potentially causing the control system to become unstable, even if it initially appears stable over some interval. This problem frequently arises in practice, and various methods have been proposed to mitigate it.
 
 
-One of the simplest and most widely used techniques is the \emph{dead-zone} or \emph{deadband} method. This approach involves setting a threshold for parameter adaptation: if the tracking error falls below this threshold, the adaptation dynamics are disabled. For example, if $\gamma$ is a positive constant, $\mathbf{Y}$ is a matrix related to a plant parametrization, and $\mathbf{e}$ is the tracking error, with an adaptation law is expressed as $\dot{\widehat{\boldsymbol{\theta}}} = -\gamma\mathbf{Y}\mathbf{e}$. The dead-zone modification results in:
+One of the simplest and most widely used techniques is the \emph{dead-zone} or \emph{deadband} method. This approach involves setting a threshold for parameter adaptation: if the tracking error falls below this threshold, the adaptation dynamics are disabled. For example, if $\gamma$ is a positive constant, $\mathbf{Y}$ is a matrix related to a plant parametrization, and $\mathbf{e}$ is the tracking error, an adaptation law is expressed as $\dot{\widehat{\boldsymbol{\theta}}} = -\gamma\mathbf{Y}\mathbf{e}$. The dead-zone modification results in:
 \begin{align*}
     \dot{\widehat{\boldsymbol{\theta}}} = \begin{cases}
         -\gamma\mathbf{Y}\mathbf{e} &\|\mathbf{e}\| > \epsilon,\\

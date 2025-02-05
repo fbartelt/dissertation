@@ -5,9 +5,9 @@ In this section, we present the results of \vtwo{two} kinematic control simulati
 \begin{align}
     \dot{\mathbf{H}}(t) = \SL[\boldsymbol{\xi}(t)]\mathbf{H}(t),
 \end{align}
-where our control input is the twist $\boldsymbol{\xi}$.
+where our control input is the generalized twist $\boldsymbol{\xi}$.
 \subsection{Special Euclidean group}
-The target curve $\mathcal{C}\in\text{SE}(3)$ was based on a hyperbolic paraboloid rotating about the $x$-axis in the world frame. The parametrization of the curve $\mathbf{H}_d$ was defined as:
+The target curve $\mathcal{C}\subset\text{SE}(3)$ was based on a hyperbolic paraboloid rotating about the $x$-axis in the world frame. The parametrization of the curve $\mathbf{H}_d$ was defined as:
 \begin{align}
     \mathbf{H}_d(s) = \begin{bmatrix}
         1 & \ \ 0 & 0 & r\cos(2\pi s)\\
@@ -25,16 +25,16 @@ For the simulation, we chose the canonical isomorphism $\SL$ between $\mathbb{R}
     \xi_6 & 0 & -\xi_4 & \xi_2 \\
     -\xi_5 & \xi_4 & 0 & \xi_3 \\
     0 & 0 & 0 & 0
-    \end{bmatrix}
+    \end{bmatrix}.
 \end{align}
-The basis $\mathbf{E}_1, ... ,\mathbf{E}_6$ of the Lie algebra $\mathfrak{se}(3)$ can be obtained by $\mathbf{E}_k = \SL[\mathbf{e}_k]$, where $\mathbf{e}_k$ are the columns of the $6 \times 6$ identity matrix. Geometrically, the interpretation of this basis choice is that $\boldsymbol{\xi}$ is the classical \emph{twist} in mechanics. More precisely, $\boldsymbol{\omega} \triangleq [\xi_4 \  \xi_5 \  \xi_6]^\top$ represents the $x$, $y$ and $z$-axes components of the angular  velocity  measured in the inertial frame, whereas $\mathbf{v} \triangleq [\xi_1 \  \xi_2 \  \xi_3]^\top$ represents the linear velocities along the $x, y$ and $z$-axes velocities of a virtual point at the origin of the inertial frame, measured in this inertial frame. This is related to the object's linear velocity $\dot{\mathbf{p}}$  by $\dot{\mathbf{p}} = \boldsymbol{\omega} \times \mathbf{p} + \mathbf{v}$.
+The basis $\mathbf{E}_1, ... ,\mathbf{E}_6$ of the Lie algebra $\mathfrak{se}(3)$ can be obtained by setting $\mathbf{E}_k = \SL[\mathbf{e}_k]$, where $\mathbf{e}_k$ are the columns of the $6 \times 6$ identity matrix. Geometrically, the interpretation of this basis choice is that $\boldsymbol{\xi}$ is the classical \emph{twist} in mechanics. More precisely, $\boldsymbol{\omega} \triangleq [\xi_4 \  \xi_5 \  \xi_6]^\top$ represents the $x$, $y$ and $z$-axes components of the angular  velocity  measured in the inertial frame, whereas $\mathbf{v} \triangleq [\xi_1 \  \xi_2 \  \xi_3]^\top$ represents the linear velocities, along the $x, y$ and $z$-axes, of a virtual point at the origin of the inertial frame, measured in this inertial frame. This is related to the object's linear velocity $\dot{\mathbf{p}}$  by $\dot{\mathbf{p}} = \boldsymbol{\omega} \times \mathbf{p} + \mathbf{v}$.
 
 \subsubsection{Employed numerical methods}
 To solve the optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve} and compute the distance $D(\mathbf{H})$, we used the discretized curve and computed the nearest point $\mathbf{H}_d[i^*]$ through a brute-force approach. Although it would be possible to compute the curve derivative explicitly, we opted for finite differences. Thus, we approximated the derivative $\mathbf{H}_d'[i]$ as
 \begin{align}
     \mathbf{H}_d'[i] \approx \begin{cases}
         \frac{\mathbf{H}_d[i+1] - \mathbf{H}_d[i]}{\Delta s}, &  i < P\\    
-        \frac{\mathbf{H}_d[1] - \mathbf{H}_d[i]}{\Delta s}, &  i = P
+        \frac{\mathbf{H}_d[1] - \mathbf{H}_d[i]}{\Delta s}, &  i = P,
     \end{cases}
 \end{align}
 adopting $\Delta s = \num{1E-3}$. This implies that our tangent component $\boldsymbol{\xi}_T$ is also approximate, since
@@ -42,13 +42,13 @@ adopting $\Delta s = \num{1E-3}$. This implies that our tangent component $\bold
     \boldsymbol{\xi}_T \approx \invSL\biggl(\mathbf{H}_d'[i^*]\mathbf{H}_d[i^*]^{-1}\biggr).
 \end{align}
 
-For the computation of the normal component $\boldsymbol{\xi}_N$, we adopted an approximation by evaluating the right-hand side of \eqref{eq:Leq} for each $\mathbf{e}_i$. This gives the $i^{th}$ normal component element $\boldsymbol{\xi}_{N,i}$ as:
+For the computation of the normal component $\boldsymbol{\xi}_N$, we adopted an approximation by evaluating the right-hand side of \eqref{eq:Leq} for each $\mathbf{e}_i$. This gives the $i^{th}$ normal component element $\{\boldsymbol{\xi}_{N}\}_{i}$ as:
 \begin{align}
-    \boldsymbol{\xi}_{N,i} \approx \frac{\widehat{D}\Bigl(\exp\bigl(\SL[\boldsymbol{\mathbf{e}}_i]\bigr)\mathbf{H}(t), \mathbf{H}_d[s^*]\Bigr) - \widehat{D}\bigl(\mathbf{H}(t), \mathbf{H}_d[s^*]\bigr)}{\varepsilon},
+    \{\boldsymbol{\xi}_{N}\}_{i} \approx \frac{\widehat{D}\Bigl(\exp\bigl(\SL[\boldsymbol{\mathbf{e}}_i]\bigr)\mathbf{H}(t), \mathbf{H}_d[s^*]\Bigr) - \widehat{D}\bigl(\mathbf{H}(t), \mathbf{H}_d[s^*]\bigr)}{\varepsilon},
 \end{align} 
 in which $\varepsilon = \num{1E-3}$ was used.
 
-The system was simulated adopting the following approximation
+The system was simulated adopting the following approximation:
 \begin{align}
     \mathbf{H}(t + \Delta t) \approx \exp\Bigl(\SL\bigl(\Psi(\mathbf{H})\bigr)\Delta t\Bigr)\mathbf{H}(t),
 \end{align}
@@ -56,7 +56,7 @@ using a time step of $\Delta t = \qty{1E-2}{\second}$.
 \subsubsection{Vector field gains and initial condition}
 The vector field gains were selected to complement each other, ensuring that the normal component would dominate when the system was far from the curve, and the tangent component would dominate when the system was near the curve. Based on this reasoning, the following gains were chosen:
 \begin{align}
-    k_N(\mathbf{H}) &= \tanh\bigl(20D(\mathbf{H})\bigr)\\
+    k_N(\mathbf{H}) &= \tanh\bigl(20D(\mathbf{H})\bigr),\\
     k_T(\mathbf{H}) &= 1 - 0.5\bigl(D(\mathbf{H})\bigr).
 \end{align}
 
@@ -95,7 +95,7 @@ The initial condition $\mathbf{H}(0)$ was set as
         \caption{$t\in[9.7, 14.5]s$}
         \label{fig:vfplot-third}
     \end{subfigure}
-    \caption{The solid blue line depicts the system trajectory, while the solid red line indicates the target curve. The dashed light blue line represents the past trajectory. The initial and final positions are marked by purple and orange spheres, respectively. Translucent pink spheres denote intermediary positions, with orientation frames shown by RGB axes.}
+    \caption{The solid blue line depicts the system trajectory, while the solid red line indicates the target curve. The dashed light blue line represents the past trajectory. The initial and final positions are marked by purple and orange spheres, respectively. Translucent pink spheres denote intermediate positions, with orientation frames shown by RGB axes.}
     \label{fig:vfplot-trajectory}
 \end{figure}
 The simulation was conducted over a period of $\qty{15}{\second}$ and implemented in C++. On average, the computation of the vector field took $\qty{60 \pm 5}{\milli\second}$ per iteration on a single core of an Intel i5-10300H @ 4.5GHz CPU, with 8 GB of RAM. On average, $99.5\%$ of this time was spent solving the optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve}. Since the optimization process is highly parallelizable -- allowing simultaneous computation of $\widehat{D}(\mathbf{H},\mathbf{H}_d(s))$ for different discretized values of $s$ -- the computational effort could be significantly reduced by leveraging parallel architectures such as GPUs, SIMD, or multi-threading.
@@ -123,9 +123,9 @@ where $\nu$ is the \emph{spacetime interval}, and $c$ is the speed of light.}
 \vtwo{If an observer $O_2$ moves near the speed of light, they will perceive an event with coordinates $\mathbf{p}' = [x'\ y'\ z'\ t']^\top$ that differ from the coordinates $\mathbf{p}$ observed by an inertial observer $O_1$. These coordinates are related by the transformation $\mathbf{p}' = \boldsymbol{\Lambda} \mathbf{p}$, where $\boldsymbol{\Lambda}$ is a Lorentz transformation. For instance, if $O_2$ moves along the $x$-axis with velocity $v$, the Lorentz transformation is given by
 \begin{align}
    \begin{split}
-     x' &= \gamma(x - vt)\\
-     y' &= y\\
-     z'&=z\\
+     x' &= \gamma(x - vt),\\
+     y' &= y,\\
+     z'&=z,\\
      t' &= \gamma\Bigl(t - \frac{vx}{c^2}\Bigr),\label{eq:results-lorentz-example}
    \end{split}
 \end{align}
@@ -191,7 +191,7 @@ where $\gamma = \frac{1}{\sqrt{1 - v^2/c^2}}$ is the \emph{Lorentz factor}.}
 \vtwo{With these concepts established, we now turn to the simulation conducted in $\text{SO}^+(3, 1)$. For simplicity, we adopt $c = 1$, as is customary in special relativity, implying all quantities are dimensionless.}
 
 \subsubsection{Target curve}
-\vtwo{The target curve $\mathcal{C} \in \text{SO}^+(3, 1)$ was chosen as a periodic boost along the $x$-axis. The parametrization of the curve, denoted by $\mathbf{H}_d$, is defined as:
+\vtwo{The target curve $\mathcal{C} \subset \text{SO}^+(3, 1)$ was chosen as a periodic boost along the $x$-axis. The parametrization of the curve, denoted by $\mathbf{H}_d$, is defined as:
 \begin{align}
     \mathbf{H}_d(s) = \begin{bmatrix}
         \gamma(s) & 0 & 0 & -\gamma(s) v(s)\\
@@ -202,7 +202,7 @@ where $\gamma = \frac{1}{\sqrt{1 - v^2/c^2}}$ is the \emph{Lorentz factor}.}
 \end{align}
 where
 \begin{align}
-    v(s) &= 0.9 + \frac{0.09}{2}(\cos(2\pi s) + 1)\\
+    v(s) &= 0.9 + \frac{0.09}{2}(\cos(2\pi s) + 1),\\
     \gamma(s) &= \frac{1}{\sqrt{1 - v(s)^2}}.
 \end{align}}
 \vtwo{This curve was discretized into $P=\num{30000}$ points by sampling $s$ into $\num{30000}$ evenly spaced points within the interval $[0, 1]$. To distinguish the continuous and discrete parametrizations, we again adopt the notations $\mathbf{H}_d[i]$ for the $i$-th sample of the discretized curve and $\mathbf{H}_d(s)$ for the continuous curve.}
@@ -282,7 +282,7 @@ where $\boldsymbol{\xi}_0 = [0\ 0\ 0\ 0.7\ 0\ 0]^\top$.}
 % \vtwo{Finally, the value of the EC-distance $D$ is shown in }
 
 \section{Collaborative Manipulation}
-For the adaptive control simulation described in \cref{ch:collaborative}, we considered the manipulation of a large cylindrical body by six agents. The goal was to converge to and circulate a curve $\mathcal{C}\in\text{ISE}(3)$. The cylindrical body had a radius $r$ of $\qty{0.25}{\meter}$, a height $h$ of $\qty{1}{\meter}$, and a mass $m$ of $\qty{1.28E3}{\kilogram}$. The measurement point $\mathbf{r}_p$ was taken as the position of the first agent, $\mathbf{r}_1=[0\ 0\ 1.5]^\top$. The positions of the other agents, along with the components of the inertia tensor, are provided in \cref{tb:parameters}.
+For the adaptive control simulation described in \cref{ch:collaborative}, we considered the manipulation of a large cylindrical body by six agents. The goal was to converge to and circulate a curve $\mathcal{C}\subset\mathbb{R}^3\times\text{SO}(3)$. The cylindrical body had a radius $r$ of $\qty{0.25}{\meter}$, a height $h$ of $\qty{1}{\meter}$, and a mass $m$ of $\qty{1.28E3}{\kilogram}$. The measurement point $\mathbf{r}_p$ was taken as the position of the first agent, $\mathbf{r}_1=[0\ 0\ 1.5]^\top$. The positions of the other agents, along with the components of the inertia tensor, are provided in \cref{tb:parameters}.
 \begin{table}[htb]
     \centering
     \begin{threeparttable}
@@ -343,33 +343,33 @@ The reference model, as defined in \eqref{eq:ref-model-linear-parametrization}, 
     \dot{\Psi}\bigl(\mathbf{H}(t)\bigr) \approx \frac{\Psi\Biggl(\exp\biggl(\SL\Bigl(\Delta t\Psi\bigl(\mathbf{H}(t)\bigr)\Bigr)\biggr)\mathbf{H}(t)\Biggr) - \Psi\Biggl(\exp\biggl(\SL\Bigl(-\Delta t\Psi\bigl(\mathbf{H}(t)\bigr)\Bigr)\biggr)\mathbf{H}(t)\Biggr)}{2\Delta t}. \label{eq:approximation-derivative-psi}
 \end{align}
 
-We then discuss the integration of the system using \emph{Heun's method} \citep[p. 330]{fred2007algoritmos}, also known as the \emph{improved Euler method}, which is a two-stage Runge-Kutta method. To describe how this method was applied in the context of Lie groups, we use the notation $\underline{\cdot}$ for the intermediate variables in Heun's method. Let $\mathbf{H}_\text{ref}$ denote the reference state, i.e., the state of the system if it were following the vector field perfectly. The update for the system's acceleration $\ddot{\boldsymbol{\chi}}$, the derivatives of the parameters $\dot{\widehat{\mathbf{o}}}_i$ and $\dot{\widehat{\mathbf{r}}}_i$, and the respective intermediary variables were taken as follows:
+We then discuss the integration of the system using \emph{Heun's method} \citep[p. 330]{fred2007algoritmos}, also known as the \emph{improved Euler method}, which is a two-stage Runge-Kutta method. To describe how this method was applied in the context of Lie groups, we use the notation $\underline{\cdot}$ for the intermediate variables in Heun's method. Let $\mathbf{H}_\text{ref}$ denote the reference state, i.e., the state of the system if it were following the vector field perfectly. The update for the system's acceleration $\ddot{\boldsymbol{\chi}}$, the derivatives of the parameters $\dot{\widehat{\mathbf{o}}}_i$ and $\dot{\widehat{\mathbf{r}}}_i$, and the respective intermediate variables were taken as follows:
 \begin{align}
     \begin{split}
-        \ddot{\underline{\boldsymbol{\chi}}}(t+\Delta t) &= \mathbf{M}\bigl(\underline{\boldsymbol{\chi}}(t)\bigr)^{\dagger(\epsilon)}\biggl(-\mathbf{C}\bigl(\underline{\boldsymbol{\chi}}(t), \underline{\dot{\boldsymbol{\chi}}}(t)\bigr)\underline{\dot{\boldsymbol{\chi}}}(t)  + \sum_{i=1}^6 \mathbf{G}\bigl(\underline{\boldsymbol{\chi}}(t), \underline{\widehat{\mathbf{r}}}_i(t)\bigr)^{-1}\underline{\boldsymbol{\eta}}_i(t)\biggr)\\
-        \ddot{{\boldsymbol{\chi}}}(t+\Delta t) &= \mathbf{M}\bigl({\boldsymbol{\chi}}(t)\bigr)^{\dagger(\epsilon)}\biggl(-\mathbf{C}\bigl({\boldsymbol{\chi}}(t), {\dot{\boldsymbol{\chi}}}(t)\bigr)\dot{\boldsymbol{\chi}}(t)  + \sum_{i=1}^6 \mathbf{G}\bigl({\boldsymbol{\chi}}(t), {\widehat{\mathbf{r}}}_i(t)\bigr)^{-1}{\boldsymbol{\eta}}_i(t)\biggr)\\
-        \underline{\dot{\widehat{\mathbf{o}}}}_i(t + \Delta t) &= -\boldsymbol{\Gamma}_o\mathbf{Y}_o\Bigl(\underline{\boldsymbol{\chi}}(t), \underline{\dot{\boldsymbol{\chi}}}(t), \Psi\bigl(\underline{\mathbf{H}}_\text{ref}(t)\bigr), \dot{\Psi}\bigl(\underline{\mathbf{H}}_\text{ref}(t)\bigr)\Bigr)\underline{\boldsymbol{\zeta}}\\
-        {\dot{\widehat{\mathbf{o}}}}_i(t + \Delta t) &= -\boldsymbol{\Gamma}_o\mathbf{Y}_o\Bigl({\boldsymbol{\chi}}(t), {\dot{\boldsymbol{\chi}}}(t), \Psi\bigl({\mathbf{H}_\text{ref}}(t)\bigr), \dot{\Psi}\bigl({\mathbf{H}_\text{ref}}(t)\bigr)\Bigr){\boldsymbol{\zeta}}\\
-        \underline{\dot{\widehat{\mathbf{r}}}}_i(t + \Delta t) &= -\boldsymbol{\Gamma}_r\mathbf{Y}_r\bigl(\underline{\boldsymbol{\eta}}_i(t), \underline{\boldsymbol{\chi}}(t)\bigr)\underline{\boldsymbol{\zeta}}\\
+        \ddot{\underline{\boldsymbol{\chi}}}(t+\Delta t) &= \mathbf{M}\bigl(\underline{\boldsymbol{\chi}}(t)\bigr)^{\dagger(\epsilon)}\biggl(-\mathbf{C}\bigl(\underline{\boldsymbol{\chi}}(t), \underline{\dot{\boldsymbol{\chi}}}(t)\bigr)\underline{\dot{\boldsymbol{\chi}}}(t)  + \sum_{i=1}^6 \mathbf{G}\bigl(\underline{\boldsymbol{\chi}}(t), \underline{\widehat{\mathbf{r}}}_i(t)\bigr)^{-1}\underline{\boldsymbol{\eta}}_i(t)\biggr),\\
+        \ddot{{\boldsymbol{\chi}}}(t+\Delta t) &= \mathbf{M}\bigl({\boldsymbol{\chi}}(t)\bigr)^{\dagger(\epsilon)}\biggl(-\mathbf{C}\bigl({\boldsymbol{\chi}}(t), {\dot{\boldsymbol{\chi}}}(t)\bigr)\dot{\boldsymbol{\chi}}(t)  + \sum_{i=1}^6 \mathbf{G}\bigl({\boldsymbol{\chi}}(t), {\widehat{\mathbf{r}}}_i(t)\bigr)^{-1}{\boldsymbol{\eta}}_i(t)\biggr),\\
+        \underline{\dot{\widehat{\mathbf{o}}}}_i(t + \Delta t) &= -\boldsymbol{\Gamma}_o\mathbf{Y}_o\Bigl(\underline{\boldsymbol{\chi}}(t), \underline{\dot{\boldsymbol{\chi}}}(t), \Psi\bigl(\underline{\mathbf{H}}_\text{ref}(t)\bigr), \dot{\Psi}\bigl(\underline{\mathbf{H}}_\text{ref}(t)\bigr)\Bigr)\underline{\boldsymbol{\zeta}},\\
+        {\dot{\widehat{\mathbf{o}}}}_i(t + \Delta t) &= -\boldsymbol{\Gamma}_o\mathbf{Y}_o\Bigl({\boldsymbol{\chi}}(t), {\dot{\boldsymbol{\chi}}}(t), \Psi\bigl({\mathbf{H}_\text{ref}}(t)\bigr), \dot{\Psi}\bigl({\mathbf{H}_\text{ref}}(t)\bigr)\Bigr){\boldsymbol{\zeta}},\\
+        \underline{\dot{\widehat{\mathbf{r}}}}_i(t + \Delta t) &= -\boldsymbol{\Gamma}_r\mathbf{Y}_r\bigl(\underline{\boldsymbol{\eta}}_i(t), \underline{\boldsymbol{\chi}}(t)\bigr)\underline{\boldsymbol{\zeta}},\\
         \underline{\dot{\widehat{\mathbf{r}}}}_i(t + \Delta t) &= -\boldsymbol{\Gamma}_r\mathbf{Y}_r\bigl({\boldsymbol{\eta}}_i(t), {\boldsymbol{\chi}}(t)\bigr){\boldsymbol{\zeta}},
     \end{split}
 \end{align}
-where $\underline{\boldsymbol{\eta}}_i(t) = \mathbf{Y}_o\Bigl(\underline{\boldsymbol{\chi}}(t), \underline{\dot{\boldsymbol{\chi}}}(t), \Psi\bigl(\underline{\mathbf{H}}_\text{ref}(t)\bigr), \dot{\Psi}\bigl(\underline{\mathbf{H}}_\text{ref}(t)\bigr)\Bigr)\underline{\widehat{\mathbf{o}}}_i(t) - \mathbf{K}_D\underline{\boldsymbol{\zeta}}$, $\underline{\boldsymbol{\zeta}}$ is the intermediary velocity error $\underline{\boldsymbol{\zeta}}=\underline{\dot{\boldsymbol{\chi}}}(t) - \Psi\bigl(\underline{\mathbf{H}}_\text{ref}(t)\bigr)$, and $\mathbf{M}^{\dagger(\epsilon)}$ is the damped pseudo-inverse $\mathbf{M}^{\dagger(\epsilon)} = (\mathbf{M}^\top\mathbf{M} + \epsilon\mathbf{I})^{-1}\mathbf{M}^\top$, with $\epsilon=0.01$. The update for the system's twist and parameters estimates is given by:
+where $\underline{\boldsymbol{\eta}}_i(t) = \mathbf{Y}_o\Bigl(\underline{\boldsymbol{\chi}}(t), \underline{\dot{\boldsymbol{\chi}}}(t), \Psi\bigl(\underline{\mathbf{H}}_\text{ref}(t)\bigr), \dot{\Psi}\bigl(\underline{\mathbf{H}}_\text{ref}(t)\bigr)\Bigr)\underline{\widehat{\mathbf{o}}}_i(t) - \mathbf{K}_D\underline{\boldsymbol{\zeta}}$, the intermediate velocity error $\underline{\boldsymbol{\zeta}}$ is given by $\underline{\boldsymbol{\zeta}}=\underline{\dot{\boldsymbol{\chi}}}(t) - \Psi\bigl(\underline{\mathbf{H}}_\text{ref}(t)\bigr)$, and $\mathbf{M}^{\dagger(\epsilon)}$ is the damped pseudo-inverse $\mathbf{M}^{\dagger(\epsilon)} = (\mathbf{M}^\top\mathbf{M} + \epsilon\mathbf{I})^{-1}\mathbf{M}^\top$, with $\epsilon=0.01$. The update for the system's twist and parameters estimates is given by:
 \begin{align}
     \begin{split}
-        \underline{\dot{\boldsymbol{\chi}}}(t + \Delta t) &= \dot{\boldsymbol{\chi}}(t) + \Delta t \ddot{\underline{\boldsymbol{\chi}}}(t)\\
-        \dot{\boldsymbol{\chi}}(t + \Delta t) &= \dot{\boldsymbol{\chi}}(t) + \frac{\Delta t}{2} \bigl(\ddot{\boldsymbol{\chi}}(t) + \underline{\ddot{\boldsymbol{\chi}}}(t)\bigr)\\
-        \widehat{\mathbf{o}}_i(t + \Delta t) &= \widehat{\mathbf{o}}_i(t) + \frac{\Delta t}{2} \bigl(\dot{\widehat{\mathbf{o}}}_i(t) + \underline{\dot{\widehat{\mathbf{o}}}}_i(t)\bigr)\\
+        \underline{\dot{\boldsymbol{\chi}}}(t + \Delta t) &= \dot{\boldsymbol{\chi}}(t) + \Delta t \ddot{\underline{\boldsymbol{\chi}}}(t),\\
+        \dot{\boldsymbol{\chi}}(t + \Delta t) &= \dot{\boldsymbol{\chi}}(t) + \frac{\Delta t}{2} \bigl(\ddot{\boldsymbol{\chi}}(t) + \underline{\ddot{\boldsymbol{\chi}}}(t)\bigr),\\
+        \widehat{\mathbf{o}}_i(t + \Delta t) &= \widehat{\mathbf{o}}_i(t) + \frac{\Delta t}{2} \bigl(\dot{\widehat{\mathbf{o}}}_i(t) + \underline{\dot{\widehat{\mathbf{o}}}}_i(t)\bigr),\\
         \widehat{\mathbf{r}}_i(t + \Delta t) &= \widehat{\mathbf{r}}_i(t) + \frac{\Delta t}{2} \bigl(\dot{\widehat{\mathbf{r}}}_i(t) + \underline{\dot{\widehat{\mathbf{r}}}}_i(t)\bigr).
     \end{split}
 \end{align}
 Finally, the update of the system's state and reference model was given by
 \begin{align}
     \begin{split}
-        \underline{\mathbf{H}}(t +\Delta t) &= \exp\Bigl(\Delta t\SL\bigl(\dot{\boldsymbol{\chi}}(t)\bigr)\Bigr)\mathbf{H}(t)\\
-        \mathbf{H}(t + \Delta t) &= \exp\biggl(\frac{\Delta t}{2}\SL[\dot{\boldsymbol{\chi}}(t) + \underline{\dot{\boldsymbol{\chi}}}(t)]\biggr)\mathbf{H}(t)\\
-        \underline{\mathbf{H}}_\text{ref}(t +\Delta t) &= \exp\biggl(\Delta t\SL\Bigl(\Psi\bigl(\mathbf{H}(t)\bigr)\Bigr)\biggr)\mathbf{H}(t)\\
-        \mathbf{H}_\text{ref} (t + \Delta t) &= \mathbf{H}(t + \Delta t)
+        \underline{\mathbf{H}}(t +\Delta t) &= \exp\Bigl(\Delta t\SL\bigl(\dot{\boldsymbol{\chi}}(t)\bigr)\Bigr)\mathbf{H}(t),\\
+        \mathbf{H}(t + \Delta t) &= \exp\biggl(\frac{\Delta t}{2}\SL[\dot{\boldsymbol{\chi}}(t) + \underline{\dot{\boldsymbol{\chi}}}(t)]\biggr)\mathbf{H}(t),\\
+        \underline{\mathbf{H}}_\text{ref}(t +\Delta t) &= \exp\biggl(\Delta t\SL\Bigl(\Psi\bigl(\mathbf{H}(t)\bigr)\Bigr)\biggr)\mathbf{H}(t),\\
+        \mathbf{H}_\text{ref} (t + \Delta t) &= \mathbf{H}(t + \Delta t).
     \end{split}
 \end{align}
 
@@ -381,26 +381,26 @@ where $\delta=0.05$ is a smoothing factor, $P=\num{2000}$ is the total number of
 \begin{align}
     w_i = \frac{\exp\bigl(D(\mathbf{H}) - \widehat{D}(\mathbf{H}, \mathbf{H}_d[i])\bigr)}{\delta}.
 \end{align}
-With this, the $\text{L}$ operator of the smoothed distance is given as
+With this, the $\text{L}$ operator of the smoothed distance is given by
 \begin{align}
     \text{L}[\bar{D}](\mathbf{H}) = \frac{\sum_{i=1}^{P}w_i\text{L}_\mathbf{V}[\widehat{D}]\bigl(\mathbf{H}, \mathbf{H}_d[i]\bigr)}{\sum_{i=1}^{P}w_i},
 \end{align}
-which implies that the $j^{th}$ entry of the normal component $\boldsymbol{\xi}_{N,j}$ can be approximated as
+which implies that the $j^{th}$ entry of the normal component $\{\boldsymbol{\xi}_{N}\}_{j}$ can be approximated as
 \begin{align}
-    \boldsymbol{\xi}_{N,j}(\mathbf{H}) = -\frac{\sum_{i=1}^{P} \frac{w_i}{\varepsilon}\biggl(\widehat{D}\Bigl(\exp\bigl(\varepsilon\SL[\mathbf{e}_j]\bigr)\mathbf{H}, \mathbf{H}_d[i]\Bigr)- \widehat{D}\bigl(\mathbf{H}, \mathbf{H}_d[i]\bigr)\biggr)}{\sum_{i=1}^{P}w_i}
+    \{\boldsymbol{\xi}_{N}\}_{j}(\mathbf{H}) = -\frac{\sum_{i=1}^{P} \frac{w_i}{\varepsilon}\biggl(\widehat{D}\Bigl(\exp\bigl(\varepsilon\SL[\mathbf{e}_j]\bigr)\mathbf{H}, \mathbf{H}_d[i]\Bigr)- \widehat{D}\bigl(\mathbf{H}, \mathbf{H}_d[i]\bigr)\biggr)}{\sum_{i=1}^{P}w_i},
 \end{align}
 with $\varepsilon=0.001$.
 
-As the curve parametrization has an explicit equation \eqref{eq:parametriceq-simulation}, the derivative $\frac{d}{ds}\mathbf{H}_d(s)$ was computed analytically. Thus, the derivative of the $i^{th}$ point in the discretized curve is given analytically by $\mathbf{H}_d'[i]$. The smoothed tangent component $\boldsymbol{\xi}_T$ is then expressed as
+As the curve parametrization has an explicit equation \eqref{eq:parametriceq-simulation}, the derivative $\frac{d}{ds}\mathbf{H}_d(s)$ was computed analytically. Thus, the derivative of the $i^{th}$ point in the discretized curve is given explicitly by $\mathbf{H}_d'[i]$. The smoothed tangent component $\boldsymbol{\xi}_T$ is then expressed as
 \begin{align}
-    \boldsymbol{\xi}_T(\mathbf{H}) = \frac{\sum_{i=1}^{P} w_i\invSL\bigl(\mathbf{H}_d'[i]\mathbf{H}_d[i]^{-1}\bigr)}{\sum_{i=1}^{P} w_i}
+    \boldsymbol{\xi}_T(\mathbf{H}) = \frac{\sum_{i=1}^{P} w_i\invSL\bigl(\mathbf{H}_d'[i]\mathbf{H}_d[i]^{-1}\bigr)}{\sum_{i=1}^{P} w_i}.
 \end{align}
 
 This smoothing process behaves as an interpolation to determine the nearest point, thereby deforming the original curve to an interpolated one. The parameter $\delta$ controls the extent of this deformation. While this strategy prevents us from invoking previously proven lemmas and theorems, we claim that all signals will remain bounded and the system will converge to a neighborhood of the curve that is sufficiently close for the task.
 
 The real distance $D(\mathbf{H})$ was computed using a brute force approach, with a slight modification of the expression derived in \cref{sec:collaborative-ee-distance-computation}. To avoid numerical errors, the distance was computed as
 \begin{align}
-    D(\mathbf{H}) = \sqrt{2\theta^2 + \|\mathbf{u}\|^2 + 0.01^2} - 0.01
+    D(\mathbf{H}) = \sqrt{2\theta^2 + \|\mathbf{u}\|^2 + 0.01^2} - 0.01.
 \end{align}
 
 \subsection{Controller parameters}
@@ -413,7 +413,7 @@ where $\gamma=0.27$ is an offset determined by evaluating the difference between
 
 For the adaptive control, the adaptation gains were set as:
 \begin{align}
-    \boldsymbol{\Gamma}_o &= \frac{1}{30}\diag\bigl(\abs(\mathbf{o}_i) + \num{1E-2}\bigr)\\
+    \boldsymbol{\Gamma}_o &= \frac{1}{30}\diag\bigl(\abs(\mathbf{o}_i) + \num{1E-2}\bigr),\\
     \boldsymbol{\Gamma}_r &= \frac{1}{3000}\mathbf{I}_{3\times3},
 \end{align}
 where $\diag(\cdot)$ maps a vector into a diagonal matrix, and $\abs(\cdot)$ represents the element-wise absolute value of a vector. The control gain was defined as
@@ -426,7 +426,7 @@ The simulation was conducted for $\qty{40}{\second}$ with a time step of $\Delta
 \begin{align}
     \mathbf{p}(0) &= \begin{bmatrix}
         -0.1 & 0 & 0.2
-    \end{bmatrix}^\top\\
+    \end{bmatrix}^\top,\\
     \mathbf{R}(0) &= \begin{bmatrix}
         \cos\bigl(\frac{\pi}{4}\bigr) & -\sin\bigl(\frac{\pi}{4}\bigr) & 0\\
         \sin\bigl(\frac{\pi}{4}\bigr) & \cos\bigl(\frac{\pi}{4}\bigr) & 0\\
@@ -463,7 +463,7 @@ The initial estimates $\widehat{\mathbf{o}}_i$ and $\widehat{\mathbf{r}}_i$ were
         \caption{$t\in[26, 39]s$}
         \label{fig:adaptive-traj-third}
     \end{subfigure}
-    \caption{Trajectory of the manipulated cylinder. The solid blue line depicts the system trajectory, while the solid red line indicates the target curve. The dashed light blue line represents the past trajectory. The initial and final positions are marked by purple and orange cylinders, respectively. Pink cylinders denote intermediary positions, with orientation frames shown by RGB axes.}
+    \caption{Trajectory of the manipulated cylinder. The solid blue line depicts the system trajectory, while the solid red line indicates the target curve. The dashed light blue line represents the past trajectory. The initial and final positions are marked by purple and orange cylinders, respectively. Pink cylinders denote intermediate positions, with orientation frames shown by RGB axes.}
     \label{fig:adaptive-trajectory}
 \end{figure}
 
@@ -487,7 +487,7 @@ The error vector $\boldsymbol{\zeta}$ rapidly decreased to zero; however, after 
 \end{figure}
 Examining the behavior of the distance function $D$ in \cref{fig:sim2-distances}, it can be observed that the object approached the target curve asymptotically at approximately $\qty{1.2}{\second}$, consistent with the behavior of $\boldsymbol{\zeta}$. The final observed value of $D$ was $\num{0.004}$, corresponding to a position error of $\qty{0.6}{\centi\meter}$ and an orientation error of $\qty{0.32}{\degree}$.
 
-The average forces and torques applied by each agent are shown in \cref{tb:forces} and \cref{tb:torques}, respectively. The average force and standard deviation were similar for all agents, with values of approximately $\qty{88 \pm 111}{\newton}$. The maximum and minimum forces were also comparable, approximately $\qty{7411}{\newton}$ and $\qty{31}{\newton}$, respectively. In contrast, the torques applied by each agent exhibited greater variation, with the highest average observed for agent $5$ at $\qty{392.079 \pm 573.948}{\newton\meter}$ and the lowest for agent $3$ at $\qty{109.546 \pm 138.17}{\newton\meter}$. The maximum torque, $\qty{46835.582}{\newton\meter}$, was applied by agent $5$, while the minimum torque, $\qty{3.731}{\newton\meter}$, was applied by agent $2$. These high values were expected, given the large mass and dimensions of the cylinder and the complexity of the manipulation task, which was performed within a minimal time frame. The maximum linear speed experienced by the object was $\qty{1.09}{\meter\per\second}$, and the maximum angular velocity was $\qty{1.04}{\radian\per\second}$, both of which are demanding values.
+The average forces and torques applied by each agent are shown in \cref{tb:forces} and \cref{tb:torques}, respectively. The average force and standard deviation were similar for all agents, with values of approximately $\qty{88 \pm 111}{\newton}$. The maximum and minimum forces were also comparable, approximately $\qty{7411}{\newton}$ and $\qty{31}{\newton}$, respectively. In contrast, the torques applied by each agent exhibited greater variation, with the highest average observed for agent $5$ at $\qty{392.079 \pm 573.948}{\newton\meter}$ and the lowest for agent $3$ at $\qty{109.546 \pm 138.17}{\newton\meter}$. The maximum torque, $\qty{46835.582}{\newton\meter}$, was applied by agent $5$, while the minimum torque, $\qty{3.731}{\newton\meter}$, was applied by agent $2$. These high values were expected, given the large mass and dimensions of the cylinder and the complexity of the manipulation task, which was performed within a minimal time frame. The maximum linear speed experienced by the object was $\qty{1.09}{\meter\per\second}$, and the maximum angular speed was $\qty{1.04}{\radian\per\second}$, both of which are demanding values.
 \begin{table}[ht]
     \centering
     \caption{Statistics of the forces applied by each agent}\label{tb:forces}

@@ -19,7 +19,7 @@ The body possesses a mass $m$ and a constant inertia tensor $\mathbb{I}_\text{cm
 Let $\mathbf{p}\triangleq\mathbf{p}^\mathfrak{I}(t)$ be the position of the measurement point in $\mathfrak{I}$ and let $\mathbf{R}\triangleq \mathbf{R}_\mathfrak{B}^\mathfrak{I}(t)$ be the rotation matrix from frame $\mathfrak{B}$ to frame $\mathfrak{I}$. Let the linear velocity of the point $\mathbf{p}$ expressed in frame $\mathfrak{I}$ be represented by $\dot{\mathbf{p}}$, and let $\boldsymbol{\omega}\triangleq\boldsymbol{\omega}^\mathfrak{I}(t)$ denote the angular velocity of frame $\mathfrak{B}$ with respect to $\mathfrak{I}$, expressed in $\mathfrak{I}$. Additionally, let $\ddot{\mathbf{p}}$ and $\dot{\boldsymbol{\omega}}$ represent the linear and angular accelerations of the body, respectively. Then, we can express the linear velocity at $\mathbf{p}$ as
 \begin{align}
     \dot{\mathbf{p}} &= \frac{d}{dt}\bigl(\mathbf{b} + \mathbf{R}\mathbf{r}^\mathfrak{B}_p\bigr) 
-    = \dot{\mathbf{b}} +\SL[\boldsymbol{\omega}]\mathbf{R}\mathbf{r}^\mathfrak{B}_p + \mathbf{R}\dot{\mathbf{r}}^\mathfrak{B} = \dot{\mathbf{b}} +\SL[\boldsymbol{\omega}]\mathbf{R}\mathbf{r}^\mathfrak{B}_p,
+    = \dot{\mathbf{b}} +\SL[\boldsymbol{\omega}]\mathbf{R}\mathbf{r}^\mathfrak{B}_p + \mathbf{R}\dot{\mathbf{r}}^\mathfrak{B}_p = \dot{\mathbf{b}} +\SL[\boldsymbol{\omega}]\mathbf{R}\mathbf{r}^\mathfrak{B}_p,
 \end{align}
 where the fact that $\mathbf{r}^\mathfrak{B}_p$ is constant in frame $\mathfrak{B}$ was used. The linear acceleration is given by
 \begin{align}
@@ -81,20 +81,24 @@ Applying Jacobi's identity, we obtain
 \end{align}
 Finally, using \eqref{eq:torque-modelling}, \eqref{eq:partial-torque1}, \eqref{eq:partial-torque2}, and \eqref{eq:partial-torque3}, the resulting torque is expressed as
 \begin{align}
-    \mathbf{T}^\mathfrak{I}_p = &\mathbf{R}\mathbb{I}^\mathfrak{B}_\text{cm}\mathbf{R}^\top\dot{\boldsymbol{\omega}} + \SL[\boldsymbol{\omega}]\mathbf{R}\mathbb{I}^\mathfrak{B}_\text{cm}\mathbf{R}^\top\boldsymbol{\omega} - \SL[\mathbf{R}\mathbf{r}^\mathfrak{B}_p]\ddot{\mathbf{p}} + \mathbf{R}\bigl(\mathbb{I}^\mathfrak{B}_p - \mathbb{I}^\mathfrak{B}_\text{cm}\bigr)\mathbf{R}^\top\dot{\boldsymbol{\omega}} \\
-    &-m\SL[\SL[\mathbf{R}\mathbf{r}_p^\mathfrak{B}]\dot{\mathbf{p}}]\boldsymbol{\omega}
-    -m\SL[\boldsymbol{\omega}]\SL[\mathbf{R}\mathbf{r}_p^\mathfrak{B}]\dot{\mathbf{p}}
-    - m\SL[\boldsymbol{\omega}]\mathbf{R}\bigl(\mathbb{I}^\mathfrak{B}_p-\mathbb{I}^\mathfrak{B}_\text{cm}\bigr)\mathbf{R}^\top\boldsymbol{\omega}\\
-    = &\mathbf{R}\mathbb{I}^\mathfrak{B}_p\mathbf{R}^\top\dot{\boldsymbol{\omega}} + \SL[\boldsymbol{\omega}]\mathbf{R}\mathbb{I}^\mathfrak{B}_p\mathbf{R}^\top\boldsymbol{\omega} - \SL[\mathbf{R}\mathbf{r}^\mathfrak{B}_p]\ddot{\mathbf{p}} -m\SL[\SL[\mathbf{R}\mathbf{r}_p^\mathfrak{B}]\dot{\mathbf{p}}]\boldsymbol{\omega}\\
-    &-m\SL[\boldsymbol{\omega}]\SL[\mathbf{R}\mathbf{r}_p^\mathfrak{B}]\dot{\mathbf{p}}
+    \begin{split}
+        \mathbf{T}^\mathfrak{I}_p = &\mathbf{R}\mathbb{I}^\mathfrak{B}_\text{cm}\mathbf{R}^\top\dot{\boldsymbol{\omega}} + \SL[\boldsymbol{\omega}]\mathbf{R}\mathbb{I}^\mathfrak{B}_\text{cm}\mathbf{R}^\top\boldsymbol{\omega} - \SL[\mathbf{R}\mathbf{r}^\mathfrak{B}_p]\ddot{\mathbf{p}} + \mathbf{R}\bigl(\mathbb{I}^\mathfrak{B}_p - \mathbb{I}^\mathfrak{B}_\text{cm}\bigr)\mathbf{R}^\top\dot{\boldsymbol{\omega}} \\
+        &-m\SL[\SL[\mathbf{R}\mathbf{r}_p^\mathfrak{B}]\dot{\mathbf{p}}]\boldsymbol{\omega}
+        -m\SL[\boldsymbol{\omega}]\SL[\mathbf{R}\mathbf{r}_p^\mathfrak{B}]\dot{\mathbf{p}}
+        - m\SL[\boldsymbol{\omega}]\mathbf{R}\bigl(\mathbb{I}^\mathfrak{B}_p-\mathbb{I}^\mathfrak{B}_\text{cm}\bigr)\mathbf{R}^\top\boldsymbol{\omega}
+    \end{split}\\
+    \begin{split}
+        = &\mathbf{R}\mathbb{I}^\mathfrak{B}_p\mathbf{R}^\top\dot{\boldsymbol{\omega}} + \SL[\boldsymbol{\omega}]\mathbf{R}\mathbb{I}^\mathfrak{B}_p\mathbf{R}^\top\boldsymbol{\omega} - \SL[\mathbf{R}\mathbf{r}^\mathfrak{B}_p]\ddot{\mathbf{p}} -m\SL[\SL[\mathbf{R}\mathbf{r}_p^\mathfrak{B}]\dot{\mathbf{p}}]\boldsymbol{\omega}\\
+        &-m\SL[\boldsymbol{\omega}]\SL[\mathbf{R}\mathbf{r}_p^\mathfrak{B}]\dot{\mathbf{p}}.
+    \end{split}
 \end{align}
 
 Define the pose $\boldsymbol{\chi} = (\mathbf{p}, \mathbf{R}) \in \mathbb{R}^3\times \text{SO}(3)$, and, abusing notation, let $\mathbb{R}^6\ni\dot{\boldsymbol{\chi}} = \left[\dot{\mathbf{p}}^\top, \boldsymbol{\omega}^\top \right]^\top$ represent the system's linear and angular velocities. Additionally, let $\mathbb{R}^6\ni\ddot{\boldsymbol{\chi}} = \left[\ddot{\mathbf{p}}^\top, \dot{\boldsymbol{\omega}}^\top \right]^\top$ represent the system's linear and angular accelerations.
 With this notation, the dynamics can be succinctly expressed as
 \begin{equation}
-    \boldsymbol{\tau } = \mathbf {M}(\boldsymbol{\chi})\ddot{\boldsymbol{\chi}} + \mathbf {C}(\boldsymbol{\chi},\dot{\boldsymbol{\chi}})\dot{\boldsymbol{\chi}} + \mathbf{g}\label{eq:tau}
+    \boldsymbol{\tau } = \mathbf {M}(\boldsymbol{\chi})\ddot{\boldsymbol{\chi}} + \mathbf {C}(\boldsymbol{\chi},\dot{\boldsymbol{\chi}})\dot{\boldsymbol{\chi}} + \mathbf{g},\label{eq:tau}
 \end{equation}
-where $\boldsymbol{\tau}\triangleq[\mathbf{F}^{T}\ \mathbf{T}_p^\top]^\top$ denotes the total wrench applied to the body about the point $\mathbf{p}$ expressed in frame $\mathfrak{I}$, vector $\mathbf{g}$ is the gravity vector, matrix $\mathbf{M}$ is the system's Cartesian space mass matrix, represented by
+where $\boldsymbol{\tau}\triangleq[\mathbf{F}^\top\ \mathbf{T}_p^\top]^\top$ denotes the total wrench applied to the body about the point $\mathbf{p}$ expressed in frame $\mathfrak{I}$, vector $\mathbf{g}$ is the gravity vector, matrix $\mathbf{M}$ is the system's Cartesian space mass matrix, represented by
 \begin{equation}
     \mathbf {M}(\boldsymbol{\chi}) = \left[\begin{array}{cc}m\mathbf {I} & m\SL[\mathbf {R} \mathbf {r}_p^\mathfrak{B}] \\ -m\SL[\mathbf {R} \mathbf {r}_p^\mathfrak{B}] & \mathbf {R} \mathbb{I}^\mathfrak{B}_p \mathbf {R}^\top \end{array} \right],\label{eq:Mcartesian}
 \end{equation}
@@ -124,7 +128,7 @@ The mass and Coriolis matrices share the same properties as the ones obtained th
     The matrix $\dot{\mathbf{M}}(\boldsymbol{\chi}) - 2\mathbf{C}(\boldsymbol{\chi},\dot{\boldsymbol{\chi}})$, as in \eqref{eq:Mcartesian} and \eqref{eq:C}, is skew-symmetric.
 \end{lemma}
 \begin{proof}
-    To express the time derivative of the mass matrix, first note that $m\SL[\mathbf{R}\mathbf{r}_p^\mathfrak{B}] = m\mathbf{R}\SL[\mathbf{r}_p^\mathfrak{B}]\mathbf{R}^\top$. Now, since $\frac{d}{dt}(\mathbf{R}\mathbf{R}^\top)=\frac{d}{dt}\mathbf{I}=0$, this implies that $\dot{\mathbf{R}}^\top = -\mathbf{R}^\top\SL[\boldsymbol{\omega}]$. Thus the time derivative of the second term in $\mathbf{M}$ is given by
+    To express the time derivative of the mass matrix, first note that $m\SL[\mathbf{R}\mathbf{r}_p^\mathfrak{B}] = m\mathbf{R}\SL[\mathbf{r}_p^\mathfrak{B}]\mathbf{R}^\top$. Now, since $\frac{d}{dt}(\mathbf{R}\mathbf{R}^\top)=\frac{d}{dt}\mathbf{I}=\mathbf{0}$, this implies that $\dot{\mathbf{R}}^\top = -\mathbf{R}^\top\SL[\boldsymbol{\omega}]$. Thus the time derivative of the second term in $\mathbf{M}$ is given by
     \begin{align}
         \frac{d}{dt}\bigl(m\SL[\mathbf{R}\mathbf{r}_p^\mathfrak{B}]\bigr) &=
         m\SL[\boldsymbol{\omega}]\mathbf{R}\SL[\boldsymbol{r}_p^\mathfrak{B}]\mathbf{R}^\top - m\mathbf{R}\SL[\boldsymbol{r}_p^\mathfrak{B}]\mathbf{R}^\top\SL[\boldsymbol{\omega}]\\
@@ -170,7 +174,7 @@ The multiplication of two grasp matrices is also straightforward:
     \begin{bmatrix}
         \mathbf{I} & \mathbf{0} \\
         \SL[\mathbf{R}(\mathbf{r}_i + \mathbf{r}_j)] & \mathbf{I}
-    \end{bmatrix} = \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i) + \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_j) - \mathbf{I}
+    \end{bmatrix} = \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i) + \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_j) - \mathbf{I}.
 \end{align}
 
 As previously stated, some system parameters will be unknown. For simplicity we list here the parameters that must be adapted:
@@ -191,7 +195,7 @@ The manipulated object must follow a curve of poses $\mathcal{C}\subset \mathbb{
 The task can be achieved determining a control input $\boldsymbol{\xi}$ such that the body follows the curve $\mathcal{C}$ under a kinematic model. Although the system model was developed using the tuple representation of $\mathbb{R}^3\times\text{SO}(3)$, in this section we adopt the independent representation of $\text{ISE}(3)$, as it simplifies the control design. Note that this identification is always possible, since for any $\mathbf{H}\in\text{ISE}(3)$, we can identify $\boldsymbol{\chi}=(\mathbf{p}, \mathbf{R})$ using the following map
 \begin{align}
     \begin{split}
-        \mathbf{H} &\mapsto (\mathbf{B}\mathbf{H}\mathbf{c},\, \mathbf{A}\mathbf{H}\mathbf{A}^\top) \in \mathbb{R}^3\times\text{SO}(3)\\
+        \mathbf{H} &\mapsto (\mathbf{B}\mathbf{H}\mathbf{c},\, \mathbf{A}\mathbf{H}\mathbf{A}^\top) \in \mathbb{R}^3\times\text{SO}(3),\\
         \mathbf{A} &= \begin{bmatrix}
             \mathbf{I}_{3\times 3} & \mathbf{0}_{3\times 4}
         \end{bmatrix}, \quad
@@ -207,19 +211,19 @@ The task can be achieved determining a control input $\boldsymbol{\xi}$ such tha
 Now, let the system state be represented by an element $\mathbf{H}(t)\in\text{ISE}(3)$, with a generalized twist $\boldsymbol{\xi}\in\mathbb{R}^6$. Given a curve parametrization $\mathbf{H}_d(s)\in\text{ISE}(3)$, we want to compute a vector field $\Psi:\text{ISE}(3)\to\mathbb{R}^6$ such that if $\boldsymbol{\xi} = \Psi(\mathbf{H})$, the system follows the curve $\mathcal{C}$. The system can be described through the following single integrator model:
 \begin{align}
 % \begin{split}
-    \dot{\mathbf{H}} &= \SL[\boldsymbol{\xi}]\mathbf{H}\label{eq:first-order-system-cba}
+    \dot{\mathbf{H}} &= \SL[\boldsymbol{\xi}]\mathbf{H}.\label{eq:first-order-system-cba}
 % \end{split} 
 \end{align}
 
-In order to use our vector field methodology, we define an EE-distance function $\widehat{D}: \text{ISE}(3) \times \text{ISE}(3) \to \mathbb{R}_+$ between two elements $\mathbf{V}, \mathbf{W}$ in the group $\text{ISE}(3)$ as follows
+In order to use our vector field methodology, we define an EE-distance function $\widehat{D}: \text{ISE}(3) \times \text{ISE}(3) \to \mathbb{R}_+$ between two elements $\mathbf{V}, \mathbf{W}$ in the group $\text{ISE}(3)$ as follows:
 \begin{align}
     \widehat{D}(\mathbf{V}, \mathbf{W}) = \| \log(\mathbf{V}^{-1}\mathbf{W}) \|_F. \label{eq:cba-distance-new}
 \end{align}
-Note that this is exactly the same distance as defined in \cref{ch:kinematic}, and so it possesses the same properties.
+Note that this is exactly the same distance as defined in \cref{sec:kinematic-path-ee-dist-exp-group}, and so it possesses the same properties.
 \begin{remark}
     In our original approach, we treat our system directly in $\mathbb{R}^3\times\text{SO}(3)$, and use the following distance function between two tuples:
     \begin{align}
-        \widehat{D}(\mathbf{p}_1, \mathbf{R}_1, \mathbf{p}_2, \mathbf{R}_2) \equiv \frac{1}{2}\left(\|\mathbf{p}_1 - \mathbf{p}_2\|^2 + \beta\left\|\mathbf{I} - \mathbf{R}_2^{T}\mathbf{R}_1\right\|^2_F\right). \label{eq:cba-distance}
+        \widehat{D}(\mathbf{p}_1, \mathbf{R}_1, \mathbf{p}_2, \mathbf{R}_2) \triangleq \frac{1}{2}\left(\|\mathbf{p}_1 - \mathbf{p}_2\|^2 + \beta\left\|\mathbf{I} - \mathbf{R}_2^{T}\mathbf{R}_1\right\|^2_F\right). \label{eq:cba-distance}
     \end{align}
     Although they are not equivalent, the change in the distance function will maintain consistency with our generalization to matrix Lie groups.
     
@@ -233,7 +237,7 @@ We will assume that the target curve $\mathcal{C}$ is twice differentiable, clos
 By following this vector field, the system \eqref{eq:first-order-system-cba} will converge to and follow the target curve.
 
 \subsection{Computation of the EE-distance}\label{sec:collaborative-ee-distance-computation}
-It is possible to use an simple algorithm to compute the defined EE-distance \eqref{eq:cba-distance-new}. First, note that for any elements $\mathbf{V}, \mathbf{W}\in\text{ISE}(3)$, we can write
+It is possible to use a simple algorithm to compute the defined EE-distance \eqref{eq:cba-distance-new}. First, note that for any elements $\mathbf{V}, \mathbf{W}\in\text{ISE}(3)$, we can write
 \begin{align}
     \mathbf{V}^{-1}\mathbf{W} = \mathbf{Z} = \begin{bmatrix}
         \mathbf{R}_v^\top\mathbf{R}_w & \mathbf{0} & \mathbf{0}\\
@@ -257,14 +261,15 @@ Now, applying the Frobenius norm, we have
 \begin{align}
     \|\log(\mathbf{Z})\|_F^2 &= \tr\bigl(\log(\mathbf{Z})^\top\log(\mathbf{Z})\bigr)^\frac{1}{2} = \tr\!\left(\begin{bmatrix}
         (\log\mathbf{Q})^\top\log\mathbf{Q} & \mathbf{0} & \mathbf{0}\\
-        \mathbf{0} & \mathbf{0} & 0\\
+        \mathbf{0} & \mathbf{0} & \mathbf{0}\\
         \mathbf{0} & \mathbf{0} & \mathbf{u}^\top\mathbf{u}
     \end{bmatrix}\right)^\frac{1}{2} \\
     &= \sqrt{\|\log\mathbf{Q}\|_F^2 + \|\mathbf{u}\|^2} = \sqrt{2\theta^2 + \|\mathbf{u}\|^2},
 \end{align}
-where $\theta$ is the rotation angle as in \cref{app:rodrigues-formula}. Thus, in this case the algorithm to compute the EE-distance is a simplified version of \cref{alg:dhat-se3}:
+where $\theta$ is the rotation angle as in \cref{app:rodrigues-formula}. Thus, in this case the algorithm to compute the EE-distance is a simplified version of \cref{alg:dhat-se3}, as shown in \cref{alg:distance-ise3-explicit}.
 \begin{algorithm}
     \caption{Computation of $\widehat{D}(\mathbf{V}, \mathbf{W})$ in $\text{ISE}(3)$}
+    \label{alg:distance-ise3-explicit}
     \begin{algorithmic}[1]\label{alg:dhat-ise3}
         \Statex \textbf{Input:} Matrices $\mathbf{V}, \mathbf{W}$
         \Statex \textbf{Output:} Distance $\widehat{D}$
@@ -287,17 +292,17 @@ where $\theta$ is the rotation angle as in \cref{app:rodrigues-formula}. Thus, i
 % where $\beta$ is a scaling parameter in squared meters utilized to maintain dimensional consistency. The Frobenius norm measures the parallelism of the rotation matrices columns, allowing parameter $\beta$ to balance position and orientation errors.
 
 \section{Adaptive control}
-The problem addressed in this section focuses on designing an adaptive controller to guide a manipulated object along a predefined curve $\mathcal{C} \subset \mathbb{R}^3\times \text{SO}(3)$, despite uncertainties in the inertial and geometric parameters. With $N$ agents involved in the manipulation process, a decentralized control law is devised for each agent, assuming they can measure the pose and velocity of the object's measurement point but lack precise knowledge of their positions relative to it. The goal is to provide the necessary total wrench $\boldsymbol{\tau}$ to ensure the system's velocity converges to the vector field $\Psi$, thereby enabling the object to follow the curve $\mathcal{C}$.
+\vthree{In this section, we develop the adaptive control strategy to guide the manipulated object along the predefined curve $\mathcal{C}\subset \mathbb{R}^3\times \text{SO}(3)$. The goal is to provide the necessary total wrench $\boldsymbol{\tau}$ to ensure the system's velocity converges to the vector field $\Psi$, thereby enabling the object to follow the curve $\mathcal{C}$.}
 
-In this section, we modify the adaptive control strategy proposed by \cite{Culbertson2021}. In their approach, an error vector is established between the system velocity and a velocity reference, resulting in a non-autonomous system. In contrast, our method defines the velocity error $\boldsymbol{\zeta}$ with respect to the vector field, thereby establishing an autonomous system. This error vector is expressed as:
+\vthree{To develop this dynamic controller,}  we modify the adaptive control strategy proposed in \cite{Culbertson2021}. In their approach, an error vector is established between the system velocity and a velocity reference, resulting in a non-autonomous system. In contrast, our method defines the velocity error $\boldsymbol{\zeta}$ with respect to the vector field, thereby establishing an autonomous system. This error vector is expressed as:
 \begin{equation}
     \boldsymbol{\zeta} = \dot{\boldsymbol{\chi}} - \Psi,\label{eq:errorvector-s}
 \end{equation}
-If the dynamic controller guarantees that $\boldsymbol{\zeta}=0$, the system follows the integrator model \eqref{eq:first-order-system-cba}, with the vector field $\Psi$ acting as its input. Therefore, as shown in \cref{ch:vector_field}, we anticipate that the system will exhibit the desired behavior. To develop the adaptive control strategy, we first define our reference model.
+If the dynamic controller guarantees that $\boldsymbol{\zeta}$ goes to zero, the system follows the integrator model \eqref{eq:first-order-system-cba}, with the vector field $\Psi$ acting as its input. Therefore, as shown in \cref{ch:vector_field}, we anticipate that the system will exhibit the desired behavior. To develop the adaptive control strategy, we first define our reference model.
 
 Given that the system is overactuated (meaning multiple sets of control inputs $\boldsymbol{\tau}_i$ produce identical object dynamics), each agent can contribute a portion of the control effort. Thus, we define a set of $N$ positive constants $\alpha_i$, ensuring $\sum_{i=1}^N\alpha_i=1$. Furthermore, analogously to the Euler-Lagrange formulation, the reference model can be linearly parametrized. Thus, the reference model can be expressed as 
 \begin{equation}
-    \alpha _i \left(\mathbf {M}(\boldsymbol{\chi})\dot{\Psi} + \mathbf {C}(\boldsymbol{\chi},\dot{\boldsymbol{\chi}})\Psi + \mathbf {g} \right) = \mathbf{Y}_o(\boldsymbol{\chi}, \dot{\boldsymbol{\chi}}, \Psi, \dot{\Psi})\mathbf{o}_i, \label{eq:ref-model-linear-parametrization},
+    \alpha _i \left(\mathbf {M}(\boldsymbol{\chi})\dot{\Psi} + \mathbf {C}(\boldsymbol{\chi},\dot{\boldsymbol{\chi}})\Psi + \mathbf {g} \right) = \mathbf{Y}_o(\boldsymbol{\chi}, \dot{\boldsymbol{\chi}}, \Psi, \dot{\Psi})\mathbf{o}_i, \label{eq:ref-model-linear-parametrization}
 \end{equation}
 % Furthermore, exploiting the linearity in the parameters within the equations of motion \citep{spong2020robot}, we can represent the object's dynamics using a regressor matrix $\mathbf{Y}_o$ and a parameter vector $\mathbf{o}_i$. Here, $\mathbf{o}_i = \alpha_i\mathbf{o}$ denotes a vector of the object's physical parameters, $\mathbf{o}$, such as mass or moments of inertia, scaled by $\alpha_i$:
 % Analogously to the Euler-Lagrange formulation, the reference model can be linearly parametrized as
@@ -322,16 +327,16 @@ where $\mathcal{J}:\mathbb{R}^3\to\mathbb{R}^{3\times6}$ is the following map
 The term $\mathbf{o}_i$ is the parameter vector given by
 \begin{align}   
     \mathbf{o}_i &= \alpha_i\begin{bmatrix}
-        m & m\mathbf{r}_p & \mathbb{I}_{p11} & \mathbb{I}_{p12} & \mathbb{I}_{p22} & \mathbb{I}_{p23} & \mathbb{I}_{p33}
+        m & m\mathbf{r}_p & \{\mathbb{I}_p\}_{11} & \{\mathbb{I}_p\}_{12} & \{\mathbb{I}_p\}_{22} & \{\mathbb{I}_p\}_{23} & \{\mathbb{I}_p\}_{33}
     \end{bmatrix}^\top,
 \end{align}
-where $\mathbb{I}_{pij}$ are the elements of the inertia matrix $\mathbb{I}_p^\mathfrak{B}$ at the $i^{th}$ row and $j^{th}$ column. Note that, given that the inertia tensor is symmetric, we only need to consider the upper triangular part of the matrix. Also, note that the sum $\sum_{i=1}^N\mathbf{Y}_o\mathbf{o}_i=\mathbf{Y}_o\mathbf{o}$ results in the total wrench $\boldsymbol{\tau}$ applied to the object. Moreover, since the agents estimate the scaled vector $\mathbf{o}_i$, the constants $\alpha_i$ need not be known a priori.
+where $\{\mathbb{I}_p\}_{ij}$ are the elements of the inertia matrix $\mathbb{I}_p^\mathfrak{B}$ at the $i^{th}$ row and $j^{th}$ column. Note that, since the inertia tensor is symmetric, we only need to consider the upper triangular part of the matrix. Also, note that the sum $\sum_{i=1}^N\mathbf{Y}_o\mathbf{o}_i=\mathbf{Y}_o\mathbf{o}$ results in the total wrench $\boldsymbol{\tau}$ applied to the object. Moreover, since the agents estimate the scaled vector $\mathbf{o}_i$, the constants $\alpha_i$ need not be known a priori.
 
 Next, we propose the following control law
 \begin{equation}
     \boldsymbol{\tau}_i = \mathbf{G}(\boldsymbol{\chi}, \hat{\mathbf{r}}_i)^{-1}\boldsymbol{\eta}_i,\label{eq:controlLawTaui}
 \end{equation}
-where $\hat{\mathbf{r}}_i$ represents the estimate of $i^{th}$ agent's displacement with respect to the measurement point, and
+where $\hat{\mathbf{r}}_i$ represents the estimate of the $i^{th}$ agent's displacement with respect to the measurement point, and
 \begin{equation}
     \boldsymbol{\eta}_i = \mathbf{Y}_o\hat{\mathbf{o}}_i - \mathbf{K}_D\boldsymbol{\zeta}, \label{eq:controlLawEtai}
 \end{equation}
@@ -368,7 +373,7 @@ where $\boldsymbol{\Gamma}_o$ and $\boldsymbol{\Gamma}_r$ are definite positive 
         \dot{V} = \boldsymbol{\zeta}^\top \mathbf{M} \dot{\boldsymbol{\zeta}} + \frac{1}{2} \boldsymbol{\zeta}^\top \dot{\mathbf{M}} \boldsymbol{\zeta} + \sum\limits_{i=1}^{N} \widetilde{\mathbf{o}}_i^\top \boldsymbol{\Gamma}_o^{-1} \dot{\hat{\mathbf{o}}}_i + \widetilde{\mathbf{r}}_i^\top \boldsymbol{\Gamma}_r^{-1}\dot{\hat{\mathbf{r}}}_i.
         \label{eq:adaptive-lyapunov-derivative}
     \end{equation}
-    Using the fact that $\dot{\boldsymbol{\zeta}} = \ddot{\boldsymbol{\chi}} - \dot{\Psi}$ and $\dot{\boldsymbol{\chi}} = \boldsymbol{\zeta} + \Psi$, along with the system dynamics equation \eqref{eq:tau} and relation \eqref{eq:tauNtauIrelation}, and \eqref{eq:ref-model-linear-parametrization}, we can express the first term as
+    Using the fact that $\dot{\boldsymbol{\zeta}} = \ddot{\boldsymbol{\chi}} - \dot{\Psi}$ and $\dot{\boldsymbol{\chi}} = \boldsymbol{\zeta} + \Psi$, along with the system dynamics equation \eqref{eq:tau} and expression \eqref{eq:tauNtauIrelation}, and \eqref{eq:ref-model-linear-parametrization}, we can express the first term as
     \begin{align} 
     \begin{split}
         \boldsymbol{\zeta}^\top \mathbf {M} \dot{\boldsymbol{\zeta}} &= \boldsymbol{\zeta}^\top\mathbf{M}\bigl(\ddot{\boldsymbol{\chi}} - \dot{\Psi}\bigr)
@@ -381,8 +386,8 @@ where $\boldsymbol{\Gamma}_o$ and $\boldsymbol{\Gamma}_r$ are definite positive 
     \begin{align}
         \boldsymbol{\zeta}^\top \mathbf {M} \dot{\boldsymbol{\zeta}} &= \boldsymbol{\zeta}^\top\Biggl( - \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N\mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i)\mathbf{G}(\boldsymbol{\chi}, \hat{\mathbf{r}}_i)^{-1}\boldsymbol{\eta}_i - \mathbf{Y}_o\mathbf{o}_i\Biggr)\\
         &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta}+\sum_{i=1}^N(\mathbf{I}-\mathbf{G}(\boldsymbol{\chi}, \widetilde{\mathbf{r}}_i))\boldsymbol{\eta}_i - \mathbf{Y}_o\mathbf{o}_i \Biggr)\\
-        &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N \mathbf{Y}_o\hat{\mathbf{o}}_i + \mathbf{Y}_r\widetilde{\mathbf{r}}_i - \mathbf{Y}_o\mathbf{o}_i- \mathbf{K}_D\boldsymbol{\zeta} \Biggr)\\
-        &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N \mathbf{Y}_o\widetilde{\mathbf{o}}_i + \mathbf{Y}_r\widetilde{\mathbf{r}}_i - \mathbf{K}_D\boldsymbol{\zeta} \Biggr). \label{eq:partial-term-of-adaptive2}
+        &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N \biggl( \mathbf{Y}_o\hat{\mathbf{o}}_i + \mathbf{Y}_r\widetilde{\mathbf{r}}_i - \mathbf{Y}_o\mathbf{o}_i- \mathbf{K}_D\boldsymbol{\zeta}\biggr) \Biggr)\\
+        &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N\biggl( \mathbf{Y}_o\widetilde{\mathbf{o}}_i + \mathbf{Y}_r\widetilde{\mathbf{r}}_i - \mathbf{K}_D\boldsymbol{\zeta}\biggr) \Biggr). \label{eq:partial-term-of-adaptive2}
     \end{align}
 
     Finally, substituting \eqref{eq:partial-term-of-adaptive2} into \eqref{eq:adaptive-lyapunov-derivative} renders the following result
@@ -393,13 +398,13 @@ where $\boldsymbol{\Gamma}_o$ and $\boldsymbol{\Gamma}_r$ are definite positive 
     \end{align}
     Substituting adaptation laws \eqref{eq:adaptiveOhat} and \eqref{eq:adaptiveRhat}, and using the fact that $\dot{\mathbf{M}} - 2\mathbf{C}$ is skew-symmetric, we have
     \begin{align}
-        \dot{V} &= \sum\limits_{i=1}^{N} \widetilde{\mathbf{o}}_i^\top \mathbf{Y}^\top_o\boldsymbol{\zeta}  - \widetilde{\mathbf{r}}_i^\top\mathbf{Y}^\top_r\boldsymbol{\zeta} + \boldsymbol{\zeta}^\top\mathbf{Y}_o\widetilde{\mathbf{o}}_i + \boldsymbol{\zeta}^\top\mathbf{Y}_r\widetilde{\mathbf{r}}_i - \boldsymbol{\zeta}^\top\mathbf{K}_D\boldsymbol{\zeta}.
+        \dot{V} &= \sum\limits_{i=1}^{N} -\widetilde{\mathbf{o}}_i^\top \mathbf{Y}^\top_o\boldsymbol{\zeta}  - \widetilde{\mathbf{r}}_i^\top\mathbf{Y}^\top_r\boldsymbol{\zeta} + \boldsymbol{\zeta}^\top\mathbf{Y}_o\widetilde{\mathbf{o}}_i + \boldsymbol{\zeta}^\top\mathbf{Y}_r\widetilde{\mathbf{r}}_i - \boldsymbol{\zeta}^\top\mathbf{K}_D\boldsymbol{\zeta}.
     \end{align}
     Since all terms are scalars, we can transpose the first two terms and achieve the following result
     \begin{align}
-        \dot{V} = \sum\limits_{i=1}^{N}\boldsymbol{\zeta}^\top\mathbf{K}_D\boldsymbol{\zeta} = -N\boldsymbol{\zeta}^\top\mathbf{K}_D\boldsymbol{\zeta} \le 0.
+        \dot{V} = \sum\limits_{i=1}^{N}-\boldsymbol{\zeta}^\top\mathbf{K}_D\boldsymbol{\zeta} = -N\boldsymbol{\zeta}^\top\mathbf{K}_D\boldsymbol{\zeta} \le 0.
     \end{align}
-    Since $N$ is positive and $\mathbf{K}_D$ is definite positive, $\boldsymbol{\zeta}$ converges to zero as $t\to\infty$. This implies that velocity error is zero and the system behaves as the kinematic model \eqref{eq:first-order-system-cba}. Thus we can invoke \cref{thm:convergence-vector-field} to conclude that the system converges to and follows the curve $\mathcal{C}$.
+    Since $N$ is positive and $\mathbf{K}_D$ is definite positive, $\boldsymbol{\zeta}$ converges to zero as $t$ goes to $\infty$. This implies that the velocity error is zero and the system behaves as the kinematic model \eqref{eq:first-order-system-cba}. Thus we can invoke \cref{thm:convergence-vector-field} to conclude that the system converges to and follows the curve $\mathcal{C}$.
 \end{proof}
 
 The connection of both controllers is shown in the block diagram of \cref{fig:collaborative-full-diagram}.
