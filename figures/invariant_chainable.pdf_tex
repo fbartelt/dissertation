@@ -1,0 +1,69 @@
+%% Creator: Inkscape 1.4 (e7c3feb100, 2024-10-09), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'invariant_chainable.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{132.58401489bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.60486003)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{invariant_chainable.pdf}}%
+    \put(0.32068675,0.46700288){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textit{$\widehat{D}(\mathbf{V},\mathbf{W})$}\end{tabular}}}}%
+    \put(0.45550474,0.02222236){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textit{$\widehat{D}(\mathbf{XV},\mathbf{XW})$}\end{tabular}}}}%
+    \put(0.30541248,0.3415644){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textit{$\mathbf{V} = \Phi(0,\mathbf{V},\mathbf{XV})$}\end{tabular}}}}%
+    \put(0.52149919,0.34103908){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textit{$\mathbf{W}$}\end{tabular}}}}%
+    \put(0.44282357,0.07492254){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textit{$\mathbf{XV} = \Phi(1,\mathbf{V},\mathbf{XV})$}\end{tabular}}}}%
+    \put(0.67244839,0.11192845){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textit{$\mathbf{XW}$}\end{tabular}}}}%
+    \put(0.34792214,0.19631765){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textit{$\mathbf{Z} = \Phi(\sigma,\mathbf{V},\mathbf{XV})$}\end{tabular}}}}%
+    \put(0.18698681,0.27903414){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textit{$\Phi$}\end{tabular}}}}%
+    \put(0.09081275,0.31087791){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textit{$\widehat{D}(\mathbf{V},\mathbf{Z})$}\end{tabular}}}}}%
+    \put(0.00964527,0.23281912){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textit{$\widehat{D}(\mathbf{V},\mathbf{XV})$}\end{tabular}}}}}%
+    \put(0.09054604,0.14034028){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textit{$\widehat{D}(\mathbf{Z},\mathbf{XV})$}\end{tabular}}}}}%
+  \end{picture}%
+\endgroup%

@@ -1,0 +1,55 @@
+% !TeX root = Template Latex - Apresentacao - IFSP - SBV.tex
+\section{Theoretical Background}
+
+\begin{frame}
+    \frametitle{Vector field in Euclidean space}
+    \begin{columns}[c]
+        \begin{column}{7cm}
+            The vector field strategy in \citet{Rezende2022} is based on a parametric curve representation and is characterized by:
+            \begin{itemize}
+                \item A distance function $D$;
+                \item $\dot{D}=(\nabla D)^\top\boldsymbol{\xi}=-\boldsymbol{\xi}_N^\top\boldsymbol{\xi}$;
+                \item Tangent component depends only on the curve;
+                \item Normal and tangent components are orthogonal;
+                \item Vector field $\Psi(\mathbf{h})=k_N(D)\boldsymbol{\xi}_N(\mathbf{h}) + k_T(D)\boldsymbol{\xi}_T(\mathbf{h})$.
+            \end{itemize}
+            
+        \end{column}
+        \begin{column}{8cm}
+           \begin{figure}[ht!]
+            \centering
+            \def\svgwidth{\linewidth}
+            {\footnotesize\import{../figures/}{plotly_vf2.pdf_tex}}
+        \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+\begin{frame}{Lie Groups and Lie algebras}
+    \begin{columns}[c]
+        \begin{column}{0.5\linewidth}
+            \begin{exampleblock}{Lie group $G$}
+                Manifolds with group structure. The group operation and inverse map are continuous and smooth.
+                \linebreak
+
+                E.g.: set of rotation matrices $\text{SO}(3)$.
+            \end{exampleblock}
+            \begin{exampleblock}{Lie algebra $\mathfrak{g}$}
+                Tangent space of $G$ at the identity.
+                \linebreak
+
+                E.g.: skew-symmetric matrices for $\text{SO}(3)$.
+            \end{exampleblock}
+        \end{column}
+        \begin{column}{0.5\linewidth}
+            \begin{exampleblock}{Exponential map}
+                Maps elements of $\mathfrak{g}$ to $G$. For matrix Lie groups: $\exp(\mathbf{A})=\sum_{i=0}^\infty \frac{\mathbf{A}^n}{n!} = \mathbf{X} \in G$.
+            \end{exampleblock}
+            \begin{exampleblock}{$\mathcal{S}$ map}
+                Linear map from $\mathbb{R}^m$ to $\mathfrak{g}$, relating velocities to tangent space elements.
+                \linebreak
+
+                E.g.: angular velocities $\to$ skew-symmetric matrices in $\mathfrak{so}(3)$.
+            \end{exampleblock}    
+        \end{column}
+    \end{columns}
+\end{frame}

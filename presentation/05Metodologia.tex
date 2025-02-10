@@ -1,0 +1,153 @@
+% !TeX root = Template Latex - Apresentacao - IFSP - SBV.tex
+\section{Vector Field}
+% \subsection{Controller Design}
+\begin{frame}{Formulation}
+    \begin{figure}[ht]
+        \centering
+        \begin{tikzpicture}[
+                block/.style={draw, rectangle, minimum height=1.2cm, minimum width=2.4cm, align=center},
+                arrow/.style={->, >=stealth, thick},
+                label/.style={font=\small}
+            ]
+            
+            % Nodes
+            \node[block] (controller) {Vector Field};
+            \node[block, right=2cm of controller] (plant) {System};
+            % \node[block, below=1cm of plant] (estimation) {Estimation of $\theta_c$};
+            
+            % Arrows between blocks
+            \draw[arrow] (controller) -- node[above, label] {$\Psi(\mathbf{H})$} (plant);
+            % Input and Output Arrows
+            \node[left=1.5cm of controller, yshift=0.25cm] (input) {Curve $\mathcal{C}\subset G$};
+            \draw[arrow] (input) -- ($(controller.west)+(0,0.25)$);    
+            \node[right=1.5cm of plant] (output) {$\mathbf{H}(t)\in G$};
+            \draw[arrow] (plant.east) -- (output);    
+            % Feedback loop
+            % \draw[arrow] ($(plant.east)+(0.75,0)$) |- ++(0,-1.5) -| (aux) -| ($(controller.west)+(0,-0.25)$);
+            \draw[arrow] 
+            ($(plant.east)+(0.75,0)$) |- ++(0,-1.25)
+            -|  ($(controller.west)+(-0.75,-0.25)$)                          
+            -- ($(controller.west)+(0,-0.25)$);
+        
+        \end{tikzpicture}
+    \end{figure}
+    We assume the system model:
+    \begin{align*}
+        \dot{\mathbf{H}}(t)=\mathcal{S}\bigl(\boldsymbol{\xi}(t)\bigr)\mathbf{H}(t),\quad \mathbf{H}\in G,\  \boldsymbol{\xi}\in\mathbb{R}^m,
+    \end{align*}
+
+    The vector field is given by:
+    \begin{align*} 
+        \Psi\left(\mathbf{H}\right) \triangleq k_N(\mathbf{H})\boldsymbol{\xi}_N(\mathbf{H}) + k_T(\mathbf{H})\boldsymbol{\xi}_T(\mathbf{H}). 
+    \end{align*}
+    
+\end{frame}
+
+\begin{frame}{Gradient in Lie groups}
+\begin{columns}[c]
+        \begin{column}{0.6\linewidth}
+            The $\Lop$ operator acts as a gradient while respecting Lie group constraints.
+            \newline
+
+            For any scalar function $f: G \to \mathbb{R}$, it is implicitly defined as:
+            \begin{exampleblock}{L operator}
+                {\centering $\displaystyle 
+                \begin{aligned} \lim_{\varepsilon \rightarrow 0} \frac{1}{\varepsilon} \Biggl( f\Bigl(\exp\bigl(\SL[\boldsymbol{\zeta}]\varepsilon\bigr)\mathbf{G}\Bigr) - f\bigl(\mathbf{G}\bigr) \Biggr) &= \Lop[f](\mathbf{G}) \boldsymbol{\zeta} \ \forall\, \boldsymbol{\zeta} \in \mathbb{R}^m
+                \\\left.\frac{d}{d\varepsilon}\biggl(f\Bigl(\exp\bigl(\SL[\boldsymbol{\zeta}]\varepsilon\bigr)\mathbf{G}\Bigr)\biggr)\right|_{\varepsilon=0} &= \Lop[f](\mathbf{G})\boldsymbol{\zeta}\ \forall\, \boldsymbol{\zeta} \in \mathbb{R}^m
+                \end{aligned}$ 
+                \par}%
+            \end{exampleblock}
+        \end{column}
+        \begin{column}{0.4\linewidth}
+           \begin{figure}[ht!]
+                \centering
+                \def\svgwidth{\linewidth}
+                {\footnotesize\import{../figures/}{tangents.pdf_tex}}
+            \end{figure}
+        \end{column}
+    \end{columns}
+    
+\end{frame}
+
+\begin{frame}{Distances}
+    The vector field formulation requires two distance functions:
+    \begin{exampleblock}{EE-distance $\widehat{D}$}
+        Measures the distance between two Lie group elements.
+
+        \quad\emph{Positive definite:} $\widehat{D}(\mathbf{V}, \mathbf{W})\ge0,\ \widehat{D}(\mathbf{V},\mathbf{W})=0\iff\mathbf{V}=\mathbf{W};$
+
+        \quad\emph{Differentiability:} at least once differentiable in both arguments almost everywhere.        
+    \end{exampleblock}
+    E.g.: for exponential Lie groups, an EE-distance is given by
+    \begin{align*}
+        \widehat{D}(\mathbf{V}, \mathbf{W}) = \bigl\|\log(\mathbf{V}^{-1}\mathbf{W})\bigr\|_F.
+    \end{align*}
+
+    \begin{exampleblock}{EC-distance $D$}
+        Measures the distance between a Lie group element and a curve:
+
+        {\centering $\displaystyle 
+        \begin{aligned} D(\mathbf{H}) \triangleq \min_{\mathbf{Y}\in\mathcal{C}}\widehat{D}(\mathbf{H}, \mathbf{Y}) =
+        \min_{s\in[0,1]} \widehat{D}\bigl(\mathbf{H}, \mathbf{H}_d(s)\bigr).
+        \end{aligned}$ 
+        \par}%
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Components and Properties}
+    \begin{columns}[c]
+        \begin{column}{0.5\linewidth}
+            Normal and tangent components:
+            \begin{align*}
+                \boldsymbol{\xi}_N(\mathbf{H}) &\triangleq -\Lop_{\mathbf{V}}[\widehat{D}]\Bigl(\mathbf{H}, \mathbf{H}_d(s^*)\Bigr)^{\top}\\
+                \boldsymbol{\xi}_T(\mathbf{H}) &\triangleq  \SL^{-1}\biggl(\frac{d\mathbf{H}_d}{ds}(s^*)\mathbf{H}_d(s^*)^{-1}\biggr)
+            \end{align*}
+
+            Components are orthogonal if
+                \begin{exampleblock}{Left-invariant distance}
+                    {\centering $\displaystyle 
+                    \begin{aligned} \widehat{D}(\mathbf{X}\mathbf{V}, \mathbf{X}\mathbf{W}) = \widehat{D}(\mathbf{V}, \mathbf{W})\,\forall\,\mathbf{V}, \mathbf{W}, \mathbf{X} \in G.
+                    \end{aligned}$ 
+                    \par}%
+                \end{exampleblock}
+                Absence of local minima outside the curve if
+                \begin{exampleblock}{Chainable distance}
+                    {\centering $\displaystyle
+                    \begin{aligned}
+                        \widehat{D}(\mathbf{V}, \mathbf{W}) = \widehat{D}\bigl(\mathbf{V}, \Phi_\sigma\bigr) + \widehat{D}\bigl(\Phi_\sigma, \mathbf{W} \bigr).
+                    \end{aligned}$
+                    \par}%
+                \end{exampleblock}
+        \end{column}
+        \begin{column}{0.5\linewidth}
+            \begin{figure}[ht!]
+                \centering
+                \def\svgwidth{\linewidth}
+                {\scriptsize\import{../figures/}{invariant_chainable.pdf_tex}}
+            \end{figure}
+        \end{column}
+    \end{columns}
+    
+\end{frame}
+
+\begin{frame}{Sketch of proof}
+    Let $\widehat{D}$ be a left-invariant and chainable EE-distance, then:
+    \begin{align*}
+        \dot{D} = \Lop_\mathbf{V}[\widehat{D}]\boldsymbol{\xi} + \bigl(\Lop_\mathbf{W}[\widehat{D}]\boldsymbol{\xi}_T\bigr)\frac{ds^*}{dt}.
+    \end{align*}
+
+    By the optimality condition of $D$, we have
+    \begin{align*}
+        \dot{D} = \Lop_\mathbf{V}[\widehat{D}]\boldsymbol{\xi} = -\boldsymbol{\xi}_N^\top\boldsymbol{\xi}.
+    \end{align*}
+
+    If the system follows the vector field, $\boldsymbol{\xi}=\Psi$, then
+    \begin{align*}
+        \dot{D} = -\boldsymbol{\xi}_N^\top(k_N\boldsymbol{\xi}_N + k_T\boldsymbol{\xi}_T)
+         =-k_N\|\boldsymbol{\xi}_N\|^2 \le 0.
+    \end{align*}
+
+    Circulation relies on proper parametrization.
+    
+\end{frame}
+

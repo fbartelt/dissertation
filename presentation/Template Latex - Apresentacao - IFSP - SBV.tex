@@ -1,0 +1,86 @@
+% Desenvolvido para o IFSP por: Prof. Dr. David Buzatto (Versão 1.0.2, Data: 31/01/2023)
+% Acessado em <https://github.com/davidbuzatto/TemplatesTrabalhosIFSPSBV/tree/master/Template%20Latex%20-%20Apresentacao%20-%20IFSP%20-%20SBV> em 02/02/2023
+% Licença Creative Commons CC BY 4.0
+% Adaptado para a UFMG por: Dra. Cecilia F. Fiorini (Data: 02/02/2023)
+% Adaptado para o Macro em 10/10/2024
+
+\documentclass[10pt,aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+
+% a opção hideSubsectionTitle esconde o título das subseções
+\usepackage[hideSubsectionTitle]{estruturaApresentacao}
+\usepackage[round]{natbib}
+\bibliographystyle{abbrvnat}
+% \usepackage[alf,abnt-emphasize=bf]{abntex2cite}
+\usepackage{verbatim}
+% \usepackage{microtype}
+\usepackage{lmodern}
+\usepackage{amsmath,amsfonts,amssymb} 
+% \usepackage{newtxmath}
+\usepackage{siunitx}
+\usepackage{import}
+\usepackage[labelformat=empty]{caption}
+\usepackage{subfig}
+\usepackage{xcolor}
+\usepackage{transparent}
+\usepackage{tikz}
+
+
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{block} = [rectangle, rounded corners, minimum width=3.5cm, minimum height=1cm, text centered, draw=black, fill=UFMGExemplos!10, text width=4cm]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+
+% \usepackage{newtxmath}
+
+\sisetup{exponent-product=\cdot}
+\DeclareMathOperator{\Lop}{L}
+\DeclareRobustCommand{\SL}[1][]{%
+  \!\;\mathcal{S}%
+  \if\relax\detokenize{#1}\relax%
+  \else%
+    \!\left(#1\right)%
+  \fi%
+}
+
+
+\begin{document}
+
+\titulo{Constructive Vector Fields for Path Following in Matrix Lie Groups}
+% caso não haja, comente a linha abaixo
+% \subtitulo{subtítulo (se houver)}
+\nome{}
+\autor{Felipe Bartelt de Assis Pessoa}
+\orientador{Luciano Cunha de Araújo Pimenta}
+% caso não haja, comente a linha abaixo
+\coorientador{Vinicius Mariano Gonçalves}
+
+% \curso{Nome do Curso}
+
+% exemplos
+%\curso{Bacharelado em Ciência da Computação}
+% \curso{Mestrado em Engenharia Elétrica}
+%\curso{Especialização em Desenvolvimento de Aplicações para Dispositivos Móveis}
+
+\local{Belo Horizonte}
+\dia{21}
+\mes{Fevereiro}
+\ano{2025}
+
+
+\input{01Capa}
+\input{02Introducao}
+% \input{03RevisaoLiteraturaConsideracoesGerais}
+\input{04Background}
+\input{05Metodologia}
+\input{06Resultados}
+\input{07Conclusao}
+
+
+% exemplos de construções em LaTeX
+% comente a linha abaixo para gerar a versão final
+% \input{07Exemplos}
+
+% \input{00Referencias}
+
+\end{document}

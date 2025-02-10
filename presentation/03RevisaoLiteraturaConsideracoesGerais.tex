@@ -1,0 +1,27 @@
+% !TeX root = Template Latex - Apresentacao - IFSP - SBV.tex
+
+\section{Theoretical Background}
+
+\begin{frame}
+    \frametitle{Vector field in Euclidean space}
+    \begin{columns}[c]
+        \begin{column}{7cm}
+            The vector field strategy in \citet{Rezende2022} uses a parametric representation of the curve and is characterized by:
+            \begin{itemize}
+                \item A distance function $D$;
+                \item $\dot{D}=(\nabla D)^\top\boldsymbol{\xi}=-\boldsymbol{\xi}_N^\top\boldsymbol{\xi}$;
+                \item the tangent component is depends on the curve only;
+                \item orthogonality between normal and tangent components;
+                \item vector field $\Psi(\mathbf{h})=k_N(D)\boldsymbol{\xi}_N(\mathbf{h}) + k_T(D)\boldsymbol{\xi}_T(\mathbf{h})$.
+            \end{itemize}
+            
+        \end{column}
+        \begin{column}{8cm}
+           \begin{figure}[ht!]
+            \centering
+            \def\svgwidth{\linewidth}
+            {\footnotesize\import{imagens/}{plotly_vf2.pdf_tex}}
+        \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
