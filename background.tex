@@ -30,7 +30,7 @@ Next, the authors introduce two components of their vector field: the \emph{norm
 \end{align}
 where $k_N$ and $k_T$ are gains, dependent on the system state, that balance the predominance of the normal and tangent components. This vector field strategy is illustrated in \autoref{fig:vector-field-adriano}. The normal component, $\boldsymbol{\xi}_{N}$, is naturally taken as the negative gradient of the distance function, due to the use of Euclidean distance:
 \begin{align}
-    \boldsymbol{\xi}_{N} = -\nabla D.
+    \boldsymbol{\xi}_{N} = -(\nabla D)^\top.
 \end{align}
 
 There is a key aspect of the normal component that is crucial for the convergence proof using Lyapunov stability theory: the fact that the time derivative of the distance function can be expressed as $\dot{D}=-\boldsymbol{\xi}_{N}^{\top}{\boldsymbol{\xi}}$. We emphasize the significance of this feature, as it will play an important role in our extension. In our approach, the normal component is similarly constructed by identifying the term that arises when differentiating the distance function.
@@ -298,7 +298,7 @@ This section presents the Lie algebras corresponding to the Lie groups introduce
 \begin{example}
     The lie algebra for the direct product of Lie groups $G=G_1 \times G_2 \times \dots \times G_k$ is the direct sum of the Lie algebras of the individual groups, i.e. $\mathfrak{g}_1\oplus\mathfrak{g}_2\oplus\dots\oplus\mathfrak{g}_k$.
 \end{example}
-\begin{example}
+\begin{example}\label{ex:orthogonal-group-special-orthogonal-group-lie-algebra}
     The Lie algebra of the orthogonal group $\text{O}(n)$  is identical to that of the special orthogonal group $\text{SO}(n)$, denoted $\mathfrak{so}(n)$. This Lie algebra consists of all $n\times n$ skew-symmetric matrices:
     \begin{align*}
         \mathfrak{so}(n) = \left\{\mathbf{A}\in\mathbb{R}^{n\times n} \,|\, \mathbf{A}^\top = -\mathbf{A}\right\}.
@@ -425,7 +425,7 @@ The \emph{exponential map} is a fundamental concept in the study of Lie groups a
 \end{align}
 defined via the power series:
 \begin{align}
-    \exp(\mathbf{A}) = \sum_{k=0}^\infty \frac{\mathbf{A}^k}{k!},\,\mathbf{A}\in G.
+    \exp(\mathbf{A}) = \sum_{k=0}^\infty \frac{\mathbf{A}^k}{k!},\,\mathbf{A}\in \mathfrak{g}.
 \end{align}
 
 The exponential map is also instrumental in determining the Lie algebra of a matrix Lie group, as shown in the following classical theorem:

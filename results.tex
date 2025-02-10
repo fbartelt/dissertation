@@ -57,7 +57,7 @@ using a time step of $\Delta t = \qty{1E-2}{\second}$.
 The vector field gains were selected to complement each other, ensuring that the normal component would dominate when the system was far from the curve, and the tangent component would dominate when the system was near the curve. Based on this reasoning, the following gains were chosen:
 \begin{align}
     k_N(\mathbf{H}) &= \tanh\bigl(20D(\mathbf{H})\bigr),\\
-    k_T(\mathbf{H}) &= 1 - 0.5\bigl(D(\mathbf{H})\bigr).
+    k_T(\mathbf{H}) &= 1 - 0.5\tanh\bigl(D(\mathbf{H})\bigr).
 \end{align}
 
 The initial condition $\mathbf{H}(0)$ was set as
@@ -218,9 +218,9 @@ where
     \end{bmatrix}.
 \end{align}}
 \subsubsection{Employed numerical methods}
-\vtwo{The optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve} was solved using the discretized curve, with the nearest point $\mathbf{H}_d[i^*]$ computed through a brute-force approach. The derivative $\mathbf{H}_d'[i]$ was obtained as the explicit derivative of the discrete version of \eqref{eq:results-lorentz-curve-parametrization}. The normal component was approximated following the same method as in the previous simulation. Specifically, the $i^{th}$ normal component element $\boldsymbol{\xi}_{N,i}$ as:
+\vtwo{The optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve} was solved using the discretized curve, with the nearest point $\mathbf{H}_d[i^*]$ computed through a brute-force approach. The derivative $\mathbf{H}_d'[i]$ was obtained as the explicit derivative of the discrete version of \eqref{eq:results-lorentz-curve-parametrization}. The normal component was approximated following the same method as in the previous simulation. Specifically, the $i^{th}$ normal component element $\{\boldsymbol{\xi}_{N}\}_{i}$ as:
 \begin{align}
-    \boldsymbol{\xi}_{N,i} \approx \frac{\widehat{D}\Bigl(\exp\bigl(\SL[\boldsymbol{\mathbf{e}}_i]\bigr)\mathbf{H}(t), \mathbf{H}_d[s^*]\Bigr) - \widehat{D}\bigl(\mathbf{H}(t), \mathbf{H}_d[s^*]\bigr)}{\varepsilon},
+    \{\boldsymbol{\xi}_{N}\}_{i} \approx \frac{\widehat{D}\Bigl(\exp\bigl(\SL[\boldsymbol{\mathbf{e}}_i]\bigr)\mathbf{H}(t), \mathbf{H}_d[s^*]\Bigr) - \widehat{D}\bigl(\mathbf{H}(t), \mathbf{H}_d[s^*]\bigr)}{\varepsilon},
 \end{align} 
 in which $\varepsilon = \num{1E-5}$ was used.}
 
@@ -308,7 +308,7 @@ For the adaptive control simulation described in \cref{ch:collaborative}, we con
     \end{threeparttable}
 \end{table}
 
-\subsection{Curve parametrization}
+\subsection{Curve parametrization and S map}
 In this simulation, we employed a more complex curve in the group $\text{ISE}(3)$, defined as:
 \begin{align}
     \mathbf{H}_d(s) = \begin{bmatrix}
@@ -335,6 +335,16 @@ where
     \end{bmatrix}.
 \end{align}
 Instead of using the continuous curve, we discretized it into $P=\num{2000}$ points by sampling the parameter $s$ into $\num{2000}$ evenly spaced values within the interval $[0, 1]$. To distinguish between the discrete and continuous representations, we henceforth use the notations $\mathbf{H}_d[i]$, $\mathbf{p}_d[i]$ and $\mathbf{R}_d[i]$ to refer to the $i^{th}$ sample of the curve, position and orientation, respectively.
+
+\vthree{We selected the following S map for a vector $\boldsymbol{\xi}=[\xi_1\ \xi_2\ \xi_3\ \xi_4\ \xi_5\ \xi_6]^\top=[\mathbf{v}^\top\ \boldsymbol{\omega}^\top]^\top$, where $\mathbf{v},\boldsymbol{\omega}\in\mathbb{R}^3$:
+\begin{align}
+    \SL[\boldsymbol{\xi}] = \begin{bmatrix}
+        \widehat{\mathcal{S}}(\boldsymbol{\omega}) & \mathbf{0} & \mathbf{0}\\
+        \mathbf{0} & \mathbf{0} & \mathbf{v}\\
+        \mathbf{0} & \mathbf{0} & 0
+    \end{bmatrix},
+\end{align}
+where $\widehat{\mathcal{S}}$ is the canonical isomorphism for $\mathfrak{so}(3)$ (see \cref{ex:orthogonal-group-special-orthogonal-group-lie-algebra}).}
 \subsection{Employed numerical methods}\label{sec:results-adaptive-nummerical-methods}
 Although the curve is represented in $\text{ISE}(3)$, our adaptive control formulation used the tuple representation of $\mathbb{R}^3\times \text{SO}(3)$. To avoid confusion, we use $\mathbf{H}$ to represent the element of $\text{ISE}(3)$ and $\boldsymbol{\chi}=(\mathbf{R}, \mathbf{p})$ to represent the same entity as an element of $\mathbb{R}^3\times \text{SO}(3)$. This equivalence implies that $\boldsymbol{\xi}=\dot{\boldsymbol{\chi}}$ and $\dot{\boldsymbol{\xi}} = \ddot{\boldsymbol{\chi}}$, thus we adopt the notation using $\boldsymbol{\chi}$ for twists and accelerations to maintain consistency with the dynamics outlined in \cref{sec:dynamic-modelling}.
 
