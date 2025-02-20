@@ -112,7 +112,7 @@ Then, we compute the Frobenius norm of the subtraction:
     \implies \sin\theta = \frac{1}{2\sqrt{2}}\|\mathbf{R} - \mathbf{R}^\top\|_F.
 % \end{split}
 \end{align}
-\vthree{Note that, without loss of generality, we can assume that $\theta\in[0,\pi]$. Thus, $\sin\theta$ is always positive.}
+Note that, without loss of generality, we can assume that $\theta\in[0,\pi]$. Thus, $\sin\theta$ is always positive.
 \subsection{Eigenvalues of the rotation matrix}
 The eigenvalues of a rotation matrix $\mathbf{R}$ can be determined by noting that the eigenvalues of $\exp\bigl(\SL[\boldsymbol{\omega}]\bigr)$ are the exponentials of the eigenvalues of $\SL[\boldsymbol{\omega}]$. Thus, to find the eigenvalues $\lambda$ of $\SL[\boldsymbol{\omega}]$, we compute the characteristic polynomial:
 \begin{align}
@@ -230,20 +230,19 @@ where $\theta, \mathbf{u}$ and $\bar{\mathbf{X}}$ are all functions of $\mathbf{
     \text{L}\bigl[2\theta^2\bigr](\mathbf{Z}) = 4\theta \text{L}[\theta](\mathbf{Z}).
 \end{align}
 As shown in \cref{sec:explicit-construction-SE3}, $\theta$ is expressed as $\theta=\text{atan2}(\sin\theta, \cos\theta)$, however both derivatives of $\text{atan2}$ and $\tan^{-1}$ coincide. The $\text{L}$ operator of $\theta$ is then expressed as
-\vtwo{\begin{align}
+\begin{align}
     \text{L}[\theta](\mathbf{Z}) &= \frac{1}{\bigl(\frac{\sin\theta}{\cos\theta}\bigr)^2+1} \Lop\biggl[\frac{\sin\theta}{\cos\theta}\biggr] (\mathbf{Z})\\ 
     &=\cos^2\theta\biggl(\frac{\cos\theta\Lop[\sin\theta](\mathbf{Z}) - \sin\theta\Lop[\cos\theta](\mathbf{Z})}{\cos^2\theta}\biggr)\\
     &= \cos\theta\Lop[\sin\theta](\mathbf{Z}) - \sin\theta\Lop[\cos\theta](\mathbf{Z}),
     \label{eq:explicit-derivative-SE3-LthetaZ}
-\end{align}}
-% \Lop\left[\rule{0em}{9mm}\frac{\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F}{\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)}\right]
-\vtwo{where the quotient rule has been used (see \cref{sec:appendix-prop-Lop-product-quotient}). The expressions for $\sin\theta$ and $\cos\theta$ are exactly the ones in \cref{subsec:rotation-matrix-properties}, and we will use the cosine and sine notations for simplicity.} 
+\end{align}
+where the quotient rule has been used (see \cref{sec:appendix-prop-Lop-product-quotient}). The expressions for $\sin\theta$ and $\cos\theta$ are exactly the ones in \cref{subsec:rotation-matrix-properties}, and we will use the cosine and sine notations for simplicity.
 
-\vtwo{Focusing for now only on $\Lop$ operator of $\cos\theta$}, let $\mathbb{R}^6\ni\boldsymbol{\zeta} = [\mathbf{v}^\top\ \boldsymbol{\omega}^\top]^\top$ with $\mathbf{v}, \boldsymbol{\omega}\in\mathbb{R}^3$. Then, clearly
+Focusing for now only on $\Lop$ operator of $\cos\theta$, let $\mathbb{R}^6\ni\boldsymbol{\zeta} = [\mathbf{v}^\top\ \boldsymbol{\omega}^\top]^\top$ with $\mathbf{v}, \boldsymbol{\omega}\in\mathbb{R}^3$. Then, clearly
 \begin{align}
     \rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr) = \exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z}). 
 \end{align}
-Using \vtwo{this result and }the implicit definition of $\Lop$ through derivatives, we can express
+Using this result and the implicit definition of $\Lop$ through derivatives, we can express
 \begin{align}
 %    \begin{split}
      \Lop[\cos\theta](\mathbf{Z})\boldsymbol{\zeta}=\Lop\biggl[\frac{1}{2}\Bigl(\tr\bigl(\rot(\mathbf{Z})\bigr)-1\Bigr)\biggr](\mathbf{Z})\boldsymbol{\zeta} &= \frac{1}{2}\frac{d}{d\varepsilon}\Biggl(\tr\biggl(\rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\biggr)\Biggr)\Biggr|_{\varepsilon=0} \nonumber\\
@@ -254,36 +253,36 @@ Using \vtwo{this result and }the implicit definition of $\Lop$ through derivativ
 %    \end{split}
 \end{align}
 This implies that:
-\vtwo{\begin{align}
+\begin{align}
     \Lop[\cos\theta](\mathbf{Z}) = \frac{1}{2}\begin{bmatrix}
         \mathbf{0}& \tr\bigl(\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_1)\rot(\mathbf{Z})\bigr) & \tr\bigl(\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_2)\rot(\mathbf{Z})\bigr) & \tr\bigl(\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_3)\rot(\mathbf{Z})\bigr)
     \end{bmatrix}.\label{eq:appendix-L-of-trace-OR-Lop-cos-theta-non-explicit}
-\end{align}}
-If we denote $\rot(\mathbf{Z})_{ij}$ as the element in the $i^{th}$ row and $j^{th}$ column of $\rot(\mathbf{Z})$, this expression \vtwo{can also be written as}:
-\vtwo{\begin{align}
+\end{align}
+If we denote $\rot(\mathbf{Z})_{ij}$ as the element in the $i^{th}$ row and $j^{th}$ column of $\rot(\mathbf{Z})$, this expression can also be written as:
+\begin{align}
     \begin{split}
         \Lop[\cos\theta](\mathbf{Z}) &= \frac{1}{2}\underbrace{\begin{bmatrix}
             \mathbf{0}& \rot(\mathbf{Z})_{23}-\rot(\mathbf{Z})_{32} & \rot(\mathbf{Z})_{31} - \rot(\mathbf{Z})_{13} & \rot(\mathbf{Z})_{12}-\rot(\mathbf{Z})_{21}
         \end{bmatrix}}_{\mathbf{g}}.\label{eq:appendix-L-of-trace-OR-Lop-cos-theta-explicit}
         % &= \frac{1}{2}\mathbf{g}.
     \end{split}
-\end{align}}
+\end{align}
 
-Switching our attention to the \vtwo{other $\Lop$ operator of \eqref{eq:explicit-derivative-SE3-LthetaZ}, i.e., $\Lop[\sin\theta]$}, we note the following:
+Switching our attention to the other $\Lop$ operator of \eqref{eq:explicit-derivative-SE3-LthetaZ}, i.e., $\Lop[\sin\theta]$, we note the following:
 \begin{align}
     &\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F = 
     \tr\Bigl(\bigl(\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr)^\top\bigl(\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr)\Bigr)^{\frac{1}{2}}\\
     &= \tr\Bigl(\rot(\mathbf{Z})^\top\rot(\mathbf{Z})-\rot(\mathbf{Z})^\top\rot(\mathbf{Z})^\top + \rot(\mathbf{Z})\rot(\mathbf{Z})^\top - \rot(\mathbf{Z})\rot(\mathbf{Z})\Bigr)^{\frac{1}{2}}\\
     &= \sqrt{2\tr(\mathbf{I}) - 2\tr\bigl(\rot(\mathbf{Z})\rot(\mathbf{Z})\bigr)} = \sqrt{6 - 2\tr\bigl(\rot(\mathbf{Z})\rot(\mathbf{Z})\bigr)},
 \end{align}
-using properties of the trace. With this, we can express the $\Lop$ operator of \vtwo{$\sin\theta$} as:
-\vtwo{\begin{align}
+using properties of the trace. With this, we can express the $\Lop$ operator of $\sin\theta$ as:
+\begin{align}
     \Lop[\sin\theta](\mathbf{Z}) &=\Lop\biggl[\frac{1}{2\sqrt{2}}\bigl\|\rot(\mathbf{Z}) - \rot(\mathbf{Z})^\top\bigr\|_F\biggr](\mathbf{Z}) 
     = \Lop\left[\frac{1}{2\sqrt{2}}\sqrt{6 - 2\tr\bigl(\rot(\mathbf{Z})^2\bigr)}\right](\mathbf{Z})\\
     &= \frac{-2}{4\sqrt{2}\sqrt{6 - 2\tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\Lop\Bigl[\tr\bigl(\rot(\mathbf{Z})^2\bigr)\Bigr](\mathbf{Z})\\
     &= \frac{-1}{4\sqrt{3 - \tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\Lop\Bigl[\tr\bigl(\rot(\mathbf{Z})^2\bigr)\Bigr](\mathbf{Z}).
-\end{align}}
-\vtwo{Using the implicit definition of $\Lop$:
+\end{align}
+Using the implicit definition of $\Lop$:
 \begin{align}
     \Lop\Bigl[\tr\bigl(\rot(\mathbf{Z})^2\bigr)\Bigr](\mathbf{Z})\boldsymbol{\zeta} &= \frac{d}{d\varepsilon}\Biggl(\tr\biggl(\rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\rot\Bigl(\exp\bigl(\varepsilon\SL[\boldsymbol{\zeta}]\bigr)\mathbf{Z}\Bigr)\biggr)\Biggr)\Biggr|_{\varepsilon=0}\\
     =&\tr\biggl(\frac{d}{d\varepsilon}\Bigl(\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\exp\bigl(\varepsilon\widehat{\mathcal{S}}(\boldsymbol{\omega})\bigr)\rot(\mathbf{Z})\Bigr)\Bigr|_{\varepsilon=0}\biggr)\\
@@ -292,19 +291,19 @@ using properties of the trace. With this, we can express the $\Lop$ operator of 
     \Bigr)\\
     =& 2\tr\bigl(\widehat{\mathcal{S}}(\boldsymbol{\omega})\rot(\mathbf{Z})^2\bigr).
 \end{align}
-Note that this final result is in the same format as \eqref{eq:appendix-L-cos-theta-implicit-defn}, and thus has a similar expression to $\Lop[\cos\theta](\mathbf{Z})$. Therefore, we can express $\Lop[\sin\theta]$ as:}
-\vtwo{\begin{align}
+Note that this final result is in the same format as \eqref{eq:appendix-L-cos-theta-implicit-defn}, and thus has a similar expression to $\Lop[\cos\theta](\mathbf{Z})$. Therefore, we can express $\Lop[\sin\theta]$ as:
+\begin{align}
     \Lop[\sin\theta](\mathbf{Z}) = \frac{-1}{4\sqrt{3 - \tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\mathbf{f},
-\end{align}}
+\end{align}
 where 
-\vtwo{\begin{align*}
+\begin{align*}
     \mathbf{f} = 2\begin{bmatrix}
         \mathbf{0}& \!\{\rot(\mathbf{Z})^2\}_{23} {-} \{\rot(\mathbf{Z})^2\}_{32} & \!\{\rot(\mathbf{Z})^2\}_{31} {-} \{\rot(\mathbf{Z})^2\}_{13} & \!\{\rot(\mathbf{Z})^2\}_{12} {-} \{\rot(\mathbf{Z})^2\}_{21}
     \end{bmatrix}.
-\end{align*}}
+\end{align*}
 
-\vtwo{It is possible to simplify the expression for $\Lop[\sin\theta]$ even further by expanding $\tr(\mathbf{\rot(\mathbf{Z})}^2)$ using the Rodrigues' formula \eqref{eq:appendix-rodrigues-fomula-with-B}:}
-\vtwo{\begin{align}
+It is possible to simplify the expression for $\Lop[\sin\theta]$ even further by expanding $\tr(\mathbf{\rot(\mathbf{Z})}^2)$ using the Rodrigues' formula \eqref{eq:appendix-rodrigues-fomula-with-B}:
+\begin{align}
     \tr\bigl(\mathbf{\rot(\mathbf{Z})}^2\bigr) =& (\cos^2\theta)\tr(\mathbf{I}) + \frac{2(\sin\theta - \sin\theta\cos\theta)}{\theta^3}\tr\bigl(\SL[\boldsymbol{\omega}]\mathbf{B}\bigr) + \frac{2(\cos\theta - \cos^2\theta)}{\theta^2}\tr{(\mathbf{B})} \nonumber\\
     &+ \frac{\sin^2\theta}{\theta^2}\tr\bigl(\SL[\boldsymbol{\omega}]^2\bigr) + \frac{2\cos\theta\sin\theta}{\theta}\tr\bigl(\SL[\boldsymbol{\omega}]\bigr) + \frac{(1-\cos\theta)^2}{\theta^4}\tr(\mathbf{B}^2)\nonumber\\
     =& 3\cos^2\theta + \frac{2(\cos\theta - \cos^2\theta)}{\theta^2}\tr{(\mathbf{B})} + \frac{\sin^2\theta}{\theta^2}\tr\bigl(\SL[\boldsymbol{\omega}]^2\bigr) + \frac{(1-\cos\theta)^2}{\theta^4}\tr(\mathbf{B}^2)\nonumber\\
@@ -324,12 +323,12 @@ thus
 Finally, $\Lop[\sin\theta]$ reduces the the expression:
 \begin{align}
     \Lop[\sin\theta](\mathbf{Z}) &= \frac{-1}{4\sqrt{3 - \tr\bigl(\rot(\mathbf{Z})^2\bigr)}}\mathbf{f} = \frac{-1}{8\sin\theta}\mathbf{f}. \label{eq:appendix-final-Lsin}
-\end{align}}
+\end{align}
 
-\vtwo{Now, using \eqref{eq:appendix-L-of-trace-OR-Lop-cos-theta-explicit} and \eqref{eq:appendix-final-Lsin}, we can express $\Lop[\theta]$ as:
+Now, using \eqref{eq:appendix-L-of-trace-OR-Lop-cos-theta-explicit} and \eqref{eq:appendix-final-Lsin}, we can express $\Lop[\theta]$ as:
 \begin{align}
     \text{L}[\theta](\mathbf{Z}) = \frac{-\cos\theta}{8\sin\theta}\mathbf{f} - \frac{\sin\theta}{2}\mathbf{g}. \label{eq:appendix-final-Ltheta-f-g}
-\end{align}}
+\end{align}
 
 To finally determine $\Lop[\widehat{E}]$, we still need to compute $\Lop\bigl[\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})\bigr]$. Since $\Lop$ is defined for scalar functions, we begin by expressing $\trans(\mathbf{Z})^\top\bar{\mathbf{X}}\trans(\mathbf{Z})$ element-wise. This results in:
 \begin{align}

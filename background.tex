@@ -41,7 +41,7 @@ Next, we address the tangent component. This component is solely related to the 
 \end{align}
 A noteworthy property of both components is that they are orthogonal to each other, which is essential in the proof of convergence for this algorithm.
 
-In the Lyapunov stability proof, the final result shows that the time derivative of $D$ is negative semidefinite. The proof is then completed using two other essential properties: the fact that the distance function has no local minima outside the curve, and the fact that the \vthree{gradient} of this function never vanishes. With these features, the authors demonstrate that if the system trajectories follow the vector field, the system will converge to and circulate around a predefined curve. A summary of these key features is as follows:
+In the Lyapunov stability proof, the final result shows that the time derivative of $D$ is negative semidefinite. The proof is then completed using two other essential properties: the fact that the distance function has no local minima outside the curve, and the fact that the gradient of this function never vanishes. With these features, the authors demonstrate that if the system trajectories follow the vector field, the system will converge to and circulate around a predefined curve. A summary of these key features is as follows:
 \begin{feature}
     \item The time derivative of the distance function is the opposite of the dot product between the so called \emph{normal} component and the system control input; \label{feat:adriano-time-derivative-lyapunov-normal-comp}
     \item The \emph{normal} and \emph{tangent} components are orthogonal to each other; \label{feat:adriano-orthogonality}
@@ -439,7 +439,7 @@ The exponential map is also instrumental in determining the Lie algebra of a mat
 
 Although the exponential map maps elements of the Lie algebra to the Lie group, it is not necessarily surjective. The image of the exponential map lies within the identity component $G_\iota$ of the Lie group and, more specifically, forms a neighborhood of the identity element \citep[p. 56]{Hall2015}. While sufficient conditions for surjectivity exist -- such as the Lie group being connected and compact \citep[p. 316]{Hall2015} -- no general necessary conditions are currently known.
 
-Lie groups for which the exponential map is surjective are called \emph{exponential Lie groups} \citep{djokovic1995exponential}. Examples of exponential Lie groups include the special orthogonal group $\text{SO}(n)$ \citep[p. 28]{Gallier2020}, the special Euclidean  group $\text{SE}(n)$ \citep[p. 42]{Gallier2020}, and the \vthree{proper orthochronous Lorentz group $\text{SO}^+(3,1)$ \citep[p. 197]{Gallier2020}}. Additional nontrivial examples can be found in \citet{djokovic1995exponential}. Conversely, an example of a non-exponential Lie group is the special linear group $\text{SL}(n)$ \citep[p. 28]{Gallier2020}.
+Lie groups for which the exponential map is surjective are called \emph{exponential Lie groups} \citep{djokovic1995exponential}. Examples of exponential Lie groups include the special orthogonal group $\text{SO}(n)$ \citep[p. 28]{Gallier2020}, the special Euclidean  group $\text{SE}(n)$ \citep[p. 42]{Gallier2020}, and the proper orthochronous Lorentz group $\text{SO}^+(3,1)$ \citep[p. 197]{Gallier2020}. Additional nontrivial examples can be found in \citet{djokovic1995exponential}. Conversely, an example of a non-exponential Lie group is the special linear group $\text{SL}(n)$ \citep[p. 28]{Gallier2020}.
 \subsection{Integral curves, flows and derivatives}
 The contents of this section will be utilized to define our kinematic model for the vector field strategy. We begin by introducing the concept of integral curves, which correspond to the solutions of the differential equation defined by a vector field. More formally, their definition is as follows:
 \begin{definition}
@@ -473,10 +473,10 @@ With these concepts in place, we can now focus on an important aspect of our wor
 \end{lemma}
 \begin{proof}
     Let $\bar{\gamma}(\sigma) = \mathcal{R}_\mathbf{X}\bigl(\rho(\sigma, \iota)\bigr)$, where $\bar{\gamma}(0) = \mathbf{X}$. Applying the chain rule:
-    \vthree{\begin{align}
+    \begin{align}
         \frac{d}{d\sigma}\bar{\gamma}(\sigma) = d(\mathcal{R}_{\mathbf{X}})_{\rho(\sigma, \iota)}\Bigl(V\bigl(\rho(\sigma, \iota)\bigr)\Bigr) = V\Bigl(\mathcal{R}_{\mathbf{X}}\bigl(\rho(\sigma, \iota)\bigr)\Bigr) = V\bigl(\bar{\gamma}(\sigma)\bigr),
     \end{align}
-    since $V$ is right-invariant. By the uniqueness of maximal integral curves, $\bar{\gamma}(\sigma) = \rho(\sigma, \mathbf{X})\,\forall\, \sigma$. Hence $\rho(\sigma, \mathbf{X}) = \rho(\sigma, \iota)\circ\mathbf{X}$}. The proof for the left-invariant case is analogous.
+    since $V$ is right-invariant. By the uniqueness of maximal integral curves, $\bar{\gamma}(\sigma) = \rho(\sigma, \mathbf{X})\,\forall\, \sigma$. Hence $\rho(\sigma, \mathbf{X}) = \rho(\sigma, \iota)\circ\mathbf{X}$. The proof for the left-invariant case is analogous.
 \end{proof}
 This lemma indicates that following a curve with an initial condition $\mathbf{X}$ and velocity $v$ is equivalent to following a curve starting at the identity with the same velocity and subsequently translating the result by $\mathbf{X}$.
 

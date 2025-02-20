@@ -1,6 +1,6 @@
 % !TeX root = main.tex
 \chapter{Vector Fields in Matrix Lie Groups}\label{ch:vector_field}
-Our main objective is to develop a vector field strategy that guides a system to follow a curve $\mathcal{C}$ in a Lie group. In this chapter, we build upon the concepts introduced in \cref{sec:background-lie-theory} to develop the tools necessary for generalizing the results from \citet{Rezende2022} to any \vthree{connected} matrix Lie group. We start by defining some useful operators that will aid in the development of our results. Next, we introduce two distance functions: one that measures the distance between arbitrary elements in the group and another that measures the distance between an element and a curve. These distance functions are fundamental to defining the vector field components. As we will show, the properties of orthogonality and the absence of local minima are directly related to the properties of the distance function. With all the concepts in place, we present our main theorem, which guarantees the convergence and circulation of the target curve.
+Our main objective is to develop a vector field strategy that guides a system to follow a curve $\mathcal{C}$ in a Lie group. In this chapter, we build upon the concepts introduced in \cref{sec:background-lie-theory} to develop the tools necessary for generalizing the results from \citet{Rezende2022} to any connected matrix Lie group. We start by defining some useful operators that will aid in the development of our results. Next, we introduce two distance functions: one that measures the distance between arbitrary elements in the group and another that measures the distance between an element and a curve. These distance functions are fundamental to defining the vector field components. As we will show, the properties of orthogonality and the absence of local minima are directly related to the properties of the distance function. With all the concepts in place, we present our main theorem, which guarantees the convergence and circulation of the target curve.
 
 In this chapter, we adopt $G$ as a connected matrix Lie group of dimension $m$ (the degrees of freedom of the group), whose representation is an $n\times n$ matrix. Given \cref{lemma:very-important-fact}, we will \emph{assume} that our control system is given by
 \begin{align}
@@ -61,7 +61,7 @@ The following version of the chain rule using the \text{L} operator can be estab
 
 As a consequence of \cref{lemma:chainrule}, we can establish the following corollary.
 
-\begin{corollary} \label{corol:corol1} If we have a function $f: G \times G \to \mathbb{R}$ instead of a function of a single variable, and two differentiable \vthree{functions} $\mathbf{V}, \mathbf{W} : \mathbb{R} \to G$, then:
+\begin{corollary} \label{corol:corol1} If we have a function $f: G \times G \to \mathbb{R}$ instead of a function of a single variable, and two differentiable functions $\mathbf{V}, \mathbf{W} : \mathbb{R} \to G$, then:
 \begin{equation}
    \frac{d}{d \sigma} f(\mathbf{V},\mathbf{W}) {=} \textnormal{L}_{\mathbf{V}}[f] \Xi[\mathbf{V}] {+} \textnormal{L}_{\mathbf{W}}[f] \Xi[\mathbf{W}],
 \end{equation}
@@ -107,7 +107,7 @@ Following the same steps as in \cref{sec:adriano-review}, we propose a vector fi
 \begin{align}
     \Psi\left(\mathbf{H}\right) \triangleq k_N(\mathbf{H})\boldsymbol{\xi}_N(\mathbf{H}) + k_T(\mathbf{H})\boldsymbol{\xi}_T(\mathbf{H}), \label{eq:vector-field-proposition}
 \end{align}
-where the \emph{normal} component $\boldsymbol{\xi}_N$ ensures convergence, and the \emph{tangent} component $\boldsymbol{\xi}_T$ governs circulation. These components will be formally defined later. In this case, $k_N: G \to \mathbb{R}$ and $k_T: G \to \mathbb{R}$ are continuous functions in which $k_T(\mathbf{H})$ is positive and $k_N(\mathbf{H})=0$ when $\mathbf{H} \in \mathcal{C}$ and $k_N(\mathbf{H}) > 0$ otherwise. \vthree{The block diagram of this control strategy is shown in \cref{fig:kinematic-control-diagram}.}
+where the \emph{normal} component $\boldsymbol{\xi}_N$ ensures convergence, and the \emph{tangent} component $\boldsymbol{\xi}_T$ governs circulation. These components will be formally defined later. In this case, $k_N: G \to \mathbb{R}$ and $k_T: G \to \mathbb{R}$ are continuous functions in which $k_T(\mathbf{H})$ is positive and $k_N(\mathbf{H})=0$ when $\mathbf{H} \in \mathcal{C}$ and $k_N(\mathbf{H}) > 0$ otherwise. The block diagram of this control strategy is shown in \cref{fig:kinematic-control-diagram}.
 \begin{remark}
     The proposed results generalize the vector field approach from \citet{Rezende2022}, as outlined in \cref{sec:adriano-review}. Throughout this section, we will specify the choices required to reduce the proposed approach to that of \citet{Rezende2022}. To align with their results, the group $G$ in our framework should be taken as the \emph{$m$-dimensional translation group}, denoted by $\text{T}(m)$ (see \cref{ex:translation-group}). Notably, \citet{Rezende2022}  does not use the Lie group formalism, instead working with vectors -- a feasible approach because each element of $\text{T}(m)$ corresponds uniquely to a vector in $\mathbb{R}^m$. To facilitate the connection between both works, we will also adopt this vector representation, using the isomorphism $\mathcal{T}: \text{T}(m) \to \mathbb{R}^m$, where $\mathcal{T}(\mathbf{H})$ is obtained by extracting the first $m$ elements of the last column of $\mathbf{H}$. Henceforth, we take as a basis of the Lie algebra of $\text{T}(m)$ the matrices $\mathbf{E}_k$, $k \in [1,m]$, where $\mathbf{E}_k$ has all entries $0$ except for the $k^{th}$ entry of the last column, which is $1$. With this choice, the system \eqref{eq:derivative-H-SL-considered-system} reduces to the single integrator model used in \citet{Rezende2022}, as $\frac{d}{dt} \mathcal{T}(\mathbf{H}) = \boldsymbol{\xi}$.  
 \end{remark}
@@ -178,7 +178,7 @@ Now, \eqref{eq:final-equation-for-normal-component} in \cref{lemma:time-derivati
 \end{definition}
 When $\mathbf{H} \in \mathcal{C} \cup \mathcal{P}$, $\boldsymbol{\xi}_N(\mathbf{H})$ is left undefined. As we will see in \cref{subs:conv-result}, this lack of definition at $\mathcal{C}$ is not an issue, as it will not be necessary to define it in that context. 
 
-Finally, note that the previous definition allows us to express, as in \cref{feat:adriano-time-derivative-lyapunov-normal-comp}, that $\dot{D} = -\boldsymbol{\xi}_N(\mathbf{H})^{\top}\boldsymbol{\xi}$, provided that $\mathbf{H} \not \in \mathcal{C} \cup \mathcal{P}$. In \citet{Rezende2022}, it was possible to write $\dot{D} = (\nabla D)^{\top} \boldsymbol{\xi}$, where the gradient is taken with respect to the state, as the system state in that case lies in $\mathbb{R}^m$, which lacks nonlinear manifold constraints. However, our case is more general since the state $\mathbf{H}$ lies on an $m$-dimensional (non-linear, in general) manifold embedded in a space with higher dimension $n^2$. Thus, by comparing $\dot{D} = (\nabla D)^{\top} \boldsymbol{\xi}$ with $\dot{D} = -\boldsymbol{\xi}_N(\mathbf{H})^{\top}\boldsymbol{\xi}$, we can see that $-\boldsymbol{\xi}_N(\mathbf{H})$ serves as the ``gradient of the distance function'' in this constrained setting.
+Finally, note that the previous definition allows us to express, as in \cref{feat:adriano-time-derivative-lyapunov-normal-comp}, that $\dot{D} = -\boldsymbol{\xi}_N(\mathbf{H})^{\top}\boldsymbol{\xi}$, provided that $\mathbf{H} \not \in \mathcal{C} \cup \mathcal{P}$. In \citet{Rezende2022}, it was possible to write $\dot{D} = \nabla D \boldsymbol{\xi}$, where the gradient is taken with respect to the state, as the system state in that case lies in $\mathbb{R}^m$, which lacks nonlinear manifold constraints. However, our case is more general since the state $\mathbf{H}$ lies on an $m$-dimensional (non-linear, in general) manifold embedded in a space with higher dimension $n^2$. Thus, by comparing $\dot{D} = \nabla D \boldsymbol{\xi}$ with $\dot{D} = -\boldsymbol{\xi}_N(\mathbf{H})^{\top}\boldsymbol{\xi}$, we can see that $-\boldsymbol{\xi}_N(\mathbf{H})$ serves as the ``gradient of the distance function'' in this constrained setting.
 
 \begin{example}\label{example:xi_N_rezende}
     Applying \cref{def:normal-vector}, the normal component in \citet{Rezende2022} will be given by
@@ -235,7 +235,7 @@ In order for the EC-distance function to lack local minima outside the curve, we
     \end{property}
 \end{definition}
 
-\vthree{With the definition of a path, we can now define a chainable distance function.}
+With the definition of a path, we can now define a chainable distance function.
 \begin{definition}[Chainable distance]\label{def:chainable-distance}
     A function $\widehat{D}: G \times G \to \mathbb{R}_+$ is called a \emph{chainable} distance if it meets the criteria of an EE-distance function (\cref{def:distance-D-hat-arbitrary-elements}) and satisfies the following property. Specifically, there exists a path $\Phi$ (\cref{def:PHI-path-parameterizer}), such that for any points $\mathbf{V}, \mathbf{W} \in G$ and any $\sigma \in [0,1]$:
     \begin{align*}
@@ -365,10 +365,10 @@ Note that the sense of circulation (clockwise or counterclockwise) is determined
 
 Result (ii) in \cref{thm:convergence-vector-field} implies that if the system enters the ``problematic set'' $\mathcal{P}$, there always exists an arbitrarily small sequence of maneuvers that enables the system to eventually escape this set in finite time and never return. Furthermore, as a corollary of \cref{thm:convergence-vector-field}, we can interpret that the closed loop system is asymptotically stable to the desired curve if $D(\mathbf{H}(0)) < D_{\text{min}, \mathcal{P}}$. In other words, starting sufficiently close to the target curve ensures that $\mathcal{P}$ is never reached.
 \section{Explicit construction for exponential Lie groups}\label{sec:kinematic-path-ee-dist-exp-group} % \label{subs:explconst}
-\vthree{While our results are valid for any connected matrix Lie group, we now provide explicit computations for exponential Lie groups (see \cref{sec:background-exponential-map}), leveraging the surjectivity of the exponential map. In order to define the path and the EE-distance function, we first introduce some properties of the logarithm.}
+While our results are valid for any connected matrix Lie group, we now provide explicit computations for exponential Lie groups (see \cref{sec:background-exponential-map}), leveraging the surjectivity of the exponential map. In order to define the path and the EE-distance function, we first introduce some properties of the logarithm.
 % \section{Path and EE-distance function for exponential Lie groups}
 
-For exponential \vthree{Lie} groups, while the exponential map is surjective, it is not necessarily bijective. However, we can define an inverse function in the following manner. Let $\mathbb{R}_+^{n\times n}$ be the set of real matrices with \vthree{no negative real} eigenvalues. Additionally, let $\mathcal{L}^n$ represent the set of $n\times n$ real matrices whose eigenvalues $\lambda$ lie within the strip $\{\lambda : -\pi < \text{Im}(\lambda) < \pi\}$. The function $\exp:\mathcal{L}^n\to\mathbb{R}_+^{n\times n}$ is bijective, ensuring the existence of an inverse function $\Log: \mathbb{R}_+^{n\times n} \to \mathcal{L}^n$, referred to as the \emph{principal logarithm} \citep[p. 319]{Gallier2020}. Furthermore, let $\mathcal{L}_{\mathfrak{g}}^n\subseteq\mathfrak{g}$ be the subset of $n \times n$ real matrices -- elements of the Lie algebra-- whose eigenvalues $\lambda$ lie in the strip $\{\lambda : -\pi \le \text{Im}(\lambda) \le \pi\}$. We define the logarithm function $\log:G\to\mathcal{L}_{\mathfrak{g}}^n$ such that $\log(\mathbf{Z})$ coincides with $\Log(\mathbf{Z})$ when $\mathbf{Z}\in\mathbb{R}_+^{n\times n}$, and otherwise corresponds to any matrix $\mathbf{Y}\in\mathcal{L}_{\mathfrak{g}}^n$ that satisfies $\exp(\mathbf{Y}) = \mathbf{Z}$. This is feasible because we assume the group is exponential. Moreover, this choice should be predefined and deterministic.
+For exponential Lie groups, while the exponential map is surjective, it is not necessarily bijective. However, we can define an inverse function in the following manner. Let $\mathbb{R}_+^{n\times n}$ be the set of real matrices with no negative real eigenvalues. Additionally, let $\mathcal{L}^n$ represent the set of $n\times n$ real matrices whose eigenvalues $\lambda$ lie within the strip $\{\lambda : -\pi < \text{Im}(\lambda) < \pi\}$. The function $\exp:\mathcal{L}^n\to\mathbb{R}_+^{n\times n}$ is bijective, ensuring the existence of an inverse function $\Log: \mathbb{R}_+^{n\times n} \to \mathcal{L}^n$, referred to as the \emph{principal logarithm} \citep[p. 319]{Gallier2020}. Furthermore, let $\mathcal{L}_{\mathfrak{g}}^n\subseteq\mathfrak{g}$ be the subset of $n \times n$ real matrices -- elements of the Lie algebra-- whose eigenvalues $\lambda$ lie in the strip $\{\lambda : -\pi \le \text{Im}(\lambda) \le \pi\}$. We define the logarithm function $\log:G\to\mathcal{L}_{\mathfrak{g}}^n$ such that $\log(\mathbf{Z})$ coincides with $\Log(\mathbf{Z})$ when $\mathbf{Z}\in\mathbb{R}_+^{n\times n}$, and otherwise corresponds to any matrix $\mathbf{Y}\in\mathcal{L}_{\mathfrak{g}}^n$ that satisfies $\exp(\mathbf{Y}) = \mathbf{Z}$. This is feasible because we assume the group is exponential. Moreover, this choice should be predefined and deterministic.
 
 With this, we can state the following important lemma.
 \begin{lemma}\label{lemma:log-exp-log-equals-log}
@@ -398,7 +398,7 @@ which is in accordance with \cref{def:PHI-path-parameterizer}. Then, an EE-dista
 \end{align}
 
 \begin{remark}
-    The path \eqref{eq:PHI-path-parameterizer-utilized-exp-of-log} and EE-distance \eqref{eq:distance-D-hat-utilized-log-norm} reduce to the ones in \cref{ex:chainability} and \cref{ex:adriano-distance-function}, respectively, when applied to the particular case \vthree{$G=\text{T}(m)$}.
+    The path \eqref{eq:PHI-path-parameterizer-utilized-exp-of-log} and EE-distance \eqref{eq:distance-D-hat-utilized-log-norm} reduce to the ones in \cref{ex:chainability} and \cref{ex:adriano-distance-function}, respectively, when applied to the particular case $G=\text{T}(m)$.
 
     Let $\mathcal{T}(\mathbf{V}) = \mathbf{v}\in\mathbb{R}^m$, $\mathcal{T}(\mathbf{W}) = \mathbf{w}\in\mathbb{R}^m$. Using the series expansion of $\log$ and $\exp$, we find that
     \begin{align}
@@ -464,7 +464,7 @@ As mentioned, the group \text{SE}(3) is exponential, allowing us to use the cons
 Let $\mathbf{R}_v$, $\mathbf{R}_w$, $\mathbf{p}_v$, and $\mathbf{p}_w$ denote the rotation matrices and positions of $\mathbf{V}$ and $\mathbf{W}$, respectively. Let $\mathbf{V}^{-1}\mathbf{W} = \mathbf{Z}$, and express it as 
 \begin{align*}
     \mathbf{V}^{-1}\mathbf{W} = \mathbf{Z} =\begin{bmatrix}
-        \mathbf{R}_v^\top\mathbf{R}_w & \vthree{\mathbf{R}_v^\top}(\mathbf{p}_w - \mathbf{p}_v) \\
+        \mathbf{R}_v^\top\mathbf{R}_w & \mathbf{R}_v^\top(\mathbf{p}_w - \mathbf{p}_v) \\
         \mathbf{0} & 1
     \end{bmatrix}
     = \begin{bmatrix}
@@ -473,13 +473,13 @@ Let $\mathbf{R}_v$, $\mathbf{R}_w$, $\mathbf{p}_v$, and $\mathbf{p}_w$ denote th
     \end{bmatrix}.
 \end{align*}
 
-\vthree{From \citet[p. 41]{Gallier2020}, the logarithm of a homogeneous transformation matrix $\mathbf{Z}$ can be expressed as
+From \citet[p. 41]{Gallier2020}, the logarithm of a homogeneous transformation matrix $\mathbf{Z}$ can be expressed as
 \begin{align}
     \log\mathbf{Z} &= \begin{bmatrix}
         \log\mathbf{Q} & \mathbf{X}\mathbf{u}\\\mathbf{0} & \mathbf{0}
     \end{bmatrix},
 \end{align}
-where $\mathbf{X} = (\mathbf{I} - \mathbf{Q})^{-1}\log(\mathbf{Q})$ with some abuse of notation.} With this, we can express the EE-distance as
+where $\mathbf{X} = (\mathbf{I} - \mathbf{Q})^{-1}\log(\mathbf{Q})$ with some abuse of notation. With this, we can express the EE-distance as
 \begin{align}
     \begin{split}
     \widehat{D}(\mathbf{V}, \mathbf{W}) &= \|\log\mathbf{Z}\|_F = \tr\left(
@@ -508,7 +508,7 @@ where $\beta_0=\frac{2-2\cos\theta-\theta^2}{4(1 - \cos\theta)^2}$. Thus $\|\bar
 \begin{align}
     \widehat{D}(\mathbf{V}, \mathbf{W}) = \sqrt{2\theta^2 + \mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}}, \label{eq:explicit-EE-distance-SE3}
 \end{align}
-where $\bar{\mathbf{X}}$ is explicitly computed by \eqref{eq:explicit-X-bar-eedist}. More succinctly, the algorithm for computing $\widehat{D}(\mathbf{V}, \mathbf{W})$ \vthree{is shown in \cref{alg:dhat-se3}.}
+where $\bar{\mathbf{X}}$ is explicitly computed by \eqref{eq:explicit-X-bar-eedist}. More succinctly, the algorithm for computing $\widehat{D}(\mathbf{V}, \mathbf{W})$ is shown in \cref{alg:dhat-se3}.
 \begin{algorithm}
     \caption{Computation of $\widehat{D}(\mathbf{V}, \mathbf{W})$ in $\text{SE}(3)$}
     \label{alg:dhat-se3}
@@ -554,17 +554,17 @@ which in turn can be expressed by
     \Lop[\widehat{E}](\mathbf{Z}) = \frac{4\theta\text{L}[\theta] + \Lop\bigl[\sum_{i=1}^{3}\sum_{j=1}^{3}\mathbf{u}_i\mathbf{u}_j\bar{\mathbf{X}}_{ij}\bigr](\mathbf{Z})}{2 \widehat{E}(\mathbf{Z})}. \label{eq:explicit-derivative-L-Ehat-p1}
 \end{align}
 The computation of the two $\Lop$ operators in \eqref{eq:explicit-derivative-L-Ehat-p1} is rather lengthy and is provided in \cref{app:explicit-derivative-SE3}. However, note that these computations only rely on previously computed terms and the elements of $\mathbf{u}$ and $\mathbf{Q}$. For completeness, we present the expressions for these terms without the detailed derivation:
-\vtwo{\begin{align}
+\begin{align}
     \text{L}[\theta](\mathbf{Z}) = \frac{-\cos\theta}{8\sin\theta}\mathbf{f} - \frac{\sin\theta}{2}\mathbf{g},
     \label{eq:explicit-EE-dista-SE3-component-Ltheta}
-\end{align}}
+\end{align}
 where 
 \begin{align}
-    \mathbf{f} &= \vtwo{2\begin{bmatrix}
+    \mathbf{f} &= 2\begin{bmatrix}
         \mathbf{0}& \{\mathbf{Q}^2\}_{23}-\{\mathbf{Q}^2\}_{32} & \{\mathbf{Q}^2\}_{31} - \{\mathbf{Q}^2\}_{13} & \{\mathbf{Q}^2\}_{12}-\{\mathbf{Q}^2\}_{21}
-    \end{bmatrix}},\label{eq:explicit-EE-dista-SE3-component-fvec}\\
+    \end{bmatrix},\label{eq:explicit-EE-dista-SE3-component-fvec}\\
     \mathbf{g} &= \begin{bmatrix}
-        \mathbf{0}& \mathbf{Q}_{23}-\mathbf{Q}_{32} & \vtwo{\mathbf{Q}_{31} - \mathbf{Q}_{13}} & \mathbf{Q}_{12}-\mathbf{Q}_{21}
+        \mathbf{0}& \mathbf{Q}_{23}-\mathbf{Q}_{32} & \mathbf{Q}_{31} - \mathbf{Q}_{13} & \mathbf{Q}_{12}-\mathbf{Q}_{21}
     \end{bmatrix} \label{eq:explicit-EE-dista-SE3-component-gvec}.
 \end{align}
 The remaining $\Lop$ operator is expressed as
@@ -598,44 +598,44 @@ where $\mathcal{Z}\bigl(\mathbf{H}_d(s^*)\bigr)$ is computed as
         \mathbf{0} & \mathbf{R}_d^\top(s^*)
     \end{bmatrix}, \label{eq:explicit-EE-dista-SE3-component-Zmap}
 \end{align}
-in which $\mathbf{R}_d(s^*)$ and $\mathbf{p}_d(s^*)$ are the rotation matrix and position of $\mathbf{H}_d(s^*)$, respectively. The computation of $\mathcal{Z}\bigl(\mathbf{H}_d(s^*)\bigr)$ is straightforward, and thus $\boldsymbol{\xi}_N$ can be computed explicitly. Algorithmically, the computation of $\Lop_\mathbf{V}[\widehat{D}]\vtwo{(\mathbf{Z})}$ is shown in \cref{alg:LN-SE3}.
+in which $\mathbf{R}_d(s^*)$ and $\mathbf{p}_d(s^*)$ are the rotation matrix and position of $\mathbf{H}_d(s^*)$, respectively. The computation of $\mathcal{Z}\bigl(\mathbf{H}_d(s^*)\bigr)$ is straightforward, and thus $\boldsymbol{\xi}_N$ can be computed explicitly. Algorithmically, the computation of $\Lop_\mathbf{V}[\widehat{D}](\mathbf{Z})$ is shown in \cref{alg:LN-SE3}.
 \begin{algorithm}[H]
-    \caption{\vtwo{Computation of $\text{L}_\mathbf{V}[\widehat{D}](\mathbf{Z})$ in $\text{SE}(3)$}}
+    \caption{Computation of $\text{L}_\mathbf{V}[\widehat{D}](\mathbf{Z})$ in $\text{SE}(3)$}
     \label{alg:LN-SE3}
     \begin{algorithmic}[1]
     \Statex \textbf{Input:} $\mathbf{H}_d(s^*)$, $\mathbf{H}$
-    \Statex \textbf{Output:} $\text{L}_\mathbf{V}[\widehat{D}]\vtwo{(\mathbf{Z})}$ 
+    \Statex \textbf{Output:} $\text{L}_\mathbf{V}[\widehat{D}](\mathbf{Z})$ 
     
     \State $\mathbf{Z} \gets \mathbf{H}_d(s^*)^{-1} \mathbf{H}$
     \State Extract rotation matrix $\mathbf{Q}$ and translation $\mathbf{u}$ from $\mathbf{Z}$
-    \vtwo{\State $u \gets \frac{1}{2} (\tr(\mathbf{Q}) - 1)$
+    \State $u \gets \frac{1}{2} (\tr(\mathbf{Q}) - 1)$
     \State $v \gets \frac{1}{2\sqrt{2}} \|\mathbf{Q} - \mathbf{Q}^\top\|_F$
     \State $\theta \gets \atantwo(v, u)$
     \State $\beta_0 \gets \frac{2 - 2u - \theta^2}{4(1 - u)^2}$
-    \State $\bar{\mathbf{X}} \gets \mathbf{I}(1 - 2\beta_0) + (\mathbf{Q} + \mathbf{Q}^\top)\beta_0$}
-    \State $\widehat{E}(\mathbf{Z}) \gets$  \vtwo{$\sqrt{2\theta^2 + \mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}}$}
-    \State $\mathbf{f} \gets$ \vtwo{$2\begin{bmatrix}
+    \State $\bar{\mathbf{X}} \gets \mathbf{I}(1 - 2\beta_0) + (\mathbf{Q} + \mathbf{Q}^\top)\beta_0$
+    \State $\widehat{E}(\mathbf{Z}) \gets$  $\sqrt{2\theta^2 + \mathbf{u}^\top\bar{\mathbf{X}}\mathbf{u}}$
+    \State $\mathbf{f} \gets$ $2\begin{bmatrix}
         \mathbf{0}& \{\mathbf{Q}^2\}_{23}-\{\mathbf{Q}^2\}_{32} & \{\mathbf{Q}^2\}_{31} - \{\mathbf{Q}^2\}_{13} & \{\mathbf{Q}^2\}_{12}-\{\mathbf{Q}^2\}_{21}
-    \end{bmatrix}$}
-    \State $\mathbf{g} \gets$ \vtwo{$\begin{bmatrix}
+    \end{bmatrix}$
+    \State $\mathbf{g} \gets$ $\begin{bmatrix}
         \mathbf{0}& \mathbf{Q}_{23}-\mathbf{Q}_{32} & \mathbf{Q}_{31} - \mathbf{Q}_{13} & \mathbf{Q}_{12}-\mathbf{Q}_{21}
-    \end{bmatrix}$}
-    \State $\Lop[\theta] \gets$ \vtwo{$\frac{-\cos\theta}{8\sin\theta}\mathbf{f} - \frac{\sin\theta}{2}\mathbf{g}$}
-    \State $\Lop[\beta_0] \gets$ \vtwo{$\frac{\theta^2\sin(\theta) - \theta - \sin(\theta) + \bigl(\theta + \sin(\theta)\bigr) \cos(\theta)}{2 (1 - \cos(\theta))^3} \Lop[\theta]$}
+    \end{bmatrix}$
+    \State $\Lop[\theta] \gets$ $\frac{-\cos\theta}{8\sin\theta}\mathbf{f} - \frac{\sin\theta}{2}\mathbf{g}$
+    \State $\Lop[\beta_0] \gets$ $\frac{\theta^2\sin(\theta) - \theta - \sin(\theta) + \bigl(\theta + \sin(\theta)\bigr) \cos(\theta)}{2 (1 - \cos(\theta))^3} \Lop[\theta]$
     \State Initialize $\Lop[\mathbf{u}^\top \bar{\mathbf{X}} \mathbf{u}] \gets 0$ 
 
     \For{$i \gets 1$ to $3$}
-        \State $\Lop[\mathbf{u}_i] \gets$ \vtwo{$\begin{bmatrix}
+        \State $\Lop[\mathbf{u}_i] \gets$ $\begin{bmatrix}
             \delta_{1i} & \delta_{2i} & \delta_{3i} & \{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_1)\mathbf{u}\}_i & \{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_2)\mathbf{u}\}_i & \{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_3)\mathbf{u}\}_i 
-        \end{bmatrix}$}
+        \end{bmatrix}$
         \For{$j \gets 1$ to $3$} 
-            \State $\Lop[\mathbf{Q}_{ij}] \gets$ \vtwo{$\begin{bmatrix}
+            \State $\Lop[\mathbf{Q}_{ij}] \gets$ $\begin{bmatrix}
                 \mathbf{0} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_1)\mathbf{Q}\bigr\}_{ij} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_2)\mathbf{Q}\bigr\}_{ij} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_3)\mathbf{Q}\bigr\}_{ij}
-            \end{bmatrix}$}
-            \vtwo{\State $\Lop[\mathbf{Q}_{ji}] \gets$ $\begin{bmatrix}
+            \end{bmatrix}$
+            \State $\Lop[\mathbf{Q}_{ji}] \gets$ $\begin{bmatrix}
                 \mathbf{0} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_1)\mathbf{Q}\bigr\}_{ji} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_2)\mathbf{Q}\bigr\}_{ji} & \bigl\{\widehat{\mathcal{S}}(\widehat{\mathbf{e}}_3)\mathbf{Q}\bigr\}_{ji}
-            \end{bmatrix}$}
-            \State $\Lop[\bar{\mathbf{X}}_{ij}]\gets$ \vtwo{$\Lop[\beta_0]\bigl(-2\delta_{ij}+ \mathbf{Q}_{ij} + \mathbf{Q}_{ji}\bigr) + \beta_0\Bigl(\Lop[\mathbf{Q}_{ij}] + \Lop[\mathbf{Q}_{ji}]\Bigr)$}
+            \end{bmatrix}$
+            \State $\Lop[\bar{\mathbf{X}}_{ij}]\gets$ $\Lop[\beta_0]\bigl(-2\delta_{ij}+ \mathbf{Q}_{ij} + \mathbf{Q}_{ji}\bigr) + \beta_0\Bigl(\Lop[\mathbf{Q}_{ij}] + \Lop[\mathbf{Q}_{ji}]\Bigr)$
             % \State Accumulate $\Lop[u^\top X u]$:
         
             \State $\Lop[\mathbf{u}^\top \bar{\mathbf{X}} \mathbf{u}] \gets$ $\Lop[\mathbf{u}^\top \bar{\mathbf{X}} \mathbf{u}]
@@ -645,7 +645,7 @@ in which $\mathbf{R}_d(s^*)$ and $\mathbf{p}_d(s^*)$ are the rotation matrix and
         \EndFor
     \EndFor
     
-    \State $\Lop[\widehat{E}] \gets \frac{4\theta\Lop[\theta] + \Lop[\mathbf{u}^\top \bar{\mathbf{X}} \mathbf{u}]}{\vtwo{2}\widehat{E}(\mathbf{Z})}$
+    \State $\Lop[\widehat{E}] \gets \frac{4\theta\Lop[\theta] + \Lop[\mathbf{u}^\top \bar{\mathbf{X}} \mathbf{u}]}{2\widehat{E}(\mathbf{Z})}$
     \State $\mathcal{Z}\bigl(\mathbf{H}_d(s^*)\bigr) \gets$\eqref{eq:explicit-EE-dista-SE3-component-Zmap}
     \State $\Lop_\mathbf{V}[\widehat{D}] \gets \Lop[\widehat{E}]\mathcal{Z}\bigl(\mathbf{H}_d(s^*)\bigr)$
     \end{algorithmic}

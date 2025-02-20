@@ -249,7 +249,7 @@ It is possible to use a simple algorithm to compute the defined EE-distance \eqr
         \mathbf{0} & \mathbf{0} & 1
     \end{bmatrix},
 \end{align}
-where $\mathbf{R}_v$, $\mathbf{R}_w$, $\mathbf{p}_v$, and $\mathbf{p}_w$ are the rotation matrices and positions of $\mathbf{V}$ and $\mathbf{W}$, respectively. Using \vthree{Cayley-Hamilton's theorem and properties of block triangular matrices, it is possible to write}
+where $\mathbf{R}_v$, $\mathbf{R}_w$, $\mathbf{p}_v$, and $\mathbf{p}_w$ are the rotation matrices and positions of $\mathbf{V}$ and $\mathbf{W}$, respectively. Using Cayley-Hamilton's theorem and properties of block triangular matrices, it is possible to write
 \begin{align}
     \log(\mathbf{Z}) &= \begin{bmatrix}
         \log\mathbf{Q} & \mathbf{0} & \mathbf{0}\\
@@ -292,9 +292,9 @@ where $\theta$ is the rotation angle as in \cref{app:rodrigues-formula}. Thus, i
 % where $\beta$ is a scaling parameter in squared meters utilized to maintain dimensional consistency. The Frobenius norm measures the parallelism of the rotation matrices columns, allowing parameter $\beta$ to balance position and orientation errors.
 
 \section{Adaptive control}
-\vthree{In this section, we develop the adaptive control strategy to guide the manipulated object along the predefined curve $\mathcal{C}\subset \mathbb{R}^3\times \text{SO}(3)$. The goal is to provide the necessary total wrench $\boldsymbol{\tau}$ to ensure the system's velocity converges to the vector field $\Psi$, thereby enabling the object to follow the curve $\mathcal{C}$.}
+In this section, we develop the adaptive control strategy to guide the manipulated object along the predefined curve $\mathcal{C}\subset \mathbb{R}^3\times \text{SO}(3)$. The goal is to provide the necessary total wrench $\boldsymbol{\tau}$ to ensure the system's velocity converges to the vector field $\Psi$, thereby enabling the object to follow the curve $\mathcal{C}$.
 
-\vthree{To develop this dynamic controller,}  we modify the adaptive control strategy proposed in \cite{Culbertson2021}. In their approach, an error vector is established between the system velocity and a velocity reference, resulting in a non-autonomous system. In contrast, our method defines the velocity error $\boldsymbol{\zeta}$ with respect to the vector field, thereby establishing an autonomous system. This error vector is expressed as:
+To develop this dynamic controller,  we modify the adaptive control strategy proposed in \cite{Culbertson2021}. In their approach, an error vector is established between the system velocity and a velocity reference, resulting in a non-autonomous system. In contrast, our method defines the velocity error $\boldsymbol{\zeta}$ with respect to the vector field, thereby establishing an autonomous system. This error vector is expressed as:
 \begin{equation}
     \boldsymbol{\zeta} = \dot{\boldsymbol{\chi}} - \Psi,\label{eq:errorvector-s}
 \end{equation}
