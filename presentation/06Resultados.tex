@@ -132,15 +132,6 @@
                 \boldsymbol{\tau } = \mathbf {M}(\boldsymbol{\chi})\ddot{\boldsymbol{\chi}} + \mathbf {C}(\boldsymbol{\chi},\dot{\boldsymbol{\chi}})\dot{\boldsymbol{\chi}} + \mathbf{g},
             \end{align*}
 
-            Reference model:
-            \begin{align*}
-                % \resizebox{0.91\columnwidth}{!}{%
-                % $
-                \alpha _i \left(\mathbf {M}(\boldsymbol{\chi})\dot{\Psi} + \mathbf {C}(\boldsymbol{\chi},\dot{\boldsymbol{\chi}})\Psi + \mathbf {g} \right) = \mathbf{Y}_o\mathbf{o}_i
-                % $
-                % }
-            \end{align*}
-
             Unknowns: $m, \mathbb{I}_\text{cm}^\mathfrak{B}, \mathbf{r}_p, \mathbf{r}_i$
         \end{column}
         \begin{column}{0.6\linewidth}
@@ -243,6 +234,25 @@
         \end{tikzpicture}%
         }
     \end{figure}
+    % \begin{columns}[t]
+        % \begin{column}{0.5\linewidth}
+            \begin{align*}
+                \text{Reference Model:}\hspace{3cm}&& \boldsymbol{\tau}_i &= \mathbf{G}(\boldsymbol{\chi}, \hat{\mathbf{r}}_i)^{-1}\boldsymbol{\eta}_i, &&\dot{\hat{\mathbf{o}}}_i = -\boldsymbol{\Gamma}_o\mathbf{Y}^\top_o\left(\boldsymbol{\chi},\dot{\boldsymbol{\chi}},\Psi, \dot{\Psi}\right)\boldsymbol{\zeta},  \\
+                \alpha _i \left(\mathbf {M}(\boldsymbol{\chi})\dot{\Psi} + \mathbf {C}(\boldsymbol{\chi},\dot{\boldsymbol{\chi}})\Psi + \mathbf {g} \right) = \mathbf{Y}_o\mathbf{o}_i &&\boldsymbol{\eta}_i &= \mathbf{Y}_o\hat{\mathbf{o}}_i - \mathbf{K}_D\boldsymbol{\zeta}, &&\,\dot{\hat{\mathbf{r}}}_i = -\boldsymbol{\Gamma}_r\mathbf{Y}^\top_r\left(\boldsymbol{\eta}_i, \boldsymbol{\chi}\right)\boldsymbol{\zeta}.
+            \end{align*}
+        % \end{column}
+        % \begin{column}{0.5\linewidth}
+            % Reference model:
+            % \begin{align*}
+                % \resizebox{0.91\columnwidth}{!}{%
+                % $
+                
+                % $
+                % }
+            % \end{align*}
+        % \end{column}
+    % \end{columns}
+    
 \end{frame}
 
 \begin{frame}{Trajectory}

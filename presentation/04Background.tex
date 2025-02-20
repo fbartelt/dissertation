@@ -8,9 +8,10 @@
             The vector field strategy in \citet{Rezende2022} is based on a parametric curve representation and is characterized by:
             \begin{itemize}
                 \item A distance function $D$;
-                \item $\dot{D}=(\nabla D)^\top\boldsymbol{\xi}=-\boldsymbol{\xi}_N^\top\boldsymbol{\xi}$;
+                \item $\dot{D}=\nabla D\boldsymbol{\xi}=-\boldsymbol{\xi}_N^\top\boldsymbol{\xi}$;
                 \item Tangent component depends only on the curve;
                 \item Normal and tangent components are orthogonal;
+                \item Absence of local minima outside the curve;
                 \item Vector field $\Psi(\mathbf{h})=k_N(D)\boldsymbol{\xi}_N(\mathbf{h}) + k_T(D)\boldsymbol{\xi}_T(\mathbf{h})$.
             \end{itemize}
             
@@ -43,6 +44,8 @@
         \begin{column}{0.5\linewidth}
             \begin{exampleblock}{Exponential map}
                 Maps elements of $\mathfrak{g}$ to $G$. For matrix Lie groups: $\exp(\mathbf{A})=\sum_{i=0}^\infty \frac{\mathbf{A}^n}{n!} = \mathbf{X} \in G$.
+
+                Not always surjective.
             \end{exampleblock}
             \begin{exampleblock}{$\mathcal{S}$ map}
                 Linear map from $\mathbb{R}^m$ to $\mathfrak{g}$, relating velocities to tangent space elements.
