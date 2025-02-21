@@ -46,7 +46,7 @@
 \begin{frame}{Gradient in Lie groups}
 \begin{columns}[c]
         \begin{column}{0.6\linewidth}
-            The $\Lop$ operator acts as a gradient while respecting Lie group constraints.
+            The $\Lop$ operator, $L[f]:G\to\mathbb{R}^{1\times m}$, acts as a gradient while respecting Lie group constraints.
             \newline
 
             For any scalar function $f: G \to \mathbb{R}$, it is implicitly defined as:
@@ -130,7 +130,7 @@
     
 \end{frame}
 
-\begin{frame}{Proof Sketch}
+\begin{frame}{Convergence Proof Sketch}
     Let $\widehat{D}$ be a left-invariant and chainable EE-distance, then:
     \begin{align*}
         \dot{D} = \Lop_\mathbf{V}[\widehat{D}]\boldsymbol{\xi} + \bigl(\Lop_\mathbf{W}[\widehat{D}]\boldsymbol{\xi}_T\bigr)\frac{ds^*}{dt}.
