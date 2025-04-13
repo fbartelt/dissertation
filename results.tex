@@ -1,7 +1,7 @@
 % !TeX root = main.tex
 \chapter{Results and Discussion}\label{ch:results}
 \section{Kinematic control}
-In this section, we present the results of two kinematic control simulation to demonstrate the effectiveness of the proposed vector field guidance strategy. The first simulation involves a system following a curve $\mathcal{C}$ in $\text{SE}(3)$, while the second simulation regards $\mathcal{C}$ in $\text{SO}^+(3, 1)$. As the control is kinematic, the system follows a single integrator model
+In this section, we present the results of two kinematic control simulation to demonstrate the effectiveness of the proposed vector field guidance strategy. The first simulation involves a system following a curve $\mathcal{C}$ in $\text{SE}(3)$, while the second simulation regards $\mathcal{C}$ in $\text{SO}^+(3, 1)$. As the control is kinematic, the system follows the model
 \begin{align}
     \dot{\mathbf{H}}(t) = \SL[\boldsymbol{\xi}(t)]\mathbf{H}(t),
 \end{align}
@@ -50,7 +50,7 @@ in which $\varepsilon = \num{1E-3}$ was used.
 
 The system was simulated adopting the following approximation:
 \begin{align}
-    \mathbf{H}(t + \Delta t) \approx \exp\Bigl(\SL\bigl(\Psi(\mathbf{H})\bigr)\Delta t\Bigr)\mathbf{H}(t),
+    \mathbf{H}(t + \Delta t) \approx \exp\Bigl(\SL\bigl(\Psi(\mathbf{H}(t))\bigr)\Delta t\Bigr)\mathbf{H}(t),
 \end{align}
 using a time step of $\Delta t = \qty{1E-2}{\second}$. 
 \subsubsection{Vector field gains and initial condition}
@@ -98,7 +98,7 @@ The initial condition $\mathbf{H}(0)$ was set as
     \caption{The solid blue line depicts the system trajectory, while the solid red line indicates the target curve. The dashed light blue line represents the past trajectory. The initial and final positions are marked by purple and orange spheres, respectively. Translucent pink spheres denote intermediate positions, with orientation frames shown by RGB axes.}
     \label{fig:vfplot-trajectory}
 \end{figure}
-The simulation was conducted over a period of $\qty{15}{\second}$ and implemented in C++. On average, the computation of the vector field took $\qty{60 \pm 5}{\milli\second}$ per iteration on a single core of an Intel i5-10300H @ 4.5GHz CPU, with 8 GB of RAM. On average, $99.5\%$ of this time was spent solving the optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve}. Since the optimization process is highly parallelizable -- allowing simultaneous computation of $\widehat{D}(\mathbf{H},\mathbf{H}_d(s))$ for different discretized values of $s$ -- the computational effort could be significantly reduced by leveraging parallel architectures such as GPUs, SIMD, or multi-threading.
+The simulation was conducted over a period of $\qty{15}{\second}$ and implemented in C++. On average, the computation of the vector field took $\qty{60 \pm 5}{\milli\second}$ per iteration on a single core of an Intel i5-10300H @ 4.5GHz CPU, with 8 GB of RAM. On average, $99.5\%$ of this time was spent solving the optimization problem in \eqref{eq:optimization-problem-distance-definition-point-curve}. Since the optimization process is highly parallelizable---allowing simultaneous computation of $\widehat{D}(\mathbf{H},\mathbf{H}_d(s))$ for different discretized values of $s$---the computational effort could be significantly reduced by leveraging parallel architectures such as GPUs, SIMD, or multi-threading.
 \begin{figure}[ht!]
     \centering
     \def\svgwidth{\linewidth}
@@ -113,7 +113,7 @@ Although our implementation was carried out in C++, we provide a less efficient 
 \subsection{Proper orthochronous Lorentz group}
 Before describing the simulation conducted in $\text{SO}^+(3, 1)$, we first introduce key concepts from special relativity. Relativistic motion takes place within Minkowski space, a four-dimensional representation of spacetime. The elements of this space, known as \emph{events}, are represented by vectors $\mathbf{p}=[x\ y \ z\ t]^\top\in\mathbb{R}^4$, where $x$, $y$, and $z$ are spatial coordinates and $t$ is the time coordinate. Since effects such as time dilation and length contraction depend on the relative motion of observers, a transformation of reference frames is necessary to relate the coordinates of events between different observers. These transformations are known as \emph{Lorentz transformations}.
 
-Lorentz transformations form a group called the \emph{Lorentz group}, encompassing spatial rotations, reflections, and \emph{boosts} \citep[p. 12]{Carroll2019} -- the latter being transformations in Minkowski space without rotation, which are analogous to linear velocities in Minkowski space. Specifically, the proper orthochronous Lorentz group, $\text{SO}^+(3, 1)$, is a subgroup of the Lorentz group that includes only rotations and boosts preserving the direction of time. The elements of $\text{SO}^+(3, 1)$ are $4 \times 4$ matrices that preserve the \emph{Minkowski metric}, defined by:
+Lorentz transformations form a group called the \emph{Lorentz group}, encompassing spatial rotations, reflections, and \emph{boosts} \citep[p. 12]{Carroll2019}---the latter being transformations in Minkowski space without rotation, which are analogous to linear velocities in Minkowski space. Specifically, the proper orthochronous Lorentz group, $\text{SO}^+(3, 1)$, is a subgroup of the Lorentz group that includes only rotations and boosts preserving the direction of time. The elements of $\text{SO}^+(3, 1)$ are $4 \times 4$ matrices that preserve the \emph{Minkowski metric}, defined by:
 \begin{align}
     \nu^2 = x^2 + y^2 + z^2 - c^2t^2, \label{eq:results-lorentz-metric}
 \end{align}
@@ -264,12 +264,12 @@ where $\widehat{\mathcal{S}}$ is the canonical isomorphism for $\mathfrak{so}(3)
 \subsection{Employed numerical methods}\label{sec:results-adaptive-nummerical-methods}
 Although the curve is represented in $\text{ISE}(3)$, our adaptive control formulation used the tuple representation of $\mathbb{R}^3\times \text{SO}(3)$. To avoid confusion, we use $\mathbf{H}$ to represent the element of $\text{ISE}(3)$ and $\boldsymbol{\chi}=(\mathbf{R}, \mathbf{p})$ to represent the same entity as an element of $\mathbb{R}^3\times \text{SO}(3)$. This equivalence implies that $\boldsymbol{\xi}=\dot{\boldsymbol{\chi}}$ and $\dot{\boldsymbol{\xi}} = \ddot{\boldsymbol{\chi}}$, thus we adopt the notation using $\boldsymbol{\chi}$ for twists and accelerations to maintain consistency with the dynamics outlined in \cref{sec:dynamic-modelling}.
 
-The reference model, as defined in \eqref{eq:ref-model-linear-parametrization}, depends on the acceleration, which is the derivative of the vector field. This acceleration was approximated using the symmetric difference quotient: 
+The reference model, as defined in \eqref{eq:ref-model-linear-parametrization}, depends on the acceleration, which is the derivative of the vector field. This acceleration was approximated using the symmetric difference quotient, which provides superior accuracy: 
 \begin{align}
     \dot{\Psi}\bigl(\mathbf{H}(t)\bigr) \approx \frac{\Psi\Biggl(\exp\biggl(\SL\Bigl(\Delta t\Psi\bigl(\mathbf{H}(t)\bigr)\Bigr)\biggr)\mathbf{H}(t)\Biggr) - \Psi\Biggl(\exp\biggl(\SL\Bigl(-\Delta t\Psi\bigl(\mathbf{H}(t)\bigr)\Bigr)\biggr)\mathbf{H}(t)\Biggr)}{2\Delta t}. \label{eq:approximation-derivative-psi}
 \end{align}
 
-We then discuss the integration of the system using \emph{Heun's method} \citep[p. 330]{fred2007algoritmos}, also known as the \emph{improved Euler method}, which is a two-stage Runge-Kutta method. To describe how this method was applied in the context of Lie groups, we use the notation $\underline{\cdot}$ for the intermediate variables in Heun's method. Let $\mathbf{H}_\text{ref}$ denote the reference state, i.e., the state of the system if it were following the vector field perfectly. The update for the system's acceleration $\ddot{\boldsymbol{\chi}}$, the derivatives of the parameters $\dot{\widehat{\mathbf{o}}}_i$ and $\dot{\widehat{\mathbf{r}}}_i$, and the respective intermediate variables were taken as follows:
+We then discuss the integration of the system using \emph{Heun's method}\footnote{We use Heun's method both to maintain consistency with \citet{Culbertson2021} and for its improved numerical accuracy.} \citep[p. 330]{fred2007algoritmos}, also known as the \emph{improved Euler method}, which is a two-stage Runge-Kutta method. To describe how this method was applied in the context of Lie groups, we use the notation $\underline{\cdot}$ for the intermediate variables in Heun's method. Let $\mathbf{H}_\text{ref}$ denote the reference state, i.e., the state of the system if it were following the vector field perfectly. The update for the system's acceleration $\ddot{\boldsymbol{\chi}}$, the derivatives of the parameters $\dot{\widehat{\mathbf{o}}}_i$ and $\dot{\widehat{\mathbf{r}}}_i$, and the respective intermediate variables were taken as follows:
 \begin{align}
     \begin{split}
         \ddot{\underline{\boldsymbol{\chi}}}(t+\Delta t) &= \mathbf{M}\bigl(\underline{\boldsymbol{\chi}}(t)\bigr)^{\dagger(\epsilon)}\biggl(-\mathbf{C}\bigl(\underline{\boldsymbol{\chi}}(t), \underline{\dot{\boldsymbol{\chi}}}(t)\bigr)\underline{\dot{\boldsymbol{\chi}}}(t)  + \sum_{i=1}^6 \mathbf{G}\bigl(\underline{\boldsymbol{\chi}}(t), \underline{\widehat{\mathbf{r}}}_i(t)\bigr)^{-1}\underline{\boldsymbol{\eta}}_i(t)\biggr),\\
@@ -322,7 +322,7 @@ As the curve parametrization has an explicit equation \eqref{eq:parametriceq-sim
     \boldsymbol{\xi}_T(\mathbf{H}) = \frac{\sum_{i=1}^{P} w_i\invSL\bigl(\mathbf{H}_d'[i]\mathbf{H}_d[i]^{-1}\bigr)}{\sum_{i=1}^{P} w_i}.
 \end{align}
 
-This smoothing process behaves as an interpolation to determine the nearest point, thereby deforming the original curve to an interpolated one. The parameter $\delta$ controls the extent of this deformation. While this strategy prevents us from invoking previously proven lemmas and theorems, we claim that all signals will remain bounded and the system will converge to a neighborhood of the curve that is sufficiently close for the task.
+This smoothing process behaves as an interpolation to determine the nearest point, thereby deforming the original curve to an interpolated one. The parameter $\delta$ controls the extent of this deformation. While this strategy prevents us from invoking previously proven lemmas and theorems, the simulation results show that all signals will remain bounded and the system will converge to a neighborhood of the curve that is sufficiently close for the task.
 
 The real distance $D(\mathbf{H})$ was computed using a brute force approach, with a slight modification of the expression derived in \cref{sec:collaborative-ee-distance-computation}. To avoid numerical errors, the distance was computed as
 \begin{align}

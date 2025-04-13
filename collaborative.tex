@@ -1,6 +1,6 @@
 % !TeX root = main.tex
 \chapter{Collaborative Manipulation}\label{ch:collaborative}
-Our objective in this chapter is developing an adaptive control for a collaborative task of manipulating a large object with unknown parameters. As the task involves convergence and circulation of the object along a predefined curve, we use the control strategy developed in \cref{ch:vector_field} as a reference for velocity tracking. Our final control system can be thought as a two-stage controller: the first one is kinematic and outputs the necessary velocity to guarantee curve tracking; the second controller is a dynamic one, responsible for ensuring that the object's velocity is equal to the kinematic controller output. We begin by presenting the system modelling, then we move to the vector field guidance employed in the kinematic controller, and finally, we present the adaptive control strategy.
+Our objective in this chapter is developing an adaptive control for a collaborative task of manipulating a large object with unknown parameters. As the task involves convergence and circulation of the object along a predefined curve, we use the control strategy developed in \cref{ch:vector_field} as a reference for velocity tracking. Our final control system can be thought of as a two-stage controller: the first one is kinematic and outputs the necessary velocity to guarantee curve tracking; the second controller is a dynamic one, responsible for ensuring that the object's velocity is equal to the kinematic controller output. We begin by presenting the system modelling, then we move to the vector field guidance employed in the kinematic controller, and finally, we present the adaptive control strategy.
 \section{Modelling and problem statement} \label{sec:dynamic-modelling}
 \begin{figure}[ht]
     \centering
@@ -9,7 +9,8 @@ Our objective in this chapter is developing an adaptive control for a collaborat
     \caption{Collaborative task}
     \label{fig:problem}
 \end{figure}
-The problem addressed in this section revolves around designing a controller to guide a manipulated object along a predefined curve $\mathcal{C} \subset \mathbb{R}^3\times \text{SO}(3)$. The object's dynamics include uncertain parameters like mass and geometric properties. With $N$ agents involved in the manipulation process, a decentralized control law is devised for each agent. The agents are unaware of their precise positioning relative to a measurement point. It is assumed that each agent possesses the capability to measure the pose and velocity of the object's measurement point.
+The problem addressed in this section revolves around designing a controller to guide a manipulated object along a predefined curve $\mathcal{C} \subset \mathbb{R}^3\times \text{SO}(3)$\footnote{We adopt $\mathbb{R}^3 \times \text{SO}(3)$ here, though \citet{Muller2016} discusses the differences between this group and $\text{SE}(3)$ for dynamics, 
+concluding $\text{SE}(3)$ is more appropriate.}. The object's dynamics include uncertain parameters like mass and geometric properties. With $N$ agents involved in the manipulation process, a decentralized control law is devised for each agent. The agents are unaware of their precise positioning relative to a measurement point. It is assumed that each agent possesses the capability to measure the pose and velocity of the object's measurement point.
 
 We consider the cooperative manipulation of a rigid body by a team of $N$ autonomous agents, as illustrated in \cref{fig:problem}. The body undergoes both translations and rotations. We establish two reference frames: the world-fixed inertial frame denoted $\mathfrak{I}$, and the body-fixed frame denoted $\mathfrak{B}$, centered at the body's center of mass, $\mathbf{b}\triangleq\mathbf{b}^\mathfrak{I}$. Additionally, a body-fixed measurement point, $\mathbf{p}^\mathfrak{B}$, is situated at a distance $\mathbf{r}_p^\mathfrak{B}$ from the body's center of mass.
 
@@ -151,11 +152,11 @@ The mass and Coriolis matrices share the same properties as the ones obtained th
 
 The dynamics described in \eqref{eq:tau} govern the motion of the body under the influence of the total wrench $\boldsymbol{\tau}$ applied about $\mathbf{p}$. This quantity needs to be expressed as a function of the wrenches $\boldsymbol{\tau}_i$ applied by each agent about their respective displacement $\mathbf{r}_i$ from $\mathbf{p}$. We represent $\boldsymbol{\tau}$ as the sum:
 \begin{equation}
-    \boldsymbol{\tau} = \sum_{i=1}^N\mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i)\boldsymbol{\tau}_i, \label{eq:tauNtauIrelation}
+    \boldsymbol{\tau} = \sum_{i=1}^N\boldsymbol{\Lambda}(\boldsymbol{\chi}, \mathbf{r}_i)\boldsymbol{\tau}_i, \label{eq:tauNtauIrelation}
 \end{equation}
-where $\mathbf{G}$ denotes the grasp matrix, defined as:
+where $\boldsymbol{\Lambda}$ denotes the grasp matrix, defined as:
 \begin{equation}
-    \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i) = \begin{bmatrix}
+    \boldsymbol{\Lambda}(\boldsymbol{\chi}, \mathbf{r}_i) = \begin{bmatrix}
         \mathbf{I} & \mathbf{0} \\
         \SL[\mathbf{R}\mathbf{r}_i] & \mathbf{I}
     \end{bmatrix}. \label{eq:graspmatrix}
@@ -163,18 +164,18 @@ where $\mathbf{G}$ denotes the grasp matrix, defined as:
 
 The grasp matrix exhibits interesting properties. Its inverse is given by a simple relation:
 \begin{align}
-    \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i)^{-1} = \begin{bmatrix}
+    \boldsymbol{\Lambda}(\boldsymbol{\chi}, \mathbf{r}_i)^{-1} = \begin{bmatrix}
         \mathbf{I} & \mathbf{0} \\
         -\SL[\mathbf{R}\mathbf{r}_i] & \mathbf{I}
-    \end{bmatrix} = \mathbf{G}(\boldsymbol{\chi}, -\mathbf{r}_i).
+    \end{bmatrix} = \boldsymbol{\Lambda}(\boldsymbol{\chi}, -\mathbf{r}_i).
 \end{align}
 The multiplication of two grasp matrices is also straightforward:
 \begin{align}
-    \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i)\mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_j) =
+    \boldsymbol{\Lambda}(\boldsymbol{\chi}, \mathbf{r}_i)\boldsymbol{\Lambda}(\boldsymbol{\chi}, \mathbf{r}_j) =
     \begin{bmatrix}
         \mathbf{I} & \mathbf{0} \\
         \SL[\mathbf{R}(\mathbf{r}_i + \mathbf{r}_j)] & \mathbf{I}
-    \end{bmatrix} = \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i) + \mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_j) - \mathbf{I}.
+    \end{bmatrix} = \boldsymbol{\Lambda}(\boldsymbol{\chi}, \mathbf{r}_i) + \boldsymbol{\Lambda}(\boldsymbol{\chi}, \mathbf{r}_j) - \mathbf{I}.
 \end{align}
 
 As previously stated, some system parameters will be unknown. For simplicity we list here the parameters that must be adapted:
@@ -208,7 +209,7 @@ The task can be achieved determining a control input $\boldsymbol{\xi}$ such tha
     \end{split}
 \end{align}
 
-Now, let the system state be represented by an element $\mathbf{H}(t)\in\text{ISE}(3)$, with a generalized twist $\boldsymbol{\xi}\in\mathbb{R}^6$. Given a curve parametrization $\mathbf{H}_d(s)\in\text{ISE}(3)$, we want to compute a vector field $\Psi:\text{ISE}(3)\to\mathbb{R}^6$ such that if $\boldsymbol{\xi} = \Psi(\mathbf{H})$, the system follows the curve $\mathcal{C}$. The system can be described through the following single integrator model:
+Now, let the system state be represented by an element $\mathbf{H}(t)\in\text{ISE}(3)$, with a generalized twist $\boldsymbol{\xi}\in\mathbb{R}^6$. Given a curve parametrization $\mathbf{H}_d(s)\in\text{ISE}(3)$, we want to compute a vector field $\Psi:\text{ISE}(3)\to\mathbb{R}^6$ such that if $\boldsymbol{\xi} = \Psi(\mathbf{H})$, the system follows the curve $\mathcal{C}$. The system can be described through the following model:
 \begin{align}
 % \begin{split}
     \dot{\mathbf{H}} &= \SL[\boldsymbol{\xi}]\mathbf{H}.\label{eq:first-order-system-cba}
@@ -221,11 +222,11 @@ In order to use our vector field methodology, we define an EE-distance function 
 \end{align}
 Note that this is exactly the same distance as defined in \cref{sec:kinematic-path-ee-dist-exp-group}, and so it possesses the same properties.
 \begin{remark}
-    In our original approach, we treat our system directly in $\mathbb{R}^3\times\text{SO}(3)$, and use the following distance function between two tuples:
+    In our original approach \citep{Pessoa2024}, we treat our system directly in $\mathbb{R}^3\times\text{SO}(3)$, and use the following distance function between two tuples:
     \begin{align}
         \widehat{D}(\mathbf{p}_1, \mathbf{R}_1, \mathbf{p}_2, \mathbf{R}_2) \triangleq \frac{1}{2}\left(\|\mathbf{p}_1 - \mathbf{p}_2\|^2 + \beta\left\|\mathbf{I} - \mathbf{R}_2^{T}\mathbf{R}_1\right\|^2_F\right). \label{eq:cba-distance}
     \end{align}
-    Although they are not equivalent, the change in the distance function will maintain consistency with our generalization to matrix Lie groups.
+    Although \eqref{eq:cba-distance-new} and \eqref{eq:cba-distance} are not equivalent, the change in the distance function will maintain consistency with our generalization to matrix Lie groups.
     
     Note that the distance in \eqref{eq:cba-distance} is left-invariant, and although it lacks a chainability proof, we can still show that the vector field it renders has a measure zero set of singularities. This change of distance is beneficial, as it aligns with all the properties and proofs given.
 \end{remark}
@@ -296,9 +297,9 @@ In this section, we develop the adaptive control strategy to guide the manipulat
 
 To develop this dynamic controller,  we modify the adaptive control strategy proposed in \cite{Culbertson2021}. In their approach, an error vector is established between the system velocity and a velocity reference, resulting in a non-autonomous system. In contrast, our method defines the velocity error $\boldsymbol{\zeta}$ with respect to the vector field, thereby establishing an autonomous system. This error vector is expressed as:
 \begin{equation}
-    \boldsymbol{\zeta} = \dot{\boldsymbol{\chi}} - \Psi,\label{eq:errorvector-s}
+    \boldsymbol{\zeta} = \dot{\boldsymbol{\chi}} - \Psi. \label{eq:errorvector-s}
 \end{equation}
-If the dynamic controller guarantees that $\boldsymbol{\zeta}$ goes to zero, the system follows the integrator model \eqref{eq:first-order-system-cba}, with the vector field $\Psi$ acting as its input. Therefore, as shown in \cref{ch:vector_field}, we anticipate that the system will exhibit the desired behavior. To develop the adaptive control strategy, we first define our reference model.
+If the dynamic controller guarantees that $\boldsymbol{\zeta}$ goes to zero, the system follows the kinematic model \eqref{eq:first-order-system-cba}, with the vector field $\Psi$ acting as its input. Therefore, as shown in \cref{ch:vector_field}, we anticipate that the system will exhibit the desired behavior. To develop the adaptive control strategy, we first define our reference model.
 
 Given that the system is overactuated (meaning multiple sets of control inputs $\boldsymbol{\tau}_i$ produce identical object dynamics), each agent can contribute a portion of the control effort. Thus, we define a set of $N$ positive constants $\alpha_i$, ensuring $\sum_{i=1}^N\alpha_i=1$. Furthermore, analogously to the Euler-Lagrange formulation, the reference model can be linearly parametrized. Thus, the reference model can be expressed as 
 \begin{equation}
@@ -334,7 +335,7 @@ where $\{\mathbb{I}_p\}_{ij}$ are the elements of the inertia matrix $\mathbb{I}
 
 Next, we propose the following control law
 \begin{equation}
-    \boldsymbol{\tau}_i = \mathbf{G}(\boldsymbol{\chi}, \hat{\mathbf{r}}_i)^{-1}\boldsymbol{\eta}_i,\label{eq:controlLawTaui}
+    \boldsymbol{\tau}_i = \boldsymbol{\Lambda}(\boldsymbol{\chi}, \hat{\mathbf{r}}_i)^{-1}\boldsymbol{\eta}_i,\label{eq:controlLawTaui}
 \end{equation}
 where $\hat{\mathbf{r}}_i$ represents the estimate of the $i^{th}$ agent's displacement with respect to the measurement point, and
 \begin{equation}
@@ -350,7 +351,7 @@ where $\mathbf{K}_D$ is a positive definite matrix, and $\hat{\mathbf{o}}_i$ is 
 
 If we let $\widetilde{\mathbf{r}}_i = \hat{\mathbf{r}}_i - \mathbf{r}_i$, we can achieve the following linear parametrization:
 \begin{equation}
-    -\mathbf{G}(\boldsymbol{\chi}, \widetilde{\mathbf{r}}_i)\boldsymbol{\eta}_i = \mathbf{Y}_r\left(\boldsymbol{\eta}_i, \boldsymbol{\chi}\right)\widetilde{\mathbf{r}}_i. \label{eq:linearParametrizationYrforEta}
+    -\boldsymbol{\Lambda}(\boldsymbol{\chi}, \widetilde{\mathbf{r}}_i)\boldsymbol{\eta}_i = \mathbf{Y}_r\left(\boldsymbol{\eta}_i, \boldsymbol{\chi}\right)\widetilde{\mathbf{r}}_i. \label{eq:linearParametrizationYrforEta}
 \end{equation}
 With this parametrization and the other expressions, we propose the following adaptation laws:
 \begin{align}
@@ -364,13 +365,13 @@ where $\boldsymbol{\Gamma}_o$ and $\boldsymbol{\Gamma}_r$ are definite positive 
 \begin{proof}
     Consider the following Lyapunov function candidate
     \begin{equation}
-        V = \frac{1}{2}\left( \boldsymbol{\zeta}^\top \mathbf {M} \boldsymbol{\zeta} + \sum _{i=1}^{N} \widetilde{\mathbf{o}}_i^\top \boldsymbol{\Gamma }_o^{-1}\widetilde{\mathbf{o}}_i + \widetilde{\mathbf{r}}_i^\top \boldsymbol{\Gamma }_r^{-1} \widetilde{\mathbf{r}}_i \right),
+        V = \frac{1}{2}\left( \boldsymbol{\zeta}^\top \mathbf {M} \boldsymbol{\zeta} + \sum _{i=1}^{N} \left(\widetilde{\mathbf{o}}_i^\top \boldsymbol{\Gamma }_o^{-1}\widetilde{\mathbf{o}}_i + \widetilde{\mathbf{r}}_i^\top \boldsymbol{\Gamma }_r^{-1} \widetilde{\mathbf{r}}_i \right)\right),
     \end{equation}
     where $\widetilde{\mathbf {o}}_i = \hat{\mathbf{o}}_i - \mathbf{o}_i$ represents the parameter estimation error for the $i^{th}$ agent.
 
     Since the true parameters do not vary in time, i.e. $\dot{\widetilde{\mathbf {o}}}_i = \dot{\hat{\mathbf{o}}}_i$ and $\dot{\widetilde{\mathbf {r}}}_i = \dot{\hat{\mathbf{r}}}_i$, the time derivative of the Lyapunov candidate yields
     \begin{equation}
-        \dot{V} = \boldsymbol{\zeta}^\top \mathbf{M} \dot{\boldsymbol{\zeta}} + \frac{1}{2} \boldsymbol{\zeta}^\top \dot{\mathbf{M}} \boldsymbol{\zeta} + \sum\limits_{i=1}^{N} \widetilde{\mathbf{o}}_i^\top \boldsymbol{\Gamma}_o^{-1} \dot{\hat{\mathbf{o}}}_i + \widetilde{\mathbf{r}}_i^\top \boldsymbol{\Gamma}_r^{-1}\dot{\hat{\mathbf{r}}}_i.
+        \dot{V} = \boldsymbol{\zeta}^\top \mathbf{M} \dot{\boldsymbol{\zeta}} + \frac{1}{2} \boldsymbol{\zeta}^\top \dot{\mathbf{M}} \boldsymbol{\zeta} + \sum\limits_{i=1}^{N}\left( \widetilde{\mathbf{o}}_i^\top \boldsymbol{\Gamma}_o^{-1} \dot{\hat{\mathbf{o}}}_i + \widetilde{\mathbf{r}}_i^\top \boldsymbol{\Gamma}_r^{-1}\dot{\hat{\mathbf{r}}}_i\right).
         \label{eq:adaptive-lyapunov-derivative}
     \end{equation}
     Using the fact that $\dot{\boldsymbol{\zeta}} = \ddot{\boldsymbol{\chi}} - \dot{\Psi}$ and $\dot{\boldsymbol{\chi}} = \boldsymbol{\zeta} + \Psi$, along with the system dynamics equation \eqref{eq:tau} and expression \eqref{eq:tauNtauIrelation}, and \eqref{eq:ref-model-linear-parametrization}, we can express the first term as
@@ -378,14 +379,14 @@ where $\boldsymbol{\Gamma}_o$ and $\boldsymbol{\Gamma}_r$ are definite positive 
     \begin{split}
         \boldsymbol{\zeta}^\top \mathbf {M} \dot{\boldsymbol{\zeta}} &= \boldsymbol{\zeta}^\top\mathbf{M}\bigl(\ddot{\boldsymbol{\chi}} - \dot{\Psi}\bigr)
         = \boldsymbol{\zeta}^\top\bigl(\boldsymbol{\tau} - \mathbf{C}\dot{\boldsymbol{\chi}} - \mathbf{g} - \mathbf{M}\dot{\Psi}\bigr)\\
-        &= \boldsymbol{\zeta}^\top\Biggl(\biggl(\sum_{i=1}^N\mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i)\boldsymbol{\tau}_i\biggr) -\mathbf{C}\Psi - \mathbf{C}\boldsymbol{\zeta} - \mathbf{g} - \biggl(-\mathbf{C}\Psi-\mathbf{g}+\sum_{i=1}^N\mathbf{Y}_o\mathbf{o}_i\biggr)\Biggr)\\
-        &= \boldsymbol{\zeta}^\top\Biggl( - \mathbf{C}\boldsymbol{\zeta}+\sum_{i=1}^N\mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i)\boldsymbol{\tau}_i - \mathbf{Y}_o\mathbf{o}_i \Biggr).
+        &= \boldsymbol{\zeta}^\top\Biggl(\biggl(\sum_{i=1}^N\boldsymbol{\Lambda}(\boldsymbol{\chi}, \mathbf{r}_i)\boldsymbol{\tau}_i\biggr) -\mathbf{C}\Psi - \mathbf{C}\boldsymbol{\zeta} - \mathbf{g} - \biggl(-\mathbf{C}\Psi-\mathbf{g}+\sum_{i=1}^N\mathbf{Y}_o\mathbf{o}_i\biggr)\Biggr)\\
+        &= \boldsymbol{\zeta}^\top\Biggl( - \mathbf{C}\boldsymbol{\zeta}+\sum_{i=1}^N\boldsymbol{\Lambda}(\boldsymbol{\chi}, \mathbf{r}_i)\boldsymbol{\tau}_i - \mathbf{Y}_o\mathbf{o}_i \Biggr).
     \end{split} \label{eq:partial-term-of-adaptive1}
     \end{align} 
     Now, using equations \eqref{eq:controlLawTaui}, \eqref{eq:controlLawEtai} and \eqref{eq:linearParametrizationYrforEta}, the first term in \eqref{eq:partial-term-of-adaptive1} can be rewritten as
     \begin{align}
-        \boldsymbol{\zeta}^\top \mathbf {M} \dot{\boldsymbol{\zeta}} &= \boldsymbol{\zeta}^\top\Biggl( - \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N\mathbf{G}(\boldsymbol{\chi}, \mathbf{r}_i)\mathbf{G}(\boldsymbol{\chi}, \hat{\mathbf{r}}_i)^{-1}\boldsymbol{\eta}_i - \mathbf{Y}_o\mathbf{o}_i\Biggr)\\
-        &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta}+\sum_{i=1}^N(\mathbf{I}-\mathbf{G}(\boldsymbol{\chi}, \widetilde{\mathbf{r}}_i))\boldsymbol{\eta}_i - \mathbf{Y}_o\mathbf{o}_i \Biggr)\\
+        \boldsymbol{\zeta}^\top \mathbf {M} \dot{\boldsymbol{\zeta}} &= \boldsymbol{\zeta}^\top\Biggl( - \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N\boldsymbol{\Lambda}(\boldsymbol{\chi}, \mathbf{r}_i)\boldsymbol{\Lambda}(\boldsymbol{\chi}, \hat{\mathbf{r}}_i)^{-1}\boldsymbol{\eta}_i - \mathbf{Y}_o\mathbf{o}_i\Biggr)\\
+        &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta}+\sum_{i=1}^N(\mathbf{I}-\boldsymbol{\Lambda}(\boldsymbol{\chi}, \widetilde{\mathbf{r}}_i))\boldsymbol{\eta}_i - \mathbf{Y}_o\mathbf{o}_i \Biggr)\\
         &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N \biggl( \mathbf{Y}_o\hat{\mathbf{o}}_i + \mathbf{Y}_r\widetilde{\mathbf{r}}_i - \mathbf{Y}_o\mathbf{o}_i- \mathbf{K}_D\boldsymbol{\zeta}\biggr) \Biggr)\\
         &= \boldsymbol{\zeta}^\top\Biggl(- \mathbf{C}\boldsymbol{\zeta} + \sum_{i=1}^N\biggl( \mathbf{Y}_o\widetilde{\mathbf{o}}_i + \mathbf{Y}_r\widetilde{\mathbf{r}}_i - \mathbf{K}_D\boldsymbol{\zeta}\biggr) \Biggr). \label{eq:partial-term-of-adaptive2}
     \end{align}
@@ -393,7 +394,7 @@ where $\boldsymbol{\Gamma}_o$ and $\boldsymbol{\Gamma}_r$ are definite positive 
     Finally, substituting \eqref{eq:partial-term-of-adaptive2} into \eqref{eq:adaptive-lyapunov-derivative} renders the following result
     \begin{align}
     % \begin{split}
-        \dot{V} &= \frac{1}{2}\boldsymbol{\zeta}^\top \bigl(\dot{\mathbf{M}}- 2\mathbf{C}\bigr) \boldsymbol{\zeta} + \sum\limits_{i=1}^{N} \widetilde{\mathbf{o}}_i^\top \boldsymbol{\Gamma}_o^{-1} \dot{\hat{\mathbf{o}}}_i + \widetilde{\mathbf{r}}_i^\top \boldsymbol{\Gamma}_r^{-1}\dot{\hat{\mathbf{r}}}_i + \boldsymbol{\zeta}^\top\bigl(\mathbf{Y}_o\widetilde{\mathbf{o}}_i + \mathbf{Y}_r\widetilde{\mathbf{r}}_i - \mathbf{K}_D\boldsymbol{\zeta} \bigr).
+        \dot{V} &= \frac{1}{2}\boldsymbol{\zeta}^\top \bigl(\dot{\mathbf{M}}- 2\mathbf{C}\bigr) \boldsymbol{\zeta} + \sum\limits_{i=1}^{N} \left(\widetilde{\mathbf{o}}_i^\top \boldsymbol{\Gamma}_o^{-1} \dot{\hat{\mathbf{o}}}_i + \widetilde{\mathbf{r}}_i^\top \boldsymbol{\Gamma}_r^{-1}\dot{\hat{\mathbf{r}}}_i + \boldsymbol{\zeta}^\top\bigl(\mathbf{Y}_o\widetilde{\mathbf{o}}_i + \mathbf{Y}_r\widetilde{\mathbf{r}}_i - \mathbf{K}_D\boldsymbol{\zeta} \bigr)\right).
         % \end{split}
     \end{align}
     Substituting adaptation laws \eqref{eq:adaptiveOhat} and \eqref{eq:adaptiveRhat}, and using the fact that $\dot{\mathbf{M}} - 2\mathbf{C}$ is skew-symmetric, we have
