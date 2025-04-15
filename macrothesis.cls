@@ -3,8 +3,9 @@
 
 \RequirePackage{ifthen}
 \RequirePackage{etoolbox} % For boolean flags
-
-% DEFAULT VALUES
+% ---------------------------------------------------------------------------- %
+%                              DEFAULT VALUES
+% ---------------------------------------------------------------------------- %
 \newcommand{\@useglossaries}{true}
 \newcommand{\@usenatbib}{true}
 \newcommand{\@usehyperref}{true}
@@ -18,7 +19,6 @@
 \newcommand{\@researchGroupName}{MACRO Research Group - Mechatronics, Control, and Robotics}
 \newcommand{\@coursename}{Electrical Engineering}
 \newcommand{\@locationName}{Belo Horizonte, Brazil}
-
 \newcommand{\@notationpage}{}
 
 \newcommand{\supportedlangs}{english, american, USenglish, canadian, british, 
@@ -161,7 +161,7 @@ french}
 % ---------------------------------------------------------------------------- %
 %                              REQUIRED PACKAGES
 % ---------------------------------------------------------------------------- %
-\LoadClass[12pt,oneside]{book}
+\LoadClass[12pt,a4paper,oneside,openany]{book}
 % Load additional packages
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
@@ -178,7 +178,7 @@ french}
 }
 \RequirePackage{graphicx} % Required for including images
 \RequirePackage[a4paper]{geometry} % Required for adjusting page dimensions and margins
-\geometry{verbose,tmargin=3cm,bmargin=2cm,lmargin=3cm,rmargin=2cm}
+\geometry{verbose,tmargin=3cm,bmargin=2cm,lmargin=3cm,rmargin=2cm,headheight=15pt}
 \RequirePackage{setspace} % Required for changing line spacing
 \RequirePackage{microtype} % Improves the spacing between words and letters
 \onehalfspacing
@@ -211,10 +211,6 @@ french}
     bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
     breaklinks=true,backref=false,colorlinks=true,allcolors=teal]
     {hyperref}
-    % \RequirePackage[pdfusetitle,
-    %  bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
-    %  breaklinks=false,pdfborder={0 0 0},pdfborderstyle={},backref=false,colorlinks=false]
-    %  {hyperref}
 }{%
     \PackageInfo{macrothesis}{hyperref package not loaded.}%
 }
@@ -273,6 +269,30 @@ french}
 }{%
 }
 
+\renewcommand{\thempfootnote}{\,\fnsymbol{mpfootnote}}% Change footnote numbering to symbols in minipage
+% ---------------------------------------------------------------------------- %
+%                WORKAROUND TO REMOVE PAGE NUMBERS IN PREAMBLE
+% ---------------------------------------------------------------------------- %
+\newcommand{\removestyle}{
+  % Workaround to avoid page numbers on the first pages of chapters (preamble)
+  \fancypagestyle{plain}{%
+    \fancyhf{} % No headers or footers
+    \renewcommand{\headrulewidth}{0pt} % No header rule
+    \renewcommand{\footrulewidth}{0pt} % No footer rule
+  }
+}
+
+\newcommand{\setfancyheader}{
+  % Part of the workaround -- sets page numbers to top right corner for chapters
+  \fancypagestyle{plain}{%
+    \fancyhf{} % Clear all headers/footers
+    \fancyhead[R]{\thepage} % Page number always on right
+    \fancyhead[L]{\small\itshape\rightmark} % Chapter title always on left
+    \renewcommand{\headrulewidth}{0pt} % No header rule
+    \renewcommand{\footrulewidth}{0pt} % No footer rule
+  }
+  \pagestyle{plain} % Set the page style to the modified plain
+}
 % ---------------------------------------------------------------------------- %
 %                              USER COMMANDS
 % ---------------------------------------------------------------------------- %
@@ -373,9 +393,13 @@ french}
 
 % Cover Page Command
 \newcommand{\maketitlepage}{%
-    \thispagestyle{empty}
-    \pagenumbering{roman}
-    \setcounter{page}{1}
+    \removestyle % This forces the plain style (enforced by book class) to be empty
+    % \pagestyle{plain}    
+    %  \thispagestyle{empty}
+    \pagestyle{empty} % Necessary to avoid page numbers on imported PDFs
+    % \pagenumbering{roman}
+    \pagenumbering{arabic}
+    \setcounter{page}{0}
 
     % Research group Logo
     \includegraphics[scale=0.145]{template/logo}
@@ -522,18 +546,20 @@ french}
     \end{singlespace}
 
     \chapter*{\@acknowledgmentsTitle}
+    \thispagestyle{empty}
     \@acknowledgmentsContent
 
     % Second language Abstract
     \begin{onehalfspace}
     \pagebreak{}
     \end{onehalfspace}
-
+    % \pagestyle{empty}
     % NORMA UFMG -- Primeiro Resumo (ptbr) depois Abstract (ou qualquer lingua estrangeira)
     %checks wheter second abstract is empty, if not, prints it
     \ifabstractsecond
         \selectlanguage{\@secondlanguage}%
         \chapter*{\@secondAbstractTitle}
+        \thispagestyle{empty}
         \@secondAbstractContent
     \fi
     
@@ -544,20 +570,24 @@ french}
     % First language Abstract
     \selectlanguage{\@mainlanguage}%
     \chapter*{\@abstractTitle}
+    \thispagestyle{empty}
     \@abstractContent
     
     \selectlanguage{\@mainlanguage}%
-    \pagebreak{}
+    \pagebreak{}%
 
     % Table of Contents, Figures and Tables
-    \addtocontents{toc}{\protect{\pdfbookmark[0]{\contentsname}{toc}}}
+    \addtocontents{toc}{\protect{\pdfbookmark[0]{\contentsname}{toc}}}%
     \tableofcontents{}\listoffigures\listoftables
-
-    \glossarypage
     
-    \section*{\protect\pagebreak}
-    \pagenumbering{arabic}
-    \setcounter{page}{1}
+    \glossarypage
+
+    \section*{\protect\pagebreak}% For some reason this is necessary
+
+    % \pagestyle{plain}
+    \setfancyheader % This sets the header again for plain style (enforces book class plain to follow the default style)
+    % \pagenumbering{arabic}
+    % \setcounter{page}{1}
 }
 
 \newcommand{\glossarypage}{
@@ -566,7 +596,7 @@ french}
         \PackageInfo{macrothesis}{Adding all acronyms and notations whether they are used or not.}% 
         \glsaddall
         \printnoidxglossary[type=acronym,sort=word]
-        \printnoidxglossary[type=notation,style=super]
+        \printnoidxglossary[type=notation,style=long]
     }{%
         \selectlanguage{\@mainlanguage}%
         \@notationpage
