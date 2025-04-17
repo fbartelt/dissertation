@@ -1,4 +1,4 @@
-\documentclass[dissertation,master,firstlang=english,secondlang=brazil]{macrothesis}
+\documentclass[dissertation,master,firstlang=english,secondlang=brazil,final]{macrothesis}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{siunitx}
 \usepackage{import}
@@ -27,9 +27,11 @@
 \universityname{Universidade Federal de Minas Gerais}
 \researchgroupname{MACRO Research Group - Mechatronics, Control, and Robotics}
 \programname{Graduate Program in Electrical Engineering}
-\locationname{Belo Horizonte, Brazil}
+% \locationname{Belo Horizonte, Brazil} % MACRO
+\locationname{Belo Horizonte} % UFMG
 
 \atadefesa{SEI_3975333_Folha_de_Aprovacao.pdf}
+\fichacatalografica{ficha_catalografica.pdf}
 %%% Preambles %%%
 % Dedication and Acknowledgments
 \dedication{``Wer sich tief weiß, bemüht sich um Klarheit; wer der Menge tief scheinen möchte, bemüht sich um Dunkelheit. Denn die Menge hält alles für tief, dessen Grund sie nicht sehen kann: sie ist so furchtsam und geht so ungern ins Wasser.''\footnote[3]{\,``Those who know they are profound strive for clarity. Those who would like to seem profound strive for obscurity. For the crowd believes that if it cannot see to the bottom of something it must be profound. It is timid and dislikes going into the water.''}\\
@@ -51,13 +53,19 @@
 % Abstracts (in both languages)
 \abstract{
   This work introduces a novel vector field strategy for controlling systems on connected matrix Lie groups, ensuring both convergence to and circulation around a curve defined on the group. Our approach generalizes the framework presented in \citet{Rezende2022} and reduces to it when applied to the Lie group of translations in Euclidean space. Building upon the key properties from \citet{Rezende2022}, such as the orthogonality between convergent and circulating components, we extend these results by exploiting additional Lie group properties. Notably, our method ensures that the control input is non-redundant, matching the dimension of the Lie group rather than the potentially larger dimension of the embedding space. This leads to more practical control inputs in certain scenarios. A significant application of this strategy is in controlling systems on $\text{SE}(3)$, where the non-redundant input corresponds to the mechanical twist of the object. This makes the method particularly well-suited for controlling systems with both translational and rotational freedom, such as omnidirectional drones. We also present an efficient algorithm for computing the vector field in this context. Furthermore, the strategy is applied as a high-level kinematic controller in a collaborative manipulation task, where six agents manipulate a large object with unknown parameters in the Lie group $\mathbb{R}^3 \times \text{SO}(3)$. A low-level dynamic adaptive controller guarantees that the velocity tracking error between the system and the kinematic controller output converges to zero, a result supported by theoretical proofs. Simulation results validate the effectiveness of the proposed method in both the kinematic scenario and the integration of kinematic and dynamic controllers.
+  \\
 
-  \emph{Keywords:} autonomous systems; guidance navigation and control; tracking; asymptotic stabilization; vector fields; Lie groups; adaptive control; collaborative manipulation.
+  % \emph{Keywords:} % For macro template
+  \noindent Keywords:  % For UFMG template
+  autonomous systems; guidance navigation and control; tracking; asymptotic stabilization; vector fields; Lie groups; adaptive control; collaborative manipulation.
 }
 \abstractsecond{
   Este trabalho apresenta uma nova estratégia de campos vetoriais para controlar sistemas em grupos de Lie matriciais conexos, garantindo tanto a convergência quanto a circulação ao longo de uma curva definida no grupo. Esta abordagem generaliza a estratégia apresentada em \citet{Rezende2022} e se reduz a ela quando aplicada ao grupo de Lie de translações no espaço euclidiano. Baseando-se nas propriedades chave de \citet{Rezende2022}, como a ortogonalidade entre os componentes de convergência e de circulação, estenderam-se esses resultados explorando propriedades adicionais dos grupos de Lie. Em especial, este método garante que a entrada de controle seja não redundante, correspondendo à dimensão do grupo de Lie ao invés da dimensão potencialmente maior do espaço em que está mergulhado. Isso resulta em entradas de controle mais práticas em certos cenários. Uma aplicação significativa dessa estratégia é no controle de sistemas em $\text{SE}(3)$, no qual a entrada não redundante corresponde ao heligiro do objeto. Isso torna o método particularmente adequado para controlar sistemas com liberdade tanto translacional quanto rotacional, como drones omnidirecionais. Apresenta-se também um algoritmo eficiente para calcular o campo vetorial nesse contexto. Além disso, a estratégia é aplicada como um controlador cinemático de alto nível em uma tarefa de manipulação colaborativa, na qual seis agentes manipulam um objeto grande com parâmetros desconhecidos no grupo de Lie $\mathbb{R}^3 \times \text{SO}(3)$. Um controlador dinâmico adaptativo de baixo nível garante que o erro de rastreamento de velocidade entre o sistema e a saída do controlador cinemático convirja para zero, resultado que é comprovado teoricamente. Os resultados das simulações validam a eficácia do método proposto tanto no cenário cinemático quanto na integração de controladores cinemáticos e dinâmicos.
+  \\ % For UFMG template
 
-  \emph{Palavras-chave:} sistemas autônomos; direcionamento, navegação e controle; rastreamento; estabilização assintótica; campos vetoriais; grupos de Lie; controle adaptativo; manipulação colaborativa.
+  % \emph{Palavras-chave:} % For macro template
+  \noindent Palavras-chave: % For UFMG template 
+  sistemas autônomos; direcionamento, navegação e controle; rastreamento; estabilização assintótica; campos vetoriais; grupos de Lie; controle adaptativo; manipulação colaborativa.
 }
 
 % \newlist{property}{enumerate}{1}

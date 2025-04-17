@@ -20,6 +20,7 @@
 \newcommand{\@coursename}{Electrical Engineering}
 \newcommand{\@locationName}{Belo Horizonte, Brazil}
 \newcommand{\@notationpage}{}
+\newcommand{\@ufmgformat}{false}
 
 \newcommand{\supportedlangs}{english, american, USenglish, canadian, british, 
 australian, newzealand, UKenglish, brazil, portuguese, german, ngerman, spanish, 
@@ -50,6 +51,9 @@ french}
 }
 \DeclareOption{nocleverref}{%
     \renewcommand{\@usecleverref}{false}%
+}
+\DeclareOption{final}{%
+    \renewcommand{\@ufmgformat}{true}%
 }
 % ---------------------------------------------------------------------------- %
 %                              LANGUAGE OPTIONS
@@ -268,11 +272,19 @@ french}
   \crefname{featurei}{Feature}{Features}
 }{%
 }
-
-\renewcommand{\thempfootnote}{\,\fnsymbol{mpfootnote}}% Change footnote numbering to symbols in minipage
+% Change footnote numbering to symbols in minipage
+\renewcommand{\thempfootnote}{\,\fnsymbol{mpfootnote}}
+\fancypagestyle{thesisstyle}{%
+    \fancyhf{} % Clear all headers/footers
+    \fancyhead[R]{\thepage} % Page number always on right
+    \fancyhead[L]{\small\itshape\rightmark} % Chapter title always on left
+    \renewcommand{\headrulewidth}{0pt} % No header rule
+    \renewcommand{\footrulewidth}{0pt} % No footer rule
+  }
 % ---------------------------------------------------------------------------- %
 %                WORKAROUND TO REMOVE PAGE NUMBERS IN PREAMBLE
 % ---------------------------------------------------------------------------- %
+% All of these are for final version only (option 'final')
 \newcommand{\removestyle}{
   % Workaround to avoid page numbers on the first pages of chapters (preamble)
   \fancypagestyle{plain}{%
@@ -393,36 +405,66 @@ french}
 
 % Cover Page Command
 \newcommand{\maketitlepage}{%
-    \removestyle % This forces the plain style (enforced by book class) to be empty
-    % \pagestyle{plain}    
-    %  \thispagestyle{empty}
-    \pagestyle{empty} % Necessary to avoid page numbers on imported PDFs
-    % \pagenumbering{roman}
-    \pagenumbering{arabic}
-    \setcounter{page}{0}
+    \ifthenelse{\equal{\@ufmgformat}{true}}{%
+        % This forces the plain style (enforced by book class) to be empty
+        \removestyle
+        \pagestyle{empty}
+        \pagenumbering{arabic}
+        \setcounter{page}{0}
 
-    % Research group Logo
-    \includegraphics[scale=0.145]{template/logo}
+        \begin{center}
+          \textbf{\MakeUppercase{\@universityName}}
+          \par
+          Escola de Engenharia
+          \par
+          Programa de P\'{o}s-Gradua\c{c}\~{a}o em Engenharia El\'{e}trica
+          \par
+          
+          \par
+        \end{center}
+          
+          \vspace*{3.2cm}
+          
+          \begin{center}
+              \@thesisAuthor\\
+          \end{center}
+          
+          \vspace*{3.2cm}
+          \begin{center}
+              \textbf{\MakeUppercase{\@thesisTitle}}
+          \end{center}
+          \vfill
+          \begin{center}
+            \@locationName\\
+            \the\year
+        \end{center}
+    }{
+        \thispagestyle{empty}
+        \pagenumbering{roman}
+        \setcounter{page}{1}
+    
+      % Research group Logo
+      \includegraphics[scale=0.145]{template/logo}
 
-    % University, Department, and Research Group
-    {\small \@universityName\par}
-    {\small \@programName\par}
-    {\small \@researchGroupName\par}
+      % University, Department, and Research Group
+      {\small \@universityName\par}
+      {\small \@programName\par}
+      {\small \@researchGroupName\par}
 
-    \vspace*{6.5cm}
+      \vspace*{6.5cm}
 
-    % Title
-    \begin{center}
-        {\Large\textbf{\expandafter\MakeUppercase\expandafter{\@thesisTitle}}}\vfill{}
-    \end{center}
+      % Title
+      \begin{center}
+          {\Large\textbf{\expandafter\MakeUppercase\expandafter{\@thesisTitle}}}\vfill{}
+      \end{center}
 
-    % Author, Location, and Year
-    \begin{center}
-        \textbf{\@thesisAuthor}\\
-        \@locationName\\
-        \the\year
-    \end{center}
-
+      % Author, Location, and Year
+      \begin{center}
+          \textbf{\@thesisAuthor}\\
+          \@locationName\\
+          \the\year
+      \end{center}
+      }%
     \pagebreak
 }
 
@@ -489,7 +531,7 @@ french}
         \IfFileExists{\@fichapath}{%
             \cleardoublepage%
             \thispagestyle{empty}%
-            \includepdf[pages=-,pagecommand={},width=\textwidth]{\@fichapath}%
+            \includepdf[pages=-,pagecommand={\thispagestyle{empty}}]{\@fichapath}%
             \cleardoublepage%
         }{%
             \PackageError{macrothesis}{%
@@ -507,7 +549,7 @@ french}
         \IfFileExists{\@atapath}{%
             \cleardoublepage%
             \thispagestyle{empty}%
-            \includepdf[pages=-,pagecommand={},width=\textwidth]{\@atapath}%
+            \includepdf[pages=-,pagecommand={\thispagestyle{empty}},width=\textwidth]{\@atapath}%
             \cleardoublepage%
         }{%
             \PackageError{macrothesis}{%
@@ -546,7 +588,7 @@ french}
     \end{singlespace}
 
     \chapter*{\@acknowledgmentsTitle}
-    \thispagestyle{empty}
+    % \thispagestyle{empty}
     \@acknowledgmentsContent
 
     % Second language Abstract
@@ -559,7 +601,7 @@ french}
     \ifabstractsecond
         \selectlanguage{\@secondlanguage}%
         \chapter*{\@secondAbstractTitle}
-        \thispagestyle{empty}
+        % \thispagestyle{empty}
         \@secondAbstractContent
     \fi
     
@@ -570,7 +612,7 @@ french}
     % First language Abstract
     \selectlanguage{\@mainlanguage}%
     \chapter*{\@abstractTitle}
-    \thispagestyle{empty}
+    % \thispagestyle{empty}
     \@abstractContent
     
     \selectlanguage{\@mainlanguage}%
@@ -585,9 +627,14 @@ french}
     \section*{\protect\pagebreak}% For some reason this is necessary
 
     % \pagestyle{plain}
-    \setfancyheader % This sets the header again for plain style (enforces book class plain to follow the default style)
-    % \pagenumbering{arabic}
-    % \setcounter{page}{1}
+    \ifthenelse{\equal{\@ufmgformat}{true}}{%
+        % This sets the header again for plain style (enforces book class plain to follow the default style)
+        \setfancyheader
+    }{%
+        \pagestyle{thesisstyle}
+        \pagenumbering{arabic}
+        \setcounter{page}{1}
+    }
 }
 
 \newcommand{\glossarypage}{
