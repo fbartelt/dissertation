@@ -270,6 +270,7 @@ french}
   \Crefname{listprop}{Property}{Properties}
   \addtotheorempostheadhook[definition]{\crefalias{propertyi}{listprop}}
   \crefname{featurei}{Feature}{Features}
+  \Crefname{figure}{Figure}{Figures}
 }{%
 }
 % Change footnote numbering to symbols in minipage
@@ -643,7 +644,7 @@ french}
         \PackageInfo{macrothesis}{Adding all acronyms and notations whether they are used or not.}% 
         \glsaddall
         \printnoidxglossary[type=acronym,sort=word]
-        \printnoidxglossary[type=notation,style=long]
+        \printnoidxglossary[type=notation,style=long,sort=def]
     }{%
         \selectlanguage{\@mainlanguage}%
         \@notationpage
